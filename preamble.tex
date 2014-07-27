@@ -1,12 +1,10 @@
 %%------------------------ FONTS -------------------------------
-\usepackage{fourier}
 \usepackage{fourier} % Utopia font-typesetting including mathematical formula compatible with newer TeX-Distributions (>2010)
 %\usepackage{utopia} % on older systems -> use this package instead of fourier in combination with mathdesign for better looking results
 %\usepackage[adobe-utopia]{mathdesign}
 
-%%------------------------ ACRPNYMS -------------------------------
-\PassOptionsToPackage{printonlyused,smaller}{acronym}
-	\usepackage{acronym} % nice macros for handling all acronyms in the thesis
+%%------------------------ ACRONYMS -------------------------------
+\usepackage[printonlyused,smaller]{acronym}
 \renewcommand{\bflabel}[1]{{#1}\hfill} % fix the list of acronyms
 
 %%------------------------ LAYOUT -------------------------------
@@ -34,7 +32,6 @@
 % From EPFL template
 %\usepackage[perpage]{footmisc} %Range of footnote options 
 
-% From EPFL template
 %\usepackage{fancyhdr}
 %\renewcommand{\sectionmark}[1]{\markright{\thesection\ #1}}
 %\pagestyle{fancy}
@@ -55,10 +52,6 @@
 %	\fancyfoot{}
 %	\fancyfoot[RO,LE]{\thepage}
 %}
-
-%%-----------------------  Line numbers  -------------------------------
-%\RequirePackage{lineno}
-%\linenumbers
 
 %%------------------------ Figures  -------------------------------
 %\usepackage{rotating}
@@ -84,7 +77,8 @@
 \usepackage{amsfonts}
 \usepackage{amsmath}
 \usepackage{amssymb}
-%\usepackage{siunitx} % use this package module for SI units
+\usepackage{siunitx} % http://ftp.oleane.net/pub/CTAN/macros/latex/contrib/siunitx/siunitx.pdf
+% \num{.3e45}   ,  \num{3.45d-4}   , \numlist{10;30;50;70} ,  \numrange{10}{30} , 
 
 %%------------------------ Cross References  -------------------------------
 %% --- Hyperref and Options
@@ -98,17 +92,19 @@
     plainpages=false, bookmarksnumbered, bookmarksopen=true, bookmarksopenlevel=1,%
     hypertexnames=true, pdfhighlight=/O,%nesting=true,%frenchlinks,%
     urlcolor=webbrown, 
-    linkcolor=RoyalBlue, 
-    citecolor=webgreen, 
+    linkcolor=blue, %RoyalBlue, 
+    citecolor=green, %webgreen, 
     %pagecolor=RoyalBlue,%
     %urlcolor=Black, linkcolor=Black, citecolor=Black, %pagecolor=Black,%
     pdftitle={\myTitle},%
-    pdfauthor={\textcopyright\ \myName, \myUni, \myFaculty},%
+    pdfauthor={\myName, \myUni, \myFaculty},%
     pdfsubject={},%
     pdfkeywords={},%
     pdfcreator={pdfLaTeX},%
     pdfproducer={LaTeX with hyperref and classicthesis}%
-}  
+}
+
+% From EPFL template
 %\hypersetup{pdfborder={0 0 0},
 %	colorlinks=true,
 %	linkcolor=black,
@@ -116,18 +112,17 @@
 %	urlcolor=black}
 %\urlstyle{same}
 
-%% --- cleverref and Options
-\usepackage{cleverref}
+%% --- cleveref and Options
+\usepackage{cleveref}
 % cleverref should always be invoked AFTER hyperref
 
 %% --- beckref and Options
 \newcommand{\backrefnotcitedstring}{\relax}%(Not cited.)
 \newcommand{\backrefcitedsinglestring}[1]{(Cited on page~#1.)}
 \newcommand{\backrefcitedmultistring}[1]{(Cited on pages~#1.)}
-\ifthenelse{\boolean{enable-backrefs}}%
+\ifthenelse{\boolean{enable_backrefs}}%
 {%
-		\PassOptionsToPackage{hyperpageref}{backref}
-		\usepackage{backref} % to be loaded after hyperref package 
+		\usepackage[hyperpageref]{backref}  % to be loaded after hyperref package
 		   \renewcommand{\backreftwosep}{ and~} % separate 2 pages
 		   \renewcommand{\backreflastsep}{, and~} % separate last of longer list
 		   \renewcommand*{\backref}[1]{}  % disable standard
@@ -162,5 +157,14 @@
 
 %%------------------------ MISC PACKAGES -------------------------------
 \usepackage{url}
-\usepackage[final]{pdfpages} %\includepdf[options]{filename}
+\usepackage{lipsum}
+\usepackage{lineno}
+%\usepackage[final]{pdfpages} %\includepdf[options]{filename}
+
 %\usepackage{algpseudocode} 
+
+\ifthenelse{\boolean{enable_line_numbers}}%
+{%
+	%\linenumbers
+	\pagewiselinenumbers % requires compiling AT LEAST twice
+}{\relax}

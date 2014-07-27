@@ -3,16 +3,16 @@
 
 % CHECK https://www.writelatex.com/1283488jybyzp#/3132576/
 %%------------------------ PACKAGES------------------------------
-
+\input{booleans}
+\input{commands}
 \input{preamble}
-
 
 %%------------------------ BEGIN  -------------------------------
 \begin{document}
-hey yoo
+
+\lipsum[4-57]
 
 \frontmatter
-
 \begin{titlepage}
 %\maketitle
 \end{titlepage}
@@ -23,13 +23,12 @@ hey yoo
 %\include{Abstract/abstract}
 
 % *********************** Adding TOC and List of Figures ***********************
-
 \tableofcontents
 
 \listoffigures
-
+\lipsum[20]
 \listoftables 
-
+\lipsum[20]
 % \printnomenclature[space] space can be set as 2.5cm between symbol and
 % description
 %\printnomencl
@@ -38,7 +37,7 @@ hey yoo
 
 \mainmatter
 
-%\include{Chapter6/chapter6}
+\include{Chapter1/chapter1}
 %\include{Chapter7/chapter7}
 
 %%------------------------ BACK MATTER  -------------------------------
@@ -65,7 +64,7 @@ hey yoo
 
 % \printbibliography[heading=bibintoc, title={References}]
 
-\%end{spacing}
+%end{spacing}
 
 % ********************************** Appendices ********************************
 
