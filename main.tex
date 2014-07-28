@@ -4,9 +4,9 @@
 % CHECK https://www.writelatex.com/1283488jybyzp#/3132576/
 %%------------------------ PACKAGES------------------------------
 \input{booleans}
-\input{commands}
+\input{pre_commands}
 \input{preamble}
-
+\input{post_commands}
 %%------------------------ BEGIN  -------------------------------
 \begin{document}
 
@@ -21,9 +21,9 @@
 % *********************** Adding TOC and List of Figures ***********************
 \tableofcontents
 
-\listoffigures
+%\listoffigures
 %\lipsum[20]
-\listoftables 
+%\listoftables 
 %\lipsum[20]
 % \printnomenclature[space] space can be set as 2.5cm between symbol and
 % description
@@ -38,28 +38,10 @@
 %%------------------------ BACK MATTER  -------------------------------
 
 % Backmatter should be commented out, if you are using appendices after References
-%\backmatter 
+\backmatter 
 
-% ********************************** Bibliography ******************************
-%\begin{spacing}{0.9}
+\include{References/bibliography}
 
-% To use the conventional natbib style referencing
-% Bibliography style previews: http://nodonn.tipido.net/bibstyle.php
-
-%\bibliographystyle{apalike}
-%\bibliographystyle{plainnat} % use this to have URLs listed in References
-%\cleardoublepage
-%\bibliography{References/references} % Path to your References.bib file
-
-
-% If you would like to use BibLaTeX for your references, pass `custombib' as 
-% an option in the document class. The location of 'reference.bib' should be 
-% specified in the preamble.tex file in the custombib section. 
-% Comment out the lines related to natbib above and uncomment the following line.
-
-% \printbibliography[heading=bibintoc, title={References}]
-
-%end{spacing}
 
 % ********************************** Appendices ********************************
 

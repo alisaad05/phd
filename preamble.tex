@@ -7,6 +7,12 @@
 \usepackage[printonlyused,smaller]{acronym}
 \renewcommand{\bflabel}[1]{{#1}\hfill} % fix the list of acronyms
 
+%%------------------------ BIBLIOGRAPHY -------------------------------
+\usepackage[square,numbers]{natbib} 
+
+%%------------------------ LANGUAGES-FRENCH ACCENTS -------------------------------
+\usepackage[utf8]{inputenc}
+
 %%------------------------ LAYOUT -------------------------------
 %% --- Margins
 \setlength{\textwidth}{146.8mm} % = 210mm - 37mm - 26.2mm
@@ -91,7 +97,7 @@
     breaklinks=true, pdfpagemode=UseNone, pageanchor=true, pdfpagemode=UseOutlines,%
     plainpages=false, bookmarksnumbered, bookmarksopen=true, bookmarksopenlevel=1,%
     hypertexnames=true, pdfhighlight=/O,%nesting=true,%frenchlinks,%
-    urlcolor=webbrown, 
+    urlcolor=red, %webbrown, 
     linkcolor=blue, %RoyalBlue, 
     citecolor=green, %webgreen, 
     %pagecolor=RoyalBlue,%
@@ -142,6 +148,15 @@
 
 %\usepackage{minitoc} % use like this : \minitoc 
 
+
+%%------------------------ NOMENCLATURE / GLOSSARY -------------------------------
+% http://www.latex-community.org/know-how/latex/55-latex-general/263-glossaries-nomenclature-lists-of-symbols-and-acronyms
+%\usepackage[toc]{glossaries}
+% use it like: \newglossaryentry{label}{definition}
+%\usepackage[xindy,toc]{glossaries}  
+%\makeglossaries 
+
+
 %%------------------------ Names of sections for figures, nomenclature ...  -------------------------------
 % To change the name of the Nomenclature section, uncomment the following line
 %\renewcommand{\contentsname}{My Table of Contents}
@@ -158,11 +173,10 @@
 %%------------------------ MISC PACKAGES -------------------------------
 \usepackage{url}
 \usepackage{lipsum}
-\usepackage{lineno}
 %\usepackage[final]{pdfpages} %\includepdf[options]{filename}
-
 %\usepackage{algpseudocode} 
 
+\usepackage{lineno}
 \ifthenelse{\boolean{enable_line_numbers}}%
 {%
 	%\linenumbers
