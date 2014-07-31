@@ -9,7 +9,6 @@
 
 %%------------------------ BIBLIOGRAPHY -------------------------------
 \usepackage[square,numbers]{natbib} 
-
 %%------------------------ LANGUAGES-FRENCH ACCENTS -------------------------------
 \usepackage[utf8]{inputenc}
 
@@ -87,7 +86,7 @@
 % \num{.3e45}   ,  \num{3.45d-4}   , \numlist{10;30;50;70} ,  \numrange{10}{30} , 
 
 %%------------------------ Cross References  -------------------------------
-%% --- Hyperref and Options
+% --- Hyperref and Options
 \usepackage{hyperref}
 \hypersetup{%
     %draft,	% = no hyperlinking at all (useful in b/w printouts)
@@ -146,7 +145,11 @@
 %\setcounter{secnumdepth}{2}
 %\setcounter{tocdepth}{2}
 
-%\usepackage{minitoc} % use like this : \minitoc 
+\usepackage{minitoc} % use like this : \minitoc 
+\setcounter{minitocdepth}{2}
+\setlength{\mtcindent}{24pt} 
+\renewcommand{\mtcfont}{\small\rm}
+\renewcommand{\mtcSfont}{\small\bf}
 
 
 %%------------------------ NOMENCLATURE / GLOSSARY -------------------------------

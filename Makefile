@@ -9,7 +9,7 @@ pdf:
 	pdflatex -synctex=1 -interaction=nonstopmode main.tex
 
 clean:
-	rm -f *.aux *.log *.bbl *.blg *.toc *.lof *.lot *.out
+	rm -f *.aux *.log *.bbl *.blg *.toc *.lof *.lot *.out *.mtc*
 	rm -f References/*.aux References/*.log
 	rm -f Chapter1/*.aux Chapter1/*.log
 	
