@@ -18,6 +18,7 @@ clean:
 	
 	rm -f *.aux *.log *.bbl *.blg *.toc *.lof *.lot *.out *.mtc*
 	rm -f References/*.aux References/*.log
+	rm -f Chapter0/*.aux Chapter0/*.log
 	rm -f Chapter1/*.aux Chapter1/*.log
 	rm -f *.maf #removes the MS Access shortcut
 autocommit:
