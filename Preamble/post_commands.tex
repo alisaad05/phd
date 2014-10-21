@@ -8,3 +8,36 @@
 \DeclareSIUnit\umassenergy{\joule\per\kilo\gram}
 \DeclareSIUnit\uvolumecapacity{\joule\per\cubic\metre\per\kelvin}
 \DeclareSIUnit\uvolumeenergy{\joule\per\cubic\metre}
+
+
+%% ------------------------ MATHs commands--------------------------
+%\renewcommand{matrix}[1]{#1 \rangle} 
+\newcommand{\avg}[1]{\ensuremath{\langle #1 \rangle}}
+\newcommand{\brac}[1]{\ensuremath{\left(  #1  \right)}} 
+\newcommand{\mtrx}[1]{{\underline{\underline{#1}}} }
+\newcommand\mat[1]{\ensuremath{\underline{#1}}} 
+
+\newcommand\nabvec{\ensuremath{\vec{\nabla}}}
+\newcommand\nabmat{\ensuremath{\mat{\nabla}}}
+\newcommand\temp[1]{\ensuremath{\frac{\partial}{\partial t} \brac{#1} }}  
+\newcommand\vit{\ensuremath{\avg{\vec{v}^l}}}  
+\newcommand\strainrate{\ensuremath{\avg{{\dot{\mat{\varepsilon}}}^l}}}
+
+\newcommand\wavg{\ensuremath{\avg{w}}}
+\newcommand\wl{\ensuremath{\avg{w}^l}}
+\newcommand\ws{\ensuremath{\avg{w}^s}}
+\newcommand\wi{\ensuremath{\avg{w_i}}}
+\newcommand\rhoh{\ensuremath{\avg{\rho h}}}
+\newcommand\rhol{\ensuremath{\rho^l}}
+\newcommand\rhos{\ensuremath{\rho^s}}
+\newcommand\kl{\ensuremath{\kappa^l}}
+\newcommand\ks{\ensuremath{\kappa^s}}
+\newcommand\hl{\ensuremath{h^l}}
+\newcommand\hs{\ensuremath{h^s}}
+\newcommand\gl{\ensuremath{g^l}}
+\newcommand\gs{\ensuremath{g^s}}
+\newcommand\vl{\ensuremath{\vec{v}^l}}
+\newcommand\vs{\ensuremath{\vec{v}^s}}
+\newcommand\norm[1]{\ensuremath{\lVert #1 \rVert}}
+
+\newcommand*\widefbox[1]{\fbox{\hspace{2em}#1\hspace{2em}}}

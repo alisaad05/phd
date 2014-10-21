@@ -1,0 +1,90 @@
+\chapter{Energy Resolution: Tsolver}
+\minitoc
+\newpage
+
+
+When we speak about macrosegregation in solidification, we have to remember that the problem is one that involves phase change.
+
+
+\section{State of the art}
+\begin{itemize}
+\item Use of enthalpy resolution in the majority of works 
+\item motivation and advantages of TvsH without talking about resolution time
+\item use article's introduction to fill this section (or improvise new things)
+\end{itemize}
+
+
+\section{Thermodynamic considerations}
+\comment{ this section should be revised for missing symbols, equations and figures from the corresponding article }
+\subsection{Volume averaging} 
+A volume averaging technique was suggested to deal with the presence of multiple phases \cite{ni_volume-averaged_1991}. It locally considers a 
+Representative Volume Element (RVE) that contains a single or several phases (these are not necessarily in thermodynamic equilibrium) 
+at a mesoscopic scale. We represent, for each unknown $\psi$, an intrinsic volume average, HERE (also denoted HERE in the literature), 
+corresponding to a phase HERE. The volume average HERE for this unknown in the RVE, hence averaged over all the present phases writes:
+HERE	Eq. 1
+where $g^\phi$ denotes the volume fraction of phase $\phi$ in the RVE. It should be emphasized that the averaging technique applies to 
+virtually all thermodynamic variables (enthalpy, density $\dots$). Among these variables, the temperature is also considered to be uniform 
+in the RVE. Applying the volume averaging technique to the energy conservation principle along with interfacial balances between the phases, 
+results in the following averaged equation \cite{rappaz_numerical_2003}:
+	HERE	Eq. 2
+where $\rho$ stands for the density, $h$ the mass enthalpy, $v$ the velocity field, $\kappa$ the thermal conductivity, $T$ the temperature 
+and $Q_V$ a possible volume heat source. Eq.2 is the standard averaged form of the energy conservation equation used in non-stationary phase 
+change problems. Once the variational form has been discretized in space and time, two possible resolution schemes emerge: the first is an 
+explicit forward Euler scheme which gives rise to a linear equation where the temperature is known at time $t$, $T^t$. This requires very small 
+time steps in the current context, which limits the solver’s usability at the scale of industrial applications. The second scheme is the 
+backward Euler or full implicit discretization where terms are function of $T^{t+\Delta t}$. It leads to a nonlinear equation with 2 interdependent 
+unknowns, $\rhoh^{t+\Delta t}$ and  $T^{t+\Delta t}$. It is clear that the nature of the temperature-enthalpy relationship plays a central 
+role when formulating the resolution strategy of this nonlinear equation. Generally, it is admitted that, depending on the resolution strategy, 
+it is necessary to express enthalpy as a function of temperature or vice-versa, together with associated partial derivatives, 
+$\frac{d \avg{\rho h}}{dT}$ or $\frac{dT }{d\avg{\rho h}}$.
+
+\subsection{The temperature-enthalpy relationship} 
+In solidification problems, additional variables are involved in Eq. 1 and Eq. 2, like the transformation path that defines the history of the phase 
+fractions, as well as the average chemical composition $\wi$, i being the index of the chemical species (only the solutes are considered). The 
+temperature-enthalpy relation averaged over the phases in a given RVE writes:
+	HERE	Eq. 3
+	
+Note that the volume average enthalpy is approximated by the product $\avg{\rho h}^{\phi}=\avg{\rho}^{\phi}\avg{h}^{\phi}$ in the current work. As stated in the introduction, it becomes 
+clear from Eq. 3 that phase properties, i.e. average phase density, , HERE and enthalpy, HERE, are temperature and composition dependent. This equation 
+is the key to convert the average volume enthalpy to temperature (through a procedure named H2T) or vice-versa (T2H). The values of the different phase 
+fractions $g^\phi$ (solidification path) and phase enthalpies $\avg{\rho h}^{\phi}$ are thus needed to close the relation.
+
+\subsection{Tabulation of properties}
+The complexity of performing a thermodynamic conversion is directly linked to the simplicity of determining the alloy properties, namely the 
+phase fractions and phase enthalpies. In the case of binary alloys and with several assumptions with respect to the system (e.g., linear monovariant 
+temperature composition relationships, constant heat capacity of phases and constant latent heat of transformations, equilibrium approximations between 
+phases) analytical calculations are often used to determine the properties. Nevertheless, analytical relations are more complex or even impossible to 
+derive in the case of multicomponent alloys (i>1). To overcome this problem, one can resort to thermodynamic databases and phase equilibrium calculations 
+to tabulate the transformation paths and the phase enthalpies for a given range of temperatures and average compositions. It is a handy solution for two 
+main reasons: first, the conversion is merely a binary search in a table; secondly, it is a simple solution for coupling with macrosegregation. In this way, 
+phase fractions $g^\phi$ are tabulated as functions of temperature and average composition, while for each phase $\phi$ the mass enthalpy, $\avg{h}^{\phi}$, and 
+the density, $\avg{\rho}^{\phi}$, are tabulated as functions of temperature and phase intrinsic average compositions HERE, as well as other possible parameters. 
+Figure 1 summarizes the steps in order to perform a temperature-to-enthalpy (T2H) conversion using the predefined tabulation approach. In step 1, the 
+transformation path is acquired for each average composition and temperature to determine the list of phases, their volume fractions $g^\phi$ and their intrinsic 
+compositions $\avg{w_i}^{\phi}$. In step 2, the phase enthalpy $\avg{h}^{\phi}$  and density $\avg{\rho}^{\phi}$ are determined by searching for the temperature 
+and the already known phase composition $\wi^\phi$. In step 3, the average volume enthalpy is computed from the volume fraction, density and mass enthalpy 
+of phases using Eq. 3.
+
+FIGURE 1 (Eq. 3)
+
+The methodology to build the tabulations is straightforward. It is based on two main scans. On the one hand, intervals for the variation of the 
+average composition $\wi$ are chosen from the known alloy composition. These variations have to cover the extreme values adopted during the 
+simulation, which are not known a priori. An interval is also selected for the variation of temperature. The latter is easier to determine as it
+usually starts from the initial melt temperature and goes down to the room temperature in a standard casting simulation. For these intervals, a 
+systematic scan is made with chosen steps in each composition and T, during which a thermodynamic equilibrium is computed. The outputs are the 
+number of phases encountered, together with their fraction and intrinsic composition. The minimum and maximum intrinsic composition for each phase 
+could then be determined. On the other hand, for each phase, a scan of the intrinsic composition and temperature is made to compute the intrinsic 
+properties. The same temperature interval and step as defined earlier are used.
+ 
+Regarding the enthalpy-to-temperature conversion (H2T), a backward iterative T2H search is performed. For a known composition $\wi$, denoting $k$
+the iteration index to convert the enthalpy $\avg{\rho h}_{\text{input}}$, we start with an initial guess for temperature $T^((k=0) )$ then convert it to an 
+enthalpy  HERE with the T2H conversion. Using an appropriate nonlinear algorithm (Brent is the most versatile in our case), we aim at minimizing 
+the following residual: HERE. Once the algorithm has converged, the temperature $T^((k) )$ is the result of the H2T conversion. 
+It is inferred that the first conversion (T2H) is a direct one whereas the latter (H2T) is indirect and requires a series of iterative steps; each step 
+being a single T2H resolution. In other words, a H2T conversion is a backward search for a temperature, hence it’s slower. This conversion’s speed lag is 
+exacerbated when tabulations increase in size (e.g. large number of temperature and composition steps) and complexity (e.g., multicomponent industrial alloys 
+used in casting), since the search gets more complicated with the increasing number of input columns (one column for each alloying element).
+
+\section{Formulation}
+from HvsT article
+
