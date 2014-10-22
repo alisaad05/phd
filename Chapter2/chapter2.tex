@@ -16,38 +16,59 @@ When we speak about macrosegregation in solidification, we have to remember that
 
 \section{Thermodynamic considerations}
 \comment{ this section should be revised for missing symbols, equations and figures from the corresponding article }
+
 \subsection{Volume averaging} 
 A volume averaging technique was suggested to deal with the presence of multiple phases \cite{ni_volume-averaged_1991}. It locally considers a 
 Representative Volume Element (RVE) that contains a single or several phases (these are not necessarily in thermodynamic equilibrium) 
-at a mesoscopic scale. We represent, for each unknown $\psi$, an intrinsic volume average, HERE (also denoted HERE in the literature), 
-corresponding to a phase HERE. The volume average HERE for this unknown in the RVE, hence averaged over all the present phases writes:
-HERE	Eq. 1
-where $g^\phi$ denotes the volume fraction of phase $\phi$ in the RVE. It should be emphasized that the averaging technique applies to 
-virtually all thermodynamic variables (enthalpy, density $\dots$). Among these variables, the temperature is also considered to be uniform 
-in the RVE. Applying the volume averaging technique to the energy conservation principle along with interfacial balances between the phases, 
-results in the following averaged equation \cite{rappaz_numerical_2003}:
-	HERE	Eq. 2
-where $\rho$ stands for the density, $h$ the mass enthalpy, $v$ the velocity field, $\kappa$ the thermal conductivity, $T$ the temperature 
-and $Q_V$ a possible volume heat source. Eq.2 is the standard averaged form of the energy conservation equation used in non-stationary phase 
-change problems. Once the variational form has been discretized in space and time, two possible resolution schemes emerge: the first is an 
+at a mesoscopic scale. We represent, for each unknown $\psi$, an intrinsic volume average, $\avg{\psi}^{\phi}$ (also denoted $\avg{\psi^{\phi}}^{\phi}$ in the 
+literature), corresponding to a phase $\phi$. The volume average $\avg{\psi}$ for this unknown in the RVE, hence averaged over all the present phases writes:
+%%-------------
+\begin{align}
+\label{eq:volume_average_psi}
+& \avg{\psi} = \sum_\phi \gphi \avg{\psi}^{\phi}
+\end{align}
+%%-------------
+where $g^\phi$ denotes the volume fraction of phase $\phi$ in the RVE. 
+It should be emphasized that the averaging technique applies to virtually all thermodynamic variables (enthalpy, density $\dots$). 
+Among these variables, the temperature is also considered to be uniform in the RVE. Applying the volume averaging technique to the energy 
+conservation principle along with interfacial balances between the phases, results in the following averaged equation \cite{rappaz_numerical_2003}:
+%%-------------
+\begin{align}
+\label{eq:averaged_energy_eqn}
+& \frac{\d \rh}{\d t} + \nabvec \cdot \rhv = \nabvec \cdot \brac{\avg{\kappa} \nabvec T} + \avg{\dot{Q}_V}
+\end{align}
+%%-------------
+where $\rho$ stands for the density, $h$ the mass enthalpy, $\vec{v}$ the velocity field, $\kappa$ the thermal conductivity, $T$ the temperature 
+and $\dot{Q}_V$ a possible volume heat source. \autoref{eq:averaged_energy_eqn} is the standard averaged form of the energy conservation equation used in non-stationary phase 
+change problems. 
+\comment{ I could elaborate more in this paragraph by showing the possible equations for the explicit formulation and maybe a figure to show the AlSi7
+computation that i did with a v small time step }
+ 
+Once the variational form has been discretized in space and time, two possible resolution schemes emerge: the first is an 
 explicit forward Euler scheme which gives rise to a linear equation where the temperature is known at time $t$, $T^t$. This requires very small 
 time steps in the current context, which limits the solver’s usability at the scale of industrial applications. The second scheme is the 
 backward Euler or full implicit discretization where terms are function of $T^{t+\Delta t}$. It leads to a nonlinear equation with 2 interdependent 
-unknowns, $\rhoh^{t+\Delta t}$ and  $T^{t+\Delta t}$. It is clear that the nature of the temperature-enthalpy relationship plays a central 
+unknowns, $\rh^{t+\Delta t}$ and  $T^{t+\Delta t}$. It is clear that the nature of the temperature-enthalpy relationship plays a central 
 role when formulating the resolution strategy of this nonlinear equation. Generally, it is admitted that, depending on the resolution strategy, 
 it is necessary to express enthalpy as a function of temperature or vice-versa, together with associated partial derivatives, 
-$\frac{d \avg{\rho h}}{dT}$ or $\frac{dT }{d\avg{\rho h}}$.
+$\frac{d \rh}{dT}$ or $\frac{dT }{d \rh}$.
 
 \subsection{The temperature-enthalpy relationship} 
-In solidification problems, additional variables are involved in Eq. 1 and Eq. 2, like the transformation path that defines the history of the phase 
-fractions, as well as the average chemical composition $\wi$, i being the index of the chemical species (only the solutes are considered). The 
-temperature-enthalpy relation averaged over the phases in a given RVE writes:
-	HERE	Eq. 3
-	
-Note that the volume average enthalpy is approximated by the product $\avg{\rho h}^{\phi}=\avg{\rho}^{\phi}\avg{h}^{\phi}$ in the current work. As stated in the introduction, it becomes 
-clear from Eq. 3 that phase properties, i.e. average phase density, , HERE and enthalpy, HERE, are temperature and composition dependent. This equation 
-is the key to convert the average volume enthalpy to temperature (through a procedure named H2T) or vice-versa (T2H). The values of the different phase 
-fractions $g^\phi$ (solidification path) and phase enthalpies $\avg{\rho h}^{\phi}$ are thus needed to close the relation.
+In solidification problems, additional variables are involved in \autoref{eq:volume_average_psi} and \autoref{eq:averaged_energy_eqn}, 
+like the transformation path that defines the history of the phase fractions, as well as the average chemical composition $\wi$, 
+i being the index of the chemical species (only the solutes are considered). The temperature-enthalpy relation averaged over the 
+phases in a given RVE writes:
+%%-------------
+\begin{align}
+\label{eq:volume_average_enthalpy}
+& \rh = \sum_\phi \gphi_{\brac{T, \wi \dots}} \rphi_{\brac{T, \wi^{\phi} \dots}} \hphi_{\brac{T, \wi^{\phi} \dots}}
+\end{align}
+%%-------------
+Note that the volume average enthalpy is approximated by the product $\avg{\rho h}^{\phi}=\avg{\rho}^{\phi}\avg{h}^{\phi}$ in the current work. As stated 
+in the introduction, it becomes clear from \autoref{eq:volume_average_enthalpy} that phase properties, i.e. average phase density, , \rphi and enthalpy, \hphi, 
+are temperature and composition dependent. This equation is the key to convert the average volume enthalpy to temperature (through a procedure named H2T) 
+or vice-versa (T2H). The values of the different phase fractions $\gphi$ (solidification path) and phase enthalpies $\rh^{\phi}$ are thus needed 
+to close the relation.
 
 \subsection{Tabulation of properties}
 The complexity of performing a thermodynamic conversion is directly linked to the simplicity of determining the alloy properties, namely the 
@@ -57,15 +78,15 @@ phases) analytical calculations are often used to determine the properties. Neve
 derive in the case of multicomponent alloys (i>1). To overcome this problem, one can resort to thermodynamic databases and phase equilibrium calculations 
 to tabulate the transformation paths and the phase enthalpies for a given range of temperatures and average compositions. It is a handy solution for two 
 main reasons: first, the conversion is merely a binary search in a table; secondly, it is a simple solution for coupling with macrosegregation. In this way, 
-phase fractions $g^\phi$ are tabulated as functions of temperature and average composition, while for each phase $\phi$ the mass enthalpy, $\avg{h}^{\phi}$, and 
-the density, $\avg{\rho}^{\phi}$, are tabulated as functions of temperature and phase intrinsic average compositions HERE, as well as other possible parameters. 
+phase fractions $\gphi$ are tabulated as functions of temperature and average composition, while for each phase $\phi$ the mass enthalpy, $\hphi$, and 
+the density, $\rphi$, are tabulated as functions of temperature and phase intrinsic average compositions HERE, as well as other possible parameters. 
 Figure 1 summarizes the steps in order to perform a temperature-to-enthalpy (T2H) conversion using the predefined tabulation approach. In step 1, the 
-transformation path is acquired for each average composition and temperature to determine the list of phases, their volume fractions $g^\phi$ and their intrinsic 
-compositions $\avg{w_i}^{\phi}$. In step 2, the phase enthalpy $\avg{h}^{\phi}$  and density $\avg{\rho}^{\phi}$ are determined by searching for the temperature 
-and the already known phase composition $\wi^\phi$. In step 3, the average volume enthalpy is computed from the volume fraction, density and mass enthalpy 
-of phases using Eq. 3.
+transformation path is acquired for each average composition and temperature to determine the list of phases, their volume fractions $\gphi$ and their intrinsic 
+compositions $\wi^{\phi}$. In step 2, the phase enthalpy $\hphi$  and density $\rphi$ are determined by searching for the temperature 
+and the already known phase composition $\wi^{\phi}$. In step 3, the average volume enthalpy is computed from the volume fraction, density and mass enthalpy 
+of phases using \autoref{eq:volume_average_enthalpy}.
 
-FIGURE 1 (Eq. 3)
+\comment{ Figure 3 goes here }
 
 The methodology to build the tabulations is straightforward. It is based on two main scans. On the one hand, intervals for the variation of the 
 average composition $\wi$ are chosen from the known alloy composition. These variations have to cover the extreme values adopted during the 
@@ -75,16 +96,222 @@ systematic scan is made with chosen steps in each composition and T, during whic
 number of phases encountered, together with their fraction and intrinsic composition. The minimum and maximum intrinsic composition for each phase 
 could then be determined. On the other hand, for each phase, a scan of the intrinsic composition and temperature is made to compute the intrinsic 
 properties. The same temperature interval and step as defined earlier are used.
- 
-Regarding the enthalpy-to-temperature conversion (H2T), a backward iterative T2H search is performed. For a known composition $\wi$, denoting $k$
-the iteration index to convert the enthalpy $\avg{\rho h}_{\text{input}}$, we start with an initial guess for temperature $T^((k=0) )$ then convert it to an 
-enthalpy  HERE with the T2H conversion. Using an appropriate nonlinear algorithm (Brent is the most versatile in our case), we aim at minimizing 
-the following residual: HERE. Once the algorithm has converged, the temperature $T^((k) )$ is the result of the H2T conversion. 
-It is inferred that the first conversion (T2H) is a direct one whereas the latter (H2T) is indirect and requires a series of iterative steps; each step 
-being a single T2H resolution. In other words, a H2T conversion is a backward search for a temperature, hence it’s slower. This conversion’s speed lag is 
-exacerbated when tabulations increase in size (e.g. large number of temperature and composition steps) and complexity (e.g., multicomponent industrial alloys 
-used in casting), since the search gets more complicated with the increasing number of input columns (one column for each alloying element).
+
+\comment{ below paragraph should be re written and maybe stress LESS on the speed effect}
+\comment{ I should change the superscript $k$ which may be confused with partition coefficient }
+Regarding the enthalpy-to-temperature conversion (H2T), a backward iterative T2H search is performed. 
+For a known composition $\wi$, denoting $k$ the iteration index to convert the enthalpy 
+$\avg{\rho h}_{\text{input}}$, we start with an initial guess for temperature $\Tkinit$ then convert it to an 
+enthalpy  $\Hkinit$ with the T2H conversion. Using an appropriate nonlinear algorithm (Brent is the most versatile 
+in our case), we aim at minimizing the following residual: $\text{Residu}_{\rh} = \abval{\rh_{\text{input}} - \Hk }$. 
+Once the algorithm has converged, the temperature $\Tk$ is the result of the H2T conversion. It is 
+inferred that the first conversion (T2H) is a direct one whereas the latter (H2T) is indirect and requires 
+a series of iterative steps; each step being a single T2H resolution. In other words, a H2T conversion is a 
+backward search for a temperature, hence it’s slower. This conversion’s speed lag is exacerbated when tabulations 
+increase in size (e.g. large number of temperature and composition steps) and complexity (e.g., multicomponent 
+industrial alloys used in casting), since the search gets more complicated with the increasing number of input 
+columns (one column for each alloying element).
 
 \section{Formulation}
-from HvsT article
+\comment{ Coming soon }
 
+\section{Validation}
+
+\subsection{Pure diffusion}
+The two solvers are first tested in a purely diffusive case for a one-dimensional solidification configuration. 
+Predictions with a 1D front tracking model \cite{gandin_constrained_2000} is used as a benchmark. It provides 
+solutions for the temperature and solid fraction during directional solidification of a 10 cm long Al – 7 wt.\% Si 
+ingot. The melt, with initial uniform temperature, is cooled with a heat exchange coefficient (assuming a Fourier 
+boundary condition) from one side, the other side being adiabatic. All values for alloy properties, initial and 
+boundary conditions and numerical parameters are listed in \autoref{table:data_case_alsi7}. For this simple test case, 
+we use linear temperature dependence of the intrinsic phase enthalpies, that is $\rh^s= \rcp T$ and $\rh^l= \rcp T + \rho L$, 
+where $\rcp$ is the heat capacity per unit volume and $\rho L$ is the latent heat per unit volume. Values for $\rcp$ 
+and $\rho L$, as well as for the thermal conductivities, $\kappa = \kl = \ks$, are taken constant. Moreover, a 
+Gulliver Scheil approximation is used to compute a single temperature – fraction of solid relationship in the 
+absence of macrosegregation. This is done assuming a linear binary phase diagram and thus requires using the 
+properties listed in \autoref{table:data_case_alsi7}, i.e. the segregation coefficient, $k$, the liquidus slope, $m_L$, the 
+liquidus temperature, $T_L$, and the eutectic temperature, $T_E$. \textbf{Figure REF} shows the comparison with 
+the Hsolver and Tsolver. The results are found superimposed to the front tacking solution, thus giving validation 
+of the implementation as well as the iterative schemes presented above to solve the energy conservation.
+
+\begin{table}
+\centering
+\begin{tabular}{llll}
+\hline 
+\textbf{Parameter} & \textbf{Symbol} & \textbf{Value} & \textbf{Unit} \\
+\hline 
+Nominal composition & $\avg{w}_0$ & \num{7} & • \\ 
+Liquidus temperature & $T_L$ & \num{618} & • \\ 
+Eutectic temperature & $T_E$ & \num{577} & • \\  
+Segregation coefficient & $k$ & \num{0.13} & • \\  
+Liquidus slope & $m_L$ & \num{-6.5} & • \\ 
+Heat capacity (liquid and solid) & $\rho C_p$ & \num{2.6e6} & • \\  
+Enthalpy of fusion & $\rho L$ & \num{9.5e8} & • \\ 
+Thermal conductivity (liquid and solid) & $\kappa$ & \num{70} & • \\
+\hline  
+Heat transfer coefficient & $\hext$ & \num{500} & • \\ 
+External temperature & $\Text$ & \num{100} & • \\ 
+Initial temperature & $T_0$ & \num{800} & • \\ 
+Ingot length &  & \num{0.1} & • \\ 
+\hline 
+FE mesh size &  & \num{e-3} & • \\ 
+Time step & $\dt$ & \num{0.1} & • \\ 
+Convergence criterion (residual) & $\varepsilon_R$ & \num{e-6} & • \\ 
+Convergence criterion (temperature) & $\varepsilon_T$ & \num{e-2} & • \\ 
+\hline 
+\end{tabular} 
+\caption{Parameters for the pure diffusion test case with alloy Al – 7 wt.\% Si presented in \textbf{FIGURE REF}}
+\label{table:data_case_alsi7}
+\end{table}
+
+\subsection{Convection-diffusion with macrosegregation}
+Conservation equations in \textbf{Table 2} are for mass, momentum and chemical species. 
+As for energy, they are presented after the volume averaging technique has been applied 
+\cite{ni_volume-averaged_1991} \cite{dantzig_solidification_2009}. Moreover, an assumption 
+of a static and non deformable solid phase is made. Consequently, the mechanical model is 
+reduced to the conservation of momentum in the liquid phase. This assumption also yields 
+some other consequences on the mass balance and the liquid momentum conservation. In the 
+latter, a Darcy term is added to take into account the dissipative interfacial stress in 
+the porous-like mushy zone. Its main parameter is the permeability of the mushy zone, $K$. 
+It is considered isotropic, hence reducing to a scalar which is given by the Carman-Kozeny 
+relation, based on the secondary dendrite arm spacing $\lambda_2: K= \frac{g^{l^3}  \lambda_2^{2}
+ }{180\left ( 1-g^l \right )^2}$. The liquid density being taken constant, its spatial variations 
+as a function of temperature and average composition are still needed to compute thermosolutal 
+convection forces. For that purpose, the Boussinesq approximation $\rl = \rref \brac{1-\betaT 
+\brac{T-\Tref}-\betaWl \brac{\wl-\Wlref}}$ is used, considering the thermal $\betaT$ and solutal $\betaWl$) expansion coefficients 
+and a reference density, $\rref$, defined at a reference temperature $\Tref$ and reference 
+composition $\Wlref$. Values for the references are taken at the liquidus temperature and the nominal 
+composition of the alloy, $\w_0$ \cite{carozzani_direct_2013}. More details about the FE formulation can be found in 
+\cite{rivaux_simulation_2011, carozzani_developpement_2012}. It should be noted that the macroscopic 
+solute diffusion coefficient in the solid phase is neglected in \textbf{REF Eq. 15c}. 
+
+\comment{ in this table I use directly the simplified equations, but this was done only for
+the article, now I have to go from the full conservation equations and state the hypothesis and 
+methods that i used to reach this simplified form }
+
+\begin{table}[h]
+\centering
+\begin{subequations}
+\begin{align}
+& \nabla \cdot \brac{\gl \vl}  = 0 \\ 
+& \temp{\gl \rref \vl} + \nabvec \cdot \brac{\gl \rref \vl \times \vl} - \nabvec\cdot\avg{S}^l -\gl
+   \nabla \pl +\mul \gl^2 K^{-1} \vl -\gl\rhol \gravity = 0 \\
+& \temp{\wi} + \brac{\gl \vl} \cdot \nabvec \wil + \nabla \cdot \brac{\gl \Dl \nabvec \wil } = 0
+\end{align}
+\end{subequations}
+\caption{Averaged conservation equations for the conservation of mass (a), momentum (b) and solute mass (c)}
+\label{table:smacs_equations}
+\end{table}
+\comment{ Figure SMACS: Computed unidirectional heat diffusion during solidification of an Al – 7 wt.\% Si 
+alloy using (orange) the enthalpy method and (black) the temperature method, comparison being made for (left) 
+cooling curves and (right) time history of the liquid fraction. Each curve corresponds to a position along the 
+sample, from \SI{0}{\centi \metre} (cooling side) to \SI{10}{\centi \metre} (insulated side), with \SI{2}{\centi 
+\metre} spacing between the positions. }
+
+The Tsolver’s ability to be coupled with various physical phenomena like macrosegregation and fluid flow 
+in porous medium is displayed in this test case. It consists of a solidification benchmark where a \SI{10}{\centi \metre}
+width × \SI{6}{\centi \metre} height × \SI{1}{\centi \metre} thick cavity containing a Sn – 3 wt.\% Pb melt is cooled down from its two 
+narrowest vertical sides using heat exchangers (LHE: left heat exchanger, RHE: right heat exchanger). The 
+experiment, inspired by Hebditch and Hunt’s \cite{hebditch_observations_1974} similar set up, has been 
+revisited by Hachani et al. \cite{hachani_experimental_2012} who performed the solidification with better 
+controlled conditions and using an increased number of samples for composition analysis. Recently, a successful 
+attempt to simulate the experiment was carried out by Carozzani et al. relying on an enthalpy resolution 
+\cite{carozzani_direct_2013}. All details regarding geometry, finite element discretization, material properties 
+and boundary conditions can be found in the latter reference. 
+\comment{ I could develop more here giving additional details }
+For this computation, solidification paths, phase compositions and phase enthalpies were determined by a thermodynamic 
+module dedicated to equilibrium calculations for binary alloys. The 3D simulation results in \textbf{REF Figure 4} show 
+a satisfactory agreement with the experimental temperature measurements recorded at mid heights of the cavity and uniformly 
+distributed along its width \cite{carozzani_direct_2013}. In fact, simulation results with the Tsolver and the Hsolver were 
+found to be almost superimposed, as in \textbf{REF Figure 4}. Regarding the computation, the Tsolver resolution proves to be 
+faster than the Hsolver used in \cite{carozzani_direct_2013}: a process time of 7000s required a computation time of 90 hours 
+13 minutes compared to 114 hours 21 minutes spent by the enthalpy resolution with 32 cores on the same cluster. The gain factor 
+is about 20\%.
+
+\section{Application to multicomponent alloys}
+
+The efficiency of the temperature-based resolution resides in its performance when combined with 
+thermodynamic tabulations. A multicomponent alloy consists of at least two solute elements, and 
+therefore the tabulation size increases, hence the number of search operations also increases. 
+To demonstrate the speed-up ability of the temperature-based approach while predicting all phase 
+transformations during macrosegregation, we consider the solidification of a ternary alloy, Fe–2 wt.\%C– 30 wt.\%Cr. 
+As illustrated in \textbf{Figure 5a}, the alloy domain has a cylinder shape close to 3-inch height × 1-inch diameter. 
+Exact values are reported in \textbf{Table 3} with all material properties, initial and boundary conditions, 
+as well as numerical parameters for the simulations. The melt steel is initially at \SI{1395}{\udegC}. The 
+temperature of the bottom surface is imposed with a constant decreasing rate of 0.1 K.s-1 starting 
+with \SI{1380}{\udegC}, i.e. \SI{40}{\udegC} higher than the nominal liquidus temperature, as shown 
+in \textbf{Figure 5b}. The other surfaces are kept adiabatic. The cylinder is held in a vertical position. 
+In these conditions, and knowing that the carbon and chromium solutes have lightening effects on the liquid 
+at nominal composition, the density inversion resulting from the composition gradient in the interdendritic 
+liquid, may cause flow instability (segregation plumes) at the solidification front. While the selected alloy 
+is a steel, this application is also representative of directional cooling in a single crystal casting, e.g. 
+for nickel-base superalloys \cite{beckermann_development_2000}. \textbf{Figure 5c} also provides the 
+transformation path of the alloy at nominal composition, i.e. assuming no macrosegregation and full 
+thermodynamic equilibrium as computed with ThermoCalc and the TCFE6 database \cite{thermo-calc_andersson, tcfe6}. 
+A total of 5 phases need to be handled, the characteristic temperature for their formation being reported 
+in \textbf{Figure 5b}. 
+\comment{Figure 5: Configurations for directional casting of (a) a 1 inch diameter × 3 inches height cylindrical
+ domain for which (b) temperature-time conditions are imposed at its bottom surface. The alloy is Fe – 2 wt.\% C–
+ 30 wt.\% Cr, its computed transformation path [20], [21] at nominal composition being displayed in (c)}
+ 
+\subsection{Tabulations}
+Full thermodynamic equilibrium is considered in the present case. Due to macrosegregation, 
+the average composition is expected to continuously vary in time and space during casting. 
+Transformation paths are thus determined a priori for a set of average compositions around 
+the nominal value. Hence, carbon content is arbitrarily varied in the interval [1.8 wt.\%, 2.2 wt.\%] 
+while chromium content variation is in the interval [27 wt\%, 33 wt\%]. The offset of ±10\% with 
+respect to the nominal composition value allows tabulating relatively small composition steps to 
+ensure a good accuracy when compared to the corresponding ternary phase diagram. The average 
+composition step is 0.04 wt.\% for carbon and 0.6 wt.\% for chromium, thus representing 2\% 
+intervals with respect to the nominal composition. The temperature varies in the interval 
+[\SI{100}{\udegC},\SI{1600}{\udegC}] by \SI{5}{\udegC} steps. For each triplet (carbon content 
+in wt.\% C, \textbf{HERE} , chromium content in wt.\% Cr, \textbf{HERE}, temperature in \si{\udegK}) 
+corresponds a phase fraction $g^\phi$ and a pair of intrinsic phase composition (\textbf{HERE}). For the 5 
+phases listed in \textbf{Figure 5c} (LIQ$\equiv$liquid, BCC$\equiv$ferrite, FCC$\equiv$austenite, 
+M7C3$\equiv$carbide, CEM$\equiv$cementite), the enthalpy $h^\phi$ and density $\rho^\phi$, are tabulated 
+as functions of temperature and phase intrinsic composition. If this latter input lies between two tabulated 
+values, a linear interpolation is performed to determine the output, i.e. phase enthalpy and density. With 
+the advancement of solidification, the liquid is enriched with solute by macrosegregation, which enables new 
+solidification paths. It means that the primary solidifying phase is not necessarily the same as when considering 
+the nominal composition. For this reason, the tabulation approach is interesting inasmuch as it provides phase 
+transformation paths and values of phase properties that are compatible with the system’s actual composition. 
+\textbf{Figure 6} summarizes the tabulated thermodynamic data for two sets of average composition for the considered 
+ternary system. Note that in the present test case, phase densities are taken constant ($\rhos=\rhol=$ \SI{6725}{\udensity}). 
+Therefore they are not tabulated. With this assumption, no shrinkage occurs upon phase change.
+\begin{table}[h]
+\centering
+\begin{tabular}{llll}
+\hline  
+\textbf{Parameter} & \textbf{Symbol} & \textbf{Value} & \textbf{Unit} \\
+\hline 
+Nominal composition & $\wC_0$ & 2 & \si{\ucomposition} \\ 
+                    & $\wCR_0$ & 30 & \si{\ucomposition} \\ 
+Characteristic temperatures & $T_\text{top},T_\text{bottom}$ & \textbf{FIGURE} & \si{\udegC} \\ 
+Phase fraction & $g^\phi$ & Tabulations & $-$ \\ 
+Phase enthalpy & $\h^\phi$ & Tabulations & $-$ \\ 
+Phase composition & $\wC^\phi$ & Tabulations & \si{\ucomposition}  \\ 
+                  & $\wCR^\phi$ & Tabulations & \si{\ucomposition}  \\ 
+Diffusion coefficients & $\avg{D_\text{C}}^l$ & • & \si{\udiffusivity}  \\ 
+                       & $\avg{D_\text{Cr}}^l$ & • & \si{\udiffusivity}  \\ 
+Dynamic viscosity & $\mul$ & \num{2e-3} & \si{\uviscosity}  \\ 
+Thermal expansion coefficient & \betaT & • & \si{\ubetaT}  \\ 
+Solutal expansion coefficient & $\betaWlC$ & • & \si{\ubetaWl}  \\  
+                              & $\betaWlCR$ & • & \si{\ubetaWl}  \\ 
+Thermal conductivity in the solid & • & • & \si{\uconductivity}  \\ 
+Thermal conductivity in the liquid & • & • & \si{\uconductivity}  \\ 
+Dendrite arm spacing & • & • & \si{\metre}  \\ 
+Density & • & • & \si{\udensity}  \\ 
+\hline 
+Initial temperature & • & • & \si{\udegC}  \\ 
+Ingot diameter & • & • & \si{\metre}  \\ 
+Ingot length & • & • & \si{\metre}  \\ 
+\hline 
+FE mesh size &  & \num{e-3} & \si{\metre}  \\ 
+Time step & $\dt$ & \num{0.1} & \si{\second}  \\ 
+Convergence criterion (residual) & $\varepsilon_R$ & \num{e-6} & $-$ \\ 
+Convergence criterion (temperature) & $\varepsilon_T$ & \num{e-2} & \si{\udegK} \\ 
+\hline 
+\end{tabular} 
+\caption{Parameters for solidification of alloy Fe – 2 wt.\% C – 30 wt.\% Cr }
+\label{table:data_case_ternary}
+\end{table}

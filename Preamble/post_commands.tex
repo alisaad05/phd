@@ -1,19 +1,27 @@
 %%------------------------ SI units -------------------------------
+\DeclareSIUnit\udensity{\kilo\gram\per\cubic\metre}
 \DeclareSIUnit\uacceleration{\metre\per\square\second}
 \DeclareSIUnit\uvelocity{\metre\per\second}
+\DeclareSIUnit\uviscosity{\pascal \second}
+\DeclareSIUnit\ubetaT{\per \kelvin}
+\DeclareSIUnit\ubetaWl{\per \ucomposition}
 \DeclareSIUnit\udiffusivity{\metre\squared\per\second}
 \DeclareSIUnit\uconductivity{\watt\per\metre\per\kelvin}
-\DeclareSIUnit\ucomposition{wt\%}
+\DeclareSIUnit\ucomposition{wt.\%}
 \DeclareSIUnit\umasscapacity{\joule\per\kilo\gram\per\kelvin}
 \DeclareSIUnit\umassenergy{\joule\per\kilo\gram}
 \DeclareSIUnit\uvolumecapacity{\joule\per\cubic\metre\per\kelvin}
 \DeclareSIUnit\uvolumeenergy{\joule\per\cubic\metre}
-
+\DeclareSIUnit\udegC{\degreeCelsius}
+\DeclareSIUnit\udegK{\kelvin}
 
 %% ------------------------ MATHs commands--------------------------
 %\renewcommand{matrix}[1]{#1 \rangle} 
-\newcommand{\avg}[1]{\ensuremath{\langle #1 \rangle}}
-\newcommand{\brac}[1]{\ensuremath{\left(  #1  \right)}} 
+\newcommand{\avg}[1]{\ensuremath{\langle  #1 \rangle}}
+\newcommand{\brac}[1]{\ensuremath{\left(  #1 \right)}} 
+\newcommand{\abval}[1]{\ensuremath{\left |  #1 \right |}} 
+\newcommand\norm[1]{\ensuremath{\lVert #1 \rVert}}
+
 \newcommand{\mtrx}[1]{{\underline{\underline{#1}}} }
 \newcommand\mat[1]{\ensuremath{\underline{#1}}} 
 
@@ -23,21 +31,60 @@
 \newcommand\vit{\ensuremath{\avg{\vec{v}^l}}}  
 \newcommand\strainrate{\ensuremath{\avg{{\dot{\mat{\varepsilon}}}^l}}}
 
+\renewcommand\d{\ensuremath{\partial}}
+\renewcommand\r{\ensuremath{\avg{ \rho }}}
+\newcommand\rl{\ensuremath{\avg{ \rho }^l}}
+\newcommand\h{\ensuremath{\avg{ h }}}
+\newcommand\rh{\ensuremath{\avg{ \rho h }}}
+\newcommand\rhv{\ensuremath{\avg{ \rho h \vec{v} }}}
+\newcommand\rcp{\ensuremath{\avg{ \rho C_p }}}
+
+\newcommand\w{\ensuremath{\avg{w}}}
+\newcommand\wi{\ensuremath{\avg{w_i}}}
+\newcommand\wil{\ensuremath{\avg{w_i}^l}}
+\newcommand\gphi{\ensuremath{g^{\phi} }}
+\newcommand\rphi{\ensuremath{\rho^{\phi} }}
+\newcommand\hphi{\ensuremath{h^{\phi} }}
+\newcommand\Tk{\ensuremath{T^{\brac{k}}}}
+\newcommand\Tkinit{\ensuremath{T^{\brac{k=0}}}}
+\newcommand\Hk{\ensuremath{\rh^{\brac{k}}}}
+\newcommand\Hkinit{\ensuremath{\rh^{\brac{k=0}}}}
+\newcommand\Rref{\ensuremath{\rho_{\text{ref}}}}
+\newcommand\Tref{\ensuremath{T_{\text{ref}}}}
+\newcommand\Wlref{\ensuremath{w_{\text{ref}}^l}}
+\newcommand\rref{\ensuremath{\rho_{\text{ref}}}}
+\newcommand\betaT{\ensuremath{\beta_T}}
+\newcommand\betaWl{\ensuremath{\beta_{\wl}}}
+\newcommand\betaWlC{\ensuremath{\beta_{\avg{w_\text{C}}^l}}}
+\newcommand\betaWlCR{\ensuremath{\beta_{\avg{w_\text{Cr}}^l}}}
+
 \newcommand\wavg{\ensuremath{\avg{w}}}
+\newcommand\wC{\ensuremath{\avg{w_\text{C}}}}
+\newcommand\wCR{\ensuremath{\avg{w_\text{Cr}}}}
+
 \newcommand\wl{\ensuremath{\avg{w}^l}}
 \newcommand\ws{\ensuremath{\avg{w}^s}}
-\newcommand\wi{\ensuremath{\avg{w_i}}}
-\newcommand\rhoh{\ensuremath{\avg{\rho h}}}
 \newcommand\rhol{\ensuremath{\rho^l}}
 \newcommand\rhos{\ensuremath{\rho^s}}
-\newcommand\kl{\ensuremath{\kappa^l}}
-\newcommand\ks{\ensuremath{\kappa^s}}
+\newcommand\kl{\ensuremath{\avg{\kappa^l}}}  % I added \avg
+\newcommand\ks{\ensuremath{\avg{\kappa^s}}}	 % I added \avg
 \newcommand\hl{\ensuremath{h^l}}
 \newcommand\hs{\ensuremath{h^s}}
-\newcommand\gl{\ensuremath{g^l}}
-\newcommand\gs{\ensuremath{g^s}}
+\newcommand\gl{\ensuremath{{g^l}}} % double braces useful for additional superscripts
+\newcommand\gs{\ensuremath{{g^s}}} % double braces useful for additional superscripts
+\newcommand\pl{\ensuremath{p^l}}
+\newcommand\ps{\ensuremath{p^s}}
+\newcommand\Dl{\ensuremath{D^l}}
+\newcommand\Ds{\ensuremath{D^s}}
+\newcommand\mul{\ensuremath{\mu^l}}
+\newcommand\mus{\ensuremath{\mu^s}}
 \newcommand\vl{\ensuremath{\vec{v}^l}}
 \newcommand\vs{\ensuremath{\vec{v}^s}}
-\newcommand\norm[1]{\ensuremath{\lVert #1 \rVert}}
+\newcommand\gravity{\ensuremath{\vec{g}}}
+
+\newcommand\dt{\ensuremath{\Delta t}}
+\newcommand\hext{\ensuremath{h_{\text{ext}}}}
+\newcommand\Text{\ensuremath{T_{\text{ext}}}}
+
 
 \newcommand*\widefbox[1]{\fbox{\hspace{2em}#1\hspace{2em}}}

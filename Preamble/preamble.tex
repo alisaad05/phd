@@ -65,7 +65,13 @@
 %\usepackage{float}
 %\usepackage{subfig} %note: subfig must be included after the `caption` package. 
 
-%\usepackage{graphicx,xcolor}
+% \usepackage{graphicx,xcolor}
+\usepackage[dvipsnames]{xcolor}
+\definecolor{webgreen}{rgb}{0,.5,0}
+\definecolor{webbrown}{rgb}{.6,0,0}
+\definecolor{Maroon}{cmyk}{0, 0.87, 0.68, 0.32}
+\definecolor{RoyalBlue}{cmyk}{1, 0.50, 0, 0}
+
 %\graphicspath{{images/}}
 \makeatletter
 \setlength{\@fptop}{0pt}  % for aligning all floating figures/tables etc... to the top margin
@@ -97,9 +103,9 @@
     breaklinks=true, pdfpagemode=UseNone, pageanchor=true, pdfpagemode=UseOutlines,%
     plainpages=false, bookmarksnumbered, bookmarksopen=true, bookmarksopenlevel=1,%
     hypertexnames=true, pdfhighlight=/O,%nesting=true,%frenchlinks,%
-    urlcolor=red, %webbrown, 
-    linkcolor=blue, %RoyalBlue, 
-    citecolor=green, %webgreen, 
+    urlcolor=webbrown, %webbrown, 
+    linkcolor=RoyalBlue, %RoyalBlue, 
+    citecolor=webgreen, %webgreen, 
     %pagecolor=RoyalBlue,%
     %urlcolor=Black, linkcolor=Black, citecolor=Black, %pagecolor=Black,%
     pdftitle={\myTitle},%
@@ -109,14 +115,6 @@
     pdfcreator={pdfLaTeX},%
     pdfproducer={LaTeX with hyperref and classicthesis}%
 }
-
-% From EPFL template
-%\hypersetup{pdfborder={0 0 0},
-%	colorlinks=true,
-%	linkcolor=black,
-%	citecolor=black,
-%	urlcolor=black}
-%\urlstyle{same}
 
 %% --- cleveref and Options
 \usepackage{cleveref}
@@ -190,3 +188,5 @@
 % \usepackage{todonotes}
 \usepackage{todonotes}
 \newcommand{\comment}[2][]{\todo[backgroundcolor=yellow!50!white, caption={#2}, inline, size=\small, #1]{\renewcommand{\baselinestretch}{0.5}\selectfont#2\par}}
+
+\usepackage{microtype}
