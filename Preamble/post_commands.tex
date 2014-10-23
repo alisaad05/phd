@@ -7,13 +7,17 @@
 \DeclareSIUnit\ubetaWl{\per \ucomposition}
 \DeclareSIUnit\udiffusivity{\metre\squared\per\second}
 \DeclareSIUnit\uconductivity{\watt\per\metre\per\kelvin}
-\DeclareSIUnit\ucomposition{wt.\%}
 \DeclareSIUnit\umasscapacity{\joule\per\kilo\gram\per\kelvin}
 \DeclareSIUnit\umassenergy{\joule\per\kilo\gram}
 \DeclareSIUnit\uvolumecapacity{\joule\per\cubic\metre\per\kelvin}
 \DeclareSIUnit\uvolumeenergy{\joule\per\cubic\metre}
 \DeclareSIUnit\udegC{\degreeCelsius}
 \DeclareSIUnit\udegK{\kelvin}
+
+\DeclareSIUnit\ucomposition{wt.\%}  % used in tables
+\newcommand\bin[3]{#1-#2wt.\% #3}	% used in text
+\newcommand\tern[5]{#1-#2wt.\% #3-#4wt.\% #5} % used in text
+
 
 %% ------------------------ MATHs commands--------------------------
 %\renewcommand{matrix}[1]{#1 \rangle} 
