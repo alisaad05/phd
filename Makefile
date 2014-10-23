@@ -16,12 +16,13 @@ clean:
 	@echo CLEANING
 	@echo --------
 	
-	rm -f *.aux *.log *.bbl *.blg *.toc *.lof *.lot *.out *.mtc*
+	rm -f *.aux *.log *.bbl *.blg *.toc *.lof *.lot *.maf *.out *.mtc* 
 	rm -f References/*.aux References/*.log
 	rm -f Chapter0/*.aux Chapter0/*.log
 	rm -f Chapter1/*.aux Chapter1/*.log
-	rm -f Chapter2/*.aux Chapter1/*.log
-	rm -f *.maf #removes the MS Access shortcut
+	rm -f Chapter2/*.aux Chapter2/*.log
+	rm -f Chapter3/*.aux Chapter3/*.log
+	rm -f Appendices/*.aux Appendices/*.log
 
 autocommit:
 	@echo --------------

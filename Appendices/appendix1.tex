@@ -1,0 +1,16 @@
+\chapter{Notes}
+
+from \url{http://aerojet.engr.ucdavis.edu/fluenthelp/html/ug/node572.htm} \\
+
+For many natural-convection flows, you can get faster convergence with the Boussinesq model than 
+you can get by setting up the problem with fluid density as a function of temperature. This model 
+treats density as a constant value in all solved equations, except for the buoyancy term in the momentum 
+equation:
+\begin{align}
+ (\rho - \rho_0) g \approx -\rho_0 \beta (T - T_0) g 	
+\end{align}
+
+where  $\rho_0$ is the (constant) density of the flow,  $T_0$ is the operating temperature, and  $\beta$ is 
+the thermal expansion coefficient. Equation  13.2-18 is obtained by using the Boussinesq approximation  
+$\rho = \rho_0 (1 - \beta \Delta T)$ to eliminate  $\rho$ from the buoyancy term. This approximation is accurate as 
+long as changes in actual density are small; specifically, the Boussinesq approximation is valid when  $\beta(T-T_0)\ll 1$.
