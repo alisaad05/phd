@@ -1,0 +1,425 @@
+\chapter{Macrosegregation with solidification shrinkage}
+\minitoc
+\newpage
+
+this chapter discusses the following points:
+\begin{itemize}
+\item Density variation during solidification (industrial point of view then how to handle numerically)
+\item Model equations
+\item Application to solidification benchmark SMACS
+\item Possible extension of application with grain structure (using Shijia's LS-air cells handling)
+\item Multiscale Freckle predicition: FE + grain structure (in which lies a part about nucleation-growth and how numerically 
+		we reach a smaller scale, the scale of the grain boundaries)
+\end{itemize}
+
+
+\section{Introduction}
+\comment{ This report summarizes the derivation of conservation equations (mass, momentum, energy and species) relative 
+to a specific solidification scenario where the surface of the solidifying alloy in contact with a surrounding 
+gas (ambient air, argon gas ...) deforms due to solidification shrinkage, that is, the effect of relative change
+in density between the liquid and the solid phases of the metal. } 
+
+The shrinkage phenomenon is manifested in 2 
+important locations, as depicted in \autoref{fig:ingot_sl_b_bis}. First, at the level of the liquid-solid interface
+in the mushy zone, the solid forms with a density smaller than the liquid's. The volume difference tends to create 
+voids with a big negative pressure, that systematically drains the liquid in its direction. Afterwards, we can 
+see the consequence far away, at the surface ingot, where the initial metal(liquid)-air deforms gradually, forming
+the so-called \emph{shrinkage pipe}. Since the mass of the alloy and its chemical species are conserved, a density
+difference between the phases ($\rhos > \rhol$), leads to a different overall volume ($V^s<V^l$), once solidification
+is complete, as shown in the following equations:
+\begin{subequations}
+\begin{align}
+& \rhol V^l = \rhos V^s  \\ 
+& V^s = \frac{\rhol}{\rhos} V^l
+\end{align}
+\end{subequations}
+% FIGURE %%
+\begin{figure}
+\centering
+\begin{subfigure}[h!]{0.3\textwidth}\centering % h! or H
+	\def\svgwidth{100pt}
+	\import{Chapter4/Graphics/}{Ingot_sl_1D_a.pdf_tex}
+	\caption{Early stage}
+	\label{fig:ingot_1d_a}
+\end{subfigure}
+%\begin{subfigure}[H!]{0.3\textwidth}\centering % h! or H
+%	\centering
+%	\def\svgwidth{100pt}
+%	\import{Chapter4/Graphics/}{Ingot_sl_b.pdf_tex}
+%	\caption{Intermediate stage}
+%	\label{fig:ingot_sl_b}
+%\end{subfigure}
+\begin{subfigure}[h!]{0.3\textwidth}\centering % h! or H
+	\centering
+	\def\svgwidth{100pt}
+	\import{Chapter4/Graphics/}{Ingot_sl_b_bis.pdf_tex}
+	\caption{Intermediate stage}
+	\label{fig:ingot_sl_b_bis}
+\end{subfigure}
+\caption{Schematic of a two cooling stages of an ingot against side and bottom mould walls (not shown). The top surface is free}
+\end{figure}
+%% FIGURE %%
+%====================================================================
+\section{Mass Conservation}
+% ======================
+\subsection{Assumptions}
+% ======================
+\begin{itemize}
+\item Two phases are considered, liquid $l$ and solid $s$: $g^l+g^s =1 \implies \frac{dg^l}{dt} =- \frac{dg^s}{dt}$ 
+\item The phase densities are constant but not equal: $ \rho^l=cst_1 $ and $ \rho^s=cst_2 $. Thermal and solutal expansion/contraction
+is neglected
+\item The solid phase is assumed static: $\vec{v^s}=\vec{0}$, which yields the following consequences:
+\begin{enumerate}
+\item $\avg{\vec{v}}= g^l \vec{v^l} + \cancelto{0}{g^s \vec{v}^s} = g^l \vec{v}^l $ 
+\item $\avg{\rho \vec{v}} = g^l \rho^l \vec{v}^l + \cancelto{0}{g^s \rho^l \vec{v}^s} = g^l \rho^l \vec{v}^l $ 
+\item $ \frac{\partial \rho^l }{\partial t} = \frac{\partial \rho^s }{\partial t} = 0 $
+\item $ \nabvec \rho^l = \nabvec \rho^s = \vec{0} $  
+\end{enumerate}
+\end{itemize}
+% ======================
+\subsection{Formulation}
+% ======================
+The mass balance equation averaged over the two phases, is developed taking into account the assumptions made earlier.
+\begin{subequations}
+\begin{align}
+& \frac{\partial \avg{\rho}}{\partial t} + \nabla \cdot \avg{\rho \vec{v}}  = 0 \\ 
+& \frac{\partial }{\partial t} \brac{ g^l \rho^l + g^s \rho^s} + \nabla \cdot \brac{ g^l \rho^l \vec{v}^l} = 0 \\ 
+& g^l \cancel{\frac{\partial \rho^l }{\partial t}} + \rho^l \frac{\partial  g^l }{\partial t} 
+	+ g^s \cancel{\frac{\partial \rho^s }{\partial t}} + \rho^s \frac{\partial  g^s }{\partial t} 
+	+ \rho^l \nabla \cdot \brac{ g^l \vec{v}^l} 
+	+ g^l \vec{v}^l \cdot  \cancel{ \nabvec \rho^l }	 = 0 \\
+& \brac{ \rho^l - \rho^s } \frac{\partial  g^l }{\partial t} + \rho^l \nabla \cdot \brac{ g^l \vec{v}^l}  = 0
+\end{align}
+\end{subequations}
+\begin{align}
+\label{eq:mass_balance}
+ \boxed{\nabla \cdot \brac{ g^l \vec{v}^l} 
+ 	= \nabla \cdot \avg{\vec{v}^l} 
+ 	= \frac{\rho^l-\rho^s}{\rho^l} \frac{\partial  g^s }{\partial t}}
+\end{align}
+% ======================
+\subsection{Discussion}
+% ======================
+With the assumptions of static solid phase and constant unequal phase densities, the average mass balance states that 
+the divergence of the liquid velocity is proportional to the solidification rate, the proportionality constant being the
+relative density change (which results in a relative volume change). This relation between the liquid velocity and the
+temporal derivative of the solid fraction, explains the flow due to shrinkage. In metallic alloys, the solid density is
+usually greater than the liquid density, therefore the first term in the RHS is negative. As for the second term, if we
+neglect remelting, then it'll be positive in the solidifying areas of the alloy. A negative divergence term in these areas, 
+means that a liquid feeding is necessary to compensate for the density difference, hence acting as a flow driving force in the melt.
+In the case of constant densities, we can easily deduce that the divergence term is null, and therefore no flow is induced
+by solidification.
+\newline
+Numerically speaking, a non-zero divergence term in the mass balance is equivalent to a compressible fluid behaviour. Additional 
+terms should appear in the other conservation equations, balancing the volume change in the momentum, heat and species transport.
+
+%====================================================================
+\section{Momentum Conservation}
+% ======================
+In a typical volume averaging approach, one would write one momentum conservation 
+equation for each phase. Nonetheless, only one equation will be present in our case, 
+and that is the consequence of the assumption of the static solid, made in the previous 
+section. It should be emphasized that, despite considering a single conservation equation, 
+the effect of the solid movement with respect to the liquid's can still be incorporated 
+through the interfacial fluxes in the momentum conservation of the liquid phase. 
+% ======================
+\subsection{Assumptions}
+% ======================
+\begin{itemize}
+%%%
+\item The interfacial momentum transfer between the solid and liquid phases is modelled 
+by a momentum flux vector $\vec{\Gamma}^{l}$, consisting of hydrostatic and deviatoric 
+parts, such that:
+\begin{subequations}
+\begin{align}
+\label{eq:eq_interfacial_momentum_init}
+		& \vec{\Gamma}^{l} =  \vec{\Gamma}_{p}^{l} + \vec{\Gamma}_{\mathbb{S}}^{l}						\\
+		& \vec{\Gamma}_{p}^{l} = p^{l^{*}} \nabvec g^{l} = p^{l} \nabvec g^{l}			  \\
+		& \vec{\Gamma}_{\mathbb{S}}^{l} = -{g^{l}}^{2} \mu^{l} \mathbb{K}^{-1} \brac{ \vl - \cancel{\vs} }  
+\end{align}
+\end{subequations}
+where $p^{l^{*}}$ is the pressure at the interface, considered to be equal to the liquid hydrostatic 
+pressure, $\mathbb{K}$ is the permeability computed by the Carman-Kozeny relation and $\mu^l$ is the 
+liquid's dynamic viscosity.  For the solid phase, the interfacial terms are the opposite, which cancels 
+them out with the liquid terms if the phase momentum equations are summed up.
+%%%
+\item The liquid is considered as a \emph{compressible} Newtonian fluid. It implies that the deviatoric part, $\mat{\mathbb{S}}^{l} $, of the Cauchy 
+stress tensor is decomposed as follows: 
+\comment{CAG: the liquid is incompressible, but the mixture is compressible, change it}
+\begin{subequations} 
+\begin{align}
+\label{eq:stress_liq}
+& \avg{ \mat{\sigma}^{l} } = - \avg{p^l} \mat{\mathbb{I}} + \avg{\mat{\mathbb{S}}^{l}}   \\
+& \avg{ \mat{\sigma}^{l} } = - \avg{p^l} \mat{\mathbb{I}} + 2\mu^{l} \strainrate + \avg{\mat{\tau}^l}
+\end{align}
+\end{subequations}
+where $ \avg{{\dot{\mat{\varepsilon}}}^l} $ is the strain rate tensor that depends on the average liquid velocity: 
+\begin{align}
+\label{eq:tensor_strainrate}
+\strainrate = \mat{\nabla} \vit  +  \mat{\nabla}^\text{\textbf{t}} \vit 
+\end{align}
+and  $\mat{\tau}^{l}$ is the extra stress tensor in the liquid, given by:
+\begin{subequations}
+\begin{align}
+\label{eq:tensor_extrastress}
+ & \avg{\mat{\tau}^l} =  -\lambda \nabla \cdot \vit  \mat{\mathbb{I}} 
+\end{align}
+\end{subequations}
+where $\lambda$ is a dilatational viscosity \textbf{CITE RAP2003}. For an incompressible flow, the divergence term vanishes, hence the classical Newtonian constitutive law is retrieved. In the literature, the coefficient $\lambda$ is taken proportional to the viscosity: $\lambda = \frac{2}{3} \mu^l $
+\end{itemize}
+% ======================
+\subsection{Formulation}
+% ======================
+The momentum conservation equation in the liquid writes:
+\begin{align}
+\label{eq:momentum_liq}
+& \temp{\rho^l g^l \vec{v}^l } + \nabvec \cdot \brac{\rho^l g^l \vl \times \vl} = 
+	\nabvec \cdot \brac{g^l \mat{\sigma}^l} + g^l \vec{F}_\text{v} + \vec{\Gamma}^{l}
+\end{align}
+where $\vec{F}_\text{v}$ is an external volume force. The effect of the mass balance obtained in the previous section 
+is incorporated by expanding the temporal and spatial derivatives in the momentum equation, taking firstly the left-hand side of equation \eqref{eq:momentum_liq}.
+\begin{subequations}
+\begin{align}
+\label{eq:momentum_liq_LHS_a}
+	 \text{LHS} &=
+	 \rho^l \temp{ \gl \vl } + \gl \vl \cancel{\frac{\partial \rhol}{\partial t}} 
+	+ \vl \nabla \cdot \brac{ \rhol \gl \vl } 
+	+ \nabmat \vl \brac{ \rho^l g^l \vl } \\
+\label{eq:momentum_liq_LHS_b}
+	&= \rho^l \underbrace{ \temp{ g^l \vl } }_{\substack{\text{Unsteady} \\ \text{Acceleration}}}
+	 + \brac{ \rhol - \rhos } \underbrace{ \frac{\partial  \gs }{\partial t} \vl}
+	    _{\substack{\text{Shrinkage}\\ \text{Acceleration}}}
+	+ \rhol  \underbrace{ \nabmat \vl \brac{ \gl \vl }}_{\substack{\text{Advective} \\ \text{Acceleration}}}     
+\end{align}
+\end{subequations}
+The development in \eqref{eq:momentum_liq_LHS_b} shows that the origin of the flow, namely its acceleration, is 
+attributed to three causes: 
+ i) unsteady acceleration: a temporal change of a particle's velocity, ii) shrinkage-induced acceleration: a local "suction" effect at the solid-liquid interface (where $\frac{\partial  g^s }{\partial t} >0$) caused by the density jump $\brac{ \rhol - \rhos }$
+and iii) convective acceleration: a spatial change in the velocity field.
+The effect of the \emph{shrinkage-induced} flow is introduced using the mass balance in equation \eqref{eq:mass_balance}. The right-hand side of equation \eqref{eq:momentum_liq} is now expanded:
+\begin{subequations}
+\begin{align}
+\label{eq:momentum_liq_RHS}
+	\text{RHS} 
+	&=
+	 \nabvec \cdot \brac{\avg{p^l} \mat{\mathbb{I}} + 2\mu^{l} \strainrate + \avg{\mat{\tau}^l}} 
+	 + \gl \rhol \vec{g} 
+	 + \vec{\Gamma}_{p}^{l} + \vec{\Gamma}_{\mathbb{S}}^{l}	 \\
+	&=  -\nabvec \brac{g^l p^l} 
+		+ \nabvec \cdot \brac{ 2 \mu^l \strainrate }
+		+ \nabvec \cdot \brac{-\frac{2}{3} \mu^l \nabla \cdot \avg{\vl} \mat{\mathbb{I}}}
+		+ \gl \rhol \vec{g} 
+	 	+ \vec{\Gamma}_{p}^{l} + \vec{\Gamma}_{\mathbb{S}}^{l}	 \\
+	&=  \cancel{- p^l \nabvec \gl} - \gl \nabvec p^l
+		+ \nabvec \cdot \brac{ 2 \mu^l \strainrate }
+		+ \nabvec \cdot \brac{-\frac{2}{3} \mu^l \nabla \cdot \avg{\vec{v}^l} \mat{\mathbb{I}}}
+		+ g^l \rho^l \vec{g} 
+	 	+ \cancel{\vec{\Gamma}_{p}^{l}} + \vec{\Gamma}_{\mathbb{S}}^{l}	 \\
+	&=   - g^l \nabvec p^l
+		+ \nabvec \cdot \brac{ \mu^l \brac{\mat{\nabla} \avg{\vec{v}^l} + ^\text{\textbf{t}} \mat{\nabla} \avg{\vec{v}^l} }}
+		+ \nabvec \brac{-\frac{2}{3} \mu^l \frac{\rho^l-\rho^s}{\rho^l} \frac{\partial  g^s }{\partial t} }
+		+ g^l \rho^l \vec{g} 
+	 	- {g^l}^{2} \mu^l \mathbb{K}^{-1} \vec{v}^{l}
+\end{align}
+\end{subequations}
+The system thus consists of 3 equations (one for each of the components of $\vec{v}^l$) and 4 unknowns ($\vec{v}^l_x$, $\vec{v}^l_y$, $\vec{v}^l_z$ and $p$). An additional equation is provided by the mass continuity equation \eqref{eq:mass_balance}. For convenience, the superficial velocity $\vit$ will be chosen as a velocity unknown instead of the intrinsic average: $\vit = g^l \vec{v}^l$. The final system to 
+solve, after grouping the unknowns in the LHS and the remaining terms in the RHS, is given by:
+\comment{ I changed \emph{split} to \emph{align} here }
+%\begin{empheq}[box=\widefbox, left=\empheqlbrace]{align}
+\label{eq:momentum_liq_final}
+%\label{eq:momentum_liq_final_vitesse}
+\begin{align} % split
+& \rho^l \frac{\partial \vit}{\partial t}
+	 + \frac{ \rhol - \rhos }{g^l}\frac{\partial  \gs }{\partial t} \vit
+	 + \rhol  \nabmat \vl \vit
+	 + \nabvec \cdot \brac{2 \mu^l \strainrate}
+	 + g^l \mu^l  \mathbb{K}^{-1} \vit  \\
+	 &\qquad  = g^l \nabvec p^l
+	 + \nabvec \brac{-\frac{2}{3} \mu^l \nabla \cdot \avg{\vec{v}^l}  }
+	 +  g^l \rho^l \vec{g}  \\
+%\label{eq:momentum_liq_final_pression}
+&\nabla \cdot \vit= \frac{\rho^l-\rho^s}{\rho^l} \frac{\partial  g^s }{\partial t}
+\end{align} % split
+%\end{empheq}
+%\end{subequations}
+
+%====================================================================
+\section{Energy Conservation}
+We have seen the averaged energy conservation equation in the case of two phases: a solid phase and an incompressible liquid phase. However, with the incorporation of the shrinkage effect, new terms should appear
+in the advective-diffusive heat transfer equation. 
+
+\subsection{Assumptions}
+\begin{itemize}
+\item The thermal conductivity is constant for both phases: $\avg{\kappa} = \ks = \kl= \kappa $ 
+%\item consideration of a fixed solid ($ \vec{v}^s=\vec{0} $).
+\item Consequence of the static solid phase: $\avg{\rho h \vec{v}} = \gl \rhol \hl \vl +  \cancel{\gs \rhos \hs \vs} = \gl \rhol \hl \vl$ 
+\item The system's enthalpy may thermodynamically evolve with pressure, knowing that $h=e+\frac{p}{\rho}$, where $e$ is the internal energy and $p$ is the pressure. It infers that the heat transport
+equation may contain a contribution attributed to volume compression/expansion:
+\begin{align}
+			 \frac{\partial p}{\partial t}+\nabla \cdot \brac{p \vec{v}}
+			 = \frac{\partial p}{\partial t}+ p \nabla \cdot \vec{v} + \vec{v} \cdot \nabvec p 
+\end{align}
+In the literature, this contribution has been always neglected, even when accounting for solidification
+shrinkage, owing to the small variations of pressure.
+\item Another contribution is also neglected in solidification problems, that is the heat generated by
+mechanical deformation, $\mathbb{S}:\dot{\varepsilon}$ 
+%\begin{enumerate}
+%\item $\avg{\rho h}= \gl \rhol \hl + \gs \rhos \hs $
+%\end{enumerate}
+\end{itemize}
+
+\subsection{Formulation}
+The unknowns in the energy conservation are the average volumetric enthalpy $\avg{\rho h}$ and temperature $T$.The energy conservation equation writes:
+\begin{subequations}
+\begin{align}
+	& \frac{\partial \avg{\rho h}}{\partial t} + \nabla \cdot \avg{\rho h \vec{v}} 
+	= \nabla  \cdot \brac{\avg{\kappa} \nabvec T } \\
+	& \frac{\partial \avg{\rho h}}{\partial t} + \nabla \cdot \brac{\gl \rhol \hl \vl}
+	= \nabla  \cdot \brac{\kappa \nabvec T } \\ 
+	& \frac{\partial \avg{\rho h}}{\partial t} 
+		+ \rhol \hl  \nabla \cdot \vit
+		+ \vit \cdot \nabvec \brac{\rhol \hl}
+		= \nabla  \cdot \brac{\kappa \nabvec T } \\   
+	& \frac{\partial \avg{\rho h}}{\partial t} 
+		+ \cancel{\rhol} \hl  \frac{\rhol-\rhos}{\cancel{\rhol}} \frac{\partial  \gs }{\partial t}
+		+ \vit \cdot \nabvec \brac{\rhol \hl}
+		= \nabla  \cdot \brac{\kappa \nabvec T } \\ 
+	& \frac{\partial \avg{\rho h}}{\partial t} 
+		+ \brac{\rhol-\rhos} \hl \frac{\partial  \gs }{\partial t}
+		+ \vit \cdot \nabvec \brac{\rhol \hl}
+		= \nabla  \cdot \brac{\kappa \nabvec T }        
+\end{align}
+\end{subequations}
+\begin{align}
+\label{eq:energy_balance}
+ \boxed{ \frac{\partial \avg{\rho h}}{\partial t} 
+		+ \rhol \vit \cdot \nabvec \hl
+		= \nabla  \cdot \brac{\kappa \nabvec T }
+		+ \brac{\rhos-\rhol} \hl \frac{\partial  \gs}{\partial t}}
+\end{align}
+
+% ======================
+\subsection{Discussion}
+% ======================
+In order to keep things simple, the term "enthalpy" will refer henceforth to "volume enthalpy",
+otherwise, we will explicitly use the term "mass enthalpy". It is important to understand the 
+meaning of the terms in equation \eqref{eq:energy_balance}.
+The first term in the left-hand side is the temporal change in the system's average enthalpy,
+i.e. a temporal change in the volume enthalpy of any of the phases in the course of solidification.
+The second LHS term is a dot product between the superficial liquid velocity and the the gradient
+of the liquid's enthalpy. Since phase densities are constant in our case, the gradient term reduces
+to the liquid's mass enthalpy. If we consider a representative volume element (RVE) in the liquid
+phase, far from the mushy zone, we can stipulate:
+\begin{align}
+\label{eq:gradient_liquid_enthalpy}
+& \nabvec \hl = C_p^l \nabvec T
+\end{align}
+assuming that the phase mass specific heat, $ C_p^l $, is constant. Therefore, the liquid enthalpy
+is advected in the case where the velocity vector is not orthogonal to the temperatre gradient.
+The advection reaches its maximum when the two vectors have the same direction. Consider, for instance,
+a filled ingot with a cooling flux applied to its bottom surface. If the density variation with temperature
+were to be neglected, then the sole mechanical driving force in the melt is the density jump at the solid-liquid
+interface ahead of the mushy zone. The temperature gradient in such a case is vertical upward, while the velocity
+vector is in the opposite direction. The advective term writes:
+\begin{align}
+%\label{eq:}
+& \rhol \vit \cdot \nabvec \hl = - \rhol C_p^l \norm{\vit} \norm{\nabvec T}
+\end{align}
+% FIGURE %%
+\begin{figure}
+\centering
+\begin{subfigure}[h!]{0.3\textwidth}\centering % h! or H
+	\def\svgwidth{100pt}
+	\import{Chapter4/Graphics/}{Ingot_sl_1D_a.pdf_tex}
+	\caption{Initial state}
+	\label{fig:ingot_1d_a}
+\end{subfigure}
+\begin{subfigure}[h!]{0.3\textwidth}\centering % h! or H
+	\centering
+	\def\svgwidth{100pt}
+	\import{Chapter4/Graphics/}{Ingot_sl_1D_c.pdf_tex}
+	\caption{Solidification onset}
+	\label{fig:ingot_1d_c}
+\end{subfigure}
+\begin{subfigure}[h!]{0.3\textwidth}\centering % h! or H
+	\centering
+	\def\svgwidth{100pt}
+	\import{Chapter4/Graphics/}{Ingot_sl_1D_d.pdf_tex}
+	\caption{Final state}
+	\label{fig:ingot_1d_d}
+\end{subfigure}
+\caption{Effect of shrinkage flow on a solidifying ingot}
+\end{figure}
+%% FIGURE %%
+We see that the second RHS term in equation \eqref{eq:energy_balance} acts as 
+a heat source at the interface between the the phases, in this particular solidification
+scenario. Another heat power (of unit $Wm^{-3}$) adds to the system within the mushy, 
+that is the second term in the right-hand side of the same equation. This term is 
+proportional to the solidification rate. Finally, the first RHS term accounts for thermal 
+diffusion within the phases.
+\newline
+It should be emphasized that the assumption of a constant specific heat in the liquid in 
+equation \eqref{eq:gradient_liquid_enthalpy} applies when no macrosegregation occurs. 
+Nonetheless, when the latter is considered, the phases specific and latent heats become 
+highly dependent on the local average composition. It then advisable to use the thermodynamic 
+tabulation approach, where the enthalpies are directly tabulated as functions of temperature 
+and composition. 
+% ======================
+\section{Species Conservation}
+% ======================
+The last conservation principle is applied to the chemical species or solutes. This principle allows predicting
+macrosegregation when applied to a solidification system, along with the mass, momentum and energy balances.
+However, the conservation equation should be reformulated in the case of a melt flow driven by shrinkage.
+% ======================
+\subsection{Assumptions}
+% ======================
+\begin{itemize}
+\item The alloy is binary, i.e., it is composed from one solute, and hence the notation of the average composition
+		without a solute index: $\wavg$ for the mass composition and $\avg{\rho w}$ for the volume composition
+\item The solid fration is determined assuming complete mixing in both phases, hence the lever rule is applicable. It
+		should be mentionned that the solidification path in the current approach is tabulated using thermodynamic data at 
+		equilibrium
+\item The solutal diffusion coefficient $D^s$ in the solid phase is neglected in the mass diffusive flux term. The
+		remaining term, $D^l$, is a mass diffusion coefficient in the liquid phase, of unit $m^2 s^{-1}$
+\item Consequence of the static solid phase: $\avg{\rho w \vec{v}} = \gl \rhol \wl \vl +  \cancel{\gs \rhos \ws \vs} = \gl \rhol \wl \vl$ 
+\end{itemize}
+% ======================
+\subsection{Formulation}
+% ======================
+The species conservation is pretty similar the energy conservation formluted in the previous section. For a binary alloy, we can write:
+\begin{subequations}
+\begin{align}
+	& \frac{\partial \avg{\rho w}}{\partial t} + \nabla \cdot \avg{\rho w \vec{v}} 
+	= \nabla  \cdot \brac{\rhol \avg{D^l} \nabvec \wl } \\
+	& \frac{\partial \avg{\rho w}}{\partial t} + \nabla \cdot \brac{\gl \rhol \wl \vl}
+	= \nabla  \cdot \brac{\gl\rhol D^l \nabla \wl } \\ 
+	& \frac{\partial \avg{\rho w}}{\partial t} 
+		+ \rhol \wl  \nabla \cdot \vit
+		+ \vit \cdot \nabvec \brac{\rhol \wl}
+		= \nabla  \cdot \brac{\gl \rhol D^l \nabvec \wl } \\   
+	& \frac{\partial \avg{\rho w}}{\partial t} 
+		+ \cancel{\rhol} \wl  \frac{\rhol-\rhos}{\cancel{\rhol}} \frac{\partial  \gs }{\partial t}
+		+ \vit \cdot \nabvec \brac{\rhol \wl}
+		= \nabla  \cdot \brac{\gl \rhol D^l \nabvec \wl } \\ 
+	& \frac{\partial \avg{\rho w}}{\partial t} 
+		+ \brac{\rhol-\rhos} \wl \frac{\partial  \gs }{\partial t}
+		+ \vit \cdot \nabvec \brac{\rhol \wl}
+		= \nabla  \cdot \brac{\gl \rhol D^l \nabvec \wl }        
+\end{align}
+\end{subequations}
+\begin{align}
+\label{eq:solute_balance}
+ \boxed{ \frac{\partial \avg{\rho w}}{\partial t} 
+		+ \rhol \vit \cdot \nabvec \wl
+		= \nabla  \cdot \brac{\rhol D^l \nabvec \wl }
+		+ \brac{\rhos-\rhol} \wl \frac{\partial  \gs}{\partial t}}
+\end{align}
+% ======================
+\subsection{Discussion}
+% ======================
+The species transport equation is usually derived with the volumetric average composition $\avg{\rho w}$, then
+divided by the density, which is constant if no solidification shrinkage occurs. In the case where macrosegregation
+is solely due to fluid flow generated by natural or forced convection, the overall
+volume remains constant. It is thus convenient to compute composition variations using the mass variable $\wavg$.
+However, in the current context, the volume is subject to changes, hence the formulation of equation 
+\eqref{eq:solute_balance} with $\avg{\rho w}$.

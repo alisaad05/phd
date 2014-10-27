@@ -22,6 +22,9 @@ clean:
 	rm -f Chapter1/*.aux Chapter1/*.log
 	rm -f Chapter2/*.aux Chapter2/*.log
 	rm -f Chapter3/*.aux Chapter3/*.log
+	rm -f Chapter4/*.aux Chapter4/*.log
+	rm -f Chapter5/*.aux Chapter5/*.log
+	rm -f Chapter6/*.aux Chapter6/*.log
 	rm -f Appendices/*.aux Appendices/*.log
 
 autocommit:

@@ -63,7 +63,9 @@
 %\usepackage{rotating}
 %\usepackage{wrapfig}
 %\usepackage{float}
-%\usepackage{subfig} %note: subfig must be included after the `caption` package. 
+%\usepackage{subfig} %note: subfig must be included after the `caption` package.
+\usepackage{subcaption}
+ 
 
 % \usepackage{graphicx,xcolor}
 \usepackage[dvipsnames]{xcolor}
@@ -173,11 +175,16 @@
 \renewcommand{\appendixname}{Appendicitis}
 
 %%------------------------ MISC PACKAGES -------------------------------
+% Format URLs
 \usepackage{url}
+
+% Input dummy text
 \usepackage{lipsum}
+
 %\usepackage[final]{pdfpages} %\includepdf[options]{filename}
 %\usepackage{algpseudocode} 
 
+% Display line number
 \usepackage{lineno}
 \ifthenelse{\boolean{enable_line_numbers}}%
 {%
@@ -185,8 +192,16 @@
 	\pagewiselinenumbers % requires compiling AT LEAST twice
 }{\relax}    
 
+% Comments
 % \usepackage{todonotes}
 \usepackage{todonotes}
 \newcommand{\comment}[2][]{\todo[backgroundcolor=yellow!50!white, caption={#2}, inline, size=\small, #1]{\renewcommand{\baselinestretch}{0.5}\selectfont#2\par}}
 
+% Enchance syllable breaking avoiding bad boxes
 \usepackage{microtype}
+
+% Cancel sign in math equations
+\usepackage{cancel}
+
+% Enables putting the pdf_tex graphics in a subfolder
+\usepackage{import}

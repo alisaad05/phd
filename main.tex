@@ -11,12 +11,9 @@
 \begin{document}
 
 \frontmatter
-\input{Frontmatter/title}
-
-%\include{Dedication/dedication}
-%\include{Declaration/declaration}
-%\include{Acknowledgement/acknowledgement}
-%\include{Abstract/abstract}
+\include{Frontmatter/title}
+%\include{Frontmatter/acknowledgement}
+%\include{Frontmatter/abstract}
 
 % *********************** Adding TOC and List of Figures ***********************
 \dominitoc
@@ -26,13 +23,19 @@
 % \printnomenclature[space] space can be set as 2.5cm between symbol and
 % description
 %\printnomencl
+\listoftodos
 
 %%------------------------ MAIN MATTER  -------------------------------
 \mainmatter
-\include{Chapter0/chapter0}
+\include{Chapter0/chapter0} % Introduction
+
 \include{Chapter1/chapter1}
-\include{Chapter2/chapter2} % TODO: replace wt pct by the macro \bin or \tern
-%\include{Chapter7/chapter7}
+\include{Chapter2/chapter2}
+\include{Chapter3/chapter3}
+\include{Chapter4/chapter4}
+\include{Chapter5/chapter5}
+
+\include{Chapter6/chapter6} % Conclusion
 
 % ********************************** Appendices ********************************
 %\appendixpage
@@ -41,12 +44,10 @@
 %\include{Appendices/appendix2}
 \end{appendices}
 
-
 %%------------------------ BACK MATTER  -------------------------------
 % Backmatter should be commented out, if you are using appendices after References
 \backmatter 
 \include{References/bibliography}
-
 
 % *************************************** Index ********************************
 %\printthesisindex % If index is present
