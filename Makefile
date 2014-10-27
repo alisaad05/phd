@@ -1,4 +1,4 @@
-all: pdf clean
+all: pdf 
 
 pdf:
 	@echo ---------
