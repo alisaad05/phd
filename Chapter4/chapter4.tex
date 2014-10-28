@@ -11,66 +11,28 @@ this chapter discusses the following points:
 \item Multiscale Freckle predicition: FE + grain structure (in which lies a part about nucleation-growth and how numerically 
 		we reach a smaller scale, the scale of the grain boundaries)
 \end{itemize}
-
 % ======================
 \section{Introduction}
 % ======================
-
 Solidification shrinkage is, by definition, the effect of relative density change between the liquid and solid phases.
-In general, it results in a progressive volume change during solidification, until the phase change has finished. \autoref{fig:real_ingot_stages}. The four stages \autoref{fig:real_ingot_stage_a}, \autoref{real_ingot_stage_b}, \autoref{real_ingot_stage_c} and \autoref{real_ingot_stage_d} 
-depict the volume change with respect to solidification time.
+In general, it results in a progressive volume change during solidification, until the phase change has finished. 
+The four stages in \Cref{fig:real_ingot_stage_a,fig:real_ingot_stage_c,fig:real_ingot_stage_b,fig:real_ingot_stage_d} depict the volume change with 
+respect to solidification time.
 First, at the level of the first solid crust, near the local solidus temperature, the solid forms with a density smaller than 
 the liquid's. This does not necessarily apply for all materials, but at least for steels it does. The subsequent volume difference 
 tends to create voids with a big negative pressure, that needs to be compensated by a surrounding fluid. It thus drains 
 the liquid metal in its direction (cf. \autoref{fig:real_ingot_stage_b}). As a direct result of the inward feeding flow, the ingot surface
 tends to gradually deform in the feeding direction, forming the so-called \emph{shrinkage pipe}. Since the mass of the alloy and its 
-chemical species are conserved, a density difference between the phases ($\rhos > \rhol$), leads to a different overall 
-volume ($V^s<V^l$), once solidification is complete, as confirm the following equations:
+chemical species is conserved, a density difference between the phases ($\rhol < \rhos \implies \frac{\rhol}{\rhos}<1$) eventually leads 
+to a different overall volume ($V^s<V^l$) once solidification is complete, as confirm the following equations:
 \begin{subequations}
 \begin{align}
 & \rhol V^l = \rhos V^s  \\ 
 & V^s = \frac{\rhol}{\rhos} V^l
 \end{align}
 \end{subequations}
-%
-% \begin{figure}
-% \centering
-%
-% \begin{subfigure}[h!]{0.3\textwidth}\centering % h! or H
-	% \def\svgwidth{100pt}
-	% \import{Chapter4/Graphics/}{Ingot_sl_1D_a.pdf_tex}
-	% \caption{Early stage}
-	% \label{fig:ingot_1d_a}
-% \end{subfigure}
-%
-% \begin{subfigure}[h!]{0.3\textwidth}\centering % h! or H
-	% \centering
-	% \def\svgwidth{100pt}
-	% \import{Chapter4/Graphics/}{Ingot_sl_1D_a.pdf_tex}
-	% \caption{Intermediate stage}
-	% \label{fig:ingot_sl_b}
-% \end{subfigure}
-%
-% \begin{subfigure}[h!]{0.3\textwidth}\centering % h! or H
-	% \centering
-	% \def\svgwidth{100pt}
-	% \import{Chapter4/Graphics/}{Ingot_sl_b_bis.pdf_tex}
-	% \caption{Intermediate stage}
-	% \label{fig:ingot_sl_b_bis}
-% \end{subfigure}
-%
-% \begin{subfigure}[h!]{0.3\textwidth}\centering % h! or H
-	% \centering
-	% \def\svgwidth{100pt}
-	% \import{Chapter4/Graphics/}{Ingot_sl_b_bis.pdf_tex}
-	% \caption{Intermediate stage}
-	% \label{fig:ingot_sl_b_bis}
-% \end{subfigure}
-% 
-% \caption{Schematic of three cooling stages of an ingot against side and bottom mould walls (not shown). The top surface is free}
-% \end{figure}
-
-\begin{figure}
+%=============
+\begin{figure}[h!] %h!
 \centering
 %\begin{minipage}{.5\textwidth}
   \begin{subfigure}{0.3\textwidth}
@@ -90,8 +52,8 @@ volume ($V^s<V^l$), once solidification is complete, as confirm the following eq
   \end{subfigure}
 %
 \vskip\baselineskip
-%=======================================================
-%\begin{minipage}{.5\textwidth}
+%======
+%
   \begin{subfigure}{0.3\textwidth}
     \centering
     \def\svgwidth{100pt}
@@ -117,37 +79,36 @@ volume ($V^s<V^l$), once solidification is complete, as confirm the following eq
 \subsection{Assumptions}
 % ======================
 \begin{itemize}
-\item Two phases are considered, liquid $l$ and solid $s$: $g^l+g^s =1 \implies \frac{dg^l}{dt} =- \frac{dg^s}{dt}$ 
-\item The phase densities are constant but not equal: $ \rho^l=cst_1 $ and $ \rho^s=cst_2 $. Thermal and solutal expansion/contraction
+\item Two phases are considered, liquid $l$ and solid $s: \gl+\gs =1 $ % \implies \frac{dg^l}{dt} =- \frac{dg^s}{dt}$ 
+\item The phase densities are constant but not equal: $ \rhol=cst_1 $ and $ \rhos=cst_2 $. Thermal and solutal expansion/contraction
 is neglected
 \item The solid phase is assumed static: $\vec{v^s}=\vec{0}$, which yields the following consequences:
 \begin{enumerate}
-\item $\avg{\vec{v}}= g^l \vec{v^l} + \cancelto{0}{g^s \vec{v}^s} = g^l \vec{v}^l $ 
-\item $\avg{\rho \vec{v}} = g^l \rho^l \vec{v}^l + \cancelto{0}{g^s \rho^l \vec{v}^s} = g^l \rho^l \vec{v}^l $ 
-\item $ \frac{\partial \rho^l }{\partial t} = \frac{\partial \rho^s }{\partial t} = 0 $
-\item $ \nabvec \rho^l = \nabvec \rho^s = \vec{0} $  
+\item $ \avg{\vec{v}}= \gl \vec{v^l} + \cancelto{0}{\gs \vec{v}^s} = \gl \vec{v}^l $
+\item $ \avg{\rho \vec{v}} = \gl \rhol \vec{v}^l + \cancelto{0}{\gs \rhol \vec{v}^s} = \gl \rhol \vec{v}^l $
+\item $\nabvec \rhol = \nabvec \rhos = \vec{0}$
 \end{enumerate}
 \end{itemize}
 % ======================
 \subsection{Formulation}
 % ======================
-The mass balance equation averaged over the two phases, is developed taking into account the assumptions made earlier.
+The mass balance equation averaged over the two phases, is expanded taking into account the aforementioned assumptions.
 \begin{subequations}
 \begin{align}
 & \frac{\partial \avg{\rho}}{\partial t} + \nabla \cdot \avg{\rho \vec{v}}  = 0 \\ 
-& \frac{\partial }{\partial t} \brac{ g^l \rho^l + g^s \rho^s} + \nabla \cdot \brac{ g^l \rho^l \vec{v}^l} = 0 \\ 
-& g^l \cancel{\frac{\partial \rho^l }{\partial t}} + \rho^l \frac{\partial  g^l }{\partial t} 
-	+ g^s \cancel{\frac{\partial \rho^s }{\partial t}} + \rho^s \frac{\partial  g^s }{\partial t} 
-	+ \rho^l \nabla \cdot \brac{ g^l \vec{v}^l} 
-	+ g^l \vec{v}^l \cdot  \cancel{ \nabvec \rho^l }	 = 0 \\
-& \brac{ \rho^l - \rho^s } \frac{\partial  g^l }{\partial t} + \rho^l \nabla \cdot \brac{ g^l \vec{v}^l}  = 0
+& \frac{\partial }{\partial t} \brac{ \gl \rhol + \gs \rhos} + \nabla \cdot \brac{ \gl \rhol \vec{v}^l} = 0 \\ 
+& \gl \cancel{\frac{\partial \rhol }{\partial t}} + \rhol \frac{\partial  \gl }{\partial t} 
+	+ \gs \cancel{\frac{\partial \rhos }{\partial t}} + \rhos \frac{\partial  \gs }{\partial t} 
+	+ \rhol \nabla \cdot \brac{ \gl \vec{v}^l} 
+	+ \gl \vec{v}^l \cdot  \cancel{ \nabvec \rhol }	 = 0 \\
+& \brac{ \rhol - \rhos } \frac{\partial  \gl }{\partial t} + \rhol \nabla \cdot \brac{ \gl \vec{v}^l}  = 0
 \end{align}
 \end{subequations}
 \begin{align}
 \label{eq:mass_balance}
- \boxed{\nabla \cdot \brac{ g^l \vec{v}^l} 
+ \boxed{\nabla \cdot \brac{ \gl \vec{v}^l} 
  	= \nabla \cdot \avg{\vec{v}^l} 
- 	= \frac{\rho^l-\rho^s}{\rho^l} \frac{\partial  g^s }{\partial t}}
+ 	= \frac{\rho^l-\rho^s}{\rho^l} \frac{\partial  \gs }{\partial t}}
 \end{align}
 % ======================
 \subsection{Discussion}
@@ -225,8 +186,8 @@ where $\lambda$ is a dilatational viscosity \textbf{CITE RAP2003}. For an incomp
 The momentum conservation equation in the liquid writes:
 \begin{align}
 \label{eq:momentum_liq}
-& \temp{\rho^l g^l \vec{v}^l } + \nabvec \cdot \brac{\rho^l g^l \vl \times \vl} = 
-	\nabvec \cdot \brac{g^l \mat{\sigma}^l} + g^l \vec{F}_\text{v} + \vec{\Gamma}^{l}
+& \temp{\rho^l \gl \vec{v}^l } + \nabvec \cdot \brac{\rho^l \gl \vl \times \vl} = 
+	\nabvec \cdot \brac{\gl \mat{\sigma}^l} + \gl \vec{F}_\text{v} + \vec{\Gamma}^{l}
 \end{align}
 where $\vec{F}_\text{v}$ is an external volume force. The effect of the mass balance obtained in the previous section 
 is incorporated by expanding the temporal and spatial derivatives in the momentum equation, taking firstly the left-hand side of equation \eqref{eq:momentum_liq}.
@@ -234,11 +195,11 @@ is incorporated by expanding the temporal and spatial derivatives in the momentu
 \begin{align}
 \label{eq:momentum_liq_LHS_a}
 	 \text{LHS} &=
-	 \rho^l \temp{ \gl \vl } + \gl \vl \cancel{\frac{\partial \rhol}{\partial t}} 
+	 \rhol \temp{ \gl \vl } + \gl \vl \cancel{\frac{\partial \rhol}{\partial t}} 
 	+ \vl \nabla \cdot \brac{ \rhol \gl \vl } 
-	+ \nabmat \vl \brac{ \rho^l g^l \vl } \\
+	+ \nabmat \vl \brac{ \rhol \gl \vl } \\
 \label{eq:momentum_liq_LHS_b}
-	&= \rho^l \underbrace{ \temp{ g^l \vl } }_{\substack{\text{Unsteady} \\ \text{Acceleration}}}
+	&= \rhol \underbrace{ \temp{ \gl \vl } }_{\substack{\text{Unsteady} \\ \text{Acceleration}}}
 	 + \brac{ \rhol - \rhos } \underbrace{ \frac{\partial  \gs }{\partial t} \vl}
 	    _{\substack{\text{Shrinkage}\\ \text{Acceleration}}}
 	+ \rhol  \underbrace{ \nabmat \vl \brac{ \gl \vl }}_{\substack{\text{Advective} \\ \text{Acceleration}}}     
@@ -246,7 +207,7 @@ is incorporated by expanding the temporal and spatial derivatives in the momentu
 \end{subequations}
 The development in \eqref{eq:momentum_liq_LHS_b} shows that the origin of the flow, namely its acceleration, is 
 attributed to three causes: 
- i) unsteady acceleration: a temporal change of a particle's velocity, ii) shrinkage-induced acceleration: a local "suction" effect at the solid-liquid interface (where $\frac{\partial  g^s }{\partial t} >0$) caused by the density jump $\brac{ \rhol - \rhos }$
+ i) unsteady acceleration: a temporal change of a particle's velocity, ii) shrinkage-induced acceleration: a local "suction" effect at the solid-liquid interface (where $\frac{\partial  \gs }{\partial t} >0$) caused by the density jump $\brac{ \rhol - \rhos }$
 and iii) convective acceleration: a spatial change in the velocity field.
 The effect of the \emph{shrinkage-induced} flow is introduced using the mass balance in equation \eqref{eq:mass_balance}. The right-hand side of equation \eqref{eq:momentum_liq} is now expanded:
 \begin{subequations}
@@ -257,7 +218,7 @@ The effect of the \emph{shrinkage-induced} flow is introduced using the mass bal
 	 \nabvec \cdot \brac{\avg{p^l} \mat{\mathbb{I}} + 2\mu^{l} \strainrate + \avg{\mat{\tau}^l}} 
 	 + \gl \rhol \vec{g} 
 	 + \vec{\Gamma}_{p}^{l} + \vec{\Gamma}_{\mathbb{S}}^{l}	 \\
-	&=  -\nabvec \brac{g^l p^l} 
+	&=  -\nabvec \brac{\gl p^l} 
 		+ \nabvec \cdot \brac{ 2 \mu^l \strainrate }
 		+ \nabvec \cdot \brac{-\frac{2}{3} \mu^l \nabla \cdot \avg{\vl} \mat{\mathbb{I}}}
 		+ \gl \rhol \vec{g} 
@@ -265,32 +226,32 @@ The effect of the \emph{shrinkage-induced} flow is introduced using the mass bal
 	&=  \cancel{- p^l \nabvec \gl} - \gl \nabvec p^l
 		+ \nabvec \cdot \brac{ 2 \mu^l \strainrate }
 		+ \nabvec \cdot \brac{-\frac{2}{3} \mu^l \nabla \cdot \avg{\vec{v}^l} \mat{\mathbb{I}}}
-		+ g^l \rho^l \vec{g} 
+		+ \gl \rhol \vec{g} 
 	 	+ \cancel{\vec{\Gamma}_{p}^{l}} + \vec{\Gamma}_{\mathbb{S}}^{l}	 \\
-	&=   - g^l \nabvec p^l
+	&=   - \gl \nabvec p^l
 		+ \nabvec \cdot \brac{ \mu^l \brac{\mat{\nabla} \avg{\vec{v}^l} + ^\text{\textbf{t}} \mat{\nabla} \avg{\vec{v}^l} }}
-		+ \nabvec \brac{-\frac{2}{3} \mu^l \frac{\rho^l-\rho^s}{\rho^l} \frac{\partial  g^s }{\partial t} }
-		+ g^l \rho^l \vec{g} 
-	 	- {g^l}^{2} \mu^l \mathbb{K}^{-1} \vec{v}^{l}
+		+ \nabvec \brac{-\frac{2}{3} \mu^l \frac{\rho^l-\rho^s}{\rho^l} \frac{\partial  \gs }{\partial t} }
+		+ \gl \rhol \vec{g} 
+	 	- {\gl}^{2} \mu^l \mathbb{K}^{-1} \vec{v}^{l}
 \end{align}
 \end{subequations}
-The system thus consists of 3 equations (one for each of the components of $\vec{v}^l$) and 4 unknowns ($\vec{v}^l_x$, $\vec{v}^l_y$, $\vec{v}^l_z$ and $p$). An additional equation is provided by the mass continuity equation \eqref{eq:mass_balance}. For convenience, the superficial velocity $\vit$ will be chosen as a velocity unknown instead of the intrinsic average: $\vit = g^l \vec{v}^l$. The final system to 
+The system thus consists of 3 equations (one for each of the components of $\vec{v}^l$) and 4 unknowns ($\vec{v}^l_x$, $\vec{v}^l_y$, $\vec{v}^l_z$ and $p$). An additional equation is provided by the mass continuity equation \eqref{eq:mass_balance}. For convenience, the superficial velocity $\vit$ will be chosen as a velocity unknown instead of the intrinsic average: $\vit = \gl \vec{v}^l$. The final system to 
 solve, after grouping the unknowns in the LHS and the remaining terms in the RHS, is given by:
 \comment{ I changed \emph{split} to \emph{align} here }
 %\begin{empheq}[box=\widefbox, left=\empheqlbrace]{align}
 \label{eq:momentum_liq_final}
 %\label{eq:momentum_liq_final_vitesse}
 \begin{align} % split
-& \rho^l \frac{\partial \vit}{\partial t}
-	 + \frac{ \rhol - \rhos }{g^l}\frac{\partial  \gs }{\partial t} \vit
+& \rhol \frac{\partial \vit}{\partial t}
+	 + \frac{ \rhol - \rhos }{\gl}\frac{\partial  \gs }{\partial t} \vit
 	 + \rhol  \nabmat \vl \vit
 	 + \nabvec \cdot \brac{2 \mu^l \strainrate}
-	 + g^l \mu^l  \mathbb{K}^{-1} \vit  \\
-	 &\qquad  = g^l \nabvec p^l
+	 + \gl \mu^l  \mathbb{K}^{-1} \vit  \\
+	 &\qquad  = \gl \nabvec p^l
 	 + \nabvec \brac{-\frac{2}{3} \mu^l \nabla \cdot \avg{\vec{v}^l}  }
-	 +  g^l \rho^l \vec{g}  \\
+	 +  \gl \rhol \vec{g}  \\
 %\label{eq:momentum_liq_final_pression}
-&\nabla \cdot \vit= \frac{\rho^l-\rho^s}{\rho^l} \frac{\partial  g^s }{\partial t}
+&\nabla \cdot \vit= \frac{\rho^l-\rho^s}{\rho^l} \frac{\partial  \gs }{\partial t}
 \end{align} % split
 %\end{empheq}
 %\end{subequations}
