@@ -15,18 +15,17 @@ this chapter discusses the following points:
 % ======================
 \section{Introduction}
 % ======================
-\comment{ This report summarizes the derivation of conservation equations (mass, momentum, energy and species) relative 
-to a specific solidification scenario where the surface of the solidifying alloy in contact with a surrounding 
-gas (ambient air, argon gas ...) deforms due to solidification shrinkage, that is, the effect of relative change
-in density between the liquid and the solid phases of the metal. } 
 
-The shrinkage phenomenon is manifested in 2 important locations, as depicted in \autoref{fig:real_ingot_stages}. 
-First, at the level of the liquid-solid interface in the mushy zone, the solid forms with a density smaller than 
-the liquid's. The volume difference tends to create voids with a big negative pressure, that systematically drains 
-the liquid in its direction. Afterwards, we can see the consequence far away, at the surface ingot, where the initial 
-metal(liquid)-air deforms gradually, formingthe so-called \emph{shrinkage pipe}. Since the mass of the alloy and its 
-chemical species are conserved, a densitydifference between the phases ($\rhos > \rhol$), leads to a different overall 
-volume ($V^s<V^l$), once solidification is complete, as shown in the following equations:
+Solidification shrinkage is, by definition, the effect of relative density change between the liquid and solid phases.
+In general, it results in a progressive volume change during solidification, until the phase change has finished. \autoref{fig:real_ingot_stages}. The four stages \autoref{fig:real_ingot_stage_a}, \autoref{real_ingot_stage_b}, \autoref{real_ingot_stage_c} and \autoref{real_ingot_stage_d} 
+depict the volume change with respect to solidification time.
+First, at the level of the first solid crust, near the local solidus temperature, the solid forms with a density smaller than 
+the liquid's. This does not necessarily apply for all materials, but at least for steels it does. The subsequent volume difference 
+tends to create voids with a big negative pressure, that needs to be compensated by a surrounding fluid. It thus drains 
+the liquid metal in its direction (cf. \autoref{fig:real_ingot_stage_b}). As a direct result of the inward feeding flow, the ingot surface
+tends to gradually deform in the feeding direction, forming the so-called \emph{shrinkage pipe}. Since the mass of the alloy and its 
+chemical species are conserved, a density difference between the phases ($\rhos > \rhol$), leads to a different overall 
+volume ($V^s<V^l$), once solidification is complete, as confirm the following equations:
 \begin{subequations}
 \begin{align}
 & \rhol V^l = \rhos V^s  \\ 
@@ -79,7 +78,7 @@ volume ($V^s<V^l$), once solidification is complete, as shown in the following e
     \def\svgwidth{100pt}
 	\import{Chapter4/Graphics/new/}{ingot_air_liq.pdf_tex}
 	\caption{Initial state}
-    \label{fig:real_ingot_stage1}
+    \label{fig:real_ingot_stage_a}
   \end{subfigure}
   %\hfill
   \begin{subfigure}{0.3\textwidth}
@@ -87,7 +86,7 @@ volume ($V^s<V^l$), once solidification is complete, as shown in the following e
     \def\svgwidth{100pt}
 	\import{Chapter4/Graphics/new/}{ingot_air_liq_mush_sol.pdf_tex} 
 	\caption{Early intermediate state}
-    \label{fig:real_ingot_stage2}
+    \label{fig:real_ingot_stage_b}
   \end{subfigure}
 %
 \vskip\baselineskip
@@ -98,7 +97,7 @@ volume ($V^s<V^l$), once solidification is complete, as shown in the following e
     \def\svgwidth{100pt}
 	\import{Chapter4/Graphics/new/}{ingot_air_mush_sol.pdf_tex}
 	\caption{Late intermediate state}
-    \label{fig:real_ingot_stage3}
+    \label{fig:real_ingot_stage_c}
   \end{subfigure}
   %\hfill
   \begin{subfigure}{0.3\textwidth}
@@ -106,7 +105,7 @@ volume ($V^s<V^l$), once solidification is complete, as shown in the following e
     \def\svgwidth{100pt}
 	\import{Chapter4/Graphics/new/}{ingot_air_sol.pdf_tex}
 	\caption{Final state}
-    \label{fig:real_ingot_stage4}
+    \label{fig:real_ingot_stage_d}
   \end{subfigure}
   %
 \caption{Schematic of the main cooling stages of an ingot against side and bottom mould walls (not shown)}
