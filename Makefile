@@ -8,7 +8,6 @@ pdf:
 	pdflatex -interaction=nonstopmode main.tex
 	bibtex main
 	pdflatex -interaction=nonstopmode main.tex
-	# pdflatex -interaction=nonstopmode main.tex
 	pdflatex -synctex=1 -interaction=nonstopmode main.tex
 
 clean:
@@ -16,7 +15,7 @@ clean:
 	@echo CLEANING
 	@echo --------
 	
-	rm -f *.aux *.log *.bbl *.blg *.toc *.lof *.lot *.maf *.out *.mtc* 
+	rm -f *.aux *.log *.bbl *.blg *.toc *.lof *.lot *.maf *.out *.mtc* *.tdo
 	rm -f References/*.aux References/*.log
 	rm -f Chapter0/*.aux Chapter0/*.log
 	rm -f Chapter1/*.aux Chapter1/*.log
