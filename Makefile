@@ -16,7 +16,6 @@ clean:
 	@echo --------
 	
 	rm -f *.aux *.log *.bbl *.blg *.toc *.lof *.lot *.maf *.out *.mtc* *.tdo
-	rm -f References/*.aux References/*.log
 	rm -f Chapter0/*.aux Chapter0/*.log
 	rm -f Chapter1/*.aux Chapter1/*.log
 	rm -f Chapter2/*.aux Chapter2/*.log
@@ -25,6 +24,9 @@ clean:
 	rm -f Chapter5/*.aux Chapter5/*.log
 	rm -f Chapter6/*.aux Chapter6/*.log
 	rm -f Appendices/*.aux Appendices/*.log
+	rm -f Preamble/*.aux Preamble/*.log
+	rm -f Frontmatter/*.aux Frontmatter/*.log
+	rm -f References/*.aux References/*.log
 
 autocommit:
 	@echo --------------

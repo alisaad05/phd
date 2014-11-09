@@ -13,8 +13,26 @@ and indirect (micro Nancy models / macro: current FE model)
 \item Presence of AIR requires a new problem definition : Lagrangian or Eulerian framework
 \end{itemize}
 
+\section{Introduction}
+Divide into 2 families of models: with and without level set. Regarding the second family of models,
+the level set method has been applied on several occasions, but in a different way. Some references
+apply it to track the solid-liquid interface, a situation more commonly known as the "Stefan problem".
+The scope such applications mainly encompasses dendritic modelling and simulation \\
+\blue{SOURCES:} \\
+\url{http://www.sciencedirect.com/science/article/pii/S0021999105002603} \\
+\url{http://physbam.stanford.edu/~fedkiw/papers/stanford2002-04.pdf} \\
+Other references, in relevance to our scope, apply this method to track the surface of the metal
+while going from the liquid state to the solid state, in contact with the surrounding gas which is usually air. \\
 
-\section{Standard FE model}
+\section{Mutliscale modelling}
+\url{http://www.uiowa.edu/mihpclab/presentations/staffPresentations/2007_10_16_A
+%20Multi-scale%20Model%20for%20Simulations%20of%20Crystallization.pdf
+} \\
+
+\url{http://www.sciencedirect.com/science/article/pii/S0921509303007688}
+
+
+\section{Standard models: without level set}
 A section presenting the main FE equations along with their weak formulations that will be solved 
 in the metal being a single domain. I call it "standard" because it doesnt contain anything about 
 levelsets, compressibility, ...
@@ -24,6 +42,27 @@ levelsets, compressibility, ...
 \item Fluid mechanics (vms: darcy model with boussinesq)
 \end{itemize}
 \comment{talking about Eulerian approach Air Metal will be presented in the next chapters, it should be the biblio section of another chapter}
+
+\section{Solidification models with level set}
+Should I mention the use of level set in mould filling, which comes before solidification \\
+Talk about the models used for welding processes. 
+\begin{itemize}
+\item shijia chen
+\item olivier desmaison
+\item mickael from lorient 
+\end{itemize}
+Aside from the welding applications, check these articles
+\url{http://www.tandfonline.com/doi/abs/10.1080/10407790050051137#.VF_gLvnF_kU} \\
+\url{http://www.math.pku.edu.cn/pzhang/publication/2001_SDCTULSM.pdf}
+
+
+\subsection{The level set method (LSM)}
+How it is defined, Heaviside, mixing laws, transport and reinitialization
+
+\section{Objectives and strategy}
+What are trying to achieve in this thesis and how. \\
+Give an overview of each chapter's content.
+
 
 \section{Biblio test}
 \cite{carozzani_direct_2013} are going to appear in the paper 
