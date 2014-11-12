@@ -1,47 +1,62 @@
 \chapter*{General Introduction}
 \addstarredchapter{Introduction}
 
-%\minitoc
-%\newpage
+% TODO: fix header text
+
 
 Metallurgical processes have known a great evolution during the last 60 years. The advancement is attributed to 
 research disciplines, like physical metallurgy, which investigated a great deal of solidification-related phenomena.
-Presently, research in metallurgy focuses on a deeper understanding of the connection between the different scales involved.
+Today, research in metallurgy focuses on a deeper understanding of the connection between the different physical scales.
+Solidification is not only a phase change, but also a complex transformation involving small scales like nucleation, medium scales
+like grains growth and large scales like convection in the melt. 
+From the nucleation theory to the mechanical behavior of metals, intricate phenomena combine to form defects in the final product. This has been seen in casting processes, such as continuous casting and ingot
+casting. Surface and volume porosity, hot tearing and composition heterogeneity are known defects to the casting community.
+As far as the current project is concerned, the last defect, also widely known as macrosegregation, is the subject of this thesis.
 
-From the nucleation theory to the mechanical behavior of metals, an chain of intricate phenomena occur in a such a way
-to create defects in the final product. This has been seen in casting processes like continuous casting and ingot
-casting. Suface and volume porosity, hot tearing and composition heterogeneities are known defects to the casting community.
-As far as the current project is concerned, the last defect, widely known as macrosegregation, is the subject of our interest.
-
-\section{Casting processes}
+\section*{Casting process}
+\begin{figure}
+	\centering
+    %\def\svgwidth{350pt}
+	%\import{Chapter0/Graphics/}{cc_process.pdf_tex}
+	\includegraphics[width=\textwidth]{Chapter0/Graphics/cc_process}
+\caption{Main steps in a continuous casting plant}
+%source: http://bremen.arcelormittal.com/produktionsablauf_animiert.html?&L=1
+\label{fig:cc_process}
+\end{figure}
 
 \section*{Defects}
 \comment{Worth checking notes from the Ecole Thématique CNRS oléron (Check Mail Draft)}
-Talk about the cost of recycling defect steel products, giving a good example
+Undesired effects are inevitable in any industrial process. More importantly, a lot of defects in the casting industry can be disastrous in some situations where the cast product is not serviceable and hence rejected. This leads to a systematic product recycling, i.e. the product is ditched to be reheated, remelted and then cast again. From an economic point view, the operation is expensive timewise and profitwise. Understanding and preventing defects when possible, is thus crucial in the casting industry.
+We focus hereafter on the main encountered defects.
+
 \subsection*{Hot tearing}
+This defect, also denoted solidification cracking or hot cracking, occurs in the mushy zone at high solid fractions when a failure
+or crack appears. The temperature range in which the steel is vulnerable to hot tearing is known as the brittleness temperature range (BTR). It corresponds to solid fractions greater than \num{90}\%, therefore the liquid phase forms a discontinuous film (\red{FIGURE A}). Many factors can cause the failure, but the main origin is a lack of liquid feeding required to compensate for the solidification shrinkage, in the presence of thermal stresses. Therefore, a crack initiates then propagates in the casting (\red{FIGURE B}). 
 
 \subsection*{Porosity}
 \url{http://www.afsinc.org/about/content.cfm?ItemNumber=6933} \\
 \url{http://en.wikipedia.org/wiki/Casting_defect} \\
-Porosity is simply defined as a void formed within the casting or at the outter surface.
+Porosity is defined as a void formed within the casting or at the outer surface.
 In general, it results from the presence of gas phase in the melt. In some cases, fast
 solidification conditions may result in a depressurization 
 \comment{Here goes the porosity figure}
 
 \subsection*{Freckles and segregated channels} 
-The intersection between the effects of microsegregation and gravity field is the origin of freckles. They may appear 
-randomly (\blue{giame 1970 ? or earlier} ) in casting processes, but are very specific to directional chill casting. A mass of solute 
+The intersection between the effects of microsegregation and gravity forces is the origin of freckles. They may appear 
+randomly (\blue{giamei 1970 ? or earlier} ) in casting processes, but are very specific to directional chill casting. A mass of solute 
 segregates on a medium scale between microsegregation and macrosegregation, hence forming a heterogeneous composition, 
 on the ingot's surface, as well as in the volume (\blue{thèse kohler exemple}).
+
 \subsection*{Macrosegregation}
-In principle macrosegreation stems from the very same causes of freckles and segregated channels. However, this defect is characterized by a composition heterogeneity on much larger scale (\red{give scale}). 
+In principle, macrosegreation stems from the very same causes of freckles and segregated channels. However, this defect is characterized by a composition heterogeneity on much larger scale (\red{give scale}). 
 \comment{put the Nancy ingot photo and comment it. Also put a photo either from
 Beckermann review 2000 or the big review article by rappaz, rohit, beckermann ...}
-
+\comment{DO NOT GIVE ALL THE INFORMATION HERE, REFER TO CHAPTER 1 (details about macrosegregation modelling: miha zalonik Oleron presentation)}
 
 
 \section*{Industrial Worries}
 \textbf{Production}
+
 \begin{itemize}
 \item Talk about total steel production, variations over the last few decades
 \item Quality constraints for many applications that require steel like construction, nuclear engines ? 
@@ -52,9 +67,44 @@ Beckermann review 2000 or the big review article by rappaz, rohit, beckermann ..
 \item Need for software handling multicomponent alloys
 \item Need for software handling finite diffusion in the solid
 \item Need for realistic alloy properties (not only constants)
-\item Need for handling moulds along with volume change (creating thermal resistances)
+\item Need for handling molds along with volume change (creating thermal resistances)
 \end{itemize}
 \comment{Worth discussing Isabelle Poitraut and  David Cardinaux -  and Claudine Allentin (respo comm Arcelor Dunkerque, search for mail)}
+
+\begin{figure}[!h]
+\centering
+\begin{tikzpicture}
+ \pgfkeys{%
+    /pgf/number format/set thousands separator = {}}
+\begin{axis}
+[
+	table/col sep=comma,
+	smooth, %ybar
+	stack plots=y,
+	area style,
+	enlarge x limits=false,
+	legend pos=north west,
+	scaled ticks=true,
+	xlabel=Year,
+	ylabel=Production (tons),
+	xticklabel style={/pgf/number format/fixed},
+	xtick={1980,1990,2000,2010},
+	%x tick label style={rotate=45,anchor=east},
+	%width=0.5\textwidth
+]
+\addplot table [x=Year, y expr=\thisrow{EU}*1000] {Chapter0/Data/steel_production.csv} \closedcycle ;
+%\addlegendentry{EU (27)}
+\addplot table [x=Year, y expr=\thisrow{China}*1000] {Chapter0/Data/steel_production.csv}\closedcycle;
+%\addlegendentry{China}
+\addplot table [x=Year, y expr=\thisrow{World}*1000] {Chapter0/Data/steel_production.csv}\closedcycle;
+%\addlegendentry{World}
+\legend{EU (27), China, World}
+\end{axis}
+%\addplot table [x expr=\coordindex, y=EU] {Chapter0/Data/steel_production.csv};
+\end{tikzpicture}
+\caption{Evolution curves of crude steel worldwide production from 1980 to 2013}
+\label{fig:steel_production}
+\end{figure}
 
 
 \section*{CCEMLCC contribution}
@@ -63,6 +113,7 @@ Beckermann review 2000 or the big review article by rappaz, rohit, beckermann ..
 \item in what ways does this project tries to alleviate the aforementionned problems ?
 \item academic and industrial partners and how does each of them contribute actually
 \item mention \emph{Thercast} as the final developped code destination ?
+\item \cimlib our in-house code
 \end{itemize}
 
 %\section*{Trying \emph{SIUNITX}}

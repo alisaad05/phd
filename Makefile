@@ -15,7 +15,8 @@ clean:
 	@echo CLEANING
 	@echo --------
 	
-	rm -f *.aux *.log *.bbl *.blg *.toc *.lof *.lot *.maf *.out *.mtc* *.tdo
+	rm -f *.aux *.log *.bbl *.blg *.toc *.lof *.lot 
+	rm -f *.maf *.out *.mtc* *.tdo *.dpth *.md5 *.auxlock
 	rm -f Chapter0/*.aux Chapter0/*.log
 	rm -f Chapter1/*.aux Chapter1/*.log
 	rm -f Chapter2/*.aux Chapter2/*.log
@@ -34,4 +35,4 @@ autocommit:
 	@echo --------------
 	
 	git add .
-	git commit -m "Auto Commit"
+	git commit -m "Auto Commit"	

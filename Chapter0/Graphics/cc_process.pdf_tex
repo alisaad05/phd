@@ -1,0 +1,82 @@
+%% Creator: Inkscape 0.48.1, www.inkscape.org
+%% PDF/EPS/PS + LaTeX output extension by Johan Engelen, 2010
+%% Accompanies image file 'cc_process.pdf' (pdf, eps, ps)
+%%
+%% To include the image in your LaTeX document, write
+%%   \input{<filename>.pdf_tex}
+%%  instead of
+%%   \includegraphics{<filename>.pdf}
+%% To scale the image, write
+%%   \def\svgwidth{<desired width>}
+%%   \input{<filename>.pdf_tex}
+%%  instead of
+%%   \includegraphics[width=<desired width>]{<filename>.pdf}
+%%
+%% Images with a different path to the parent latex file can
+%% be accessed with the `import' package (which may need to be
+%% installed) using
+%%   \usepackage{import}
+%% in the preamble, and then including the image with
+%%   \import{<path to file>}{<filename>.pdf_tex}
+%% Alternatively, one can specify
+%%   \graphicspath{{<path to file>/}}
+%% 
+%% For more information, please see info/svg-inkscape on CTAN:
+%%   http://tug.ctan.org/tex-archive/info/svg-inkscape
+
+\begingroup
+  \makeatletter
+  \providecommand\color[2][]{%
+    \errmessage{(Inkscape) Color is used for the text in Inkscape, but the package 'color.sty' is not loaded}
+    \renewcommand\color[2][]{}%
+  }
+  \providecommand\transparent[1]{%
+    \errmessage{(Inkscape) Transparency is used (non-zero) for the text in Inkscape, but the package 'transparent.sty' is not loaded}
+    \renewcommand\transparent[1]{}%
+  }
+  \providecommand\rotatebox[2]{#2}
+  \ifx\svgwidth\undefined
+    \setlength{\unitlength}{2025.81523438pt}
+  \else
+    \setlength{\unitlength}{\svgwidth}
+  \fi
+  \global\let\svgwidth\undefined
+  \makeatother
+  \begin{picture}(1,0.58025155)%
+    \put(0,0){\includegraphics[width=\unitlength]{cc_process.pdf}}%
+    \put(0.23370343,0.55054914){\color[rgb]{0,0,0}\makebox(0,0)[lb]{\smash{quenching tower}}}%
+    \put(0.23317938,0.4971986){\color[rgb]{0,0,0}\makebox(0,0)[lb]{\smash{coke}}}%
+    \put(0.20764902,0.44653677){\color[rgb]{0,0,0}\makebox(0,0)[lb]{\smash{quenching car}}}%
+    \put(0.13464812,0.52352679){\color[rgb]{0,0,0}\makebox(0,0)[lb]{\smash{coke oven battery}}}%
+    \put(0.0576581,0.53669089){\color[rgb]{0,0,0}\makebox(0,0)[lb]{\smash{coking}}}%
+    \put(0.00300716,0.49919316){\color[rgb]{0,0,0}\makebox(0,0)[lb]{\smash{carbon tower}}}%
+    \put(0.00500172,0.41382598){\color[rgb]{0,0,0}\makebox(0,0)[lb]{\smash{raw coal}}}%
+    \put(0.37280832,0.51058949){\color[rgb]{0,0,0}\makebox(0,0)[lb]{\smash{Sinter
+Coke
+Lump or
+Additives}}}%
+    \put(0.37318905,0.37246756){\color[rgb]{0,0,0}\makebox(0,0)[lb]{\smash{Plastic Injection
+Powder Coal Injection}}}%
+    \put(0.54440116,0.50233748){\color[rgb]{0,0,0}\makebox(0,0)[lb]{\smash{Cowper stove}}}%
+    \put(0.55266292,0.38361234){\color[rgb]{0,0,0}\makebox(0,0)[lb]{\smash{Pig iron}}}%
+    \put(0.5978749,0.33484341){\color[rgb]{0,0,0}\makebox(0,0)[lb]{\smash{Torpedo car}}}%
+    \put(0.73625038,0.48100357){\color[rgb]{0,0,0}\makebox(0,0)[lb]{\smash{Relading pit}}}%
+    \put(0.89456521,0.475629){\color[rgb]{0,0,0}\makebox(0,0)[lb]{\smash{CaC$_2$+Mg}}}%
+    \put(0.21302183,0.21284418){\color[rgb]{0,0,0}\makebox(0,0)[lb]{\smash{Oxygen}}}%
+    \put(0.28015528,0.16094269){\color[rgb]{0,0,0}\makebox(0,0)[lb]{\smash{Flue Gas}}}%
+    \put(0.01951949,0.18266235){\color[rgb]{0,0,0}\makebox(0,0)[lb]{\smash{Pig iron}}}%
+    \put(0.15068361,0.07349994){\color[rgb]{0,0,0}\makebox(0,0)[lb]{\smash{Scrap}}}%
+    \put(0.56561354,0.06193496){\color[rgb]{0,0,0}\makebox(0,0)[lb]{\smash{Casting bow}}}%
+    \put(0.67505805,0.18915004){\color[rgb]{0,0,0}\makebox(0,0)[lb]{\smash{Ingot mould}}}%
+    \put(0.73582939,0.1364023){\color[rgb]{0,0,0}\makebox(0,0)[b]{\smash{Thermal cutting 
+machine}}}%
+    \put(0.69282872,0.06419152){\color[rgb]{0,0,0}\makebox(0,0)[lb]{\smash{Delivery table}}}%
+    \put(0.82737775,0.15417292){\color[rgb]{0,0,0}\makebox(0,0)[lb]{\smash{Crane}}}%
+    \put(0.89789604,0.15783987){\color[rgb]{0,0,0}\makebox(0,0)[lb]{\smash{Hot slitting line}}}%
+    \put(0.08462202,0.30006551){\color[rgb]{0,0,0}\makebox(0,0)[lb]{\smash{(1): Coking }}}%
+    \put(0.22374062,0.00332429){\color[rgb]{0,0,0}\makebox(0,0)[lb]{\smash{(4): Converter}}}%
+    \put(0.49757746,0.30006551){\color[rgb]{0,0,0}\makebox(0,0)[lb]{\smash{(2): Blast Furnace}}}%
+    \put(0.77852257,0.30006551){\color[rgb]{0,0,0}\makebox(0,0)[lb]{\smash{(3): Desulphurization}}}%
+    \put(0.76723964,0.00332429){\color[rgb]{0,0,0}\makebox(0,0)[lb]{\smash{(5) Continuous caster}}}%
+  \end{picture}%
+\endgroup
