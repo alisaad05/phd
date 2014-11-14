@@ -36,6 +36,8 @@ and indirect (micro Nancy models / macro: current FE model) + Overview of these 
 A section presenting the main FE equations along with their weak formulations that will be solved 
 in the metal being a single domain. I call it "standard" because it doesnt contain anything about 
 levelsets, compressibility, ...
+
+Pure MACRO (without LS)
 \begin{itemize}
 \item Energy (chapter 1)
 \item Species mass (voller prakash) \comment{should I mention the tabulation approach that I couldnt finalize because of the equality between w and wl in liquid phase ?}
@@ -43,11 +45,17 @@ levelsets, compressibility, ...
 \end{itemize}
 \comment{talking about Eulerian approach Air Metal will be presented in the next chapters, it should be the biblio section of another chapter}
 
+MESO MACRO (without LS): 
+\begin{itemize}
+\item Tommy Carozzani
+\item Miha Zaloznik
+\end{itemize}
+
 \section{Solidification models with level set}
 Should I mention the use of level set in mould filling, which comes before solidification \\
 Talk about the models used for welding processes. 
+MACRO models:
 \begin{itemize}
-\item shijia chen
 \item olivier desmaison
 \item mickael from lorient 
 \end{itemize}
@@ -55,13 +63,28 @@ Aside from the welding applications, check these articles
 \url{http://www.tandfonline.com/doi/abs/10.1080/10407790050051137#.VF_gLvnF_kU} \\
 \url{http://www.math.pku.edu.cn/pzhang/publication/2001_SDCTULSM.pdf}
 
+MESO MACRO: Shijia Chen (CAFE+LS)
 
+\subsection{Eulerian, Langrangian or ALE}
+Define the first two configurations, advantages and limitations (thèse Greg Puaux)
+Then talk about ALE combining both advantages and the applications of this method.
 \subsection{The level set method (LSM)}
 How it is defined, Heaviside, mixing laws, transport and reinitialization
+\subsection{Interface Remeshing}
+Importance when using a static level set and more importantly when LS is transported,
+influence of mixing area \emph{thickness} and \emph{resolution} (i.e. nb of nodes with the area),
+Isotropic or anisotropic ? the first is more important to composition calculation while the second
+is more relevant if we mean do thermohydraulics without macrosegregation
 
 \section{Objectives and strategy}
 What are trying to achieve in this thesis and how. \\
 Give an overview of each chapter's content.
+
+\subsection*{Novelty of the work}
+\begin{itemize}
+\item solidification model with level set air-metal +darcy in the metal
+\item Tracking of the interface induced by shrinkage
+\end{itemize}
 
 \section{Biblio test}
 \cite{carozzani_direct_2013} are going to appear in the paper 
