@@ -3,6 +3,32 @@
 %\usepackage{utopia} % on older systems -> use this package instead of fourier in combination with mathdesign for better looking results
 %\usepackage[adobe-utopia]{mathdesign}
 
+%%------------------------ ENVIRONMENTS  -------------------------------
+%% Dorian Depriester: Figures centrées, et en position 'here, top, bottom or page'
+\newenvironment{figureth}{
+		\begin{figure}[htbp]
+			\centering
+	}{
+		\end{figure}
+		}
+%**********
+%% Tableaux centrés, et en position 'here, top, bottom or page'
+\newenvironment{tableth}{
+		\begin{table}[htbp]
+			\centering
+			%\rowcolors{1}{coleurtableau}{coleurtableau}
+	}{
+		\end{table}
+		}
+%**********	
+\newenvironment{subfigureth}[1]{
+	\begin{subfigure}[t]{#1}
+	\centering
+}{
+	\end{subfigure}
+}
+
+
 %%------------------------ ACRONYMS -------------------------------
 %\usepackage[printonlyused,smaller]{acronym}
 %\renewcommand{\bflabel}[1]{{#1}\hfill} % fix the list of acronyms
@@ -30,8 +56,8 @@
 %%------------------------ Captions  -------------------------------
 
 % Captions: This makes captions of figures use a boldfaced small font. 
-%\RequirePackage[small,bf]{caption}
-%\RequirePackage[labelsep=space,tableposition=top]{caption} 
+\RequirePackage[small,bf]{caption}
+\RequirePackage[labelsep=space,tableposition=top]{caption} 
 %\renewcommand{\figurename}{Fig.} %to support older versions of captions.sty
 
 %%-----------------------  Footnote Header formatting -------------------------------
@@ -187,7 +213,7 @@
 % Input dummy text
 \usepackage{lipsum}
 
-%\usepackage[final]{pdfpages} %\includepdf[options]{filename}
+\usepackage{pdfpages} %\includepdf[options]{filename}
 %\usepackage{algpseudocode} 
 
 % Display line number

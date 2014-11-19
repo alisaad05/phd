@@ -7,11 +7,12 @@
 \input{Preamble/pre_commands}
 \input{Preamble/preamble}
 \input{Preamble/post_commands}
+\input{Frontmatter/title}
 %%------------------------ BEGIN  -------------------------------
 \begin{document}
 
 \frontmatter
-\include{Frontmatter/title}
+\frontpage %personal command
 %\include{Frontmatter/acknowledgement}
 %\include{Frontmatter/abstract}
 
@@ -30,11 +31,11 @@
 \mainmatter
 \include{Chapter0/chapter0} % Introduction
 
-\include{Chapter1/chapter1}
-\include{Chapter2/chapter2}
-\include{Chapter3/chapter3}
-\include{Chapter4/chapter4}
-\include{Chapter5/chapter5}
+\include{Chapter1/chapter1} % Modeling Review
+\include{Chapter2/chapter2} % Energy solvers
+\include{Chapter3/chapter3} % Coupling with Fluid Mechanics I: Monodomain
+\include{Chapter4/chapter4} % Coupling with Fluid Mechanics II: Level Set Approach
+\include{Chapter5/chapter5} % Application to TEXUS
 
 \include{Chapter6/chapter6} % Conclusion
 

@@ -1,7 +1,165 @@
-\author{\myName}
-\title{\myTitle}
-\date{\myDate}
+%\author{\myName}
+%\title{\myTitle}
+%\date{\myDate}
 
-\begin{titlepage}
-\textbf{\maketitle}
-\end{titlepage}
+%\begin{titlepage}
+%\textbf{\maketitle}
+%\end{titlepage}
+
+\newcommand{\frontpage}{\includepdf{Frontmatter/frontpage.pdf}}
+
+%Credit goes to Dorian Depriester
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%           Page de garde              %
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+\makeatletter
+\def\@ecole{école}
+\newcommand{\ecole}[1]{
+  \def\@ecole{#1}
+}
+
+\def\@specialite{Spécialité}
+\newcommand{\specialite}[1]{
+  \def\@specialite{#1}
+}
+
+\def\@directeur{directeur}
+\newcommand{\directeur}[1]{
+  \def\@directeur{#1}
+}
+
+\def\@encadrant{encadrant}
+\newcommand{\encadrant}[1]{
+  \def\@encadrant{#1}
+}
+\def\@jurya{}{}{}
+\newcommand{\jurya}[3]{
+  \def\@jurya{#1,	& #2	& #3\\}
+}
+\def\@juryb{}{}{}
+\newcommand{\juryb}[3]{
+  \def\@juryb{#1,	& #2	& #3\\}
+}
+\def\@juryc{}{}{}
+\newcommand{\juryc}[3]{
+  \def\@juryc{#1,	& #2	& #3\\}
+}
+\def\@juryd{}{}{}
+\newcommand{\juryd}[3]{
+  \def\@juryd{#1,	& #2	& #3\\}
+}
+\def\@jurye{}{}{}
+\newcommand{\jurye}[3]{
+  \def\@jurye{#1,	& #2	& #3\\}
+}
+\def\@juryf{}{}{}
+\newcommand{\juryf}[3]{
+  \def\@juryf{#1,	& #2	& #3\\}
+}
+\def\@juryg{}{}{}
+\newcommand{\juryg}[3]{
+  \def\@juryg{#1,	& #2	& #3\\}
+}
+\def\@juryh{}{}{}
+\newcommand{\juryh}[3]{
+  \def\@juryh{#1,	& #2	& #3\\}
+}
+\def\@juryi{}{}{}
+\newcommand{\juryi}[3]{
+  \def\@juryi{#1,	& #2	& #3\\}
+}
+\makeatother
+
+\newcommand\BackgroundPic{%
+	\put(0,0){%
+		\parbox[b][\paperheight]{\paperwidth}{%
+			\includegraphics[height=0.45\paperheight]{Frontmatter/img/bordure.png}%
+			\vfill
+		}
+	}
+}
+\newcommand\EtiquetteThese{%
+	\put(0,0){%
+		\parbox[t][\paperheight]{\paperwidth}{%
+			\hfill
+			\colorbox{blue}{		
+				\begin{minipage}[b]{3em}
+					\centering\Huge\textcolor{white}{T\\H\\E\\S\\E\\}
+					\vspace{0.2cm}
+				\end{minipage}
+			}
+		}
+	}
+}
+
+\makeatletter
+\newcommand{\pagedegarde}{
+\newgeometry{top=2.5cm, bottom=2cm, left=2cm, right=1cm}
+\AddToShipoutPicture*{\BackgroundPic}
+\AddToShipoutPicture*{\EtiquetteThese}
+  \begin{titlepage}
+  \centering
+      \includegraphics[width=0.4\textwidth]{Frontmatter/img/ParisTech-Institute.pdf}
+      \hfill
+      \includegraphics[width=0.2\textwidth]{Frontmatter/img/Mines.pdf}\\
+    \vspace{1cm}
+      {\Large \'{E}cole doctorale \no 364 : Sciences Fondamentales et Appliquées}\\
+    \vspace{1cm}
+      {\huge 
+      	{\bfseries Doctorat ParisTech}\\
+    \vspace{0.5cm}
+      	TH\`{E}SE}\\
+    \vspace{1cm}
+   		{\bfseries pour obtenir le grade de docteur délivré par}\\
+    \vspace{1cm}
+    	{\huge\bfseries \@ecole}\\
+    \vspace{0.5cm}
+    	{\Large{\bfseries Spécialité doctorale ``\@specialite''}}\\
+    \vspace{2cm}
+    	\textit{présentée et soutenue publiquement par}\\
+    \vspace{0.5cm}
+    	{\Large {\bfseries \@author}} \\
+    \vspace{0.5cm}
+    	le \@date \\
+    \vfill
+       {\LARGE \color[rgb]{0,0,1} \bfseries{\@title}} \\
+    \vfill
+        Directeur de thèse : {\bfseries \@directeur}\\
+        Co-encadrant de thèse : {\bfseries \@encadrant}\\
+    \vfill
+	\begin{tabular}{>{\bfseries}llr}
+		\large Jury\\
+		\@jurya
+		\@juryb
+		\@juryc
+		\@juryd
+		\@jurye
+		\@juryf
+		\@juryg
+		\@juryh
+		\@juryi
+	\end{tabular}
+	\vfill
+	
+	\textbf{MINES ParisTech\\
+	Centre de Mise Forme des Mat\'{e}riaux (CEMEF)}\\
+	UMR CNRS 7635, F-06904 Sophia Antipolis, France
+  \end{titlepage}
+  
+\restoregeometry    
+}
+\makeatother
+
+
+% Infos de la page de garde
+\author{Dorian \scshape{Depriester}}
+\title{Caractérisation et modélisation du procédé de fluotournage inverse à froid du TA6V}
+\specialite{Science et Génie des Matériaux}
+\directeur{Elisabeth \scshape{Massoni}}
+\encadrant{Michel \scshape{Bellet}}
+\date{18 décembre 2014}
+\jurya{Mme Ponte Casta\~neda}{Professeur}{Examinateur}
+\juryb{M. Betty Boop}{Professeur}{Rapporteur}
+\juryc{Mme Ponte Casta\~neda}{Professeur}{Examinateur}
+\juryd{Mme Ponte Casta\~neda}{Professeur}{Examinateur}
+\ecole{l'\'{E}cole Nationale Supérieure des Mines de Paris}
