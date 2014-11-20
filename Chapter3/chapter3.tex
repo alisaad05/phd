@@ -1,4 +1,4 @@
-\chapter{Macrosegregation without solidification shrinkage}
+\chapter{Macrosegregation with incompressible fluid motion}
 \begin{nolinkcolors} 
 \minitoc
 \end{nolinkcolors}
@@ -6,14 +6,21 @@
 
 this chapter discusses the following points:
 \begin{itemize}
-\item General introduction about freckles
-\item Couling the energy resolution from chapter 2 to fluid mechanics and solute balance
+\item Review fluid mechanics briefly (MINI element and VMS and talk about the available solvers in Cimlib)
+\item Coupling the energy resolution from chapter 2 to fluid mechanics and solute balance
+\item Make a transition to speak about freckles
 \item Application: Ternary solidification with freckles
 \item Application: Macroscopic Freckle predicition: pure FE
 \item Application Multiscale Freckle predicition: FE + grain structure (in which lies a part about nucleation-growth and how numerically 
 		we reach a smaller scale, the scale of the grain boundaries)
 \end{itemize}
 
+\section{Introduction}
+The previous chapter covered the energy solver ...
+
+\comment{ This next section shows an application where Tsolver is used with incompressible fluid mechanics and solute
+conservation in a multicomponent configuration (this is the main difference from SMACS actually)
+we see freckles also during the analysis, this is the transition for the section after }
 
 \section{Application to multicomponent alloys}
 
@@ -71,27 +78,27 @@ Therefore they are not tabulated. With this assumption, no shrinkage occurs upon
 \hline  
 \textbf{Parameter} & \textbf{Symbol} & \textbf{Value} & \textbf{Unit} \\
 \hline 
-Nominal composition 			& $\wC_0$ 				& 2 			& \si{\ucomposition} 	\\ 
-                    			& $\wCR_0$ 				& 30 			& \si{\ucomposition} 	\\ 
-Characteristic temperatures 	& $T_\text{top},T_\text{bottom}$ & \textbf{FIGURE} & \si{\udegC} \\ 
+Nominal composition 			& $\wC_0$ 				& 2 					& \si{\ucomposition} 	\\ 
+                    			& $\wCR_0$ 				& 30 					& \si{\ucomposition} 	\\ 
+Characteristic temperatures 	& $T_\text{top},T_\text{bottom}$ 	& \textbf{FIGURE} & \si{\udegC} \\ 
 Phase fraction 					& $g^\phi$ 				& Tabulations 	& $-$ 					\\ 
 Phase enthalpy 					& $\h^\phi$ 			& Tabulations 	& $-$ 					\\ 
 Phase composition 				& $\wC^\phi$ 			& Tabulations 	& \si{\ucomposition}  	\\ 
                    				& $\wCR^\phi$ 			& Tabulations 	& \si{\ucomposition}  	\\ 
 Diffusion coefficients 			& $\avg{D_\text{C}}^l$ 	& \num{15e-10} 	& \si{\udiffusivity}  	\\ 
-                        		& $\avg{D_\text{Cr}}^l$ & \num{15e-10} 	& \si{\udiffusivity}  	\\ 
-Dynamic viscosity  				& $\mul$ 				& \num{2e-3} 	& \si{\uviscosity}  	\\ 
-Thermal expansion coefficient 	& \betaT 				& \num{8.96e-5} & \si{\ubetaT}  		\\ 
-Solutal expansion coefficient 	& $\betaWlC$ 			& \num{1.54e-3} & \si{\ubetaWl}  		\\  
-                              	& $\betaWlCR$ 			& \num{1.72e-2} & \si{\ubetaWl}  		\\ 
-Thermal conductivity in the solid & $\ks$ 				& \num{40} 		& \si{\uconductivity}  	\\ 
-Thermal conductivity in the liquid & $\kl$ 				& \num{28} 		& \si{\uconductivity}  	\\ 
-Dendrite arm spacing 			& $\lambda$ 			& \num{60e-6} 	& \si{\metre}  			\\ 
-Density 						& $\rref$ 				& \num{6725} 	& \si{\udensity}  		\\ 
+                        		& $\avg{D_\text{Cr}}^l$	 & \num{15e-10} 	& \si{\udiffusivity}  	\\ 
+Dynamic viscosity  				& $\mul$ 						& \num{2e-3} 		& \si{\uviscosity}  	\\ 
+Thermal expansion coefficient 	& \betaT 					& \num{8.96e-5} 	& \si{\ubetaT}  		\\ 
+Solutal expansion coefficient 	& $\betaWlC$ 				& \num{1.54e-3} 	& \si{\ubetaWl}  		\\  
+                              	& $\betaWlCR$ 			& \num{1.72e-2} 	& \si{\ubetaWl}  		\\ 
+Thermal conductivity in the solid & $\ks$ 				& \num{40} 			& \si{\uconductivity}  	\\ 
+Thermal conductivity in the liquid & $\kl$ 				& \num{28} 			& \si{\uconductivity}  	\\ 
+Dendrite arm spacing 			& $\lambda$ 					& \num{60e-6} 	& \si{\metre}  			\\ 
+Density 								& $\rref$ 						& \num{6725} 		& \si{\udensity}  		\\ 
 \hline 
 Initial temperature & $T_0$ & \num{1395}	& \si{\udegC}  \\ 
 Ingot diameter 		&   	& \num{25e-3} 	& \si{\metre}  \\ 
-Ingot length 		&   	& \num{75e-3} 	& \si{\metre}  \\ 
+Ingot length 			&   	& \num{75e-3} 	& \si{\metre}  \\ 
 \hline 
 FE mesh size 		&  		& \num{e-3} 	& \si{\metre}  \\ 
 Time step 			& $\dt$ & \num{0.1} 	& \si{\second}  \\ 
@@ -102,3 +109,47 @@ Convergence criterion (temperature) & $\varepsilon_T$ & \num{e-2} & \si{\udegK} 
 \caption{Parameters for solidification of alloy Fe – 2 wt.\% C – 30 wt.\% Cr }
 \label{table:data_case_ternary}
 \end{table}
+
+
+
+\section{Macroscopic Freckle prediction}
+
+\subsection{Introduction}
+\comment{ I have shown the results of multicomponent alloy solidification, where we saw freckles. So let me do an introduction
+about freckles, the need to prevent such defect from forming (superalloys, critical use in turbine blades}
+
+\subsection{Experimental work}
+\comment{ Then introduce the
+experimental benchmark of Natalia and Sven from the article to show that there's an effot to understand, characterize and prevent 
+if possible freckle formation. Show figures and some experimental results but quickly, no need to put many things and distract the reader }
+
+\subsection{Macroscopic scale simulations}
+\comment{ Introduce the FE model and algorithm then show pure FE RESULTS}
+\subsubsection{Discussion}
+In the literature, many successful attempts have been made to predict freckles since (for example CITE fellicelli, poireau) ... until coming to kohler thesis results in 2008. These authors tackled the problem from an qualitative perspective. To our knowledge, the only close-to-quantitative work in solidification literature was done by RAMIREZ and BECKERMANN, who attempted to draw a correlation (freckling criterion) between the process parameters and the occurence of freckles, (without any size or shape constraints, i.e. any flow instability that may appear and form the smallest freckle is considered). To accomplish this, they took a number of experiments done independently by Pollock and Murphy (\citet{pollock_1996}) and Auburtin et al. where the process parameters the casting vary one at a time: casting speed (R), thermal gradient (G), angle with respect to vertical orientation and nominal composition, giving a database for 6 different superalloys. The experimental results were compared to a modified 
+Rayleigh number that accounts for the various parameters, which allowed RAMIREZ et al to define a threshold for freckle formation in Nickel-base superalloys. 
+\comment{ They have also investigated Pb-Sn alloys, check }
+Other contributions by Yuan and Peter D. and  Kraddage et al. used a medium scale model to compare the simulated formation of freckles with the results obtained by Natalia et al. (explain at bit more)
+However, all simulations show common traits in their predictions: (some words about the freckle d
+dimensions, shape, intensity). These properties do not exactly meet with the experimental observations, just like in the In-Ga experiment.
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
