@@ -15,7 +15,7 @@ clean:
 	@echo CLEANING
 	@echo --------
 	
-	rm -f *.aux *.log *.bbl *.blg *.toc *.lof *.lot 
+	rm -f *.aux *.log *.bbl *.blg *.toc *.lof *.lot *.brf 
 	rm -f *.maf *.out *.mtc* *.tdo *.dpth *.md5 *.auxlock
 	rm -f Chapter0/*.aux Chapter0/*.log
 	rm -f Chapter1/*.aux Chapter1/*.log

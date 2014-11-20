@@ -1,5 +1,7 @@
 \chapter{Energy Balance: temperature solver with thermodynamic tabulations}
+\begin{nolinkcolors} 
 \minitoc
+\end{nolinkcolors}
 \newpage
 
 \comment{ TODO: replace wt pct by the macro bin or tern }
@@ -22,7 +24,7 @@ When we speak about macrosegregation in solidification, we have to remember that
 
 \subsection{Volume averaging} 
 \comment{the following paragraph will be deleted once the volume averaging has been introduced in chapter 1}
-\red{A volume averaging technique was suggested to deal with the presence of multiple phases \cite{ni_volume-averaged_1991}. It locally considers a 
+\red{A volume averaging technique was suggested to deal with the presence of multiple phases \citep{ni_volume-averaged_1991}. It locally considers a 
 Representative Volume Element (RVE) that contains a single or several phases (these are not necessarily in thermodynamic equilibrium) 
 at a mesoscopic scale. We represent, for each unknown $\psi$, an intrinsic volume average, $\avg{\psi}^{\phi}$ (also denoted $\avg{\psi^{\phi}}^{\phi}$ in the 
 literature), corresponding to a phase $\phi$. The volume average $\avg{\psi}$ for this unknown in the RVE, hence averaged over all the present phases writes:}
@@ -35,7 +37,7 @@ literature), corresponding to a phase $\phi$. The volume average $\avg{\psi}$ fo
 where $g^\phi$ denotes the volume fraction of phase $\phi$ in the RVE. 
 It should be emphasized that the averaging technique applies to virtually all thermodynamic variables (enthalpy, density $\dots$). 
 Among these variables, the temperature is also considered to be uniform in the RVE. Applying the volume averaging technique to the energy 
-conservation principle along with interfacial balances between the phases, results in the following averaged equation \cite{rappaz_numerical_2003}:
+conservation principle along with interfacial balances between the phases, results in the following averaged equation \citep{rappaz_numerical_2003}:
 %%-------------
 \begin{align}
 \label{eq:averaged_energy_eqn}
@@ -123,7 +125,7 @@ columns (one column for each alloying element).
 
 \subsection{Pure diffusion}
 The two solvers are first tested in a purely diffusive case for a one-dimensional solidification configuration. 
-Predictions with a 1D front tracking model \cite{gandin_constrained_2000} is used as a benchmark. It provides 
+Predictions with a 1D front tracking model \citep{gandin_constrained_2000} is used as a benchmark. It provides 
 solutions for the temperature and solid fraction during directional solidification of a 10 cm long Al – 7 wt.\% Si 
 ingot. The melt, with initial uniform temperature, is cooled with a heat exchange coefficient (assuming a Fourier 
 boundary condition) from one side, the other side being adiabatic. All values for alloy properties, initial and 
@@ -171,7 +173,7 @@ Convergence criterion (temperature) & $\varepsilon_T$ 	& \num{e-2} & \si{\udegK}
 \subsection{Convection-diffusion with macrosegregation}
 Conservation equations in \textbf{Table 2} are for mass, momentum and chemical species. 
 As for energy, they are presented after the volume averaging technique has been applied 
-\cite{ni_volume-averaged_1991} \cite{dantzig_solidification_2009}. Moreover, an assumption 
+\citep{ni_volume-averaged_1991, dantzig_solidification_2009}. Moreover, an assumption 
 of a static and non deformable solid phase is made. Consequently, the mechanical model is 
 reduced to the conservation of momentum in the liquid phase. This assumption also yields 
 some other consequences on the mass balance and the liquid momentum conservation. In the 
@@ -185,8 +187,8 @@ convection forces. For that purpose, the Boussinesq approximation $\rl = \rref \
 \brac{T-\Tref}-\betaWl \brac{\wl-\Wlref}}$ is used, considering the thermal $\betaT$ and solutal $\betaWl$) expansion coefficients 
 and a reference density, $\rref$, defined at a reference temperature $\Tref$ and reference 
 composition $\Wlref$. Values for the references are taken at the liquidus temperature and the nominal 
-composition of the alloy, $\w_0$ \cite{carozzani_direct_2013}. More details about the FE formulation can be found in 
-\cite{rivaux_simulation_2011, carozzani_developpement_2012}. It should be noted that the macroscopic 
+composition of the alloy, $\w_0$ \citep{carozzani_direct_2013}. More details about the FE formulation can be found in 
+the Ph.D work of \citet{rivaux_simulation_2011, carozzani_developpement_2012}. It should be noted that the macroscopic 
 solute diffusion coefficient in the solid phase is neglected in \textbf{REF Eq. 15c}. 
 
 \comment{ in this table I use directly the simplified equations, but this was done only for
@@ -216,18 +218,18 @@ The Tsolver’s ability to be coupled with various physical phenomena like macro
 in porous medium is displayed in this test case. It consists of a solidification benchmark where a \SI{10}{\centi \metre}
 width × \SI{6}{\centi \metre} height × \SI{1}{\centi \metre} thick cavity containing a Sn – 3 wt.\% Pb melt is cooled down from its two 
 narrowest vertical sides using heat exchangers (LHE: left heat exchanger, RHE: right heat exchanger). The 
-experiment, inspired by Hebditch and Hunt’s \cite{hebditch_observations_1974} similar set up, has been 
-revisited by Hachani et al. \cite{hachani_experimental_2012} who performed the solidification with better 
+experiment, inspired by \citet{hebditch_observations_1974} similar set up, has been 
+revisited by \citet{hachani_experimental_2012} who performed the solidification with better 
 controlled conditions and using an increased number of samples for composition analysis. Recently, a successful 
-attempt to simulate the experiment was carried out by Carozzani et al. relying on an enthalpy resolution 
-\cite{carozzani_direct_2013}. All details regarding geometry, finite element discretization, material properties 
+attempt to simulate the experiment was carried out by \citet{carozzani_direct_2013} relying on an enthalpy resolution. 
+All details regarding geometry, finite element discretization, material properties 
 and boundary conditions can be found in the latter reference. 
 \comment{ I could develop more here giving additional details }
 For this computation, solidification paths, phase compositions and phase enthalpies were determined by a thermodynamic 
 module dedicated to equilibrium calculations for binary alloys. The 3D simulation results in \textbf{REF Figure 4} show 
 a satisfactory agreement with the experimental temperature measurements recorded at mid heights of the cavity and uniformly 
-distributed along its width \cite{carozzani_direct_2013}. In fact, simulation results with the Tsolver and the Hsolver were 
+distributed along its width \citep{carozzani_direct_2013}. In fact, simulation results with the Tsolver and the Hsolver were 
 found to be almost superimposed, as in \textbf{REF Figure 4}. Regarding the computation, the Tsolver resolution proves to be 
-faster than the Hsolver used in \cite{carozzani_direct_2013}: a process time of 7000s required a computation time of 90 hours 
+faster than the Hsolver used by \citet{carozzani_direct_2013}: a process time of 7000s required a computation time of 90 hours 
 13 minutes compared to 114 hours 21 minutes spent by the enthalpy resolution with 32 cores on the same cluster. The gain factor 
 is about 20\%.
