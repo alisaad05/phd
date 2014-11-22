@@ -21,7 +21,7 @@
 \begin{nolinkcolors}	
 \tableofcontents
 %\listoffigures
-%\listoftables 
+%\listoftables
 \listofacronyms % in post_commands.tex
 % \printnomenclature[space] space can be set as 2.5cm between symbol and
 % description
@@ -50,8 +50,9 @@
 %%------------------------ BACK MATTER  -------------------------------
 % Backmatter should be commented out, if you are using appendices after References
 \backmatter 
-\include{References/bibliography}
-
+\addcontentsline{toc}{chapter}{\bibname} % Bibliography  % \bibname
+\bibliographystyle{plainnat} 
+\bibliography{References/references}
 % *************************************** Index ********************************
 %\printthesisindex % If index is present
 

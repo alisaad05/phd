@@ -32,7 +32,7 @@ transformations during macrosegregation, we consider the solidification of a ter
 As illustrated in \textbf{Figure 5a}, the alloy domain has a cylinder shape close to 3-inch height × 1-inch diameter. 
 Exact values are reported in \textbf{Table 3} with all material properties, initial and boundary conditions, 
 as well as numerical parameters for the simulations. The melt steel is initially at \SI{1395}{\udegC}. The 
-temperature of the bottom surface is imposed with a constant decreasing rate of 0.1 K.s-1 starting 
+temperature of the bottom surface is imposed with a constant decreasing rate of \SI{0.1}{\uCR} starting 
 with \SI{1380}{\udegC}, i.e. \SI{40}{\udegC} higher than the nominal liquidus temperature, as shown 
 in \textbf{Figure 5b}. The other surfaces are kept adiabatic. The cylinder is held in a vertical position. 
 In these conditions, and knowing that the carbon and chromium solutes have lightening effects on the liquid 
@@ -43,7 +43,7 @@ for nickel-base superalloys \citep{beckermann_development_2000}. \textbf{Figure 
 transformation path of the alloy at nominal composition, i.e. assuming no macrosegregation and full 
 thermodynamic equilibrium as computed with ThermoCalc and the TCFE6 database \citep{thermo-calc_andersson, tcfe6}. 
 A total of 5 phases need to be handled, the characteristic temperature for their formation being reported 
-in \textbf{Figure 5b}. 
+in \textbf{Figure 5b}.
 \comment{Figure 5: Configurations for directional casting of (a) a 1 inch diameter × 3 inches height cylindrical
  domain for which (b) temperature-time conditions are imposed at its bottom surface. The alloy is Fe – 2 wt.\% C–
  30 wt.\% Cr, its computed transformation path \citep{thermo-calc_andersson, tcfe6} at nominal composition being displayed in (c)}
@@ -120,19 +120,18 @@ about freckles, the need to prevent such defect from forming (superalloys, criti
 
 \subsection{Experimental work}
 \comment{ Then introduce the
-experimental benchmark of Natalia and Sven from the article to show that there's an effot to understand, characterize and prevent 
+experimental benchmark of Natalia and Sven from the article to show that there's an effort to understand, characterize and prevent 
 if possible freckle formation. Show figures and some experimental results but quickly, no need to put many things and distract the reader }
 
 \subsection{Macroscopic scale simulations}
 \comment{ Introduce the FE model and algorithm then show pure FE RESULTS}
 \subsubsection{Discussion}
-In the literature, many successful attempts have been made to predict freckles since (for example CITE fellicelli, poireau) ... until coming to kohler thesis results in 2008. These authors tackled the problem from an qualitative perspective. To our knowledge, the only close-to-quantitative work in solidification literature was done by RAMIREZ and BECKERMANN, who attempted to draw a correlation (freckling criterion) between the process parameters and the occurence of freckles, (without any size or shape constraints, i.e. any flow instability that may appear and form the smallest freckle is considered). To accomplish this, they took a number of experiments done independently by Pollock and Murphy (\citet{pollock_1996}) and Auburtin et al. where the process parameters the casting vary one at a time: casting speed (R), thermal gradient (G), angle with respect to vertical orientation and nominal composition, giving a database for 6 different superalloys. The experimental results were compared to a modified 
-Rayleigh number that accounts for the various parameters, which allowed RAMIREZ et al to define a threshold for freckle formation in Nickel-base superalloys. 
+In the literature, many successful attempts have been made to predict freckles since (for example CITE fellicelli, poireau) ... until coming to kohler thesis results in 2008. These authors tackled the problem from an qualitative perspective. To our knowledge, the only close-to-quantitative work in solidification literature was done by \citet{ramirez_evaluation_2003}, who attempted to draw a correlation (freckling criterion) between the process parameters and the occurence of freckles, (without any size or shape constraints, i.e. any flow instability that may appear and form the smallest freckle is considered). To accomplish this, they took a number of experiments done independently by \citet{pollock_1996} and \citet{auburtin_freckle_2000} where the casting parameters vary one at a time: casting speed (R), thermal gradient (G), angle with respect to vertical orientation and nominal composition, giving a database for 6 different superalloys. The experimental results were compared to a modified Rayleigh number that accounts for the various parameters. It allowed them to define a threshold for freckle formation in Nickel-base superalloys, as well as Pb-Sn alloys.
 \comment{ They have also investigated Pb-Sn alloys, check }
-Other contributions by Yuan and Peter D. and  Kraddage et al. used a medium scale model to compare the simulated formation of freckles with the results obtained by Natalia et al. (explain at bit more)
-However, all simulations show common traits in their predictions: (some words about the freckle d
-dimensions, shape, intensity). These properties do not exactly meet with the experimental observations, just like in the In-Ga experiment.
-
+Other contributions by \citet{yuan_new_2012} and  \citet{karagadde_3-d_2014} used a medium scale model to compare the simulated formation of freckles with the results obtained by \citet{shevchenko_chimney_2013} (explain at bit more)
+However, all simulations show common traits in their predictions: (some words about the freckle dimensions, shape, intensity). These properties do not exactly meet with the experimental observations, just like in the In-Ga experiment. We think that the hydrodynamics scale 
+at which freckles are born, is much smaller than the FEM scale. Since the relevant physics are not solved, even the finest FE mesh will not
+be enough to see the exact grain boundaries. (now it is time to do transition to CAFE)
 
 
 
