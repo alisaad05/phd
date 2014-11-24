@@ -3,21 +3,101 @@
 %\usepackage{utopia} % on older systems -> use this package instead of fourier in combination with mathdesign for better looking results
 %\usepackage[adobe-utopia]{mathdesign}
 
+%%------------------------ LANGUAGES-FRENCH ACCENTS -------------------------------
+\usepackage[utf8]{inputenc}
+
 %%------------------------ ACRONYMS -------------------------------
 %\usepackage[printonlyused,smaller]{acronym}
 %\renewcommand{\bflabel}[1]{{#1}\hfill} % fix the list of acronyms
 
-%%------------------------ BIBLIOGRAPHY -------------------------------
+%%------------------------ BIBLIOGRAPHY NATBIB (obsolete) -------------------------------
 % http://merkel.zoneo.net/Latex/natbib.php
 % default option for citation rendering is "authoryear" and "round" brackets
 % sort: orders multiple citations into the sequence in which they appear in the list of references;
 % sort&compress: as sort but in addition multiple numerical citations are compressed if possible (as 3-6, 15);
 
-%\usepackage[square,numbers]{natbib}    % number in square
-\usepackage[square,sort]{natbib} % name then number in square
+%\usepackage[square,numbers]{natbib}    % number in square , useful to add sortcompress
+%\usepackage[square,sort]{natbib} % name and year in square
 
-%%------------------------ LANGUAGES-FRENCH ACCENTS -------------------------------
-\usepackage[utf8]{inputenc}
+%%------------------------ BIBLIOGRAPHY BIBLATEX -------------------------------
+\usepackage[american]{babel}% Recommended
+\usepackage{csquotes}% Recommended
+\usepackage [backend=bibtex,style=authoryear]{biblatex} %style=authoryear %style=apa
+\newcommand{\citep}[1]{\parencite{#1}}
+\newcommand{\citet}[1]{\textcite{#1}}
+\ExecuteBibliographyOptions{hyperref=true,backref=true,firstinits=true, isbn=false, eprint=false,
+							url=true, doi=false, sorting=nyt, minnames=1, maxcitenames=2, maxbibnames=2, 
+							alldates=short, punctfont=true, autopunct=false, block=none, dashed=false}
+
+\addbibresource{References/desktop_library.bib}
+
+% Spacing
+\setlength{\bibitemsep}{15pt} %vertical spacing
+\setlength{\bibhang}{1cm} %label alignment (0 for perfect align)
+
+% Disable URL dates
+\AtEveryBibitem{%
+    \clearfield{urldate}%
+    \clearfield{urlday}%
+    \clearfield{urlmonth}%
+    \clearfield{urlyear}%
+    \clearlist{language}
+}%
+
+%Fix the comma problem after the journal name (via addcomma)
+\DeclareFieldFormat{journaltitle}{\mkbibemph{#1\isdot}\addcomma\space}
+
+%Fix number and volume format
+\renewbibmacro*{volume+number+eid}{%
+  \printfield{volume}%
+%  \setunit*{\adddot}% DELETED
+  \setunit*{\addnbspace}% NEW (optional); there's also \addnbthinspace
+  \printfield{number}%
+  \setunit{\addcomma\space}%
+  \printfield{eid}}
+\DeclareFieldFormat[article]{number}{\mkbibparens{#1}}
+
+%Disable In prefix
+\renewbibmacro{in:}{}
+
+% Define brackets instead of parenthesis
+\makeatletter
+\newrobustcmd*{\parentexttrack}[1]{%
+  \begingroup
+  \blx@blxinit
+  \blx@setsfcodes
+  \blx@bibopenparen#1\blx@bibcloseparen
+  \endgroup}
+
+\AtEveryCite{%
+  \let\parentext=\parentexttrack%
+  \let\bibopenparen=\bibopenbracket%
+  \let\bibcloseparen=\bibclosebracket}
+\makeatother
+
+%define label before reference in list	
+\renewbibmacro{begentry}{%
+\textbf{[\printnames[][-\value{liststop}]{labelname}~\printfield{labelyear}\printfield{extrayear}}]\\}
+
+%define full hyperlink for textcite
+\DeclareCiteCommand{\textcite}
+  {\boolfalse{cbx:parens}}
+  {\usebibmacro{citeindex}%
+   \printtext[bibhyperref]{\usebibmacro{textcite}}}
+  {\ifbool{cbx:parens}
+     {\bibcloseparen\global\boolfalse{cbx:parens}}
+     {}%
+   \multicitedelim}
+  {\usebibmacro{textcite:postnote}}
+
+%define full hyperlink for parencite  
+ \DeclareCiteCommand{\parencite}[\mkbibparens]
+  {\usebibmacro{prenote}}
+  {\usebibmacro{citeindex}%
+    \printtext[bibhyperref]{\usebibmacro{cite}}}
+  {\multicitedelim}
+  {\usebibmacro{postnote}}
+
 
 %%------------------------ LAYOUT -------------------------------
 %% --- Margins
@@ -145,25 +225,30 @@
 \usepackage{cleveref}
 % cleverref should always be invoked AFTER hyperref
 
-%% --- beckref and Options
-\newcommand{\backrefnotcitedstring}{\relax}%(Not cited.)
-\newcommand{\backrefcitedsinglestring}[1]{(cited on page~#1)}
-\newcommand{\backrefcitedmultistring}[1]{(cited on pages~#1)}
-\ifthenelse{\boolean{enable_backrefs}}%
-{%
-		\usepackage[hyperpageref]{backref}  % to be loaded after hyperref package
-		   \renewcommand{\backreftwosep}{ and~} % separate 2 pages
-		   \renewcommand{\backreflastsep}{, and~} % separate last of longer list
-		   \renewcommand*{\backref}[1]{}  % disable standard
-		   \renewcommand*{\backrefalt}[4]{% detailed backref
-		      \ifcase #1 %
-		         \backrefnotcitedstring%
-		      \or%
-		         \backrefcitedsinglestring{#2}%
-		      \else%
-		         \backrefcitedmultistring{#2}%
-		      \fi}%
-}%{\relax}    
+\DefineBibliographyStrings{english}{%
+  backrefpage = {cited on page},% originally "cited on page"
+  backrefpages = {cited on pages},% originally "cited on pages"
+}
+
+%% --- beckref and Options (NATBIB compatible - Obsolete)
+%\newcommand{\backrefnotcitedstring}{\relax}%(Not cited.)
+%\newcommand{\backrefcitedsinglestring}[1]{(cited on page~#1)}
+%\newcommand{\backrefcitedmultistring}[1]{(cited on pages~#1)}
+%\ifthenelse{\boolean{enable_backrefs}}%
+%{%
+%		\usepackage[hyperpageref]{backref}  % to be loaded after hyperref package
+%		   \renewcommand{\backreftwosep}{ and~} % separate 2 pages
+%		   \renewcommand{\backreflastsep}{, and~} % separate last of longer list
+%		   \renewcommand*{\backref}[1]{}  % disable standard
+%		   \renewcommand*{\backrefalt}[4]{% detailed backref
+%		      \ifcase #1 %
+%		         \backrefnotcitedstring%
+%		      \or%
+%		         \backrefcitedsinglestring{#2}%
+%		      \else%
+%		         \backrefcitedmultistring{#2}%
+%		      \fi}%
+%}%{\relax}    
 
 %%--------------------- TOC --------
 %\setcounter{secnumdepth}{2}
@@ -232,7 +317,7 @@
 }
 
 % Enchance syllable breaking avoiding bad boxes
-\usepackage{microtype}
+\usepackage[stretch=10]{microtype} % which allows font expansion up to 1% (default is 2%)
 
 % Cancel sign in math equations
 \usepackage{cancel}

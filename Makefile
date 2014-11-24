@@ -8,6 +8,7 @@ pdf:
 	pdflatex -interaction=nonstopmode main.tex
 	bibtex main
 	pdflatex -interaction=nonstopmode main.tex
+	pdflatex -interaction=nonstopmode main.tex
 	pdflatex -synctex=1 -interaction=nonstopmode main.tex
 
 clean:
@@ -17,6 +18,7 @@ clean:
 	
 	rm -f *.aux *.log *.bbl *.blg *.toc *.lof *.lot *.brf 
 	rm -f *.maf *.out *.mtc* *.tdo *.dpth *.md5 *.auxlock
+	rm -f *.bib *.xml
 	rm -f Chapter0/*.aux Chapter0/*.log
 	rm -f Chapter1/*.aux Chapter1/*.log
 	rm -f Chapter2/*.aux Chapter2/*.log

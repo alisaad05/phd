@@ -50,9 +50,11 @@
 %%------------------------ BACK MATTER  -------------------------------
 % Backmatter should be commented out, if you are using appendices after References
 \backmatter 
-\addcontentsline{toc}{chapter}{\bibname} % Bibliography  % \bibname
-\bibliographystyle{plainnat} 
-\bibliography{References/references}
+\addcontentsline{toc}{chapter}{\bibname}
+%\bibliographystyle{References/plainnatBIS} % plainnat %\mycustomstyle
+\cleardoublepage
+\printbibliography
+
 % *************************************** Index ********************************
 %\printthesisindex % If index is present
 
