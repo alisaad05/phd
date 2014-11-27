@@ -1,4 +1,5 @@
 \chapter{Macrosegregation with solidification shrinkage}
+%\chaptermark{Nonlinear Temperature Solver}
 \begin{nolinkcolors} 
 \minitoc
 \end{nolinkcolors}
@@ -14,7 +15,7 @@ this chapter discusses the following points:
 		we reach a smaller scale, the scale of the grain boundaries)
 \end{itemize}
 % ======================
-\section{Introduction}
+\section{Literature review}
 % ======================
 Solidification shrinkage is, by definition, the effect of relative density change between the liquid and solid phases.
 In general, it results in a progressive volume change during solidification, until the phase change has finished. 
@@ -75,10 +76,14 @@ to a different overall volume ($V^s<V^l$) once solidification is complete, as co
 \caption{Schematic of the main cooling stages of an ingot against side and bottom mould walls (not shown)}
 \label{fig:real_ingot_stages}
 \end{figure}
+\comment{ \textbf{Sutaria2012} talk about feeding paths, but more importantly they computed thermal shrinkage WITHOUT solving
+NavierStokes equations. To predict the interface shape, they solve a LS transport with an imposed velocity given by Gada et Sharma 2009}
 %====================================================================
-\section{Mass Conservation}
+\section{Conservation equations}
+
+\subsection{Mass Conservation}
 % ======================
-\subsection{Assumptions}
+\subsubsection{Assumptions}
 % ======================
 \begin{itemize}
 \item Two phases are considered, liquid $l$ and solid $s: \gl+\gs =1 $ % \implies \frac{dg^l}{dt} =- \frac{dg^s}{dt}$ 
@@ -92,7 +97,7 @@ is neglected
 \end{enumerate}
 \end{itemize}
 % ======================
-\subsection{Formulation}
+\subsubsection{Formulation}
 % ======================
 The mass balance equation averaged over the two phases, is expanded taking into account the aforementioned assumptions.
 \begin{subequations}
@@ -113,7 +118,7 @@ The mass balance equation averaged over the two phases, is expanded taking into 
  	= \frac{\rho^l-\rho^s}{\rho^l} \frac{\partial  \gs }{\partial t}}
 \end{align}
 % ======================
-\subsection{Discussion}
+\subsubsection{Discussion}
 % ======================
 With the assumptions of static solid phase and constant unequal phase densities, the average mass balance states that 
 the divergence of the liquid velocity is proportional to the solidification rate, the proportionality constant being the
@@ -129,7 +134,7 @@ Numerically speaking, a non-zero divergence term in the mass balance is equivale
 terms should appear in the other conservation equations, balancing the volume change in the momentum, heat and species transport.
 
 %====================================================================
-\section{Momentum Conservation}
+\subsection{Momentum Conservation}
 % ======================
 In a typical volume averaging approach, one would write one momentum conservation 
 equation for each phase. Nonetheless, only one equation will be present in our case, 
@@ -138,7 +143,7 @@ section. It should be emphasized that, despite considering a single conservation
 the effect of the solid movement with respect to the liquid's can still be incorporated 
 through the interfacial fluxes in the momentum conservation of the liquid phase. 
 % ======================
-\subsection{Assumptions}
+\subsubsection{Assumptions}
 % ======================
 \begin{itemize}
 %%%
@@ -183,7 +188,7 @@ and  $\mat{\tau}^{l}$ is the extra stress tensor in the liquid, given by:
 where $\lambda$ is a dilatational viscosity \textbf{CITE RAP2003}. For an incompressible flow, the divergence term vanishes, hence the classical Newtonian constitutive law is retrieved. In the literature, the coefficient $\lambda$ is taken proportional to the viscosity: $\lambda = \frac{2}{3} \mu^l $
 \end{itemize}
 % ======================
-\subsection{Formulation}
+\subsubsection{Formulation}
 % ======================
 The momentum conservation equation in the liquid writes:
 \begin{align}
@@ -259,12 +264,12 @@ solve, after grouping the unknowns in the LHS and the remaining terms in the RHS
 %\end{subequations}
 
 %====================================================================
-\section{Energy Conservation}
+\subsection{Energy Conservation}
 % ======================
 We have seen the averaged energy conservation equation in the case of two phases: a solid phase and an incompressible liquid phase. However, with the incorporation of the shrinkage effect, new terms should appear
 in the advective-diffusive heat transfer equation. 
 % ======================
-\subsection{Assumptions}
+\subsubsection{Assumptions}
 % ======================
 \begin{itemize}
 \item The thermal conductivity is constant for both phases: $\avg{\kappa} = \ks = \kl= \kappa $ 
@@ -285,7 +290,7 @@ mechanical deformation, $\mathbb{S}:\dot{\varepsilon}$
 %\end{enumerate}
 \end{itemize}
 % ======================
-\subsection{Formulation}
+\subsubsection{Formulation}
 % ======================
 The unknowns in the energy conservation are the average volumetric enthalpy $\avg{\rho h}$ and temperature $T$.The energy conservation equation writes:
 \begin{subequations}
@@ -317,7 +322,7 @@ The unknowns in the energy conservation are the average volumetric enthalpy $\av
 \end{align}
 
 % ======================
-\subsection{Discussion}
+\subsubsection{Discussion}
 % ======================
 In order to keep things simple, the term "enthalpy" will refer henceforth to "volume enthalpy",
 otherwise, we will explicitly use the term "mass enthalpy". It is important to understand the 
@@ -383,13 +388,13 @@ highly dependent on the local average composition. It then advisable to use the 
 tabulation approach, where the enthalpies are directly tabulated as functions of temperature 
 and composition. 
 % ======================
-\section{Species Conservation}
+\subsection{Species Conservation}
 % ======================
 The last conservation principle is applied to the chemical species or solutes. This principle allows predicting
 macrosegregation when applied to a solidification system, along with the mass, momentum and energy balances.
 However, the conservation equation should be reformulated in the case of a melt flow driven by shrinkage.
 % ======================
-\subsection{Assumptions}
+\subsubsection{Assumptions}
 % ======================
 \begin{itemize}
 \item The alloy is binary, i.e., it is composed from one solute, and hence the notation of the average composition
@@ -402,7 +407,7 @@ However, the conservation equation should be reformulated in the case of a melt 
 \item Consequence of the static solid phase: $\avg{\rho w \vec{v}} = \gl \rhol \wl \vl +  \cancel{\gs \rhos \ws \vs} = \gl \rhol \wl \vl$ 
 \end{itemize}
 % ======================
-\subsection{Formulation}
+\subsubsection{Formulation}
 % ======================
 The species conservation is pretty similar the energy conservation formluted in the previous section. For a binary alloy, we can write:
 \begin{subequations}
@@ -433,7 +438,7 @@ The species conservation is pretty similar the energy conservation formluted in 
 		+ \brac{\rhos-\rhol} \wl \frac{\partial  \gs}{\partial t}}
 \end{align}
 % ======================
-\subsection{Discussion}
+\subsubsection{Discussion}
 % ======================
 The species transport equation is usually derived with the volumetric average composition $\avg{\rho w}$, then
 divided by the density, which is constant if no solidification shrinkage occurs. In the case where macrosegregation
@@ -442,13 +447,20 @@ volume remains constant. It is thus convenient to compute composition variations
 However, in the current context, the volume is subject to changes, hence the formulation of equation 
 \eqref{eq:solute_balance} with $\avg{\rho w}$.
 
-\section{Test case: Shrinkage without macrosegregation}
+\section{Test cases}
+
+\subsection{Validation of LS transport}
+\comment{perform test case simulation of buyoancy driven air droplet in water by 2005Nagrath that I also have seen 
+in Shyamprasad's masters report)}
+\comment{ I read it quickly without noticing: what time step $\delta t$ did they use ? }
+
+\subsection{Shrinkage without macrosegregation}
 Smacs or Pseudo-Smacs test case with Level set and shrinkage
-\subsection{Considerations}
+\subsubsection{Considerations}
 Explain how the flow and heat transfer in the air are not important \\ 
-\subsection{Model equations}
+\subsubsection{Model equations}
 Give the strong form equations to be solved OR simply refer the previous section where the model was defined
-\subsection{Initial and boundary conditions for energy and momentum}
+\subsubsection{Initial and boundary conditions for energy and momentum}
 Initially we have liquid and air at rest. 
-\subsection{Results and discussion}
+\subsubsection{Results and discussion}
 
