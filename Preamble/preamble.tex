@@ -68,7 +68,6 @@
   \blx@setsfcodes
   \blx@bibopenparen#1\blx@bibcloseparen
   \endgroup}
-
 \AtEveryCite{%
   \let\parentext=\parentexttrack%
   \let\bibopenparen=\bibopenbracket%
@@ -79,25 +78,39 @@
 \renewbibmacro{begentry}{%
 \textbf{[\printnames[][-\value{liststop}]{labelname}~\printfield{labelyear}\printfield{extrayear}}]\\}
 
-%define full hyperlink for textcite
-\DeclareCiteCommand{\textcite}
-  {\boolfalse{cbx:parens}}
-  {\usebibmacro{citeindex}%
-   \printtext[bibhyperref]{\usebibmacro{textcite}}}
-  {\ifbool{cbx:parens}
-     {\bibcloseparen\global\boolfalse{cbx:parens}}
-     {}%
-   \multicitedelim}
-  {\usebibmacro{textcite:postnote}}
+%define full hyperlink for textcite and parencite
+% http://tex.stackexchange.com/questions/15951/hyperlink-name-with-biblatex-authoryear-biblatex-1-4b
+\DeclareFieldFormat{citehyperref}{%
+\DeclareFieldAlias{bibhyperref}{noformat}% Avoid nested links
+\bibhyperref{#1}}
+\DeclareFieldFormat{textcitehyperref}{%
+\DeclareFieldAlias{bibhyperref}{noformat}% Avoid nested links
+\bibhyperref{%
+#1%
+\ifbool{cbx:parens}
+  {\bibcloseparen\global\boolfalse{cbx:parens}}
+  {}}}
+\savebibmacro{cite}
+\savebibmacro{textcite}
 
-%define full hyperlink for parencite  
- \DeclareCiteCommand{\parencite}[\mkbibparens]
-  {\usebibmacro{prenote}}
-  {\usebibmacro{citeindex}%
-    \printtext[bibhyperref]{\usebibmacro{cite}}}
-  {\multicitedelim}
-  {\usebibmacro{postnote}}
+\renewbibmacro*{cite}{%
+\printtext[citehyperref]{%
+\restorebibmacro{cite}%
+\usebibmacro{cite}}}
 
+\renewbibmacro*{textcite}{%
+\ifboolexpr{
+( not test {\iffieldundef{prenote}} and
+  test {\ifnumequal{\value{citecount}}{1}} )
+or
+( not test {\iffieldundef{postnote}} and
+  test {\ifnumequal{\value{citecount}}{\value{citetotal}}} )
+}
+{\DeclareFieldAlias{textcitehyperref}{noformat}}
+{}%
+\printtext[textcitehyperref]{%
+\restorebibmacro{textcite}%
+\usebibmacro{textcite}}}
 
 %%------------------------ LAYOUT -------------------------------
 %% --- Margins
