@@ -137,26 +137,26 @@ or
 % From EPFL template
 %\usepackage[perpage]{footmisc} %Range of footnote options 
 
-%\usepackage{fancyhdr}
-%\renewcommand{\sectionmark}[1]{\markright{\thesection\ #1}}
-%\pagestyle{fancy}
-%	\fancyhf{}
-%	\renewcommand{\headrulewidth}{0.4pt}
-%	\renewcommand{\footrulewidth}{0pt}
-%	\fancyhead[OR]{\bfseries \nouppercase{\rightmark}}
-%	\fancyhead[EL]{\bfseries \nouppercase{\leftmark}}
-%	\fancyfoot[EL,OR]{\thepage}
-%\fancypagestyle{plain}{
-%	\fancyhf{}
-%	\renewcommand{\headrulewidth}{0pt}
-%	\renewcommand{\footrulewidth}{0pt}
-%	\fancyfoot[EL,OR]{\thepage}}
-%\fancypagestyle{addpagenumbersforpdfimports}{
-%	\fancyhead{}
-%	\renewcommand{\headrulewidth}{0pt}
-%	\fancyfoot{}
-%	\fancyfoot[RO,LE]{\thepage}
-%}
+\usepackage{fancyhdr}
+\renewcommand{\sectionmark}[1]{\markright{\thesection\ #1}}
+\pagestyle{fancy}
+	\fancyhf{}
+	\renewcommand{\headrulewidth}{0.4pt}
+	\renewcommand{\footrulewidth}{0pt}
+	\fancyhead[OR]{\bfseries \nouppercase{\rightmark}}
+	\fancyhead[EL]{\bfseries \nouppercase{\leftmark}}
+	\fancyfoot[EL,OR]{\thepage}
+\fancypagestyle{plain}{
+	\fancyhf{}
+	\renewcommand{\headrulewidth}{0pt}
+	\renewcommand{\footrulewidth}{0pt}
+	\fancyfoot[EL,OR]{\thepage}}
+\fancypagestyle{addpagenumbersforpdfimports}{
+	\fancyhead{}
+	\renewcommand{\headrulewidth}{0pt}
+	\fancyfoot{}
+	\fancyfoot[RO,LE]{\thepage}
+}
 
 %%------------------------ Figures  -------------------------------
 %\usepackage{rotating}
