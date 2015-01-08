@@ -17,16 +17,6 @@ As far as the current project is concerned, the last defect, also widely known a
 
 \section*{Casting process}
 
-\begin{figure}
-	\centering
-    %\def\svgwidth{350pt}
-	%\import{Chapter0/Graphics/}{cc_process.pdf_tex}
-	\includegraphics[width=\textwidth]{Chapter0/Graphics/cc_process}
-\caption{Main steps in a continuous casting plant}
-%source: http://bremen.arcelormittal.com/produktionsablauf_animiert.html?&L=1
-\label{fig:cc_process}
-\end{figure}
-
 \section*{Defects}
 Undesired effects are inevitable in any industrial process. More importantly, a lot of defects in the casting industry can be disastrous in some situations where the cast product is not serviceable and hence rejected. This leads to a systematic product recycling, i.e. the product is ditched to be reheated, remelted and then cast again. From an economic point view, the operation is expensive timewise and profitwise. Understanding and preventing defects when possible, is thus crucial in the casting industry.
 We focus hereafter on the main encountered defects.
@@ -46,7 +36,7 @@ The second factor is the presence of dissolved gaseous phases in the melt. Accor
 
 \subsection*{Freckles and segregated channels} 
 The intersection between the effects of microsegregation and gravity forces is the origin of freckles. They may appear 
-in all casting processes, but are very specific to directional chill casting (\citep{giamei_nature_1970}), mainly vertical chill casting. 
+in all casting processes, but are very specific to directional chill casting \citep{giamei_nature_1970}, mainly vertical chill casting. 
 \comment{give a more detailed example in chapter 3: e.g. Pb Sn is not like Sn Pb and explain}
 Segregation takes place at a medium scale (ranging from the scale of a few dendrites to a few hundreds of them), hence forms "long and narrow trails" as described by \citet{felicelli_simulation_1991}. The segregated channels are frequently formed by small equiaxed grains, probably caused by a uniform temperature
 gradient that settles as the channels become richer in solute. They can be observed on the ingot's surface, as well as in the volume (\blue{thèse kohler exemple or article felicelli}).
@@ -58,21 +48,10 @@ Beckermann review 2000 or the big review article by rappaz, rohit, beckermann ..
 \comment{DO NOT GIVE ALL THE INFORMATION HERE, REFER TO CHAPTER 1 (details about macrosegregation modelling: miha zalonik Oleron presentation)}
 
 \section*{Industrial Worries}
-\textbf{Production}
-
-\begin{itemize}
-\item Talk about total steel production, variations over the last few decades
-\item Quality constraints for many applications that require steel like construction, nuclear engines ? 
-\item Difficulties to meet these constraints and what are the present solutions
-\end{itemize}
-\textbf{Research and Simulation}
-\begin{itemize}
-\item Need for software handling multicomponent alloys
-\item Need for software handling finite diffusion in the solid
-\item Need for realistic alloy properties (not only constants)
-\item Need for handling molds along with volume change (creating thermal resistances)
-\end{itemize}
-\comment{Worth discussing Isabelle Poitraut and  David Cardinaux -  and Claudine Allentin (respo comm Arcelor Dunkerque, search for mail)}
+\textbf{Steel production} has continuously increased over the years to meet the industrial needs. \autoref{fig:steel_production} shows this increase between 1980 and 2013 with a 
+clear dominance of the chinese production. Quality constraints have also increased where specific grades of steel are needed in critical applications such as megastructures
+in construction and  heavy machinery. Therefore, the presented defects should be avoided as much as possible during the casting process. As such, steelmakers have been investing
+in research, with the aim of understanding better the phenomena leading to casting problems, and improve the processes when possible.
 
 \begin{figure}[!h]
 \centering
@@ -109,25 +88,57 @@ Beckermann review 2000 or the big review article by rappaz, rohit, beckermann ..
 \label{fig:steel_production}
 \end{figure}
 
-
-\section*{CCEMLCC contribution}
+\textbf{Simulation software } dedicated to alloy casting is one of the main research investments undertaken by steelmakers. These tools coming from academic research
+are actively used to optimize the process. However, few are the tools that take into account the casting envionment. For instance, the continuous casting process, in
+\autoref{fig:cc_process}, is a chain process where the last steps involve rolls, water sprays and other components. A dedicated software is one that can provide the
+geometric requirements with suitable meshing capbilities, as well as respond to metallurgical and mechanical requirements, mainly:
 \begin{itemize}
-\item some words about this ESA project
+\item handling molds and their interaction with the alloy (thermal resistances ...)
+\item handling alloy filling and predicting velocity in the liquid and mushy zone
+\item handling thermomechanical stresses in the solid
+\item handling multicomponent alloys and predicting macrosegregation
+\item handling finite solute diffusion in solid phases
+\item handling real alloy properties (not just constant thermophysical/thermomechanical properties)
+\end{itemize}
+
+These requirements are not met in a single software package. Nevertheless, \thercast is a promising tool that already 
+handles a part of the above points. The current thesis developments are done using C++ language as a part of the
+in-house code, known as \cimlib. This fully parallel library is the main academic research support for \thercast.
+\comment{Add Digonnet reference for Cimlib}
+
+\begin{figure}
+	\centering
+    %\def\svgwidth{350pt}
+	%\import{Chapter0/Graphics/}{cc_process.pdf_tex}
+	\includegraphics[width=\textwidth]{Chapter0/Graphics/cc_process}
+\caption{Main steps in a continuous casting plant}
+%source: http://bremen.arcelormittal.com/produktionsablauf_animiert.html?&L=1
+\label{fig:cc_process}
+\end{figure}
+
+
+\section*{\ccemlcc project}
+
 Since its foundation in 1975, the European Space Agency (ESA) has been actively committed in the research field.
 Their areas of activity cover not only exclusive space applications, but also fundamental science related to 
-physics mainly, as well as other disciplines. This thesis is part of the ESA project entitled CCEMLCC, abbreviating
-"Chill Cooling for the Electro-Magnetic Levitator in relation with Continuous Casting of steel". 
-The three-year contract from 2011 to 2014 denoted CCEMLCC II, was preceded by an initial project phase, CCEMLCC I,
-from 2007 to 2011.
-\comment{make sure of dates from CCEMLCC report}
+physics and other disciplines. This thesis is part of the ESA project entitled \ccemlcc, abbreviating
+"\textbf{C}hill \textbf{C}ooling for the \textbf{E}lectro-\textbf{M}agnetic \textbf{L}evitator in relation with 
+\textbf{C}ontinuous \textbf{C}asting of steel".
+The three-year contract from 2011 to 2014 denoted \ccemlcc II, was preceded by an initial project phase, \ccemlcc I,
+from 2007 to 2010. The main focus is studying containerless solidification of steel under microgravity conditions. 
+Moreover, a chill plate is used to extract heat from the droplet, simulating the effect of the alloy contact with the 
+CEMEF contributed to the work by proposing numerical models and simulation tools in 
+view of predicting the chill cooling of steel droplets. A first model was developed by \citet{rivaux_simulation_2011} whereas
+the present discusses a new model. The experimental work considered various facilities and environments 
+to set a droplet of molten alloy in levitation: electromagnetic levitation (EML) for ground-based experiments, microgravity 
+in parabolic flight or sounding rockets and last, microgravity condition on-board the International Space Station (ISS)
+\comment{DLR droplet EML photo}
 
+\begin{itemize}
 \item in what ways does this project tries to alleviate the aforementionned problems ?
-The two phases of CCEMLCC, together with the newly coming CCEMLCC III, aim to shape our understanding
+The two phases of CCEMLCC, together with the newly coming \ccemlcc III, aim to shape our understanding
 of solidification with thermo-mechanical stresses under microgravity conditions.
-
 \item academic and industrial partners and how does each of them contribute actually
-\item mention \emph{Thercast} as the final developped code destination ?
-\item \cimlib our in-house code
 \end{itemize}
 
 %\section*{Trying \emph{SIUNITX}}

@@ -38,6 +38,7 @@
 \newcommand\temp[1]{\ensuremath{\frac{\partial}{\partial t} \brac{#1} }}  
 \newcommand\vit{\ensuremath{\avg{\vec{v}^l}}}  
 \newcommand\strainrate{\ensuremath{\avg{{\dot{\mat{\varepsilon}}}^l}}}
+\newcommand\I{\ensuremath{\mat{\text{I}}}}  
 
 \renewcommand\d{\ensuremath{\partial}}
 \renewcommand\r{\ensuremath{\avg{ \rho }}}
@@ -94,7 +95,6 @@
 \newcommand\hext{\ensuremath{h_{\text{ext}}}}
 \newcommand\Text{\ensuremath{T_{\text{ext}}}}
 
-
 \newcommand*\widefbox[1]{\fbox{\hspace{2em}#1\hspace{2em}}}
 
 % From "Mixing Boussinesq" report
@@ -105,10 +105,15 @@
 \newcommand\heaviside{\ensuremath{H}}  
 \newcommand\levelset{\ensuremath{\alpha(x)}}
 \newcommand{\mix}[1]{\ensuremath{\widehat{#1}}} % \widehat % \overbrace % \widetilde
-\newcommand{\cimlib}{\textsf{CimLib}}
-\newcommand\I{\ensuremath{\mat{\text{I}}}}  
+
+% Common nouns and names
+\newcommand{\registered}{\textsuperscript{\textregistered}}
+\newcommand{\cimlib}{\emph{CimLib }}
+\newcommand{\thercast}{\emph{Thercast\registered }}
+\newcommand{\ccemlcc}{\emph{CCEMLCC }}
 
 
+% Colors
 \newcommand{\red}[1]{{\color{Red} #1}}
 \newcommand{\blue}[1]{{\color{Blue} #1}} 
 
@@ -120,7 +125,8 @@
 Acronym & Standing for \\
 \hline
 ESA & European Space Agency \\ 
-CCEMLCC & Chill Cooling for the Electro-Magnetic Levitator in relation with Continuous Casting of steel \\
+\ccemlcc & Chill Cooling for the Electro-Magnetic Levitator in relation with Continuous Casting of steel \\
 \hline 
+EML & Electromagnetic levitation
 \end{tabular} 
 }
