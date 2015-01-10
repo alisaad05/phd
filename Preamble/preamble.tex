@@ -1,12 +1,16 @@
 %%------------------------ LANGUAGES-FRENCH ACCENTS -------------------------------
 \usepackage[utf8]{inputenc}
+% For the front page
+\usepackage[T1]{fontenc}		
+\usepackage[francais, american]{babel}
+%\usepackage{utopia} % lmodern % utopia % fourier
 
 %%------------------------ FONTS -------------------------------
 %\usepackage{lmodern}
-\usepackage{fourier} % Utopia font-typesetting including mathematical formula compatible with newer TeX-Distributions (>2010)
-%\usepackage{utopia} % on older systems -> use this package instead of fourier in combination with mathdesign for better looking results
+\usepackage{fourier} 		% Utopia font-typesetting including mathematical formula compatible with newer TeX-Distributions (>2010)
+%\usepackage{utopia} 		% on older systems -> use this package instead of fourier in combination with mathdesign for better looking results
 %\usepackage[adobe-utopia]{mathdesign}
-
+%\usepackage{ae,aecompl}
 
 %%------------------------ ACRONYMS -------------------------------
 %\usepackage[printonlyused,smaller]{acronym}
@@ -22,7 +26,6 @@
 %\usepackage[square,sort]{natbib} % name and year in square
 
 %%------------------------ BIBLIOGRAPHY BIBLATEX -------------------------------
-\usepackage[american]{babel}% Recommended
 \usepackage{csquotes}% Recommended
 \usepackage [backend=bibtex,style=authoryear]{biblatex} %style=authoryear %style=apa
 \newcommand{\citep}[1]{\parencite{#1}}
@@ -115,7 +118,11 @@ or
 \usebibmacro{textcite}}}
 
 %%------------------------ LAYOUT -------------------------------
-%% --- Margins
+
+% Package geometry is loaded ONLY to achieve a specific size in title page (SHOULD BE LOADED BEFORE CUSTOM LAYOUT SETTINGS)
+\usepackage[top=1cm, bottom=1cm, left=1cm, right=1cm, headheight=15pt]{geometry}
+
+%% --- Margins (Custom layout)
 \setlength{\textwidth}{146.8mm} % = 210mm - 37mm - 26.2mm
 \setlength{\oddsidemargin}{11.6mm} % 37mm - 1in (from hoffset)
 \setlength{\evensidemargin}{0.8mm} % = 26.2mm - 1in (from hoffset)
@@ -339,6 +346,12 @@ or
 
 % Enables putting the pdf_tex graphics in a subfolder
 \usepackage{import}
+
+% Frontpage packages (Dorian)
+\usepackage{eso-pic}	% Nécessaire pour mettre des images en arrière plan
+%\usepackage[top=1cm, bottom=1cm, left=1cm, right=1cm, headheight=15pt]{geometry}
+%\usepackage{graphicx}
+%\usepackage{array}		% Permet d'écrite 'THESE' de haut en bas
 
 
 %%------------------------ ENVIRONMENTS  -------------------------------
