@@ -1,6 +1,5 @@
-\chapter*{General Introduction}
-\addstarredchapter{General Introduction}
-% TODO: fix header text
+\chapter{General Introduction}
+%\addstarredchapter{General Introduction}
 
 \textbf{Macrosegregation} is a very known defect to metallurgical processes. Despite a great evolution achieved by active research during the last 60 years,
 it remains partially understood. Macrosegregation is often  the consequence of several factors at the scale of a casting, all related to microsegregation happening at the scale
@@ -8,21 +7,21 @@ of dendrites. Today, research in metallurgy focuses on a deeper understanding of
 Solidification is not only a phase change, but also a complex transformation involving small scales like nucleation, medium scales
 like grains growth and large scales like convection in the melt. From the nucleation theory to the mechanical behavior of metals, intricate phenomena combine to form defects in the final product. This has been seen in casting processes, such as continuous casting and ingot casting. Surface and volume porosity, hot tearing and composition heterogeneity are known defects to the casting community. After a brief introduction of these defects, macrosegregation will be the focus of this dissertation.
 
-\section*{Casting defects}
+\section{Casting defects}
 Undesired effects are inevitable in any industrial process. More importantly, a lot of defects in the casting industry can be disastrous in some situations where the cast product is not serviceable and hence rejected. This leads to a systematic product recycling, i.e. the product is ditched to be reheated, remelted and then cast again. From an economic point view, the operation is expensive timewise and profitwise. Understanding and preventing defects when possible, is thus crucial in the casting industry.
 We focus hereafter on the main encountered defects.
 
-\subsection*{Hot tearing}
+\subsection*{Hot tearing} 
 This defect, also denoted solidification cracking or hot cracking, occurs in the mushy zone at high solid fractions when a failure
 or crack appears at specific locations, the hot spots. The temperature range in which the steel is vulnerable to hot tearing is known as the brittleness temperature range (BTR). It corresponds to solid fractions greater than \num{90}\%, with the liquid phase forming a discontinuous film (\red{FIGURE A}). Many factors can cause the failure, but the main origin is a lack of liquid feeding required to compensate for the solidification shrinkage, in the presence of thermal stresses in the mushy region. Therefore, a crack initiates then propagates in the casting (\red{FIGURE B}). 
 
 \subsection*{Porosity}
-\url{http://www.afsinc.org/about/content.cfm?ItemNumber=6933} \\
-\url{http://en.wikipedia.org/wiki/Casting_defect} \\
+%reference: \url{http://www.afsinc.org/about/content.cfm?ItemNumber=6933} \\
+%reference: \url{http://en.wikipedia.org/wiki/Casting_defect} \\
 Porosity is a void defect formed inside the casting or at the outer surface. It may attributed to two different factors.
 Firstly, we speak of \emph{shrinkage porosity}, when a void forms as a result of density differences between the interdendritic liquid and solid
 network, the latter being denser than the former. It is basically, the same reason that initiates hot cracks. 
-The second factor is the presence of dissolved gaseous phases in the melt. According to \citet{dantzig_solidification_2009}, these gases may be initially in the melt, or created by the reaction between the metal and water found in the air or at trapped in grooves at the molds surface. If the decreasing temperature and pressure drop in the liquid are large enough, the latter becomes supersaturated. Consequently, the nucleation of gaseous phase is triggered (just like when you open a cold bottle of coca-cola!).
+The second factor is the presence of dissolved gaseous phases in the melt. According to \citet{dantzig_solidification_2009}, these gases may be initially in the melt, or created by the reaction between the metal and water found in the air or at trapped in grooves at the moulds surface. If the decreasing temperature and pressure drop in the liquid are large enough, the latter becomes supersaturated. Consequently, the nucleation of gaseous phase is triggered (just like when you open a cold bottle of coca-cola!).
 \comment{Here goes the porosity figure}
 
 \subsection*{Freckles and segregated channels} 
@@ -38,10 +37,10 @@ In principle, macrosegreation stems from the same causes of freckles and segrega
 Beckermann review 2000 or the big review article by rappaz, rohit, beckermann ...}
 \comment{DO NOT GIVE ALL THE INFORMATION HERE, REFER TO CHAPTER 1 (details about macrosegregation modelling: miha zalonik Oleron presentation)}
 
-\section*{Industrial Worries}
+\section{Industrial Worries}
 \textbf{Steel production} has continuously increased over the years to meet the industrial needs. \autoref{fig:steel_production} shows this increase between 1980 and 2013 with a 
-clear dominance of the chinese production. Quality constraints have also increased where specific grades of steel are needed in critical applications such as megastructures
-in construction and  heavy machinery. Therefore, the presented defects should be avoided as much as possible during the casting process. As such, steelmakers have been investing
+clear dominance of the Chinese production. Quality constraints have also increased where specific grades of steel are needed in critical applications such as mega-structures
+in construction and  heavy machinery. Therefore, alloys with defects are considered vulnerable and should be avoided as much as possible during the casting process. As such, steelmakers have been investing
 in research, with the aim of understanding better the phenomena leading to casting problems, and improve the processes when possible.
 
 \begin{figure}[!h]
@@ -79,12 +78,12 @@ in research, with the aim of understanding better the phenomena leading to casti
 \label{fig:steel_production}
 \end{figure}
 
-\textbf{Simulation software } dedicated to alloy casting is one of the main research investments undertaken by steelmakers. These tools coming from academic research
-are actively used to optimize the process. However, few are the tools that take into account the casting envionment. For instance, the continuous casting process, in
+\textbf{Simulation software} dedicated to alloy casting is one of the main research investments undertaken by steelmakers. These tools coming from academic research
+are actively used to optimize the process. However, few are the tools that take into account the casting environment. For instance, the continuous casting process, in
 \autoref{fig:cc_process}, is a chain process where the last steps involve rolls, water sprays and other components. A dedicated software is one that can provide the
-geometric requirements with suitable meshing capbilities, as well as respond to metallurgical and mechanical requirements, mainly:
+geometric requirements with suitable meshing capabilities, as well as respond to metallurgical and mechanical requirements, mainly:
 \begin{itemize}
-\item handling molds and their interaction with the alloy (thermal resistances ...)
+\item handling moulds and their interaction with the alloy (thermal resistances ...)
 \item handling alloy filling and predicting velocity in the liquid and mushy zone
 \item handling thermomechanical stresses in the solid
 \item handling multicomponent alloys and predicting macrosegregation
@@ -94,8 +93,8 @@ geometric requirements with suitable meshing capbilities, as well as respond to 
 
 These requirements are not met in a single software package. Nevertheless, \thercast is a promising tool that already 
 handles a part of the above points. The current thesis developments are done using C++ language as a part of the
-in-house code, known as \cimlib. This fully parallel library is the main academic research support for \thercast.
-\comment{Add Digonnet reference for Cimlib}
+in-house code, known as \cimlib \citep{digonnet_cimlib:_2007, mesri_advanced_2009}. 
+This fully parallel library is the main academic research support for \thercast.
 
 \begin{figure}
 	\centering
@@ -103,31 +102,54 @@ in-house code, known as \cimlib. This fully parallel library is the main academi
 	%\import{Chapter0/Graphics/}{cc_process.pdf_tex}
 	\includegraphics[width=\textwidth]{Chapter0/Graphics/cc_process}
 \caption{Main steps in a continuous casting plant}
-%source: http://bremen.arcelormittal.com/produktionsablauf_animiert.html?&L=1
+
 \label{fig:cc_process}
 \end{figure}
 
-
-\section*{\ccemlcc project}
-
+\section{\ccemlcc project}
 Since its foundation in 1975, the European Space Agency (ESA) has been actively committed in the research field.
 Their areas of activity cover not only exclusive space applications, but also fundamental science related to 
-physics and other disciplines. This thesis is part of the ESA project entitled \ccemlcc, abbreviating
+physics and other disciplines. This thesis takes part of the ESA project entitled \ccemlcc, abbreviating
 "\textbf{C}hill \textbf{C}ooling for the \textbf{E}lectro-\textbf{M}agnetic \textbf{L}evitator in relation with 
 \textbf{C}ontinuous \textbf{C}asting of steel".
 The three-year contract from 2011 to 2014 denoted \ccemlcc II, was preceded by an initial project phase, \ccemlcc I,
 from 2007 to 2010. The main focus is studying containerless solidification of steel under microgravity conditions. 
-Moreover, a chill plate is used to extract heat from the droplet, simulating the effect of the alloy contact with the 
-CEMEF contributed to the work by proposing numerical models and simulation tools in 
-view of predicting the chill cooling of steel droplets. A first model was developed by \citet{rivaux_simulation_2011} whereas
-the present discusses a new model. The experimental work considered various facilities and environments 
-to set a droplet of molten alloy in levitation: electromagnetic levitation (EML) for ground-based experiments, microgravity 
-in parabolic flight or sounding rockets and last, microgravity condition on-board the International Space Station (ISS)
-\comment{DLR droplet EML photo}
+A chill plate is used to extract heat from the alloy, simulating the contact effect with a mould in continuous casting
+or ingot casting.
+CEMEF contributed to the work by proposing numerical models and simulation tools in view of predicting the chill cooling of steel droplets. 
+A first model was developed by \citet{rivaux_simulation_2011} whereas the present discusses a new model. 
+The experimental work considered various facilities and environments to set a droplet of molten alloy in levitation: electromagnetic levitation (EML) 
+for ground-based experiments, microgravity in parabolic flight or sounding rockets and last, microgravity condition on-board the International Space Station (ISS)
+
+\begin{figureth}
+% textwidth 
+{0.5}
+%path 
+{Chapter0/Graphics/eml1.jpg}
+% caption
+{Electromagnetic levitation}
+% label
+{eml}
+\end{figureth}
+
 \comment{in what ways does this project tries to alleviate the aforementionned problems ?
 The two phases of CCEMLCC, together with the newly coming \ccemlcc III, aim to shape our understanding
 of solidification with thermo-mechanical stresses under microgravity conditions.}
 
+
+\section{Objectives and strategy}
+Goals of the thesis \\ 
+Numerical tools: Cimlib relying on PETSc, parallelized with MPICH2, paraview and python as tools for postprocess and analysis. \\
+Novelty of the work
+\begin{itemize}
+\item solidification model with level set air-metal +darcy in the metal
+\item Tracking of the interface induced by shrinkage
+\end{itemize}
+Each chapter content
+
+\subsection*{Biblio test}
+\citet{carozzani_direct_2013} is textual \\
+\citep{carozzani_direct_2013} is parenthetical \\
 %\section*{Trying \emph{SIUNITX}}
 %Here i wana test the SI units package via the commands \num{.3e45} and the unit \si{\kilo\metre}
 %then i wanted to see if we combine both via \SI{.3e45}{\kilo\metre} then finally my personal command

@@ -34,7 +34,7 @@
 							url=true, doi=false, sorting=nyt, minnames=1, maxcitenames=2, maxbibnames=2, 
 							alldates=short, punctfont=true, autopunct=false, block=none, dashed=false}
 
-\addbibresource{References/desktop_library.bib}
+\addbibresource{References/zotero_library.bib}
 
 % Spacing
 \setlength{\bibitemsep}{15pt} %vertical spacing
@@ -147,7 +147,7 @@ or
 %\usepackage[perpage]{footmisc} %Range of footnote options 
 
 \usepackage{fancyhdr}
-\renewcommand{\sectionmark}[1]{\markright{\thesection\ #1}}
+\renewcommand{\sectionmark}[1]{\markright{#1}}  %\markright{\thesection\ #1}
 \pagestyle{fancy}
 	\fancyhf{}
 	\renewcommand{\headrulewidth}{0.4pt}
@@ -359,12 +359,28 @@ or
 \newenvironment{nolinkcolors}[1]{\begingroup \hypersetup{hidelinks}  #1 }{\endgroup}
 
 %% Dorian Depriester: Figures centrées, et en position 'here, top, bottom or page'
-\newenvironment{figureth}{
+\newenvironment{figureth}[4]{
 		\begin{figure}[htbp]
 			\centering
+			\includegraphics[width=#1\textwidth]{#2}
+			\caption{#3}
+			\label{fig:#4}
 	}{
 		\end{figure}
 		}
+
+% USE LIKE THIS	
+%\begin{figureth}
+% textwidth 
+%{•}
+%path 
+%{•}
+% caption
+%{•}
+% label
+%{•}
+%\end{figureth}
+
 %**********
 %% Tableaux centrés, et en position 'here, top, bottom or page'
 \newenvironment{tableth}{
