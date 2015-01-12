@@ -113,13 +113,16 @@ They can be observed on the ingot's surface, as well as in the volume.
     \label{fig:freckle2}
   \end{subfigure}
    %------------
-\caption{Freckles in directional casting of nickel base superalloys} 
+\caption{Freckles in directional casting of nickel-base superalloys} 
 \label{fig:freckle}
 \end{figure}
 %-------------------------------------------------------------------------------------------------------------------------------------------------
 \section{Macrosegregation}
-Macrosegreation generally stems from a liquid flow transporting chemical species. Therefore, a non uniform composition could be observed on the scale 
-of a casting, up to several meters in length. 
+Macrosegreation generally stems from a solubility difference between a liquid phase and one or more solid phases, along with
+a relative velocity between these phases. While the former is responsible for local solute enrichment or depletion, the latter
+will create the composition heterogeneity on a scale much larger than just a few dendrites.
+% http://dictionary.cambridge.org/grammar/british-grammar/little-a-little-few-a-few
+This is why macrosegregation could be observed on the scale of a casting, up to several meters in length. 
 %--------------------------------------------------------
 \subsection{Types}
 \subsubsection*{Continuous casting}
@@ -128,7 +131,7 @@ of a casting, up to several meters in length.
 \subsection{Causes}
 Four main factors can (simultaneously) cause fluid flow leading to macrosegregation:
 \subsubsection*{Liquid dynamics}
-During solidification, thermal and solutal gradients induce density gradients in the liquid phase: 
+During solidification, thermal and solutal gradients result in density gradients in the liquid phase: 
 \begin{subequations}
 \begin{align}
 \label{eq:rholiq}
@@ -147,10 +150,12 @@ The slopes defining such variations are respectively the thermal expansion coeff
 & \betawil = -\frac{1}{\rhoref} \brac{\frac{\partial \rhol}{\partial \wil}}  
 \end{align}
 \end{subequations}
+The linear fit assumes also that the density takes a reference value, $\rhoref$, when temperature and liquid composition reach reference values, respectively
+$\Tref$ and $\wilref$. However, in a full equilibrium situation, it is possible, even preferred, to work with real density values instead of a linear fit, by using a suitable thermodynamic database. Such possibility will be discussed later in the manuscript (cf. SECTION TODO ) %TODO 
 In the presence of gravity, the density gradient (\cref{eq:gradrholiq}) causes thermosolutal convection in the liquid bulk and a subsequent macrosegregation.
  
 \subsubsection*{Solidification shrinkage}
-Solid alloys have a greater density than the liquid phase ($\rhos > \rhol$), thus occupy less volume. Upon solidification, the liquid moves towards the solidification front to compensate for the volume difference. In contrast to liquid convection, shrinkage flow causes macrosegregation even without gravity.
+Solid alloys have a greater density than the liquid phase ($\rhos > \rhol$), thus occupy less volume. Upon solidification, the liquid moves towards the solidification front to compensate for the volume difference. In contrast to liquid convection, shrinkage flow may cause macrosegregation even without gravity.
 
 \subsubsection*{Movement of equiaxed grains} 
 Equiaxed grains can grow in the liquid bulk where thermal gradients are weak, or in the presence of inoculants. Consequently, 
