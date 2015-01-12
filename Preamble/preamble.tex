@@ -381,6 +381,13 @@ or
 %{•}
 %\end{figureth}
 
+\newenvironment{figurethmulti}{
+		\begin{figure}[htbp]
+			\centering
+	}{
+		\end{figure}
+		}
+
 %**********
 %% Tableaux centrés, et en position 'here, top, bottom or page'
 \newenvironment{tableth}{
@@ -391,10 +398,13 @@ or
 		\end{table}
 		}
 %**********	
-\newenvironment{subfigureth}[1]{
-	\begin{subfigure}[t]{#1}
-	\centering
-}{
-	\end{subfigure}
-}
+\newenvironment{subfigureth}[2]{
+		\begin{subfigure}[t]
+			\centering
+			\includegraphics[width=#1\textwidth]{#2}
+			%\caption{#3}
+			%\label{fig:#4}
+	}{
+		\end{subfigure}
+		}
 %**********	

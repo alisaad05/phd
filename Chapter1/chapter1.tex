@@ -24,12 +24,8 @@ while going from the liquid state to the solid state, in contact with the surrou
 
 \section{Eulerian, Langrangian or ALE}
 Define the first two configurations, advantages and limitations (thèse Greg Puaux)
-Then talk about ALE combining both advantages and the applications of this method.
-
-\section{Mutliscale modelling}
-what are the Modelling scales of these physics ? direct (micro: phase field / macro: CA) 
-and indirect (micro Nancy models / macro: current FE model) + Overview of these models ??
-\comment{Maybe worth showing the 2x2 table that CAG showed at the ICASP conference ?}
+Then talk about ALE combining both advantages and the applications of this method. \\
+Say that henceforth the eulerian framework will be the interst of this study because we have mainly a fluid and a non deformable solid, which justifies the choice
 
 
 \section{Standard models: without level set}
@@ -67,13 +63,22 @@ Aside from the welding applications, check these articles
 
 MESO MACRO: Shijia Chen (CAFE+LS)
 
-\subsection{The level set method (LSM)}
+\section{The level set method (LSM)}
 How it is defined, Heaviside, mixing laws, transport and reinitialization
 \comment{ in the article 2004SunBeckermann, in the introduction there is a small discussion
 about the importance of the diffuse interface thickness, check references 3 and 10}
+\subsection{Transport and reiniliaztion}
+
 \subsection{Interface Remeshing}
 Importance when using a static level set and more importantly when LS is transported,
 influence of mixing area \emph{thickness} and \emph{resolution} (i.e. nb of nodes with the area),
 Isotropic or anisotropic ? the first is more important to composition calculation while the second
 is more relevant if we mean do thermohydraulics without macrosegregation
 
+\subsection{Mixing Laws}
+
+
+\section{Modelling macrosegreation}
+\subsection{Microsegregtion model}
+\subsection{Volume averaging}
+\subsection{Macroscopic model}
