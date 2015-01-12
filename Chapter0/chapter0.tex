@@ -1,28 +1,48 @@
 \chapter{General Introduction}
 %\addstarredchapter{General Introduction}
-
+%-------------------------------------------------------------------------------------------------------------------------------------------------
 \textbf{Macrosegregation} is a very known defect to metallurgical processes. Despite a great evolution achieved by active research during the last 60 years,
 it remains partially understood. Macrosegregation is often  the consequence of several factors at the scale of a casting, all related to \emph{microsegregation} happening at the scale
 of dendrites. Today, research in metallurgy focuses on a deeper understanding of such a connection between the different physical scales.
 Solidification is not only a phase change, but also a complex transformation involving small scales like nucleation, medium scales
-like grains growth and large scales like convection in the melt. From the nucleation theory to the mechanical behavior of metals, intricate phenomena combine to form defects in the final product. This has been seen in casting processes, such as continuous casting and ingot casting. Surface and volume porosity, hot tearing and composition heterogeneity are known defects to the casting community. After a brief introduction of these defects, macrosegregation will be the focus of this dissertation.
+like grains growth and large scales like convection in the melt. From the nucleation theory to the mechanical behavior of metals, intricate phenomena combine to form defects in the final product. This has been seen in casting processes, such as continuous casting (\cref{fig:cc_process}) and ingot casting. Surface and volume porosity, hot tearing and composition heterogeneity are known defects to the casting community. After a brief introduction of these defects, macrosegregation will be the focus of this dissertation. 
 
+\begin{figureth}
+% textwidth 
+{1.0}
+%path 
+{Chapter0/Graphics/cc_process}
+% caption
+{Main steps in a continuous casting plant}
+% label
+{cc_process}
+\end{figureth}
+%-------------------------------------------------------------------------------------------------------------------------------------------------
 \section{Casting defects}
-Undesired effects are inevitable in any industrial process. More importantly, a lot of defects in the casting industry can be disastrous in some situations where the cast product is not serviceable and hence rejected. This leads to a systematic product recycling, i.e. the product is ditched to be reheated, remelted and then cast again. From an economic point view, the operation is expensive timewise and profitwise. Understanding and preventing defects when possible, is thus crucial in the casting industry.
-We focus hereafter on the main encountered defects.
-
+Undesired effects are inevitable in any industrial process. More importantly, a lot of defects in the casting industry can be disastrous in some situations where the cast product is not serviceable and hence rejected. This leads to a systematic product recycling, i.e. the product is ditched to be reheated, remelted and then cast again. From an economic point view, the operation is expensive timewise and profitwise. Understanding and preventing defects when possible, is thus crucial in the casting industry. We focus hereafter on the main encountered defects.
+%-------------------------------------------------------------------------------------------------------------------------------------------------
 \subsection*{Hot tearing} 
 This defect, also denoted solidification cracking or hot cracking, occurs in the mushy zone at high solid fractions when a failure
-or crack appears at specific locations, the hot spots. The temperature range in which the steel is vulnerable to hot tearing is known as the brittleness temperature range (BTR). It corresponds to solid fractions greater than \num{90}\%, with the liquid phase forming a discontinuous film. Many factors can cause the failure, but the main origin is a lack of liquid feeding required to compensate for the solidification shrinkage, in the presence of thermal stresses in the mushy region. Therefore, a crack initiates then propagates in the casting. 
-
+or crack appears at specific locations, the hot spots. The temperature range in which the steel is vulnerable to hot tearing is known as the brittleness temperature range (BTR). It corresponds to solid fractions greater than \num{90}\%, with the liquid phase forming a discontinuous film. Many factors can cause the failure, but the main origin is a lack of liquid feeding required to compensate for the solidification shrinkage, in the presence of thermal stresses in the mushy region. Therefore, a crack initiates then propagates in the casting, as shown in \cref{fig:hottearing}. 
+\begin{figureth}
+% hottearing1: JM drezet, GDR 2013 Lausanne, contraintes residuelles.
+% textwidth 
+{0.4}
+%path 
+{Chapter0/Graphics/hottearing1.png}
+% caption
+{Crack in an aluminium slab}
+% label
+{hottearing}
+\end{figureth}
+%-------------------------------------------------------------------------------------------------------------------------------------------------
 \subsection*{Porosity}
 %reference: \url{http://www.afsinc.org/about/content.cfm?ItemNumber=6933} \\
 %reference: \url{http://en.wikipedia.org/wiki/Casting_defect} \\
 Porosity is a void defect formed inside the casting or at the outer surface. It may attributed to two different factors.
 Firstly, we speak of \emph{shrinkage porosity}, when a void forms as a result of density differences between the interdendritic liquid and solid
-network, the latter being denser than the former. It is basically, the same reason that initiates hot cracks. 
-The second factor is the presence of dissolved gaseous phases in the melt. According to \citet{dantzig_solidification_2009}, these gases may be initially in the melt, or created by the reaction between the metal and water found in the air or at trapped in grooves at the moulds surface. If the decreasing temperature and pressure drop in the liquid are large enough, the latter becomes supersaturated. Consequently, the nucleation of gaseous phase is triggered (just like when you open a cold bottle of coca-cola!).
-
+network, the latter being denser than the former (\cref{fig:porosity3,fig:porosity4}). It is basically, the same reason that initiates hot cracks. 
+The second factor is the presence of dissolved gaseous phases in the melt (\cref{fig:porosity1,fig:porosity2}). According to \citet{dantzig_solidification_2009}, these gases may be initially in the melt, or created by the reaction between the metal and water found in the air or at trapped in grooves at the moulds surface. If the decreasing temperature and pressure drop in the liquid are large enough, the latter becomes supersaturated. Consequently, the nucleation of gaseous phase is triggered (just like when you a cold bottle of coca-cola is opened !).
 \begin{figure}[h!] %h!
 %Porosity1-2: http://www.afsinc.org/about/content.cfm?ItemNumber=6933
 %Porosity3: http://www.weldreality.com/aluminumalloys.htm
@@ -64,7 +84,7 @@ The second factor is the presence of dissolved gaseous phases in the melt. Accor
 \caption{Examples of porosity in casting and welding} 
 \label{fig:porosity}
 \end{figure}
-
+%-------------------------------------------------------------------------------------------------------------------------------------------------
 \subsection*{Freckles or segregated channels} 
 The origin of this defect is microsegregation combined with gravity forces. They may appear 
 in all casting processes, but are very specific to directional chill casting \citep{giamei_nature_1970}, mainly vertical chill casting.
@@ -75,40 +95,72 @@ Segregation takes place at a medium scale (ranging from the scale of a few dendr
 hence forms "long and narrow trails" as described by \citet{felicelli_simulation_1991}. Freckles are 
 frequently formed by small equiaxed grains, probably caused by a uniform temperature gradient that settles as the channels become richer in solute. 
 They can be observed on the ingot's surface, as well as in the volume.
-
+\begin{figure}[b!] 
+\centering
+   %------------
+  \begin{subfigure}[t]{0.2\textwidth}
+    \centering
+	\includegraphics[width=\textwidth]{Chapter0/Graphics/freckle1.png}
+	\caption{WRITE}
+    \label{fig:freckle1}
+  \end{subfigure}
+   %------------
+   \hspace{2cm}
+   \begin{subfigure}[t]{0.2\textwidth}
+    \centering
+	\includegraphics[width=\textwidth]{Chapter0/Graphics/freckle2.png}
+	\caption{WRITE}
+    \label{fig:freckle2}
+  \end{subfigure}
+   %------------
+\caption{Freckles in directional casting of nickel base superalloys} 
+\label{fig:freckle}
+\end{figure}
+%-------------------------------------------------------------------------------------------------------------------------------------------------
 \section{Macrosegregation}
 Macrosegreation generally stems from a liquid flow transporting chemical species. Therefore, a non uniform composition could be observed on the scale 
 of a casting, up to several meters in length. 
+%--------------------------------------------------------
 \subsection{Types}
 \subsubsection*{Continuous casting}
 \subsubsection*{Ingot casting}
-
+%--------------------------------------------------------
 \subsection{Causes}
 Four main factors can (simultaneously) cause fluid flow leading to macrosegregation:
-
 \subsubsection*{Liquid dynamics}
 During solidification, thermal and solutal gradients induce density gradients in the liquid phase: 
 \begin{subequations}
 \begin{align}
+\label{eq:rholiq}
 & \rhol = \rhoref ( 1 - \betaT (T - \Tref) - \sum_{i} \betawil (\wil - \wilref) )  \\ 
-& \nabvec\rhol = -\rhoref (  \betaT \nabvec T + \sum_{i} \betawil \nabvec\wil  )  
+\label{eq:gradrholiq}
+& \nabvec\rhol = -\rhoref (  \betaT \nabvec T + \sum_{i} \betawil \nabvec\wil  )
 \end{align}
 \end{subequations}
-In the presence of gravity, the density gradient causes thermosolutal convection redistributing solutes in the liquid bulk.
+In \cref{eq:rholiq}, density is assumed to vary linearly with temperature and phase composition for each chemical species (index $i$).
+The slopes defining such variations are respectively the thermal expansion coefficient $\betaT$ and solutal expansion coefficient $\betawil$, given by \citep{kohler_peritectic_2008}:
+\begin{subequations}
+\begin{align}
+\label{eq:betaT}
+& \betaT =  -\frac{1}{\rhoref} \brac{\frac{\partial\rhol}{\partial T}}  \\ 
+\label{eq:betawil}
+& \betawil = -\frac{1}{\rhoref} \brac{\frac{\partial \rhol}{\partial \wil}}  
+\end{align}
+\end{subequations}
+In the presence of gravity, the density gradient (\cref{eq:gradrholiq}) causes thermosolutal convection in the liquid bulk and a subsequent macrosegregation.
  
 \subsubsection*{Solidification shrinkage}
-Solid alloys have a greater density than the liquid phase ($\rhos > \rhol$), thus occupy less volume. Upon solidification, the liquid moves towards the solidification front 
-to compensate for the volume difference. Shrinkage flow can occur even without gravity.
+Solid alloys have a greater density than the liquid phase ($\rhos > \rhol$), thus occupy less volume. Upon solidification, the liquid moves towards the solidification front to compensate for the volume difference. In contrast to liquid convection, shrinkage flow causes macrosegregation even without gravity.
 
 \subsubsection*{Movement of equiaxed grains} 
 Equiaxed grains can grow in the liquid bulk where thermal gradients are weak, or in the presence of inoculants. Consequently, 
 they are transported by the flow (floating or sedimenting, depending on their density) which leads to negative macrosegregation in their final position.
 
-\subsubsection{Deformation of the solid} 
-Compression and bulging are common in continuous casting ....
+\subsubsection{Solid deformation} 
+This factor is often found in continuous casting where the stresses induced by the rolls on the semi-solid
 
 \section{Industrial Worries}
-\textbf{Steel production} has continuously increased over the years to meet the industrial needs. \autoref{fig:steel_production} shows this increase between 1980 and 2013 with a 
+\textbf{Steel production} has continuously increased over the years to meet the industrial needs. \cref{fig:steel_production} shows this increase between 1980 and 2013 with a 
 clear dominance of the Chinese production. Quality constraints have also increased where specific grades of steel are needed in critical applications such as mega-structures
 in construction and  heavy machinery. Therefore, alloys with defects are considered vulnerable and should be avoided as much as possible during the casting process. As such, steelmakers have been investing
 in research, with the aim of understanding better the phenomena leading to casting problems, and improve the processes when possible.
@@ -150,7 +202,7 @@ in research, with the aim of understanding better the phenomena leading to casti
 
 \textbf{Simulation software} dedicated to alloy casting is one of the main research investments undertaken by steelmakers. These tools coming from academic research
 are actively used to optimize the process. However, few are the tools that take into account the casting environment. For instance, the continuous casting process, in
-\autoref{fig:cc_process}, is a chain process where the last steps involve rolls, water sprays and other components. A dedicated software is one that can provide the
+\cref{fig:cc_process}, is a chain process where the last steps involve rolls, water sprays and other components. A dedicated software is one that can provide the
 geometric requirements with suitable meshing capabilities, as well as respond to metallurgical and mechanical requirements, mainly:
 \begin{itemize}
 \item handling moulds and their interaction with the alloy (thermal resistances ...)
@@ -160,22 +212,9 @@ geometric requirements with suitable meshing capabilities, as well as respond to
 \item handling finite solute diffusion in solid phases
 \item handling real alloy properties (not just constant thermophysical/thermomechanical properties)
 \end{itemize}
-
-\begin{figureth}
-% textwidth 
-{1.0}
-%path 
-{Chapter0/Graphics/cc_process}
-% caption
-{Main steps in a continuous casting plant}
-% label
-{cc_process}
-\end{figureth}
-
-
+%-------------------------------------------------------------------------------------------------------------------------------------------------
 \section{Objectives and outline}
-
-
+%--------------------------------------------------------
 \subsection*{\ccemlcc project}
 Since its foundation in 1975, the European Space Agency (ESA) has been actively committed in the research field.
 Their areas of activity cover not only exclusive space applications, but also fundamental science related to 
@@ -193,7 +232,7 @@ for ground-based experiments, microgravity in parabolic flight or sounding rocke
 
 \begin{figureth}
 % textwidth 
-{0.75}
+{0.5}
 %path 
 {Chapter0/Graphics/eml1.jpg}
 % caption
@@ -205,8 +244,7 @@ for ground-based experiments, microgravity in parabolic flight or sounding rocke
 \comment{in what ways does this project tries to alleviate the aforementionned problems ?
 The two phases of CCEMLCC, together with the newly coming \ccemlcc III, aim to shape our understanding
 of solidification with thermo-mechanical stresses under microgravity conditions.}
-
-
+%-------------------------------------------------------------------------------------------------------------------------------------------------
 Numerical tools: Cimlib relying on PETSc, parallelized with MPICH2, paraview and python as tools for postprocess and analysis. \\
 The previously mentionned simulation requirements are not met in a single casting software package. Nevertheless, \thercast is a promising tool that already 
 handles a part of the above points. The current thesis developments are done using C++ language as a part of the
@@ -219,10 +257,24 @@ Aims of this research (+novelty of the work)\\
 \item Tracking of the interface induced by shrinkage
 \end{itemize}
 Each chapter content
-
+%--------------------------------------------------------
 \subsection*{Biblio test}
 \citet{carozzani_direct_2013} is textual \\
 \citep{carozzani_direct_2013} is parenthetical \\
+%--------------------------------------------------------
+\subsection*{Cross reference test}
+ref gives \ref{eq:betaT} \\
+cref gives \cref{eq:betaT} \\
+Cref gives \Cref{eq:betaT} \\
+autoref gives \autoref{eq:betaT} \\
+
+
+ref gives \ref{fig:porosity1} \\
+cref gives \cref{fig:porosity1} \\
+Cref gives \Cref{fig:porosity1} \\
+autoref gives \autoref{fig:porosity1} \\
+
+
 %\section*{Trying \emph{SIUNITX}}
 %Here i wana test the SI units package via the commands \num{.3e45} and the unit \si{\kilo\metre}
 %then i wanted to see if we combine both via \SI{.3e45}{\kilo\metre} then finally my personal command
