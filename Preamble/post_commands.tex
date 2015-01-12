@@ -4,7 +4,7 @@
 \DeclareSIUnit\uvelocity{\metre \per \second}
 \DeclareSIUnit\uviscosity{\pascal \second}
 \DeclareSIUnit\ubetaT{\per \kelvin}
-\DeclareSIUnit\ubetaWl{\per \ucomposition}
+\DeclareSIUnit\ubetawl{\per \ucomposition}
 \DeclareSIUnit\udiffusivity{\metre \squared \per \second}
 \DeclareSIUnit\uconductivity{\watt \per \metre \per \kelvin}
 \DeclareSIUnit\uhconvec{\watt\per \square \metre \per \kelvin}
@@ -58,14 +58,19 @@
 \newcommand\Tkinit{\ensuremath{T^{\brac{k=0}}}}
 \newcommand\Hk{\ensuremath{\rh^{\brac{k}}}}
 \newcommand\Hkinit{\ensuremath{\rh^{\brac{k=0}}}}
-\newcommand\Rref{\ensuremath{\rho_{\text{ref}}}}
-\newcommand\Tref{\ensuremath{T_{\text{ref}}}}
-\newcommand\Wlref{\ensuremath{w_{\text{ref}}^l}}
+
+%TODO :redundant defnitions rhoref and rref
+\newcommand\rhoref{\ensuremath{\rho_{\text{ref}}}}
 \newcommand\rref{\ensuremath{\rho_{\text{ref}}}}
+
+\newcommand\Tref{\ensuremath{T_{\text{ref}}}}
+\newcommand\wlref{\ensuremath{w_{\text{ref}}^l}}
+\newcommand\wilref{\ensuremath{\wi_{\text{ref}}^l}}
 \newcommand\betaT{\ensuremath{\beta_T}}
-\newcommand\betaWl{\ensuremath{\beta_{\wl}}}
-\newcommand\betaWlC{\ensuremath{\beta_{\avg{w_\text{C}}^l}}}
-\newcommand\betaWlCR{\ensuremath{\beta_{\avg{w_\text{Cr}}^l}}}
+\newcommand\betawl{\ensuremath{\beta_{\wl}}}
+\newcommand\betawil{\ensuremath{\beta_{\wil}}}
+\newcommand\betawlC{\ensuremath{\beta_{\avg{w_\text{C}}^l}}}
+\newcommand\betawlCR{\ensuremath{\beta_{\avg{w_\text{Cr}}^l}}}
 
 \newcommand\wavg{\ensuremath{\avg{w}}}
 \newcommand\wC{\ensuremath{\avg{w_\text{C}}}}

@@ -79,22 +79,33 @@ They can be observed on the ingot's surface, as well as in the volume.
 \section{Macrosegregation}
 Macrosegreation generally stems from a liquid flow transporting chemical species. Therefore, a non uniform composition could be observed on the scale 
 of a casting, up to several meters in length. 
-\section{Types}
+\subsection{Types}
 \subsubsection*{Continuous casting}
 \subsubsection*{Ingot casting}
 
-\section{Causes}
+\subsection{Causes}
 Four main factors can (simultaneously) cause fluid flow leading to macrosegregation:
-\subsubsection*{convection}
- Convection in the liquid can be driven by thermal and solutal gradients in the presence of gravity.
-\subsubsection*{Movement of equiaxed grains} 
-When thermal gradients are weak, or in the presence of inoculants, equiaxed grains can nucleate and grow in the liquid bulk. Being denser than the latter, they tend to fall
-or move inside the liquid, transporting solute in their way.
+
+\subsubsection*{Liquid dynamics}
+During solidification, thermal and solutal gradients induce density gradients in the liquid phase: 
+\begin{subequations}
+\begin{align}
+& \rhol = \rhoref ( 1 - \betaT (T - \Tref) - \sum_{i} \betawil (\wil - \wilref) )  \\ 
+& \nabvec\rhol = -\rhoref (  \betaT \nabvec T + \sum_{i} \betawil \nabvec\wil  )  
+\end{align}
+\end{subequations}
+In the presence of gravity, the density gradient causes thermosolutal convection redistributing solutes in the liquid bulk.
+ 
 \subsubsection*{Solidification shrinkage}
-One may globally speak about \emph{shrinkage flow} caused by solidification shrinkage
-and thermal contraction. The first type occurs in the mushy zone where the newly formed solid occupies a smaller volume than...
+Solid alloys have a greater density than the liquid phase ($\rhos > \rhol$), thus occupy less volume. Upon solidification, the liquid moves towards the solidification front 
+to compensate for the volume difference. Shrinkage flow can occur even without gravity.
+
+\subsubsection*{Movement of equiaxed grains} 
+Equiaxed grains can grow in the liquid bulk where thermal gradients are weak, or in the presence of inoculants. Consequently, 
+they are transported by the flow (floating or sedimenting, depending on their density) which leads to negative macrosegregation in their final position.
+
 \subsubsection{Deformation of the solid} 
-Compression and bulging are common in continous casting ....
+Compression and bulging are common in continuous casting ....
 
 \section{Industrial Worries}
 \textbf{Steel production} has continuously increased over the years to meet the industrial needs. \autoref{fig:steel_production} shows this increase between 1980 and 2013 with a 
