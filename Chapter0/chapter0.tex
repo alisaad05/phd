@@ -49,15 +49,15 @@ The second factor is the presence of dissolved gaseous phases in the melt (\cref
 %Porosity4: http://www.esab.com/global/en/education/new-lean-duplex-steels.cfm
 \centering
    %------------
-  \begin{subfigure}[t]{0.25\textwidth}
+  \begin{subfigure}[t]{0.3\textwidth}
     \centering
 	\includegraphics[width=\textwidth]{Chapter0/Graphics/porosity1.jpg}
 	\caption{Gas porosity in casting}
     \label{fig:porosity1}
   \end{subfigure}
    %------------
-   \hspace{2cm}
-   \begin{subfigure}[t]{0.25\textwidth}
+   \hspace{1cm}
+   \begin{subfigure}[t]{0.3\textwidth}
     \centering
 	\includegraphics[width=\textwidth]{Chapter0/Graphics/porosity2.jpg}
 	\caption{Shrinkage porosity}
@@ -66,15 +66,15 @@ The second factor is the presence of dissolved gaseous phases in the melt (\cref
   %------------------------------
   \vskip\baselineskip
   %------------------------------
-  \begin{subfigure}[t]{0.25\textwidth}
+  \begin{subfigure}[t]{0.3\textwidth}
     \centering
 	\includegraphics[width=\textwidth]{Chapter0/Graphics/porosity3.jpg}
 	\caption{Gas porosity in aluminium welding}
     \label{fig:porosity3}
   \end{subfigure}
    %------------
-  \hspace{2cm}
-   \begin{subfigure}[t]{0.25\textwidth}
+  \hspace{1cm}
+   \begin{subfigure}[t]{0.3\textwidth}
     \centering
 	\includegraphics[width=\textwidth]{Chapter0/Graphics/porosity4.jpg}
 	\caption{Xray of volume void inside welded duplex steel}
@@ -86,19 +86,17 @@ The second factor is the presence of dissolved gaseous phases in the melt (\cref
 \end{figure}
 %-------------------------------------------------------------------------------------------------------------------------------------------------
 \subsection*{Freckles or segregated channels} 
-The origin of this defect is microsegregation combined with gravity forces. They may appear 
-in all casting processes, but are very specific to directional chill casting \citep{giamei_nature_1970}, mainly vertical chill casting.
+The origin of this defect is microsegregation combined with buoyancy forces. They may appear 
+in all casting processes, but are very specific to investment casting or single-crystal (SC) casting \citep{giamei_nature_1970}.
 Upon solidification, solid forms while rejecting some solute in the liquid due to partitioning (steels have a partition coefficient less than unity).
-When the concentration of the liquid phase is high enough, a solutal or thermosolutal driving force is generated inside the mushy zone, transporting solute
-by upward convection. Therefore "plume" shapes are often reported in the literature \citep{sarazin_studies_1992, schneider_modeling_1997}.
-Segregation takes place at a medium scale (ranging from the scale of a few dendrites to a few hundreds of them), 
-hence forms "long and narrow trails" as described by \citet{felicelli_simulation_1991}. Freckles are 
-frequently formed by small equiaxed grains, probably caused by a uniform temperature gradient that settles as the channels become richer in solute. 
+When the solute is the lighter element, an increasing concentration in the liquid phase produces a solutal driving force inside the mushy zone, generating unstable convection motion, with "plume" shapes as often reported in the literature \citep{sarazin_studies_1992, schneider_modeling_1997, shevchenko_chimney_2013}. When temperature gradient is an additional force of convection, the latter is termed "thermosolutal"
+The segregation scale ranges from a few dendrites to a few hundreds of them, hence forming "long and narrow trails" (\cref{fig:freckle1}) as described by \citet{felicelli_simulation_1991}. Freckles are 
+frequently formed by small equiaxed grains (\cref{fig:freckle2}), probably caused by a uniform temperature gradient that settles as the channels become richer in solute. 
 They can be observed on the ingot's surface, as well as in the volume.
 \begin{figure}[b!] 
 \centering
    %------------
-  \begin{subfigure}[t]{0.2\textwidth}
+  \begin{subfigure}[t]{0.25\textwidth}
     \centering
 	\includegraphics[width=\textwidth]{Chapter0/Graphics/freckle1.png}
 	\caption{WRITE}
@@ -151,8 +149,9 @@ The slopes defining such variations are respectively the thermal expansion coeff
 \end{align}
 \end{subequations}
 The linear fit assumes also that the density takes a reference value, $\rhoref$, when temperature and liquid composition reach reference values, respectively
-$\Tref$ and $\wilref$. However, in a full equilibrium situation, it is possible, even preferred, to work with real density values instead of a linear fit, by using a suitable thermodynamic database. Such possibility will be discussed later in the manuscript (cf. SECTION TODO ) %TODO 
-In the presence of gravity, the density gradient (\cref{eq:gradrholiq}) causes thermosolutal convection in the liquid bulk and a subsequent macrosegregation.
+$\Tref$ and $\wilref$. However, in some situations, a suitable thermodynamic database providing accurate density values is far better than a linear fit, especially in the current context of macrosegregation. 
+Such possibility will be discussed later in the manuscript (cf. SECTION TODO ) %TODO 
+In the presence of gravity, the density gradient in \cref{eq:gradrholiq}, causes thermosolutal convection in the liquid bulk and a subsequent macrosegregation.
  
 \subsubsection*{Solidification shrinkage}
 Solid alloys have a greater density than the liquid phase ($\rhos > \rhol$), thus occupy less volume. Upon solidification, the liquid moves towards the solidification front to compensate for the volume difference. In contrast to liquid convection, shrinkage flow may cause macrosegregation even without gravity.
@@ -165,7 +164,7 @@ they are transported by the flow (floating or sedimenting, depending on their de
 This factor is often found in continuous casting where the stresses induced by the rolls on the semi-solid
 
 \section{Industrial Worries}
-\textbf{Steel production} has continuously increased over the years to meet the industrial needs. \cref{fig:steel_production} shows this increase between 1980 and 2013 with a 
+\textbf{Steel production} has continuously increased over the years to meet the industrial needs. \Cref{fig:steel_production} shows this increase between 1980 and 2013 with a 
 clear dominance of the Chinese production. Quality constraints have also increased where specific grades of steel are needed in critical applications such as mega-structures
 in construction and  heavy machinery. Therefore, alloys with defects are considered vulnerable and should be avoided as much as possible during the casting process. As such, steelmakers have been investing
 in research, with the aim of understanding better the phenomena leading to casting problems, and improve the processes when possible.

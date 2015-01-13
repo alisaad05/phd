@@ -123,16 +123,21 @@
 \newcommand{\blue}[1]{{\color{Blue} #1}} 
 
 % List of acronyms
+\usepackage{tabu}
+
 \newcommand{\listofacronyms}{
 \cleardoublepage
-\begin{tabular}{ll}
-\hline 
-Acronym & Standing for \\
-\hline
+%-----------------------------
+{\tabulinesep=1.5mm
+\begin{tabu}{p{2cm} p{12cm}}
+\tabucline[1pt]{-}
+\textbf{Acronym} & 	\textbf{Standing for} \\\tabucline[1pt]{-}
+%-----------------------------
 CCEMLCC & 	Chill Cooling for the Electro-Magnetic Levitator in relation with Continuous Casting of steel \\
-EML 	& 	Electromagnetic levitation \\
-ESA 	& 	European Space Agency \\ 
+EML 	& 	Electromagnetic levitation 	\\
+ESA 	& 	European Space Agency 		\\
 ISS 	&	International Space Station \\
-CEMEF 	& 	Center for Material Forming \\
-\end{tabular} 
+CEMEF 	& 	Center for Material Forming \\\tabucline[1pt]{-}
+%-----------------------------
+\end{tabu}}
 }
