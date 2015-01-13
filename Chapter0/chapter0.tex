@@ -15,7 +15,7 @@ like grains growth and large scales like convection in the melt. From the nuclea
 % caption
 {Main steps in a continuous casting plant}
 % label
-{cc_process}
+\label{fig:cc_process}
 \end{figureth}
 %-------------------------------------------------------------------------------------------------------------------------------------------------
 \section{Casting defects}
@@ -33,7 +33,7 @@ or crack appears at specific locations, the hot spots. The temperature range in 
 % caption
 {Crack in an aluminium slab}
 % label
-{hottearing}
+\label{fig:hottearing}
 \end{figureth}
 %-------------------------------------------------------------------------------------------------------------------------------------------------
 \subsection*{Porosity}
@@ -43,7 +43,7 @@ Porosity is a void defect formed inside the casting or at the outer surface. It 
 Firstly, we speak of \emph{shrinkage porosity}, when a void forms as a result of density differences between the interdendritic liquid and solid
 network, the latter being denser than the former (\cref{fig:porosity3,fig:porosity4}). It is basically, the same reason that initiates hot cracks. 
 The second factor is the presence of dissolved gaseous phases in the melt (\cref{fig:porosity1,fig:porosity2}). According to \citet{dantzig_solidification_2009}, these gases may be initially in the melt, or created by the reaction between the metal and water found in the air or at trapped in grooves at the moulds surface. If the decreasing temperature and pressure drop in the liquid are large enough, the latter becomes supersaturated. Consequently, the nucleation of gaseous phase is triggered (just like when you a cold bottle of coca-cola is opened !).
-\begin{figure}[h!] %h!
+\begin{figure}[htbp] %h!
 %Porosity1-2: http://www.afsinc.org/about/content.cfm?ItemNumber=6933
 %Porosity3: http://www.weldreality.com/aluminumalloys.htm
 %Porosity4: http://www.esab.com/global/en/education/new-lean-duplex-steels.cfm
@@ -57,7 +57,7 @@ The second factor is the presence of dissolved gaseous phases in the melt (\cref
   \end{subfigure}
    %------------
    \hspace{1cm}
-   \begin{subfigure}[t]{0.3\textwidth}
+   \begin{subfigure}[t]{0.25\textwidth}
     \centering
 	\includegraphics[width=\textwidth]{Chapter0/Graphics/porosity2.jpg}
 	\caption{Shrinkage porosity}
@@ -74,7 +74,7 @@ The second factor is the presence of dissolved gaseous phases in the melt (\cref
   \end{subfigure}
    %------------
   \hspace{1cm}
-   \begin{subfigure}[t]{0.3\textwidth}
+   \begin{subfigure}[t]{0.25\textwidth}
     \centering
 	\includegraphics[width=\textwidth]{Chapter0/Graphics/porosity4.jpg}
 	\caption{Xray of volume void inside welded duplex steel}
@@ -86,14 +86,46 @@ The second factor is the presence of dissolved gaseous phases in the melt (\cref
 \end{figure}
 %-------------------------------------------------------------------------------------------------------------------------------------------------
 \subsection*{Freckles or segregated channels} 
-The origin of this defect is microsegregation combined with buoyancy forces. They may appear 
-in all casting processes, but are very specific to investment casting or single-crystal (SC) casting \citep{giamei_nature_1970}.
+The origin of this defect is microsegregation combined with buoyancy forces. 
 Upon solidification, solid forms while rejecting some solute in the liquid due to partitioning (steels have a partition coefficient less than unity).
-When the solute is the lighter element, an increasing concentration in the liquid phase produces a solutal driving force inside the mushy zone, generating unstable convection motion, with "plume" shapes as often reported in the literature \citep{sarazin_studies_1992, schneider_modeling_1997, shevchenko_chimney_2013}. When temperature gradient is an additional force of convection, the latter is termed "thermosolutal"
-The segregation scale ranges from a few dendrites to a few hundreds of them, hence forming "long and narrow trails" (\cref{fig:freckle1}) as described by \citet{felicelli_simulation_1991}. Freckles are 
-frequently formed by small equiaxed grains (\cref{fig:freckle2}), probably caused by a uniform temperature gradient that settles as the channels become richer in solute. 
-They can be observed on the ingot's surface, as well as in the volume.
-\begin{figure}[b!] 
+When the solute is the lighter element, an increasing concentration in the liquid phase produces a solutal driving force inside the mushy zone, generating unstable convection motion, with "plume" shapes as often reported in the literature \citep{sarazin_studies_1992, schneider_modeling_1997, shevchenko_chimney_2013}. When temperature gradient is an additional force of convection, the latter is termed "thermosolutal".
+
+%-------------------------------------------------------------------------------------------------------------------------------------------------
+\section{Macrosegregation}
+Macrosegreation generally stems from a solubility difference between a liquid phase and one or more solid phases, along with
+a relative velocity between these phases. While the former is responsible for local solute enrichment or depletion, the latter
+will create the composition heterogeneity on a scale much larger than just a few dendrites.
+% http://dictionary.cambridge.org/grammar/british-grammar/little-a-little-few-a-few
+This is why macrosegregation could be observed on the scale of a casting, up to several meters in length. 
+%--------------------------------------------------------
+\subsection{Types}
+\subsubsection*{In continuous casting}
+The semi-solid billet is carried through a series of rolls that exert a radial force to straighten it and get it to its horizontal position.
+As the mushy part of a slab enters through these rolls, interdendritic liquid is expelled backwards, i.e. regions with lower solid fraction.
+Since the the boundaries solidify earlier than the centre, the enriched liquid accumulates halfway in thickness, forming a centreline macrosegregation
+as shown in \cref{fig:macroseg_centreline}. Other types of segregates (channels, A-segregates ...) can also be found but remain more specific to ingot casting. 
+\begin{figureth}
+% macrosegregation_centreline_zoom: http://goo.gl/iKPNfz
+% textwidth 
+{1.0}
+%path 
+{Chapter0/Graphics/macrosegregation_centreline_zoom.pdf}
+% caption
+{Centreline segregation in a steel slab \citep{beckermann_modelling_2002}}
+% label
+\label{fig:macroseg_centreline}
+\end{figureth}
+%--------------------------------------------------------
+\subsubsection*{In ingot casting}
+
+
+%--------------------------------------------------------
+\subsubsection*{In investment casting}
+This process is widely used to cast single-crystal (SC) alloys for turbines and other applications that require excellent mechanical behavior \citep{giamei_nature_1970}.
+During directional solidification, thermosolutal forces thrust segregated species outside of the mushy zone into the bulk liquid.
+The segregation scale ranges from a few dendrites to a few hundreds of them, hence forming "long and narrow trails" (\cref{fig:freckle1}) as described by \citet{felicelli_simulation_1991}. Freckles are frequently formed by small equiaxed grains (\cref{fig:freckle2}), probably caused by a uniform temperature gradient 
+that settles as the channels become richer in solute. They can be observed on the ingot's surface, as well as in the volume.
+\begin{figure}[htbp] 
 \centering
    %------------
   \begin{subfigure}[t]{0.25\textwidth}
@@ -114,17 +146,6 @@ They can be observed on the ingot's surface, as well as in the volume.
 \caption{Freckles in directional casting of nickel-base superalloys} 
 \label{fig:freckle}
 \end{figure}
-%-------------------------------------------------------------------------------------------------------------------------------------------------
-\section{Macrosegregation}
-Macrosegreation generally stems from a solubility difference between a liquid phase and one or more solid phases, along with
-a relative velocity between these phases. While the former is responsible for local solute enrichment or depletion, the latter
-will create the composition heterogeneity on a scale much larger than just a few dendrites.
-% http://dictionary.cambridge.org/grammar/british-grammar/little-a-little-few-a-few
-This is why macrosegregation could be observed on the scale of a casting, up to several meters in length. 
-%--------------------------------------------------------
-\subsection{Types}
-\subsubsection*{Continuous casting}
-\subsubsection*{Ingot casting}
 %--------------------------------------------------------
 \subsection{Causes}
 Four main factors can (simultaneously) cause fluid flow leading to macrosegregation:
@@ -154,14 +175,16 @@ Such possibility will be discussed later in the manuscript (cf. SECTION TODO ) %
 In the presence of gravity, the density gradient in \cref{eq:gradrholiq}, causes thermosolutal convection in the liquid bulk and a subsequent macrosegregation.
  
 \subsubsection*{Solidification shrinkage}
-Solid alloys have a greater density than the liquid phase ($\rhos > \rhol$), thus occupy less volume. Upon solidification, the liquid moves towards the solidification front to compensate for the volume difference. In contrast to liquid convection, shrinkage flow may cause macrosegregation even without gravity.
+Solid alloys have a greater density than the liquid phase ($\rhos > \rhol$), thus occupy less volume. Upon solidification, the liquid moves towards the solidification front to compensate for the volume difference caused by the phase change, as well as the thermal contraction.
+In contrast to liquid convection, shrinkage flow may cause macrosegregation even without gravity.
 
 \subsubsection*{Movement of equiaxed grains} 
 Equiaxed grains can grow in the liquid bulk where thermal gradients are weak, or in the presence of inoculants. Consequently, 
-they are transported by the flow (floating or sedimenting, depending on their density) which leads to negative macrosegregation in their final position.
+they are transported by the flow (floating or sedimenting, depending on their density \citep{beckermann_modelling_2002}) which leads to negative macrosegregation in their final position.
 
 \subsubsection{Solid deformation} 
-This factor is often found in continuous casting where the stresses induced by the rolls on the semi-solid
+Stresses of thermal and mechanical nature are always found in casting processes (e.g. bulging between rolls in continuous casting). 
+Deformation of the semi-solid in the mushy zone causes a relative solid-liquid flow in the inward (tensile stresses) or outward (compression stresses) direction, causing macrosegregation.
 
 \section{Industrial Worries}
 \textbf{Steel production} has continuously increased over the years to meet the industrial needs. \Cref{fig:steel_production} shows this increase between 1980 and 2013 with a 
@@ -169,7 +192,7 @@ clear dominance of the Chinese production. Quality constraints have also increas
 in construction and  heavy machinery. Therefore, alloys with defects are considered vulnerable and should be avoided as much as possible during the casting process. As such, steelmakers have been investing
 in research, with the aim of understanding better the phenomena leading to casting problems, and improve the processes when possible.
 
-\begin{figure}[!h]
+\begin{figure}[htbp]
 \centering
 \begin{tikzpicture}
  \pgfkeys{%
@@ -242,7 +265,7 @@ for ground-based experiments, microgravity in parabolic flight or sounding rocke
 % caption
 {Electromagnetic levitation}
 % label
-{eml}
+\label{fig:eml}
 \end{figureth}
 
 \comment{in what ways does this project tries to alleviate the aforementionned problems ?

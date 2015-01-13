@@ -360,12 +360,12 @@ or
 \newenvironment{nolinkcolors}[1]{\begingroup \hypersetup{hidelinks}  #1 }{\endgroup}
 
 %% Dorian Depriester: Figures centrées, et en position 'here, top, bottom or page'
-\newenvironment{figureth}[4]{
+\newenvironment{figureth}[3]{
 		\begin{figure}[htbp]
 			\centering
 			\includegraphics[width=#1\textwidth]{#2}
 			\caption{#3}
-			\label{fig:#4}
+			%\label{fig:#4}
 	}{
 		\end{figure}
 		}
