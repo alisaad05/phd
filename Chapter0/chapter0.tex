@@ -86,10 +86,9 @@ The second factor is the presence of dissolved gaseous phases in the melt (\cref
 \end{figure}
 %-------------------------------------------------------------------------------------------------------------------------------------------------
 \subsection*{Freckles or segregated channels} 
-The origin of this defect is microsegregation combined with buoyancy forces. 
+The origin of this defect is a combined effet of microsegregation and buoyancy forces. 
 Upon solidification, solid forms while rejecting some solute in the liquid due to partitioning (steels have a partition coefficient less than unity).
-When the solute is the lighter element, an increasing concentration in the liquid phase produces a solutal driving force inside the mushy zone, generating unstable convection motion, with "plume" shapes as often reported in the literature \citep{sarazin_studies_1992, schneider_modeling_1997, shevchenko_chimney_2013}. When temperature gradient is an additional force of convection, the latter is termed "thermosolutal".
-
+When the segregated solute is the lighter species, an increasing concentration in the liquid phase produces a solutal driving force inside the mushy zone, generating unstable convection currents, with "plume" shapes as often reported in the literature \citep{sarazin_studies_1992, schneider_modeling_1997, shevchenko_chimney_2013}. When temperature gradient is an additional force of convection, the latter is termed "thermosolutal".
 %-------------------------------------------------------------------------------------------------------------------------------------------------
 \section{Macrosegregation}
 Macrosegreation generally stems from a solubility difference between a liquid phase and one or more solid phases, along with
@@ -97,55 +96,6 @@ a relative velocity between these phases. While the former is responsible for lo
 will create the composition heterogeneity on a scale much larger than just a few dendrites.
 % http://dictionary.cambridge.org/grammar/british-grammar/little-a-little-few-a-few
 This is why macrosegregation could be observed on the scale of a casting, up to several meters in length. 
-%--------------------------------------------------------
-\subsection{Types}
-\subsubsection*{In continuous casting}
-The semi-solid billet is carried through a series of rolls that exert a radial force to straighten it and get it to its horizontal position.
-As the mushy part of a slab enters through these rolls, interdendritic liquid is expelled backwards, i.e. regions with lower solid fraction.
-Since the the boundaries solidify earlier than the centre, the enriched liquid accumulates halfway in thickness, forming a centreline macrosegregation
-as shown in \cref{fig:macroseg_centreline}. Other types of segregates (channels, A-segregates ...) can also be found but remain more specific to ingot casting. 
-\begin{figureth}
-% macrosegregation_centreline_zoom: http://goo.gl/iKPNfz
-% textwidth 
-{1.0}
-%path 
-{Chapter0/Graphics/macrosegregation_centreline_zoom.pdf}
-% caption
-{Centreline segregation in a steel slab \citep{beckermann_modelling_2002}}
-% label
-\label{fig:macroseg_centreline}
-\end{figureth}
-%--------------------------------------------------------
-\subsubsection*{In ingot casting}
-
-
-%--------------------------------------------------------
-\subsubsection*{In investment casting}
-This process is widely used to cast single-crystal (SC) alloys for turbines and other applications that require excellent mechanical behavior \citep{giamei_nature_1970}.
-During directional solidification, thermosolutal forces thrust segregated species outside of the mushy zone into the bulk liquid.
-The segregation scale ranges from a few dendrites to a few hundreds of them, hence forming "long and narrow trails" (\cref{fig:freckle1}) as described by \citet{felicelli_simulation_1991}. Freckles are frequently formed by small equiaxed grains (\cref{fig:freckle2}), probably caused by a uniform temperature gradient 
-that settles as the channels become richer in solute. They can be observed on the ingot's surface, as well as in the volume.
-\begin{figure}[htbp] 
-\centering
-   %------------
-  \begin{subfigure}[t]{0.25\textwidth}
-    \centering
-	\includegraphics[width=\textwidth]{Chapter0/Graphics/freckle1.png}
-	\caption{WRITE}
-    \label{fig:freckle1}
-  \end{subfigure}
-   %------------
-   \hspace{2cm}
-   \begin{subfigure}[t]{0.2\textwidth}
-    \centering
-	\includegraphics[width=\textwidth]{Chapter0/Graphics/freckle2.png}
-	\caption{WRITE}
-    \label{fig:freckle2}
-  \end{subfigure}
-   %------------
-\caption{Freckles in directional casting of nickel-base superalloys} 
-\label{fig:freckle}
-\end{figure}
 %--------------------------------------------------------
 \subsection{Causes}
 Four main factors can (simultaneously) cause fluid flow leading to macrosegregation:
@@ -175,23 +125,93 @@ Such possibility will be discussed later in the manuscript (cf. SECTION TODO ) %
 In the presence of gravity, the density gradient in \cref{eq:gradrholiq}, causes thermosolutal convection in the liquid bulk and a subsequent macrosegregation.
  
 \subsubsection*{Solidification shrinkage}
-Solid alloys have a greater density than the liquid phase ($\rhos > \rhol$), thus occupy less volume. Upon solidification, the liquid moves towards the solidification front to compensate for the volume difference caused by the phase change, as well as the thermal contraction.
+Solid alloys have a greater density than the liquid phase ($\rhos > \rhol$), thus occupy less volume. Upon solidification, the liquid moves towards the solidification front to compensate for the volume difference caused by the phase change, as well as the thermal contraction. When macrosegregation is triggered by solidification shrinkage,
+we speak of \emph{inverse segregation} Theoretically, if solute mass is conserved, a decreasing volume results in a positive segregation. Shrinkage deforms the outer
+surface of a solidifying alloy, causing positive macrosegregation. While one would naturally expect negative macrosegregation in areas where solidification begins and positive inside the alloy, shrinkage promotes the opposit phenomenon, hence the term \emph{inverse segregation}.
 In contrast to liquid convection, shrinkage flow may cause macrosegregation even without gravity.
 
-\subsubsection*{Movement of equiaxed grains} 
+\subsubsection*{Movement of equiaxed grains}
 Equiaxed grains can grow in the liquid bulk where thermal gradients are weak, or in the presence of inoculants. Consequently, 
 they are transported by the flow (floating or sedimenting, depending on their density \citep{beckermann_modelling_2002}) which leads to negative macrosegregation in their final position.
 
 \subsubsection{Solid deformation} 
 Stresses of thermal and mechanical nature are always found in casting processes (e.g. bulging between rolls in continuous casting). 
 Deformation of the semi-solid in the mushy zone causes a relative solid-liquid flow in the inward (tensile stresses) or outward (compression stresses) direction, causing macrosegregation.
-
+%--------------------------------------------------------------------------------------------------------------------------------------------------
+\subsection{Types}
+\subsubsection*{In continuous casting}
+The semi-solid billet is carried through a series of rolls that exert a radial force to straighten it and get it to its horizontal position.
+As the mushy part of a slab enters through these rolls, interdendritic liquid is expelled backwards, i.e. regions with lower solid fraction.
+Since the the boundaries solidify earlier than the centre, the enriched liquid accumulates halfway in thickness, forming a centreline macrosegregation
+as shown in \cref{fig:macroseg_centreline}. Other types of segregates (channels, A-segregates ...) can also be found but remain more specific to ingot casting. 
+\begin{figureth}
+% macrosegregation_centreline_zoom: http://goo.gl/iKPNfz
+% textwidth 
+{1.0}
+%path 
+{Chapter0/Graphics/macrosegregation_centreline_zoom.pdf}
+% caption
+{Centreline segregation in a steel slab \citep{beckermann_modelling_2002}}
+% label
+\label{fig:macroseg_centreline}
+\end{figureth}
+%--------------------------------------------------------
+\subsubsection*{In ingot casting}
+A variety of segregation patterns can be encountered in heavy ingots: 
+\begin{itemize}
+\itemsep0em 
+\item the lower part is characterized by a negative segregation cone promoted by the sedimentation of 
+	  equiaxed crystals,
+\item positive segregation channels, known as A-segregates, form along the columnar dendritic zones, close to the vertical contact with the mould,
+\item positive V-segregates can be identified in the centre of the ingot,
+\item a positive macrosegregation in the upper zone where the last liquid solidifies, the so-called "hot-top", caused by solidification shrinkage (inverse segregation)
+	  and thermosolutal buoyancy forces. 
+\end{itemize}
+\citet{combeau_prediction_2009} state that A-segregates and V-segregates formation is mainly attributed to local flow phenomena.
+As such, their scale is finer than macrosegregation, hence called "mesosegregates".
+%-----------------------
+\begin{figureth}
+{0.6}
+{Chapter0/Graphics/macrosegregation_ingot.png}
+{Sulphur print (left) of a 65-ton steel ingot showing various patterns (right) of macrosegregation \citep{flemings_solidification_1974, lesoult_macrosegregation_2005}}
+\label{macrosegregation_ingot}
+\end{figureth}
+%--------------------------------------------------------
+\subsubsection*{In investment casting}
+This process is widely used to cast single-crystal (SC) alloys for turbines and other applications that require excellent mechanical behavior \citep{giamei_nature_1970}.
+During directional solidification, thermosolutal forces thrust segregated species outside of the mushy zone into the liquid bulk.
+The segregation scale ranges from a few dendrites to a few hundreds of them, hence forming "long and narrow trails" (\cref{fig:freckle1}) as described by \citet{felicelli_simulation_1991}. Freckles are frequently formed by small equiaxed grains (\cref{fig:freckle2}), probably caused by a uniform temperature gradient 
+that settles as the channels become richer in solute. They can be observed on the ingot's surface, as well as in the volume.
+\begin{figure}[htbp]
+%freckle1: http://user.engineering.uiowa.edu/~becker/solcast.html
+%freckle2: beckermann 2002 or Giamei ?
+%freckle3: Giamei 
+\centering
+   %------------
+  \begin{subfigure}[t]{0.25\textwidth}
+    \centering
+	\includegraphics[height=5cm]{Chapter0/Graphics/freckle1.png}
+	\caption{WRITE}
+    \label{fig:freckle1}
+  \end{subfigure}
+   %------------
+   \qquad %\hspace{2cm}
+   \begin{subfigure}[t]{0.25\textwidth}
+    \centering
+	\includegraphics[height=5cm]{Chapter0/Graphics/freckle2.png}
+	\caption{WRITE}
+    \label{fig:freckle2}
+  \end{subfigure}
+   %------------
+\caption{Freckles in directional casting of nickel-base superalloys} 
+\label{fig:freckle}
+\end{figure}
+%--------------------------------------------------------
 \section{Industrial Worries}
 \textbf{Steel production} has continuously increased over the years to meet the industrial needs. \Cref{fig:steel_production} shows this increase between 1980 and 2013 with a 
 clear dominance of the Chinese production. Quality constraints have also increased where specific grades of steel are needed in critical applications such as mega-structures
 in construction and  heavy machinery. Therefore, alloys with defects are considered vulnerable and should be avoided as much as possible during the casting process. As such, steelmakers have been investing
 in research, with the aim of understanding better the phenomena leading to casting problems, and improve the processes when possible.
-
 \begin{figure}[htbp]
 \centering
 \begin{tikzpicture}
@@ -232,6 +252,7 @@ are actively used to optimize the process. However, few are the tools that take 
 \cref{fig:cc_process}, is a chain process where the last steps involve rolls, water sprays and other components. A dedicated software is one that can provide the
 geometric requirements with suitable meshing capabilities, as well as respond to metallurgical and mechanical requirements, mainly:
 \begin{itemize}
+\itemsep0em
 \item handling moulds and their interaction with the alloy (thermal resistances ...)
 \item handling alloy filling and predicting velocity in the liquid and mushy zone
 \item handling thermomechanical stresses in the solid
