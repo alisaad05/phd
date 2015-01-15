@@ -88,7 +88,7 @@ The second factor is the presence of dissolved gaseous phases in the melt (\cref
 \subsection*{Freckles or segregated channels} 
 The origin of this defect is a combined effet of microsegregation and buoyancy forces. 
 Upon solidification, solid forms while rejecting some solute in the liquid due to partitioning (steels have a partition coefficient less than unity).
-When the segregated solute is the lighter species, an increasing concentration in the liquid phase produces a solutal driving force inside the mushy zone, generating unstable convection currents, with "plume" shapes as often reported in the literature \citep{sarazin_studies_1992, schneider_modeling_1997, shevchenko_chimney_2013}. When temperature gradient is an additional force of convection, the latter is termed "thermosolutal".
+When segregated solute is the lighter species, an increasing concentration in the liquid phase produces a solutal driving force inside the mushy zone, generating unstable convection currents, with "plume" shapes as often reported in the literature \citep{sarazin_studies_1992, schneider_modeling_1997, shevchenko_chimney_2013}. When temperature gradient is an additional force of convection, the latter is hence qualified as "thermosolutal".
 %-------------------------------------------------------------------------------------------------------------------------------------------------
 \section{Macrosegregation}
 Macrosegreation generally stems from a solubility difference between a liquid phase and one or more solid phases, along with
@@ -173,7 +173,7 @@ As such, their scale is finer than macrosegregation, hence called "mesosegregate
 \begin{figureth}
 {0.6}
 {Chapter0/Graphics/macrosegregation_ingot.png}
-{Sulphur print (left) of a 65-ton steel ingot showing various patterns (right) of macrosegregation \citep{flemings_solidification_1974, lesoult_macrosegregation_2005}}
+{Sulphur print (left) of a 65-ton steel ingot \citep{lesoult_macrosegregation_2005} showing various patterns (right) of macrosegregation \citep{flemings_solidification_1974}}
 \label{macrosegregation_ingot}
 \end{figureth}
 %--------------------------------------------------------
@@ -191,7 +191,7 @@ that settles as the channels become richer in solute. They can be observed on th
   \begin{subfigure}[t]{0.25\textwidth}
     \centering
 	\includegraphics[height=5cm]{Chapter0/Graphics/freckle1.png}
-	\caption{WRITE}
+	\caption{\$WRITE\$}
     \label{fig:freckle1}
   \end{subfigure}
    %------------
@@ -199,7 +199,7 @@ that settles as the channels become richer in solute. They can be observed on th
    \begin{subfigure}[t]{0.25\textwidth}
     \centering
 	\includegraphics[height=5cm]{Chapter0/Graphics/freckle2.png}
-	\caption{WRITE}
+	\caption{\$WRITE\$}
     \label{fig:freckle2}
   \end{subfigure}
    %------------
@@ -261,23 +261,45 @@ geometric requirements with suitable meshing capabilities, as well as respond to
 \item handling real alloy properties (not just constant thermophysical/thermomechanical properties)
 \end{itemize}
 %-------------------------------------------------------------------------------------------------------------------------------------------------
-\section{Objectives and outline}
+\section{Project context and objectives}
 %--------------------------------------------------------
-\subsection*{\ccemlcc project}
-Since its foundation in 1975, the European Space Agency (ESA) has been actively committed in the research field.
-Their areas of activity cover not only exclusive space applications, but also fundamental science related to 
-physics and other disciplines. This thesis takes part of the ESA project entitled \ccemlcc, abbreviating
+\subsection*{Context}
+The European Space Agency (ESA) has been actively committed, since its foundation in 1975, in the research field.
+Its covers not only exclusive space applications, but also fundamental science like solidification. 
+This thesis takes part of the ESA project entitled \ccemlcc, abbreviating
 "\textbf{C}hill \textbf{C}ooling for the \textbf{E}lectro-\textbf{M}agnetic \textbf{L}evitator in relation with 
 \textbf{C}ontinuous \textbf{C}asting of steel".
-The three-year contract from 2011 to 2014 denoted \ccemlcc II, was preceded by an initial project phase, \ccemlcc I,
-from 2007 to 2010. The main focus is studying containerless solidification of steel under microgravity conditions. 
-A chill plate is used to extract heat from the alloy, simulating the contact effect with a mould in continuous casting
+The three-year contract from 2011 to late 2014 denoted \ccemlcc II, was preceded by an initial project phase, \ccemlcc I,
+from 2007 to 2009. The main focus is studying containerless solidification of steel under microgravity conditions. 
+A chill plate is later used to extract heat from the alloy, simulating the contact effect with a mould in continuous casting
 or ingot casting.
-CEMEF contributed to the work by proposing numerical models and simulation tools in view of predicting the chill cooling of steel droplets. 
-A first model was developed by \citet{rivaux_simulation_2011} whereas the present discusses a new model. 
-The experimental work considered various facilities and environments to set a droplet of molten alloy in levitation: electromagnetic levitation (EML) 
-for ground-based experiments, microgravity in parabolic flight or sounding rockets and last, microgravity condition on-board the International Space Station (ISS)
+A partnership of 7 industrial and academic entities was formed in \ccemlcc II. A brief summary of each partner's commitment:\\
 
+\textbf{Academic partners} 
+ \begin{itemize}
+\itemsep0em
+\item CEMEF (France): numerical modelling of microgravity chill cooling experiments
+\item DLR (German Aerospace Centre) and RUB university (Germany):  preparation of a chill cooling device 
+for the electromagnetic levitator,  microgravity testing and investigation of growth kinetics 
+in chill-cooled and undercooled steel alloys
+\item University of Alberta (Canada): Impulse atomization of the D2 tool steel 
+\item University of Bremen - IWT institute (Germany): study of melt solidification in atomization processing
+\end{itemize}
+
+\textbf{Industrial partners}
+\begin{itemize}
+\itemsep0em
+\item ARCELORMITTAL (France): elaboration of a series of steel grades used in microgravity and ground studies
+\item METSO Minerals Inc.  (Finland): material production with D2 tool steel for spray forming
+\item TRANSVALOR (France): development and marketing of casting simulation software \thercast
+\end{itemize}
+
+CEMEF, as an academic partner, contributed to the work by proposing numerical models in view of predicting the chill cooling of steel droplets. 
+A first model was developed by \citet{rivaux_simulation_2011} whereas the present discusses a new model. 
+The experimental work considered various facilities and environments to set a droplet of molten alloy in levitation: 
+electromagnetic levitation or EML (\cref{fig:eml}) for ground-based experiments, 
+microgravity in parabolic flight or sounding rockets and last, microgravity condition on-board the International Space Station (ISS)
+%---------
 \begin{figureth}
 % textwidth 
 {0.5}
@@ -288,23 +310,27 @@ for ground-based experiments, microgravity in parabolic flight or sounding rocke
 % label
 \label{fig:eml}
 \end{figureth}
-
-\comment{in what ways does this project tries to alleviate the aforementionned problems ?
-The two phases of CCEMLCC, together with the newly coming \ccemlcc III, aim to shape our understanding
-of solidification with thermo-mechanical stresses under microgravity conditions.}
 %-------------------------------------------------------------------------------------------------------------------------------------------------
-Numerical tools: Cimlib relying on PETSc, parallelized with MPICH2, paraview and python as tools for postprocess and analysis. \\
+\subsection{Ojectives and outline}
+The scope of the present thesis is macrosegregation with liquid dynamics assuming a fixed solid phase, i.e. no account of solid 
+transport (e.g. equiaxed crystals sedimentation) and no account of solid deformation. In CEMEF, this framework has been the same for previous 
+work by \citet{gouttebroze_modelisation_2005, liu_finite_2005, mosbah_multiple_2008, rivaux_simulation_2011, carozzani_developpement_2012}.
+Nevertheless, many modelling features evolved with time such as going from two-dimensional to three-dimensional modelling, resolution scheme
+for each of the conservation equations: energy, chemical species and liquid momentum, Eulerian or Lagrangian method, modelling of grain structure and others.
+In this thesis, we propose a numerical model that takes into account i) the energy conservation in a temperature formulation based on a thermodynamic database mapping,
+ii) the liquid momentum conservation with thermosolutal convection and solidification shrinkage as driving forces, iii) solute mass conservation and iv) solidification paths at full equilibrium for multicomponent alloys microsegregation. Moreover, all equations are formulated in a pure Eulerian context while using the Level Set method to
+keep implicitly track of the interface between the alloy and surrounding gas. To my knowledge, this work combining macrosegregation prediction using the level set methodology to track the metal-air interface during shrinkage has no precedent in the literature.
+
+\emph{Numerical tools: Cimlib relying on PETSc, parallelized with MPICH2, paraview and python as tools for postprocess and analysis. \\
 The previously mentionned simulation requirements are not met in a single casting software package. Nevertheless, \thercast is a promising tool that already 
 handles a part of the above points. The current thesis developments are done using C++ language as a part of the
 in-house code, known as \cimlib \citep{digonnet_cimlib:_2007, mesri_advanced_2009}. 
-This fully parallel library is the main academic research support for \thercast.\\ \\ 
+This fully parallel library is the main academic research support for \thercast.\\ \\ }
 
-Aims of this research (+novelty of the work)\\ 
-\begin{itemize}
-\item solidification model with level set air-metal +darcy in the metal
-\item Tracking of the interface induced by shrinkage
-\end{itemize}
+\paragraph{Outline}
 Each chapter content
+
+
 %--------------------------------------------------------
 \subsection*{Biblio test}
 \citet{carozzani_direct_2013} is textual \\
