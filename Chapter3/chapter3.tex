@@ -7,20 +7,27 @@
 this chapter discusses the following points:
 \begin{itemize}
 \item Review fluid mechanics briefly (MINI element and VMS and talk about the available solvers in Cimlib)
+\item Give the VMS equations referring to Hachem article
 \item Coupling the energy resolution from chapter 2 to fluid mechanics and solute balance
 \item Make a transition to speak about freckles
 \item Application: Ternary solidification with freckles
-\item Application: Macroscopic Freckle predicition: pure FE
-\item Application Multiscale Freckle predicition: FE + grain structure (in which lies a part about nucleation-growth and how numerically 
+\item Application: Macroscopic Freckle prediction: pure FE
+\item Application Multi-scale Freckle prediction: FE + grain structure (in which lies a part about nucleation-growth and how numerically 
 		we reach a smaller scale, the scale of the grain boundaries)
 \end{itemize}
 
 \section{Introduction}
 The previous chapter covered the energy solver ...
 
-\section{Numerical constraints}
+\section{Review fluid mechanics}
+Review fluid mechanics briefly (MINI element and VMS and talk about the available solvers in Cimlib)
 
-\subsection{CFL condition}
+\section{VMS solver}
+Give the VMS equations referring to Hachem article + weak form + stabilization
+
+
+\section{Computational stability}
+CFL condition \\
 
 \subsection{Integration order}
 Using P1 linear elements implies a P2 integration ? what are the advantages (time) and limitations ?

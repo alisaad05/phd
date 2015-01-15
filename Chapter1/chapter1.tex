@@ -22,11 +22,37 @@ The scope such applications mainly encompasses dendritic modelling and simulatio
 Other references, in relevance to our scope, apply this method to track the surface of the metal
 while going from the liquid state to the solid state, in contact with the surrounding gas which is usually air. \\
 
-\section{Eulerian, Langrangian or ALE}
-Define the first two configurations, advantages and limitations (thèse Greg Puaux)
-Then talk about ALE combining both advantages and the applications of this method. \\
-Say that henceforth the eulerian framework will be the interst of this study because we have mainly a fluid and a non deformable solid, which justifies the choice
+%---------------------------------------------------
+\section{Modelling macrosegreation}
+%-------------
+\subsection{Microsegregtion}
 
+\subsubsection{What is microsegregation?}
+
+
+\subsubsection{Dendritic growth}
+
+\subsubsection{Microsegregation models}
+\subsubsection*{Lever rule}
+\subsubsection*{Gulliver Scheil}
+\subsubsection*{Finite back diffusion}
+
+
+\subsection{Volume averaging}
+
+
+\subsection{Macroscopic model}
+end by talking about taking air into account and the need for an interface capturing method
+
+
+\section{Motion description}
+\subsection{Langrangian description}
+\subsection{Eulerian description}
+\subsection{Arbitrary Langrangian-Eulerian}
+a little history \citep{hirt_arbitrary_1971} \\ 
+The ALE method combines advantages from both previous descriptions. Explain how the position mesh nodes can be
+updated with velocity or fixed. However, this description will be more suitable for configuration with deformable solid. 
+Further discussions are presented in the perspectives.
 
 \section{Standard models: without level set}
 A section presenting the main FE equations along with their weak formulations that will be solved 
@@ -67,7 +93,12 @@ MESO MACRO: Shijia Chen (CAFE+LS)
 How it is defined, Heaviside, mixing laws, transport and reinitialization
 \comment{ in the article 2004SunBeckermann, in the introduction there is a small discussion
 about the importance of the diffuse interface thickness, check references 3 and 10}
+
 \subsection{Transport and reiniliaztion}
+Strong and weak form of transport \\
+Numerical stability \\
+\subsubsection{Convective reinitilization and Hamilton-Jacobi equations}
+\subsubsection{Geometric reinitialization}
 
 \subsection{Interface Remeshing}
 Importance when using a static level set and more importantly when LS is transported,
@@ -76,9 +107,3 @@ Isotropic or anisotropic ? the first is more important to composition calculatio
 is more relevant if we mean do thermohydraulics without macrosegregation
 
 \subsection{Mixing Laws}
-
-
-\section{Modelling macrosegreation}
-\subsection{Microsegregtion model}
-\subsection{Volume averaging}
-\subsection{Macroscopic model}
