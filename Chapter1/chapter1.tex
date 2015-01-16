@@ -4,13 +4,6 @@
 \end{nolinkcolors}
 \newpage
 
-In this chapter the following points are discussed
-\begin{itemize}
-\item what does a typical solidification problem consist of ? heat - fluid - solid 
-- chemical species
-\item Presence of AIR requires a new problem definition : Lagrangian or Eulerian framework
-\end{itemize}
-
 \section{Introduction}
 Divide into 2 families of models: with and without level set. Regarding the second family of models,
 the level set method has been applied on several occasions, but in a different way. Some references
@@ -20,28 +13,114 @@ The scope such applications mainly encompasses dendritic modelling and simulatio
 \url{http://www.sciencedirect.com/science/article/pii/S0021999105002603} \\
 \url{http://physbam.stanford.edu/~fedkiw/papers/stanford2002-04.pdf} \\
 Other references, in relevance to our scope, apply this method to track the surface of the metal
-while going from the liquid state to the solid state, in contact with the surrounding gas which is usually air. \\
-
+while going from the liquid state to the solid state, in contact with the surrounding gas which is usually air.
 %---------------------------------------------------
 \section{Modelling macrosegreation}
 %-------------
-\subsection{Microsegregtion}
+\subsection{Dendritic growth}
+In a casting process, the chill surface i.e. the contact between the molten alloy and relatively cold moulds, is the first area to solidify. 
+Thermal gradient, $G$, and cooling rate $R$ are two crucial process parameters that define the interface speed $\vstar$, which in turn,
+affects the initial microstructure. Although it may be not easy to control them, it remains important to understand their implication in solidification.
+The solid-liquid interface fluctuates when solidifying, thus perturbations may appear on the front, locally destabilizing it. 
+Two outcome scenarios are possible.
+The first scenario is characterized by low values of $\vstar$ where the interface maintains a planar shape, hence we speak of \emph{planar growth}. 
+With this kind of growth, a random protuberance appearing at the interface, has a low tip velocity (low driving force of solidification). As such,
+the rest of the interface catches up, keeping the planar geometry.
+In another scenario, where a real casting is considered, the interface speed is greater in general, due to high solidification rate.
+The protuberance tip will be pulled into a liquid less rich in solute than the interface. The zone ahead of the solid-liquid interface is constitutionally undercooled \citep{tiller_redistribution_1953}, giving a greater driving force for the protuberance to grow in the direction
+of the thermal gradient. As it has a tree-like shape, we speak of \emph{dendritic growth}. Near the chill surface, dendrites are columnar, with a 
+favourable growth in the <100> direction for alloys with cubic lattices, but different orientations are also reported in the literature (TODO SOURCE). %TODO 
+If temperature is uniform, which the case usually far from mould walls, a similar dendritic growth phenomenon occurs, but with an equiaxed morphology.
 
-\subsubsection{What is microsegregation?}
+Columnar dendrites are characterized by a primary spacing, $\pdas$, between the main trunks, and a secondary spacing, $\sdas$, for the secondary arms.
+Further branching may occur but will not be discussed here.
+The dendritic geometry is crucial in solidification theory as it exhibits lower solid fraction compared to a microstructure formed by planar growth.
+Therefore 
 
+%----------------------
+\begin{figureth}
+% textwidth 
+{0.25}
+%path 
+{Chapter1/Graphics/dendritic3.png}
+% caption
+{Schematic of a) a protuberance growing on the solid-liquid interface with b) the corresponding composition profiles 
+(Reproduced and adapted from \citet{doitpoms_dissemination_2000}, \doitpoms)}
+% label
+\label{fig:dendritic_growth}
+\end{figureth}
+%----------------------
+%-----------------------------------
+\subsection{Microsegregation}
+Microsegregation is a fundamental phenomenon in solidification. The simplest definition would be 
+an uneven distribution of solute between liquid and the herein growing solid, at the microscopic scale
+of the interface separating these phases. If we consider a binary alloy, then the solubility limit is 
+the key factor that dictates the composition at which a primary solid phase exists in equilibrium. 
+The segregation (or partition) coefficient $\k$ determines the extent of solute rejection into the liquid during solidification:
+%----------------------
+\begin{align}
+\label{eq:partition}
+& \k = \frac{\Csstar}{\Clstar}
+\end{align}
+%----------------------
+where $\Csstar$ and $\Clstar$ are the compositions of the solid and liquid respectively, at the interface. When the 
+segregation coefficient is less than unity (such is the case for most alloys during dendritic solidification), 
+the first solid forms with a composition $\k \Clstar=\k \Cnominal$ less than the liquid's 
+composition $\Cnominal$, the latter being initially at the nominal composition, $\Cnominal$. \Cref{fig:binary_diag} illustrates a typical binary 
+phase diagram where the real solidus and liquidus are represented by solid lines, while the corresponding linear approximations are in dashed lines.
+For most binary alloys, this linearisation simplifies derivation of microsegregation models, as $\k$ becomes independent of temperature.
+%----------------------
+\begin{figureth}
+% textwidth 
+{0.25}
+%path 
+{dummy.pdf}
+% caption
+{Simplified binary phase diagram}
+% label
+\label{fig:binary_diag}
+\end{figureth}
+%----------------------
+For each phase, the relationship between the composition at the interface and that in the bulk is given by mass diffusion.
+The higher the diffusion coefficient of the phase, $\Dphi$, the closer the concentrations between the interface and the bulk.
+%
+\begin{align}
+\label{eq:eq}
+& 
+\end{align}
+%
 
-\subsubsection{Dendritic growth}
 
 \subsubsection{Microsegregation models}
+define a microsegregation model; what is does, why do we need it in energy coupling for instance ...
 \subsubsection*{Lever rule}
 \subsubsection*{Gulliver Scheil}
 \subsubsection*{Finite back diffusion}
-
+brody-flemings, wang beckermann, martorano 2003 (CET) , hamoudaGandin (multicomponent), combeau2006 (check gouttebroze), damien tourret (predicition of peritectic with undercooling: aslan u cannot predict without undercooling 3al arja7) 
 
 \subsection{Volume averaging}
 
-
 \subsection{Macroscopic model}
+\begin{itemize}
+\item Energy (chapter 1)
+\item Species mass (voller prakash) \comment{should I mention the tabulation approach that I couldnt finalize because of the equality between w and wl in liquid phase ?}
+\item Fluid mechanics (vms: darcy model with boussinesq)
+\end{itemize}
+
+Macro models:
+\begin{itemize}
+\item gu beckermann
+\item Miha Zaloznik (indirect)
+\end{itemize}
+
+MESO MACRO: 
+\begin{itemize}
+\item Tommy Carozzani (direct)
+\item Miha Zaloznik (indirect)
+\end{itemize}
+
+
+
 end by talking about taking air into account and the need for an interface capturing method
 
 
@@ -58,20 +137,6 @@ Further discussions are presented in the perspectives.
 A section presenting the main FE equations along with their weak formulations that will be solved 
 in the metal being a single domain. I call it "standard" because it doesnt contain anything about 
 levelsets, compressibility, ...
-
-Pure MACRO (without LS)
-\begin{itemize}
-\item Energy (chapter 1)
-\item Species mass (voller prakash) \comment{should I mention the tabulation approach that I couldnt finalize because of the equality between w and wl in liquid phase ?}
-\item Fluid mechanics (vms: darcy model with boussinesq)
-\end{itemize}
-\comment{talking about Eulerian approach Air Metal will be presented in the next chapters, it should be the biblio section of another chapter}
-
-MESO MACRO (without LS): 
-\begin{itemize}
-\item Tommy Carozzani
-\item Miha Zaloznik
-\end{itemize}
 
 \section{Solidification models with level set}
 Should I mention the use of level set in mould filling, which comes before solidification \\

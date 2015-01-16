@@ -93,9 +93,12 @@ When segregated solute is the lighter species, an increasing concentration in th
 \section{Macrosegregation}
 Macrosegreation generally stems from a solubility difference between a liquid phase and one or more solid phases, along with
 a relative velocity between these phases. While the former is responsible for local solute enrichment or depletion, the latter
-will create the composition heterogeneity on a scale much larger than just a few dendrites.
+will propagate the composition heterogeneity on a scale much larger than just a few dendrites.
 % http://dictionary.cambridge.org/grammar/british-grammar/little-a-little-few-a-few
 This is why macrosegregation could be observed on the scale of a casting, up to several meters in length. 
+While microsegreation can be healed by annealing the alloy to speed up the diffusion process and allow homogenization, heterogneities 
+spanning on larger distances cannot be treated after solidification. Failure to prevent macrosegregation may lead to a substantial decline in the 
+alloy's mechanical behavior, hence its serviceability.
 %--------------------------------------------------------
 \subsection{Causes}
 Four main factors can (simultaneously) cause fluid flow leading to macrosegregation:
@@ -312,15 +315,19 @@ microgravity in parabolic flight or sounding rockets and last, microgravity cond
 \end{figureth}
 %-------------------------------------------------------------------------------------------------------------------------------------------------
 \subsection{Ojectives and outline}
-The scope of the present thesis is macrosegregation with liquid dynamics assuming a fixed solid phase, i.e. no account of solid 
-transport (e.g. equiaxed crystals sedimentation) and no account of solid deformation. In CEMEF, this framework has been the same for previous 
+The main focus of the present thesis is macrosegregation with liquid dynamics assuming a fixed solid phase, i.e. no account of solid 
+transport (e.g. equiaxed crystals sedimentation) and no account of solid deformation. In CEMEF, this scope has been adopted for previous 
 work by \citet{gouttebroze_modelisation_2005, liu_finite_2005, mosbah_multiple_2008, rivaux_simulation_2011, carozzani_developpement_2012}.
-Nevertheless, many modelling features evolved with time such as going from two-dimensional to three-dimensional modelling, resolution scheme
-for each of the conservation equations: energy, chemical species and liquid momentum, Eulerian or Lagrangian method, modelling of grain structure and others.
-In this thesis, we propose a numerical model that takes into account i) the energy conservation in a temperature formulation based on a thermodynamic database mapping,
-ii) the liquid momentum conservation with thermosolutal convection and solidification shrinkage as driving forces, iii) solute mass conservation and iv) solidification paths at full equilibrium for multicomponent alloys microsegregation. Moreover, all equations are formulated in a pure Eulerian context while using the Level Set method to
-keep implicitly track of the interface between the alloy and surrounding gas. To my knowledge, this work combining macrosegregation prediction using the level set methodology to track the metal-air interface during shrinkage has no precedent in the literature.
+Nevertheless, many modelling features evolved with time such as going from two-dimensional to three-dimensional modelling, resolution schemes
+for each of the conservation equations: energy, chemical species and liquid momentum, Eulerian or Lagrangian descriptions, modelling of grain structure and others.
+In this thesis, we propose a numerical model that takes into account 
+i) the energy conservation in a temperature formulation based on a thermodynamic database mapping,
+ii) the liquid momentum conservation with thermosolutal convection and solidification shrinkage as driving forces, 
+iii) solute mass conservation and 
+iv) solidification paths at full equilibrium for multicomponent alloys microsegregation. 
+Moreover, all equations are formulated in a pure Eulerian description while using the Level Set method to keep implicitly track of the interface between the alloy and surrounding gas. To the author's knowledge, this work combining macrosegregation prediction using the level set methodology to track the metal-air interface during shrinkage has no precedent in the literature.
 
+%Aside from the main modelling task regarding macrosegregation, several goals 
 \emph{Numerical tools: Cimlib relying on PETSc, parallelized with MPICH2, paraview and python as tools for postprocess and analysis. \\
 The previously mentionned simulation requirements are not met in a single casting software package. Nevertheless, \thercast is a promising tool that already 
 handles a part of the above points. The current thesis developments are done using C++ language as a part of the
