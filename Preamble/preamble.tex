@@ -30,9 +30,22 @@
 \usepackage [backend=bibtex,style=authoryear]{biblatex} %style=authoryear %style=apa
 \newcommand{\citep}[1]{\parencite{#1}}
 \newcommand{\citet}[1]{\textcite{#1}}
-\ExecuteBibliographyOptions{hyperref=true,backref=true,firstinits=true, isbn=false, eprint=false,
-							url=true, doi=false, sorting=nyt, minnames=1, maxcitenames=2, maxbibnames=2, 
-							alldates=short, punctfont=true, autopunct=false, block=none, dashed=false}
+\ExecuteBibliographyOptions{hyperref=true,
+							backref=true,
+							firstinits=true, 
+							isbn=false, 
+							eprint=false,
+							url=true, 
+							doi=false, 
+							sorting=nyt, 
+							minnames=1, 
+							maxcitenames=1, % in text citations, allows suffix a,b ...
+							maxbibnames=2,
+							alldates=short, 
+							punctfont=true, 
+							autopunct=false, 
+							block=none, 
+							dashed=false}
 
 \addbibresource{References/zotero_library.bib}
 
@@ -62,7 +75,7 @@
   \printfield{eid}}
 \DeclareFieldFormat[article]{number}{\mkbibparens{#1}}
 
-%Disable In prefix
+%Disable prefix "In"
 \renewbibmacro{in:}{}
 
 % Define brackets instead of parenthesis

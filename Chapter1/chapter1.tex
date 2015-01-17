@@ -21,6 +21,7 @@ while going from the liquid state to the solid state, in contact with the surrou
 In a casting process, the chill surface i.e. the contact between the molten alloy and relatively cold moulds, is the first area to solidify. 
 Thermal gradient, $G$, and cooling rate $R$ are two crucial process parameters that define the interface speed $\vstar$, which in turn,
 affects the initial microstructure. Although it may be not easy to control them, it remains important to understand their implication in solidification.
+
 The solid-liquid interface fluctuates when solidifying, thus perturbations may appear on the front, locally destabilizing it. 
 Two outcome scenarios are possible.
 The first scenario is characterized by low values of $\vstar$ where the interface maintains a planar shape, hence we speak of \emph{planar growth}. 
@@ -32,15 +33,13 @@ of the thermal gradient. As it has a tree-like shape, we speak of \emph{dendriti
 favourable growth in the <100> direction for alloys with cubic lattices, but different orientations are also reported in the literature (TODO SOURCE). %TODO 
 If temperature is uniform, which the case usually far from mould walls, a similar dendritic growth phenomenon occurs, but with an equiaxed morphology.
 
-Columnar dendrites are characterized by a primary spacing, $\pdas$, between the main trunks, and a secondary spacing, $\sdas$, for the secondary arms.
+Columnar dendrites are characterized by a primary spacing, $\pdas$, between the main trunks, and a secondary spacing, $\sdas$, for the arms that are perpendicular
+to the trunks. It should be noted that $\sdas$, together with the grain size, are two important microstructural parameters in the as-cast microstructure \citep{easton_grain_2011}.
 Further branching may occur but will not be discussed here.
-The dendritic geometry is crucial in solidification theory as it exhibits lower solid fraction compared to a microstructure formed by planar growth.
-Therefore 
-
 %----------------------
 \begin{figureth}
 % textwidth 
-{0.25}
+{0.5}
 %path 
 {Chapter1/Graphics/dendritic3.png}
 % caption
@@ -49,6 +48,39 @@ Therefore
 % label
 \label{fig:dendritic_growth}
 \end{figureth}
+%----------------------
+%-----------------------------------
+\subsection{Mush permeability}
+The dendritic geometry is crucial in solidification theory as it exhibits lower solid fraction compared to a microstructure formed by planar growth.
+This fact has consequences in the fluid-structure interaction in the mushy zone, namely the liquid flow through dendrites. At the chill surface,
+the solid  grows gradually from dispersed growing nuclei, to a permeable solid skeleton until finally grains have fully grown with the end of phase change.
+The intermediate state where liquid can flow in and out of the mushy zone through the dendrites is a key phenomenon from a rheological perspective.
+%By defining a \emph{coherency temperature} $\Tcoh$, one can distinguish two behaviors. 
+%For temperatures below $\Tcoh$ (usually at low solid fractions), the liquid flow is characterized by an intrinsic velocity. 
+%As for temperature above $\Tcoh$,
+%For the rest of this section, we will focus on the first behavior where liquid has a relative freedom to move inside the mushy zone.
+The flow through the solid skeleton is damped by primary and secondary dendrites, resulting in momentum dissipation just like in saturated porous media. 
+The famous \citet{darcy_les_1856} law relates the pressure gradient ($\nabvec p$) to the fluid velocity $\vec{v}$, through the following equation \citep{rappaz_numerical_2003}:
+%----------------------
+\begin{align}
+\label{eq:darcy}
+& \vec{v} = \frac{\K}{\mu} \nabvec p
+\end{align}
+%----------------------
+where $\mu$ is the liquid dynamic viscosity and $\K$ is the permeability tensor. The latter parameter has been the subject of numerous studies that aimed
+to predict it from various microstructural or morphological parameters.
+Some of these studies has started even before the first attempts to model macrosegregation by \citet{flemings_macrosegregation:_1967, flemings_macrosegregation:_1968-1,flemings_macrosegregation:_1968}. Basically, all models include the solid fraction, $\gs$, as input 
+to predict mush permeability along with empirical data. An instance of such models is the work of \citet{xu_gravity-_1991}.
+Some models rely additionally the primary dendrite spacing $\pdas$ like Blake-Kozeny \citep{ramirez_evaluation_2003}, or the secondary 
+dendrite spacing $\sdas$ like Carman-Kozeny, as a meaningful parameter to determine an isotropic permeability. 
+Other models like \citet{poirier_permeability_1987,felicelli_simulation_1991} derive an anisotropic permeability based on both $\pdas$ and $\sdas$.
+
+The present work uses Carman-Kozeny as a constitutive model for the permeability scalar (zero order tensor):
+%----------------------
+\begin{align}
+\label{eq:permeability}
+& \K  = \frac{\sdas^2 \gl^3}{180\brac{1-\gl}^2}
+\end{align}
 %----------------------
 %-----------------------------------
 \subsection{Microsegregation}
@@ -69,6 +101,11 @@ the first solid forms with a composition $\k \Clstar=\k \Cnominal$ less than the
 composition $\Cnominal$, the latter being initially at the nominal composition, $\Cnominal$. \Cref{fig:binary_diag} illustrates a typical binary 
 phase diagram where the real solidus and liquidus are represented by solid lines, while the corresponding linear approximations are in dashed lines.
 For most binary alloys, this linearisation simplifies derivation of microsegregation models, as $\k$ becomes independent of temperature.
+
+For each phase, the relationship between the composition at the interface and that in the bulk depends on the chemical homogenisation ability of the phase.
+The more homogeneous a phase, the closer the concentrations between the interface and the bulk, hence closer to equilibrium.
+%The higher the diffusion coefficient of the phase, $\Dphi$, the closer the concentrations between the interface and the bulk. 
+It is thus essential to study the effect of homogenisation on the segregation behaviour and the subsequent effect on solidification, which leads the formalism of microsegregation models.
 %----------------------
 \begin{figureth}
 % textwidth 
@@ -80,23 +117,22 @@ For most binary alloys, this linearisation simplifies derivation of microsegrega
 % label
 \label{fig:binary_diag}
 \end{figureth}
-%----------------------
-For each phase, the relationship between the composition at the interface and that in the bulk is given by mass diffusion.
-The higher the diffusion coefficient of the phase, $\Dphi$, the closer the concentrations between the interface and the bulk.
-%
-\begin{align}
-\label{eq:eq}
-& 
-\end{align}
-%
-
-
+%-----------------------------------
 \subsubsection{Microsegregation models}
-define a microsegregation model; what is does, why do we need it in energy coupling for instance ...
+Solid formation depends greatly on the ability of chemicals species to diffuse within each of the solid and liquid phases, but also across the
+solid-liquid interface. Furthermore, chemical diffusion like all other diffusional process, is a time-dependent phenomenon. One can thus conclude that two factors
+influence the amount of solid formation: cooling rate and diffusion coefficients. However, convection and other mechanical mixing sources, 
+homogenise the composition much faster than by diffusion. As such, \emph{complete mixing} is always an acceptable assumption, regardless of the diffusion time 
+or coefficient...
 \subsubsection*{Lever rule}
 \subsubsection*{Gulliver Scheil}
 \subsubsection*{Finite back diffusion}
-brody-flemings, wang beckermann, martorano 2003 (CET) , hamoudaGandin (multicomponent), combeau2006 (check gouttebroze), damien tourret (predicition of peritectic with undercooling: aslan u cannot predict without undercooling 3al arja7) 
+brody-flemings, 
+wang beckermann, 
+martorano 2003 (CET) , 
+hamoudaGandin (multicomponent), 
+combeau2006 (check gouttebroze) H. Combeau, J.-M. Drezet, A. Mo, M. Rappaz, Metallurgical and MaterialsTransactions A 27 (8) (1996) 2314–2327, 
+damien tourret (predicition of peritectic with undercooling: aslan u cannot predict without undercooling 3al arja7) 
 
 \subsection{Volume averaging}
 
@@ -109,14 +145,18 @@ brody-flemings, wang beckermann, martorano 2003 (CET) , hamoudaGandin (multicomp
 
 Macro models:
 \begin{itemize}
-\item gu beckermann
-\item Miha Zaloznik (indirect)
+\item Rivaux ?
+\item Gu beckermann 1999 ?
 \end{itemize}
 
-MESO MACRO: 
+MICRO MACRO: 
 \begin{itemize}
 \item Tommy Carozzani (direct)
-\item Miha Zaloznik (indirect)
+
+\item P. Thévoz, J.-L. Desbiolles, M. Rappaz, Metallurgical and Materials TransactionsA 20 (2) (1989) 311–322
+\item guo  beckermann 2003
+\item Combeau 2009
+\item Miha Zaloznik 2010 (indirect)
 \end{itemize}
 
 
