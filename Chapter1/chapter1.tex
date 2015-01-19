@@ -123,8 +123,7 @@ Solid formation depends greatly on the ability of chemicals species to diffuse w
 solid-liquid interface. Furthermore, chemical diffusion like all other diffusional process, is a time-dependent phenomenon. One can thus conclude that two factors
 influence the amount of solid formation: cooling rate and diffusion coefficients. However, convection and other mechanical mixing sources, 
 homogenise the composition much faster than atomic diffusion. As such, \emph{complete mixing} in the liquid is always an acceptable assumption, regardless of the 
-solidification time. We may speak of infinite diffusion in the liquid. Nevertheless, diffusion in the solid also known as \emph{back diffusion}, is the only transport mechanism with very low diffusion coefficients. Therefore, chemical species will need a lot of time, i.e. low cooling rate, 
-before it can diffuse within the solid.
+solidification time. We may speak of infinite diffusion in the liquid. Nevertheless, diffusion in the solid also known as \emph{back diffusion}, is the only transport mechanism with very low diffusion coefficients. Therefore, chemical species require a long time, i.e. low cooling rate, to completely diffuse within the solid.
 The difference in diffusional behaviour is summarized by two limiting segregation models of perfect equilibrium and nonequilibrium at the scale
 of a secondary dendrite arm, which are the lever rule and Gulliver-Scheil models, respectively. Afterwards, models with finite back diffusion are presented. 
 %------------
@@ -186,14 +185,14 @@ following dimensional constraints on its volume, \rev:
 the element should be large enough to "see" and average microscopic fluctuations whilst being smaller than the scale of macroscopic variations.
 Solid and liquid may exist simultaneously in the RVE, but no gas phase is considered (volume saturation: $\Vs+\Vl=\rev$). 
 Moreover, temperature is assumed uniform and equal for all the phases.
-The formalism, introduced by \citet{wang_multiphase_1993}, is summarized by the following equations for any physical quantity $\psi$:
+The formalism, introduced by \citet{ni_volume-averaged_1991}, is summarized by the following equations for any physical quantity $\psi$:
 %----------------------
 \begin{align}
 \label{eq:volumeaveraging1}
 & \avg{\psi} = \frac{1}{\rev} \integral{\rev}{\psi}{\Omega} = \avg{\psi^s} + \avg{\psi^l}
 \end{align}
 %------------
-where $\psis$ and $\psil$ are phase averages of $\psi$. Then, for any phase $\phi$, one can introduce the \emph{intrinsic phase average} of $\psi$, denoted $\avg{\psi}^\phi$, by writing:
+where $\psis$ and $\psil$ are phase averages of $\psi$. Then, for any phase $\phi$, one can introduce the \emph{phase intrinsic average} of $\psi$, denoted $\avg{\psi}^\phi$, by writing:
 %----------------------
 \begin{align}
 \label{eq:volumeaveraging2}
@@ -208,35 +207,28 @@ where $\gphi$ is the volume fraction of the phase. To finalize, the averaging is
 \end{align}
 %------------
 where $\vstar$ is the local relative interface velocity and $\gammastar$ is the solid-liquid interface, while $n^\phi$ is the normal to $\gammastar$, directed outwards.
+The previous equations will be used to derive a set macroscopic conservation equations. It is noted that the intrinsic average $\avg{\psi}^\phi$ may
+be replaced by ${\psi}^\phi$ for notation simplicity, whenever the averaging technique applies.
+%----------------------------------
+\subsubsection{Macroscopic equations}
 
-\section{Other}
-\begin{itemize}
-\item Energy (chapter 1)
-\item Species mass (voller prakash)
-\item Fluid mechanics (vms: darcy model with boussinesq)
-\end{itemize}
-
+%%----
 Macro models:
 \begin{itemize}
 \item Rivaux ?
 \item Gu beckermann 1999 ?
 \end{itemize}
-
+%%----
 MICRO MACRO: 
 \begin{itemize}
 \item Tommy Carozzani (direct)
-
 \item P. Thévoz, J.-L. Desbiolles, M. Rappaz, Metallurgical and Materials TransactionsA 20 (2) (1989) 311–322
 \item guo  beckermann 2003
 \item Combeau 2009
 \item Miha Zaloznik 2010 (indirect)
 \end{itemize}
-
-
-
 end by talking about taking air into account and the need for an interface capturing method
-
-
+%%----
 \section{Motion description}
 \subsection{Langrangian description}
 \subsection{Eulerian description}
