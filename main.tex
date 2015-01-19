@@ -1,4 +1,4 @@
-\documentclass[11pt,a4paper,twoside,openright]{book}
+\documentclass[12pt,a4paper,twoside,openright]{book}
 %\documentclass[a4paper,12pt,fourier,numbered,print,index]
 
 % CHECK https://www.writelatex.com/1283488jybyzp#/3132576/
@@ -8,7 +8,10 @@
 \input{Preamble/preamble}
 \input{Preamble/post_commands}
 \input{Frontmatter/titlepage}
-\includeonly{Chapter0/chapter0,Chapter1/chapter1} 
+\includeonly{
+			Chapter0/chapter0,
+			Chapter1/chapter1
+			 } 
 %%------------------------ BEGIN  -------------------------------
 \begin{document}
 
@@ -20,6 +23,7 @@
 % *********************** Adding TOC and List of Figures ***********************
 \dominitoc
 \begin{nolinkcolors}	
+%\setcounter{tocdepth}{2} % decrease to hide levels from TOC
 \tableofcontents
 %\listoffigures
 %\listoftables

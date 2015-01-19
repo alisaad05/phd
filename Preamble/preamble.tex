@@ -1,22 +1,23 @@
-%%------------------------ LANGUAGES-FRENCH ACCENTS -------------------------------
+%%------------------------ FONTS -------------------------------
+%\usepackage{lmodern}
+%\usepackage{fouriernc}
+\usepackage{fourier} 		% Utopia font-typesetting including mathematical formula compatible with newer TeX-Distributions (>2010)
+%\usepackage{utopia} 		% on older systems -> use this package instead of fourier in combination with mathdesign for better looking results
+%\usepackage[adobe-utopia]{mathdesign}
+%\usepackage{ae,aecompl}
+
+%------------------------ LANGUAGES-FRENCH ACCENTS -------------------------------
 \usepackage[utf8]{inputenc}
 % For the front page
 \usepackage[T1]{fontenc}		
 \usepackage[francais, english]{babel} % american
 %\usepackage{utopia} % lmodern % utopia % fourier
 
-%%------------------------ FONTS -------------------------------
-%\usepackage{lmodern}
-\usepackage{fourier} 		% Utopia font-typesetting including mathematical formula compatible with newer TeX-Distributions (>2010)
-%\usepackage{utopia} 		% on older systems -> use this package instead of fourier in combination with mathdesign for better looking results
-%\usepackage[adobe-utopia]{mathdesign}
-%\usepackage{ae,aecompl}
-
 %%------------------------ ACRONYMS -------------------------------
 %\usepackage[printonlyused,smaller]{acronym}
 %\renewcommand{\bflabel}[1]{{#1}\hfill} % fix the list of acronyms
 
-%%------------------------ BIBLIOGRAPHY NATBIB (obsolete) -------------------------------
+%%------------------------ BIBLIOGRAPHY NATBIB (deprecated) -------------------------------
 % http://merkel.zoneo.net/Latex/natbib.php
 % default option for citation rendering is "authoryear" and "round" brackets
 % sort: orders multiple citations into the sequence in which they appear in the list of references;
@@ -28,8 +29,14 @@
 %%------------------------ BIBLIOGRAPHY BIBLATEX -------------------------------
 \usepackage{csquotes}% Recommended
 \usepackage [backend=bibtex,style=authoryear]{biblatex} %style=authoryear %style=apa
-\newcommand{\citep}[1]{\parencite{#1}}
-\newcommand{\citet}[1]{\textcite{#1}}
+
+% Rename citation commands (instead of redefining them, impossible then to use optional "see" or page number
+\let\citep\parencite
+\let\citet\textcite
+% (deprecated)
+%\newcommand{\citep}[1]{\parencite{#1}}
+%\newcommand{\citet}[1]{\textcite{#1}}
+
 \ExecuteBibliographyOptions{hyperref=true,
 							backref=true,
 							firstinits=true, 

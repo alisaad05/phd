@@ -30,7 +30,7 @@ the rest of the interface catches up, keeping the planar geometry.
 In another scenario, where a real casting is considered, the interface speed is greater in general, due to high solidification rate.
 The protuberance tip will be pulled into a liquid less rich in solute than the interface. The zone ahead of the solid-liquid interface is constitutionally undercooled \citep{tiller_redistribution_1953}, giving a greater driving force for the protuberance to grow in the direction
 of the thermal gradient. As it has a tree-like shape, we speak of \emph{dendritic growth}. Near the chill surface, dendrites are columnar, with a 
-favourable growth in the <100> direction for alloys with cubic lattices, but different orientations are also reported in the literature (TODO SOURCE). %TODO 
+favourable growth in the <100> direction for alloys with cubic lattices, but different orientations are also reported in the literature \citep[see][289]{dantzig_solidification_2009}.
 If temperature is uniform, which the case usually far from mould walls, a similar dendritic growth phenomenon occurs, but with an equiaxed morphology.
 
 Columnar dendrites are characterized by a primary spacing, $\pdas$, between the main trunks, and a secondary spacing, $\sdas$, for the arms that are perpendicular
@@ -71,8 +71,8 @@ where $\mu$ is the liquid dynamic viscosity and $\K$ is the permeability tensor.
 to predict it from various microstructural or morphological parameters.
 Some of these studies has started even before the first attempts to model macrosegregation by \citet{flemings_macrosegregation:_1967, flemings_macrosegregation:_1968-1,flemings_macrosegregation:_1968}. Basically, all models include the solid fraction, $\gs$, as input 
 to predict mush permeability along with empirical data. An instance of such models is the work of \citet{xu_gravity-_1991}.
-Some models rely additionally the primary dendrite spacing $\pdas$ like Blake-Kozeny \citep{ramirez_evaluation_2003}, or the secondary 
-dendrite spacing $\sdas$ like Carman-Kozeny, as a meaningful parameter to determine an isotropic permeability. 
+Some models rely additionally on the primary dendrite arm spacing $\pdas$ like Blake-Kozeny \citep{ramirez_evaluation_2003}, or the secondary 
+dendrite arm spacing $\sdas$ like Carman-Kozeny, as a meaningful parameter to determine an isotropic permeability. 
 Other models like \citet{poirier_permeability_1987,felicelli_simulation_1991} derive an anisotropic permeability based on both $\pdas$ and $\sdas$.
 
 The present work uses Carman-Kozeny as a constitutive model for the permeability scalar (zero order tensor):
@@ -122,24 +122,97 @@ It is thus essential to study the effect of homogenisation on the segregation be
 Solid formation depends greatly on the ability of chemicals species to diffuse within each of the solid and liquid phases, but also across the
 solid-liquid interface. Furthermore, chemical diffusion like all other diffusional process, is a time-dependent phenomenon. One can thus conclude that two factors
 influence the amount of solid formation: cooling rate and diffusion coefficients. However, convection and other mechanical mixing sources, 
-homogenise the composition much faster than by diffusion. As such, \emph{complete mixing} is always an acceptable assumption, regardless of the diffusion time 
-or coefficient...
+homogenise the composition much faster than atomic diffusion. As such, \emph{complete mixing} in the liquid is always an acceptable assumption, regardless of the 
+solidification time. We may speak of infinite diffusion in the liquid. Nevertheless, diffusion in the solid also known as \emph{back diffusion}, is the only transport mechanism with very low diffusion coefficients. Therefore, chemical species will need a lot of time, i.e. low cooling rate, 
+before it can diffuse within the solid.
+The difference in diffusional behaviour is summarized by two limiting segregation models of perfect equilibrium and nonequilibrium at the scale
+of a secondary dendrite arm, which are the lever rule and Gulliver-Scheil models, respectively. Afterwards, models with finite back diffusion are presented. 
+%------------
 \subsubsection*{Lever rule}
-\subsubsection*{Gulliver Scheil}
+The lever rule considers an ideal equilibrium in all phases, i.e. solidification is extremely slow, hence phase compositions are 
+homogeneous ($ \Clstar = \Cl$ and $ \Csstar = \Cs$ ) at all times as a consequence of complete mixing. 
+These compositions are given by:
+%----------------------
+\begin{align}
+\label{eq:leverrule}
+& \Cl= \Clstar = \k \Csstar = \k \Cs \\
+& \Cs= \Csstar = \frac{\Cnominal}{\k(1-\fs) + \fs}
+\end{align}
+%----------------------
+At the end of solidification, the composition of the solid phase is equal to the nominal composition, $\Cs = \Cnominal$
+%------------
+\subsubsection*{Gulliver-Scheil}
+The other limiting case is the absence of diffusion in the solid. That includes also the diffusion at the interface, so nothing diffuses in or out. The consequence is a steady increase of the homogeneous liquid composition while the solid composition remains non-uniform.
+Compared to a full equilibrium approach, higher fractions of liquid
+will remain until eutectic composition is reached, triggering a eutectic solidification. The phase compositions are given by:
+%----------------------
+\begin{align}
+\label{eq:scheil}
+& \Cl= \Clstar = \k \Csstar \\
+& \Cs= \k \Cnominal (1-\fs)^{1-\k}
+\end{align}
+%------------
 \subsubsection*{Finite back diffusion}
-brody-flemings, 
-wang beckermann, 
-martorano 2003 (CET) , 
-hamoudaGandin (multicomponent), 
-combeau2006 (check gouttebroze) H. Combeau, J.-M. Drezet, A. Mo, M. Rappaz, Metallurgical and MaterialsTransactions A 27 (8) (1996) 2314–2327, 
-damien tourret (predicition of peritectic with undercooling: aslan u cannot predict without undercooling 3al arja7) 
+It has been concluded that the assumption of a negligeable back diffusion overestimates the liquid composition
+and the resulting eutectic fraction. Therefore, many models studied the limited diffusion in the solid. One of the earliest models is the Brody-Flemings models \citep{khan_influence_2014} that is a based on a differential solute balance equation for a parabolic growth rate, as follows:
+%----------------------
+\begin{align}
+\label{eq:brodyflemings}
+& \Cl= \Clstar = \k \Csstar \\
+& \Cs= \k \Cnominal \crochet{ 1 - \brac{ 1 - 2 \Fos \k } \fs }^{\frac{\k-1}{1 - 2 \Fos \k }}
+\end{align}
+%------------
+where $\Fos$ is the dimensionless \emph{Fourier number} for diffusion in the solid \citep{dantzig_solidification_2009}. It depends on the 
+solid diffusion coefficient $\Ds$, solidification time $\tsolidif$ and the secondary dendrite arm spacing, as follows: 
+%----------------------
+\begin{align}
+\label{eq:fouriersolid}
+& \Fos = \frac{\Ds \tsolidif}{\brac{\sdas / 2}^2}
+\end{align}
+%------------
+Several other models were since suggested and used. The interested reader is referred to the following non exhaustive list of publications: \citet{clyne_solute_1981,kobayashi_solute_1988,ni_volume-averaged_1991,wang_multiphase_1993,combeau_modeling_1996,martorano_solutal_2003,tourret_generalized_2009}.
+%------------------------------------
+\subsection{Macroscopic solidification model: monodomain}
+In this section, we will present the macroscopic conservations equations that enable us to predict 
+macrosegregation in the metal when the latter is the only domain in the system.
+%-------------
+\subsubsection{Volume averaging}
+It is crucial for a solidification model to represent phenomena on the microscale, then scale up to predict 
+macrscopic phenomena. Nevertheless, the characteristic length of a small scale in solidification may represent a dendrite arm spacing, for instance the mushy zone permeability, as it may also represent an atomic distance if one is interested, for instance, in the growth competition between diffusion and surface energy of the solid-liquid interface. Modelling infinitely small-scale phenomena could be prohibitively expensive in computation time, if the we target industrial scales. 
 
-\subsection{Volume averaging}
+The volume averaging is a technique that allows bypassing this barrier by averaging
+small-scale variations on a so-called \emph{representative volume element} (RVE) \citep{dantzig_solidification_2009} with the 
+following dimensional constraints on its volume, \rev:
+the element should be large enough to "see" and average microscopic fluctuations whilst being smaller than the scale of macroscopic variations.
+Solid and liquid may exist simultaneously in the RVE, but no gas phase is considered (volume saturation: $\Vs+\Vl=\rev$). 
+Moreover, temperature is assumed uniform and equal for all the phases.
+The formalism, introduced by \citet{wang_multiphase_1993}, is summarized by the following equations for any physical quantity $\psi$:
+%----------------------
+\begin{align}
+\label{eq:volumeaveraging1}
+& \avg{\psi} = \frac{1}{\rev} \integral{\rev}{\psi}{\Omega} = \avg{\psi^s} + \avg{\psi^l}
+\end{align}
+%------------
+where $\psis$ and $\psil$ are phase averages of $\psi$. Then, for any phase $\phi$, one can introduce the \emph{intrinsic phase average} of $\psi$, denoted $\avg{\psi}^\phi$, by writing:
+%----------------------
+\begin{align}
+\label{eq:volumeaveraging2}
+& \avg{\psi^\phi} = \frac{1}{\rev} \integral{\Vphi}{\psi}{\Omega} = \gphi \avg{\psi}^\phi
+\end{align}
+%------------
+where $\gphi$ is the volume fraction of the phase. To finalize, the averaging is applied to temporal and spatial derivation operators \citep{rivaux_simulation_2011}:
+\begin{align}
+\label{eq:volumeaveraging3}
+& \avg{ \frac{\partial \psi}{\partial t} ^\phi } = \frac{\partial \avg{\psi^\phi}}{\partial t} - \integral{\gammastar}{\psi^\phi \vstar \cdot \vec{n^\phi}}{\Gamma} \\
+& \avg{ \nabvec \psi^\phi } = \nabvec \avg{\psi^\phi} + \integral{\gammastar}{\psi^\phi \vec{n^\phi}}{\Gamma}
+\end{align}
+%------------
+where $\vstar$ is the local relative interface velocity and $\gammastar$ is the solid-liquid interface, while $n^\phi$ is the normal to $\gammastar$, directed outwards.
 
-\subsection{Macroscopic model}
+\section{Other}
 \begin{itemize}
 \item Energy (chapter 1)
-\item Species mass (voller prakash) \comment{should I mention the tabulation approach that I couldnt finalize because of the equality between w and wl in liquid phase ?}
+\item Species mass (voller prakash)
 \item Fluid mechanics (vms: darcy model with boussinesq)
 \end{itemize}
 
@@ -172,11 +245,6 @@ a little history \citep{hirt_arbitrary_1971} \\
 The ALE method combines advantages from both previous descriptions. Explain how the position mesh nodes can be
 updated with velocity or fixed. However, this description will be more suitable for configuration with deformable solid. 
 Further discussions are presented in the perspectives.
-
-\section{Standard models: without level set}
-A section presenting the main FE equations along with their weak formulations that will be solved 
-in the metal being a single domain. I call it "standard" because it doesnt contain anything about 
-levelsets, compressibility, ...
 
 \section{Solidification models with level set}
 Should I mention the use of level set in mould filling, which comes before solidification \\

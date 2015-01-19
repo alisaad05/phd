@@ -29,6 +29,7 @@
 \newcommand{\crochet}[1]{ \left[  #1  \right] } 
 \newcommand{\abval}[1]{\ensuremath{\left |  #1 \right |}} 
 \newcommand\norm[1]{\ensuremath{\lVert #1 \rVert}}
+\newcommand\integral[3]{\ensuremath{\int_{#1} #2\: \mathrm{d}#3}}
 
 \newcommand{\mtrx}[1]{{\underline{\underline{#1}}} }
 \newcommand\mat[1]{\ensuremath{\underline{#1}}} 
@@ -87,6 +88,15 @@
 \newcommand\pdas{\ensuremath{{\lambda}_{1}}}
 \newcommand\sdas{\ensuremath{{\lambda}_{2}}} 
 \newcommand\Tcoh{\ensuremath{{T}_{\text{coh}}}} 
+\newcommand\Fos{\ensuremath{\text{Fo}^s}} % Fourier number in the solid
+\newcommand\tsolidif{\ensuremath{t_\text{s}}} % solidification time in Fourier number 
+\newcommand\rev{\ensuremath{V_\text{E}}} % V_\text{RVE}
+\newcommand\Vs{\ensuremath{V^s}}
+\newcommand\Vl{\ensuremath{V^l}}
+\newcommand\Vphi{\ensuremath{V^\phi}}
+\newcommand\psis{\ensuremath{\avg{\psi}^s}}
+\newcommand\psil{\ensuremath{\avg{\psi}^l}}
+\newcommand\gammastar{\ensuremath{{\Gamma}^{\text{*}} }}
 
 \newcommand\wl{\ensuremath{\avg{w}^l}}
 \newcommand\ws{\ensuremath{\avg{w}^s}}
@@ -98,6 +108,8 @@
 \newcommand\hs{\ensuremath{h^s}}
 \newcommand\gl{\ensuremath{{g^l}}} % double braces useful for additional superscripts
 \newcommand\gs{\ensuremath{{g^s}}} % double braces useful for additional superscripts
+\newcommand\fl{\ensuremath{{f^l}}} % double braces useful for additional superscripts
+\newcommand\fs{\ensuremath{{f^s}}} % double braces useful for additional superscripts
 \newcommand\pl{\ensuremath{p^l}}
 \newcommand\ps{\ensuremath{p^s}}
 \newcommand\Dl{\ensuremath{D^l}}
@@ -110,7 +122,7 @@
 \newcommand\vl{\ensuremath{\vec{v}^l}}
 \newcommand\vs{\ensuremath{\vec{v}^s}}
 \newcommand\vphi{\ensuremath{\vec{v}^\phi}}
-\newcommand\vstar{\ensuremath{\vec{v}^\text{*}}}
+\newcommand\vstar{\ensuremath{\vec{v^\text{*}}}}
 
 \newcommand\gravity{\ensuremath{\vec{g}}}
 
@@ -159,7 +171,8 @@ EML 	& 	Electromagnetic levitation 	\\
 ESA 	& 	European Space Agency 		\\
 ISS 	&	International Space Station \\
 IWT		&	Institut für Werkstofftechnik \\
-RUB		& 	Ruhr Universität Bochum \\ \tabucline[1pt]{-}
+RUB		& 	Ruhr Universität Bochum \\ 
+RVE		&	Representative Elementary Volume\\\tabucline[1pt]{-}
 %-----------------------------
 \end{tabu}}
 }
