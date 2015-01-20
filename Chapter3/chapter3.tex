@@ -25,6 +25,13 @@ Review fluid mechanics briefly (MINI element and VMS and talk about the availabl
 \section{VMS solver}
 Give the VMS equations referring to Hachem article + weak form + stabilization
 
+%taken from chapter 1
+As for the last equation in \cref{tab:conservationeqs}, we follow the assumption of an incompressible liquid phase, which gives:
+%---
+\begin{align}
+\label{eq:incompressiblity}
+& \frac{\partial \r}{\partial t} = 0 
+\end{align}
 
 \section{Computational stability}
 CFL condition \\
@@ -92,6 +99,7 @@ ternary system. Note that in the present test case, phase densities are taken co
 Therefore they are not tabulated. With this assumption, no shrinkage occurs upon phase change.
 \begin{table}[h]
 \centering
+\caption{Parameters for solidification of alloy Fe – 2 wt.\% C – 30 wt.\% Cr }
 \begin{tabular}{llll}
 \hline  
 \textbf{Parameter} & \textbf{Symbol} & \textbf{Value} & \textbf{Unit} \\
@@ -124,7 +132,6 @@ Convergence criterion (residual) 	& $\varepsilon_R$ & \num{e-6} & $-$ \\
 Convergence criterion (temperature) & $\varepsilon_T$ & \num{e-2} & \si{\udegK} \\ 
 \hline 
 \end{tabular} 
-\caption{Parameters for solidification of alloy Fe – 2 wt.\% C – 30 wt.\% Cr }
 \label{table:data_case_ternary}
 \end{table}
 

@@ -15,9 +15,14 @@ The scope such applications mainly encompasses dendritic modelling and simulatio
 Other references, in relevance to our scope, apply this method to track the surface of the metal
 while going from the liquid state to the solid state, in contact with the surrounding gas which is usually air.
 %---------------------------------------------------
+%
+%
 \section{Modelling macrosegreation}
 %-------------
+%
+%
 \subsection{Dendritic growth}
+%-------
 In a casting process, the chill surface i.e. the contact between the molten alloy and relatively cold moulds, is the first area to solidify. 
 Thermal gradient, $G$, and cooling rate $R$ are two crucial process parameters that define the interface speed $\vstar$, which in turn,
 affects the initial microstructure. Although it may be not easy to control them, it remains important to understand their implication in solidification.
@@ -48,8 +53,9 @@ Further branching may occur but will not be discussed here.
 % label
 \label{fig:dendritic_growth}
 \end{figureth}
-%----------------------
 %-----------------------------------
+%
+%
 \subsection{Mush permeability}
 The dendritic geometry is crucial in solidification theory as it exhibits lower solid fraction compared to a microstructure formed by planar growth.
 This fact has consequences in the fluid-structure interaction in the mushy zone, namely the liquid flow through dendrites. At the chill surface,
@@ -81,8 +87,9 @@ The present work uses Carman-Kozeny as a constitutive model for the permeability
 \label{eq:permeability}
 & \K  = \frac{\sdas^2 \gl^3}{180\brac{1-\gl}^2}
 \end{align}
-%----------------------
 %-----------------------------------
+%
+%
 \subsection{Microsegregation}
 Microsegregation is a fundamental phenomenon in solidification. The simplest definition would be 
 an uneven distribution of solute between liquid and the herein growing solid, at the microscopic scale
@@ -118,6 +125,8 @@ It is thus essential to study the effect of homogenisation on the segregation be
 \label{fig:binary_diag}
 \end{figureth}
 %-----------------------------------
+%
+%
 \subsubsection{Microsegregation models}
 Solid formation depends greatly on the ability of chemicals species to diffuse within each of the solid and liquid phases, but also across the
 solid-liquid interface. Furthermore, chemical diffusion like all other diffusional process, is a time-dependent phenomenon. One can thus conclude that two factors
@@ -127,6 +136,8 @@ solidification time. We may speak of infinite diffusion in the liquid. Neverthel
 The difference in diffusional behaviour is summarized by two limiting segregation models of perfect equilibrium and nonequilibrium at the scale
 of a secondary dendrite arm, which are the lever rule and Gulliver-Scheil models, respectively. Afterwards, models with finite back diffusion are presented. 
 %------------
+%
+%
 \subsubsection*{Lever rule}
 The lever rule considers an ideal equilibrium in all phases, i.e. solidification is extremely slow, hence phase compositions are 
 homogeneous ($ \Clstar = \Cl$ and $ \Csstar = \Cs$ ) at all times as a consequence of complete mixing. 
@@ -140,6 +151,8 @@ These compositions are given by:
 %----------------------
 At the end of solidification, the composition of the solid phase is equal to the nominal composition, $\Cs = \Cnominal$
 %------------
+%
+%
 \subsubsection*{Gulliver-Scheil}
 The other limiting case is the absence of diffusion in the solid. That includes also the diffusion at the interface, so nothing diffuses in or out. The consequence is a steady increase of the homogeneous liquid composition while the solid composition remains non-uniform.
 Compared to a full equilibrium approach, higher fractions of liquid
@@ -151,6 +164,8 @@ will remain until eutectic composition is reached, triggering a eutectic solidif
 & \Cs= \k \Cnominal (1-\fs)^{1-\k}
 \end{align}
 %------------
+%
+%
 \subsubsection*{Finite back diffusion}
 It has been concluded that the assumption of a negligeable back diffusion overestimates the liquid composition
 and the resulting eutectic fraction. Therefore, many models studied the limited diffusion in the solid. One of the earliest models is the Brody-Flemings models \citep{khan_influence_2014} that is a based on a differential solute balance equation for a parabolic growth rate, as follows:
@@ -171,10 +186,14 @@ solid diffusion coefficient $\Ds$, solidification time $\tsolidif$ and the secon
 %------------
 Several other models were since suggested and used. The interested reader is referred to the following non exhaustive list of publications: \citet{clyne_solute_1981,kobayashi_solute_1988,ni_volume-averaged_1991,wang_multiphase_1993,combeau_modeling_1996,martorano_solutal_2003,tourret_generalized_2009}.
 %------------------------------------
+%
+%
 \subsection{Macroscopic solidification model: monodomain}
 In this section, we will present the macroscopic conservations equations that enable us to predict 
 macrosegregation in the metal when the latter is the only domain in the system.
 %-------------
+%
+%
 \subsubsection{Volume averaging}
 It is crucial for a solidification model to represent phenomena on the microscale, then scale up to predict 
 macrscopic phenomena. Nevertheless, the characteristic length of a small scale in solidification may represent a dendrite arm spacing, for instance the mushy zone permeability, as it may also represent an atomic distance if one is interested, for instance, in the growth competition between diffusion and surface energy of the solid-liquid interface. Modelling infinitely small-scale phenomena could be prohibitively expensive in computation time, if the we target industrial scales. 
@@ -203,16 +222,82 @@ where $\gphi$ is the volume fraction of the phase. To finalize, the averaging is
 \begin{align}
 \label{eq:volumeaveraging3}
 & \avg{ \frac{\partial \psi}{\partial t} ^\phi } = \frac{\partial \avg{\psi^\phi}}{\partial t} - \integral{\gammastar}{\psi^\phi \vstar \cdot \vec{n^\phi}}{\Gamma} \\
+\label{eq:volumeaveraging4}
 & \avg{ \nabvec \psi^\phi } = \nabvec \avg{\psi^\phi} + \integral{\gammastar}{\psi^\phi \vec{n^\phi}}{\Gamma}
 \end{align}
 %------------
-where $\vstar$ is the local relative interface velocity and $\gammastar$ is the solid-liquid interface, while $n^\phi$ is the normal to $\gammastar$, directed outwards.
-The previous equations will be used to derive a set macroscopic conservation equations. It is noted that the intrinsic average $\avg{\psi}^\phi$ may
-be replaced by ${\psi}^\phi$ for notation simplicity, whenever the averaging technique applies.
+where $\vstar$ is the local relative interface velocity and $\gammastar$ is the solid-liquid interface, 
+while $n^\phi$ is the normal to $\gammastar$, directed outwards. The surface integral term in 
+\cref{eq:volumeaveraging3,eq:volumeaveraging4} is an \emph{interfacial average} 
+that expresses interfacial exchanges between the phases. The previous equations will 
+be used to derive a set macroscopic conservation equations. 
+It is noted that the intrinsic average $\avg{\psi}^\phi$ may be replaced by ${\psi}^\phi$ 
+for notation simplicity, whenever the averaging technique applies.
+%
+%
 %----------------------------------
 \subsubsection{Macroscopic equations}
+%-----------
+A monodomain macroscopic model relies on four main conservation equations to predict 
+macrosegregation in a single alloy domain, i.e. the latter is considered without 
+any interaction with another alloy or ambient air. The general form of a conservation 
+equation of any physical quantity $\psi$ is given by \citep{rappaz_numerical_2003}:
+%-------
+\begin{align}
+\label{eq:conservationequation}
+& \frac{\partial \psi}{\partial t} + \nabla \cdot \brac{\psi \vec{v}} - \nabla \cdot \vec{j_{\psi}} = Q_{\psi}
+\end{align}
+%-------
+The first LHS term in \cref{eq:conservationequation} represents the time variation of $\psi$, the second term accounts for transport by advection while the third is the diffusive transport and the RHS term represents a volume source.
+The considered equations are mass, energy, liquid momentum and species conservation, all summarized in \cref{tab:conservationeqs}. The solid momentum is not considered as we assume a fixed and rigid solid phase ($\vs=\vec{0}$).
+%-----
+\begin{tableth}
+\centering
 
-%%----
+\caption{Summary of conservation equations with their variables}
+{\tabulinesep=1.0mm
+\begin{tabu}{ p{5cm} p{1cm} p{1cm} p{1cm}}
+\tabucline[1pt]{-}
+Conservation Equation & $\psi$ & $\vec{j_{\psi}}$ & $Q_{\psi}$ \\\tabucline[1pt]{-}
+%-----------------------------
+Mass				& 	$\avg{\rho}$  		& $-$ 						& $-$		\\
+Energy				& 	$\avg{\rho h}$  	& $\avg{\vec{q}}$ 			& $-$		\\
+Species				& 	$\avg{\rho w_i}$  	& $\avg{\vec{j_i}}$ 		& $-$		\\
+Liquid momentum		&	$\avg{\rho \vl}$  	& $-\avg{\mat{\sigma^l}}$ 	& $\Fv$		\\\tabucline[1pt]{-} %\vec{\Gamma}^{l}
+%-----------------------------
+\end{tabu}}
+\label{tab:conservationeqs}
+\end{tableth}
+%-----
+We develop the ingredients of these equations using the averaging technique, as follows:
+%-------
+\begin{align}
+\label{eq:mainingredients}
+& \avg{\rho} = \gl \rhol + \gs \rhos \\
+& \avg{\rho \vec{v}} = \gl \rhol \vl + \cancel{\gs \rhos \vs} \\
+& \avg{\rho h} = \gl \rhol \hl + \gs \rhos \hs \\
+& \avg{\rho h \vec{v}} = \gl \rhol \hl \vl + \cancel{\gs \rhos \hs \vs} \\
+& \avg{\rho w_i} = \gl \rhol \wil + \gs \rhos \wis \\
+& \avg{\rho w_i \vec{v}} = \gl \rhol \wil \vl + \cancel{\gs \rhos \wis \vs}
+\end{align}
+%-------
+% $\mat{\sigma}$ 
+%-------
+Next we define the average diffusive fluxes, $\vec{q}$ for energy and $\vec{j_i}$ for solutes, using Fourier's conduction law and Fick's first law respectively:
+%------
+\begin{align}
+\label{eq:fourierlaw}
+& \avg{\vec{q}} = - \gl \kl \nabvec T -  \gs \ks \nabvec T 	\\
+\label{eq:ficklaw}
+& \avg{\vec{j_i}} = - \gl \Dl \nabvec \wil - \cancel{\gs \Ds \nabvec \wis}
+\end{align}
+%------------
+In \cref{eq:ficklaw}, the solid diffusion coefficient is neglected, 
+by considering that for macroscopic scales, the average composition of the alloy is much more influenced by advective 
+and diffusive transport in the liquid.
+%------------
+
+%%-------------------------------------------------------------------------------------------
 Macro models:
 \begin{itemize}
 \item Rivaux ?
