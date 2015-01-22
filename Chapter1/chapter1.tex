@@ -314,14 +314,40 @@ MICRO MACRO:
 \end{itemize}
 end by talking about taking air into account and the need for an interface capturing method
 %%----
-\section{Motion description}
-\subsection{Langrangian description}
-\subsection{Eulerian description}
-\subsection{Arbitrary Langrangian-Eulerian}
-a little history \citep{hirt_arbitrary_1971} \\ 
-The ALE method combines advantages from both previous descriptions. Explain how the position mesh nodes can be
-updated with velocity or fixed. However, this description will be more suitable for configuration with deformable solid. 
-Further discussions are presented in the perspectives.
+\section{Eulerian and Lagrangian motion description}
+In mechanics, it is possible to describe motion using two well-known motion description: Eulerian and Lagrangian descrptions.
+To start with the latter, it describes the motion of a particle by attributed a reference frame that moves with the particle.
+In other words, the particle itself is the center of a reference frame moving at the same speed during time. As such, the total variation
+of any physical quantity $\psi$ related to the particle can be found by deriving with respect to time:
+%------
+\begin{align}
+\label{eq:lagrangian}
+& \frac{\mathrm{d} \psi}{\mathrm{d} t} = \frac{\partial \psi}{\partial t}
+\end{align}
+%------------
+In contrast to the Lagrangian description, the Eulerian description considers a 
+fixed reference frame and independent of the particle's trajectory. The total variation of $\psi$
+cannot be simply described by a temporal derivative, since the particle's velocity is not known to 
+the reference frame, and thus the velocity effect, namely the advective transport of $\psi$ should also be considered as follows:
+%------
+\begin{align}
+\label{eq:eulerian}
+& \frac{\mathrm{d} \psi}{\mathrm{d} t} = \frac{\partial \psi}{\partial t} + \underbrace{\vec{v} \cdot \nabvec \psi}_{\substack{\text{Advective} \\ \text{Transport}}}  
+\end{align}
+%------------
+The importance of these motion descriptions is essential to solve mechanics, whether for fluids or solids, using a numerical method like the finite 
+element method (FEM). One of the main steps of this method is to spatially discretise a continuum into a grid of points (nodes, vertices ...), where any 
+physical field shall be accordingly discretized. Now, if we focus on a node where velocity has a non zero value and following the previously made analysis,
+two outcomes are possible: either the node would be fixed (Eulerian) or it would move by a distance proportional to the prescribed velocity (Lagrangian).
+As a consequence, points located on the boundaries constantly require an update of the imposed boundary conditions.
+
+From these explanations, one can deduce that a Eulerian Lagrangian is suited for fluid mechanics problems where 
+velocities are high and may distort the mesh points, whereas the Lagrangian is better suited for solid mechanics 
+problems where deformation velocities are relatively low and should well behave when predicting strains.
+
+Another motion description has emerged some decades ago, \citep{hirt_arbitrary_1971} call it the Arbitrary Langrangian-Eulerian (ALE) method. 
+ALE combines advantages from both previous descriptions. 
+
 
 \section{Solidification models with level set}
 Should I mention the use of level set in mould filling, which comes before solidification \\
