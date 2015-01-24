@@ -4,18 +4,6 @@
 \end{nolinkcolors}
 \newpage
 
-\section{Introduction}
-Divide into 2 families of models: with and without level set. Regarding the second family of models,
-the level set method has been applied on several occasions, but in a different way. Some references
-apply it to track the solid-liquid interface, a situation more commonly known as the "Stefan problem".
-The scope such applications mainly encompasses dendritic modelling and simulation \\
-\blue{SOURCES:} \\
-\url{http://www.sciencedirect.com/science/article/pii/S0021999105002603} \\
-\url{http://physbam.stanford.edu/~fedkiw/papers/stanford2002-04.pdf} \\
-Other references, in relevance to our scope, apply this method to track the surface of the metal
-while going from the liquid state to the solid state, in contact with the surrounding gas which is usually air.
-%---------------------------------------------------
-%
 %
 \section{Modelling macrosegreation}
 %-------------
@@ -194,7 +182,7 @@ macrosegregation in the metal when the latter is the only domain in the system.
 %-------------
 %
 %
-\subsubsection{Volume averaging}
+\subsubsection{Volume averaging} \label{sec:volumeavg}
 It is crucial for a solidification model to represent phenomena on the microscale, then scale up to predict 
 macrscopic phenomena. Nevertheless, the characteristic length of a small scale in solidification may represent a dendrite arm spacing, for instance the mushy zone permeability, as it may also represent an atomic distance if one is interested, for instance, in the growth competition between diffusion and surface energy of the solid-liquid interface. Modelling infinitely small-scale phenomena could be prohibitively expensive in computation time, if the we target industrial scales. 
 
@@ -313,8 +301,14 @@ MICRO MACRO:
 \item Miha Zaloznik 2010 (indirect)
 \end{itemize}
 end by talking about taking air into account and the need for an interface capturing method
-%%----
+%
+%
+%----------------------------------
 \section{Eulerian and Lagrangian motion description}
+%
+%----------------------------------
+\subsection{Overview}
+%
 In mechanics, it is possible to describe motion using two well-known motion description: Eulerian and Lagrangian descrptions.
 To start with the latter, it describes the motion of a particle by attributed a reference frame that moves with the particle.
 In other words, the particle itself is the center of a reference frame moving at the same speed during time. As such, the total variation
@@ -335,44 +329,64 @@ the reference frame, and thus the velocity effect, namely the advective transpor
 & \frac{\mathrm{d} \psi}{\mathrm{d} t} = \frac{\partial \psi}{\partial t} + \underbrace{\vec{v} \cdot \nabvec \psi}_{\substack{\text{Advective} \\ \text{Transport}}}  
 \end{align}
 %------------
+In this case, the LHS term is also known as \emph{total} or \emph{material derivative}.
 The importance of these motion descriptions is essential to solve mechanics, whether for fluids or solids, using a numerical method like the finite 
 element method (FEM). One of the main steps of this method is to spatially discretise a continuum into a grid of points (nodes, vertices ...), where any 
 physical field shall be accordingly discretized. Now, if we focus on a node where velocity has a non zero value and following the previously made analysis,
 two outcomes are possible: either the node would be fixed (Eulerian) or it would move by a distance proportional to the prescribed velocity (Lagrangian).
 As a consequence, points located on the boundaries constantly require an update of the imposed boundary conditions.
 
-From these explanations, one can deduce that a Eulerian Lagrangian is suited for fluid mechanics problems where 
-velocities are high and may distort the mesh points, whereas the Lagrangian is better suited for solid mechanics 
+From these explanations, one can deduce that an Eulerian framework is suited for fluid mechanics problems where 
+velocities are high and may distort the mesh points, whereas the Lagrangian framework is better suited for solid mechanics 
 problems where deformation velocities are relatively low and should well behave when predicting strains.
 
 Another motion description has emerged some decades ago, \citet{hirt_arbitrary_1971} call it the Arbitrary Langrangian-Eulerian (ALE) method. 
-ALE combines advantages from both previous descriptions. 
-
-
+ALE combines advantages from both previous descriptions as it dictates a Lagrangian behavior at "solid" nodes where solid is deforming, and
+an Eulerian behavior at "fluid" nodes.
+%
+%----------------------------------
+\subsection{Interface capturing}
+%
+As no solid deformation is considered in this work, the Eulerian framework is a convenient choice. Although solidification shrinkage is 
+to be considered in the current scope, it will deform the alloy's outter surface in contact with the air.
+We intend to track this interface and its motion over time via a numerical method. A wide variety of methods accomplish this 
+task while they yield different advantages and disadvantages. Such methods fall under two main categories, either interface tracking
+or interface capturing, among which we cite: marker-and-cell (MAC) \citep{harlow_numerical_1965}, volume of fluid (VOF) \citep{hirt_volume_1981}, 
+phase field methods (PF), level set method (LSM) \citep{osher_fronts_1988}, coupled level set - VOF method and others. 
+The interested reader may refer to a quick reference by \citet{maitre_review_2006} about these methods.
+In the past years, the level set method received a considerable attention in many computational fields, specifically in solidification.
+For this reason, we will focus on this method henceforth, giving a brief literature review and technical details in the next sections.
+%
+%----------------------------------
 \section{Solidification models with level set}
-Should I mention the use of level set in mould filling, which comes before solidification \\
-Talk about the models used for welding processes. 
+In classic solidification problems, the need to track an interface occurs usually at the solid-liquid interface, that is why the phase field
+method \citep{karma_phase-field_1996,boettinger_phase-field_2002} and the level set method \citep{chen_simple_1997,gibou_level_2003,tan_level_2007} 
+were applied at a microscale to follow mainly the dendritic growth of a single crystal in an undercooled melt.
+In our case however, when we mention "solidification models using LSM", we 
+do not mean the solid-liquid interface inside the alloy, but it is the alloy(liquid)-air interface that is tracked, assuming that microscale
+phenomena between the phases within the alloy, are averaged using the previously defined technique in \cref{sec:volumeavg}.
 
-Pure MACRO models:
-\begin{itemize}
-\item Solidification: Du 2001 (double casting technique)
-\item Welding: olivier desmaison
-\item Welding: mickael from lorient 
-\end{itemize}
-Aside from the welding applications, check these articles
-\url{http://www.tandfonline.com/doi/abs/10.1080/10407790050051137#.VF_gLvnF_kU} \\
-\url{http://www.math.pku.edu.cn/pzhang/publication/2001_SDCTULSM.pdf}
-
-MESO MACRO: Shijia Chen (CAFE+LS)
-
-\section{The level set method (LSM)}
+Very few models were found in the literature, combining solidification and level set as stated previously. 
+\citet{du_simulating_2001} applied it to track the interface between two motlen alloys in a double casting technique. In welding research, on another hand, has been more
+active adapting the level set methodology to corresponding applications. In Cemef, two projects were already based on the metal-air level set
+in welding simulations and showed promising results. Firstly, \citet{desmaison_level_2014} .... .Later, \citet{chen_three_2014} applied to gas metal arc welding (GMAW) to predict 
+the grain structure in the heat affected zone essentially.
+More recently, in a related context, \citet{courtois_complete_2014} used the same methodology but this time to predict keyhole defect formation
+in spot laser welding. The tracked interface in this case was that between the molten alloy and the corresponding vapor phase.
+%----------------------------------
+\section{The level set method}
 How it is defined, Heaviside, mixing laws, transport and reinitialization
+%
+%----------------------------------
 \comment{ in the article 2004SunBeckermann, in the introduction there is a small discussion
 about the importance of the diffuse interface thickness, check references 3 and 10}
-
+%
+%----------------------------------
 \subsection{Transport and reiniliaztion}
 Strong and weak form of transport \\
 Numerical stability \\
+%
+%----------------------------------
 \subsubsection{Convective reinitilization and Hamilton-Jacobi equations}
 \subsubsection{Geometric reinitialization}
 
