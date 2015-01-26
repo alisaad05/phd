@@ -1,5 +1,12 @@
 all: pdf 
 
+debug:
+	@echo ---------
+	@echo DEBUGGING
+	@echo ---------
+	
+	pdflatex main.tex
+
 pdf:
 	@echo ---------
 	@echo COMPILING
