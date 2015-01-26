@@ -284,7 +284,21 @@ In \cref{eq:ficklaw}, the solid diffusion coefficient is neglected,
 by considering that for macroscopic scales, the average composition of the alloy is much more influenced by advective 
 and diffusive transport in the liquid.
 %------------
-
+Now that the main conservation equations ingredients are properly defined, we may write each averged conservation
+equation starting with the mass balance:
+%------
+\begin{align}
+\label{eq:conservation_mass}
+& \frac{\partial \avg{\rho}}{\partial t} + \nabla \cdot \avg{\rho \vec{v}} = 0
+\end{align}
+%------------
+then for energy:
+%------
+\begin{align}
+\label{eq:conservation_energy}
+& \frac{\partial \avg{\rho h}}{\partial t} + \nabla \cdot \avg{\rho h \vec{v}} - \nabla \cdot \avg{\vec{q}} = 0
+\end{align}
+%------------
 %%-------------------------------------------------------------------------------------------
 Macro models:
 \begin{itemize}
