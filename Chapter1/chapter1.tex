@@ -311,18 +311,21 @@ end by talking about taking air into account and the need for an interface captu
 %
 In mechanics, it is possible to describe motion using two well-known motion description: Eulerian and Lagrangian descrptions.
 To start with the latter, it describes the motion of a particle by attributed a reference frame that moves with the particle.
-In other words, the particle itself is the center of a reference frame moving at the same speed during time. As such, the total variation
-of any physical quantity $\psi$ related to the particle can be found by deriving with respect to time:
+In other words, the particle itself is the center of a reference frame moving at the same speed during time. The particle
+position is hence updated as follows:
 %------
 \begin{align}
 \label{eq:lagrangian}
-& \frac{\mathrm{d} \psi}{\mathrm{d} t} = \frac{\partial \psi}{\partial t}
+& x^{(t)} = x^{(t+1)} + \vec{v} \Delta t
 \end{align}
 %------------
+As such, the total variation of any physical quantity $\psi$ related to the particle 
+can be found by deriving with respect to time, $\frac{\mathrm{d} \psi}{\mathrm{d} t}$.
+%
 In contrast to the Lagrangian description, the Eulerian description considers a 
-fixed reference frame and independent of the particle's trajectory. The total variation of $\psi$
+fixed reference frame and independent of the particle's trajectory The total variation of $\psi$
 cannot be simply described by a temporal derivative, since the particle's velocity is not known to 
-the reference frame, and thus the velocity effect, namely the advective transport of $\psi$ should also be considered as follows:
+the reference frame, and thus the velocity effect, namely the advective transport of $\psi$, should also be considered as follows:
 %------
 \begin{align}
 \label{eq:eulerian}
@@ -350,10 +353,10 @@ an Eulerian behavior at "fluid" nodes.
 As no solid deformation is considered in this work, the Eulerian framework is a convenient choice. Although solidification shrinkage is 
 to be considered in the current scope, it will deform the alloy's outter surface in contact with the air.
 We intend to track this interface and its motion over time via a numerical method. A wide variety of methods accomplish this 
-task while they yield different advantages and disadvantages. Such methods fall under two main categories, either interface tracking
+task while they yield different advantages and disadvantages. Such methods fall into two main classes, either interface tracking
 or interface capturing, among which we cite: marker-and-cell (MAC) \citep{harlow_numerical_1965}, volume of fluid (VOF) \citep{hirt_volume_1981}, 
 phase field methods (PF), level set method (LSM) \citep{osher_fronts_1988}, coupled level set - VOF method and others. 
-The interested reader may refer to a quick reference by \citet{maitre_review_2006} about these methods.
+The interested reader may refer to quick references by \citet{prosperetti_navier-stokes_2002,maitre_review_2006} about these methods.
 In the past years, the level set method received a considerable attention in many computational fields, specifically in solidification.
 For this reason, we will focus on this method henceforth, giving a brief literature review and technical details in the next sections.
 %
@@ -369,25 +372,176 @@ phenomena between the phases within the alloy, are averaged using the previously
 Very few models were found in the literature, combining solidification and level set as stated previously. 
 \citet{du_simulating_2001} applied it to track the interface between two motlen alloys in a double casting technique. In welding research, on another hand, has been more
 active adapting the level set methodology to corresponding applications. In Cemef, two projects were already based on the metal-air level set
-in welding simulations and showed promising results. Firstly, \citet{desmaison_level_2014} .... .Later, \citet{chen_three_2014} applied to gas metal arc welding (GMAW) to predict 
+in welding simulations and showed promising results. Firstly, \citet{desmaison_level_2014} ... \red{TODO}\\ %TODO
+Later, \citet{chen_three_2014} applied to gas metal arc welding (GMAW) to predict 
 the grain structure in the heat affected zone essentially.
 More recently, in a related context, \citet{courtois_complete_2014} used the same methodology but this time to predict keyhole defect formation
 in spot laser welding. The tracked interface in this case was that between the molten alloy and the corresponding vapor phase.
 %----------------------------------
 \section{The level set method}
-How it is defined, Heaviside, mixing laws, transport and reinitialization
+Firstly introduced by \citet{osher_fronts_1988}, this method became very popular in studying multiphase flows.
+It is reminded that the term \emph{multiphase} in computational domains usually refers to multiple fluids, and thus
+should not be mixed with definition of a phase in the current solidification context. For disambiguation, we shall
+use \emph{multifluid flow} when needed.
+The great advantage lies in the way the interface between two fluids, $F_1$ and $F_2$ is implicitly captured, unlike 
+other methods where the exact interface position is needed. In a discrete domain, the concept is to assign for each mesh node of position $x$, 
+the minimum distance $d_{\Gamma} \brac{x}$ separating it from an interface $\Gamma$. 
+The distance function, denoted $\alpha$ and defined in \cref{eq:levelset_defintion}, is then positive or negative based on the fluid or domain 
+to which the node belongs.
+%------------
+\begin{align}
+\label{eq:levelset_defintion}
+\levelset = 
+\begin{cases}
+ d_{\Gamma} \brac{x} 		& \text{ if } x \in F_1 \\ 
+ -d_{\Gamma} \brac{x}	 	& \text{ if } x \in F_2 \\ 
+ 0 							& \text{ if } x \in \Gamma_{F1, F2} 
+\end{cases}
+\end{align}
+%------------
+%----------------------
+\begin{figureth}
+% textwidth 
+{0.5}
+%path 
+{dummy.pdf}
+% caption
+{Schematic of a distance function}
+% label
+\label{fig:distance_function}
+\end{figureth}
+%-----------------------------------
 %
-%----------------------------------
-\comment{ in the article 2004SunBeckermann, in the introduction there is a small discussion
-about the importance of the diffuse interface thickness, check references 3 and 10}
+\subsection{Diffuse interface}
+The level set has many attractive properties that allows seamless implementation in 2D and 3D models. It is a continuously differentiable
+$C^1$-function. For instance, a \emph{Heaviside} function, denoted $\heaviside$, can be obtained by first order derivation of the level set function. The 
+Heaviside function is continuous but non differentiable, with an abrupt transition from 0 to 1 across the sharp interface, as follows:
+%----------
+\begin{align}
+\label{eq:no_smoothing}
+\heaviside = 
+\begin{cases}
+	0  & \text{ if } \levelset < 0 \\
+    1  & \text{ if } \levelset \geqslant 0 \\  
+\end{cases}
+\end{align}
+%----------
+The Heaviside function is crucial in the level set methodology as it is useful to define the geometric 
+"presence" of a domain with respect to the interface. As such, material properties 
+depend upon this function, which will be discussed later in section \red{TODO}\\ %TODO
+It is established that a steep transition, as shown in \cref{fig:heaviside}, can lead to numerical problems, 
+so the Heaviside function should be smoothed in a fixed thickness.
+Sinusoidal smoothing in \cref{eq:sinusoidal_smoothing} is widely used with level set formulations.
+%------------
+\begin{align}
+\label{eq:sinusoidal_smoothing}
+\heaviside= 
+\begin{cases}
+	0  & \text{ if } \levelset < -\epsilon \\
+    1  & \text{ if } \levelset > \epsilon \\  
+    \frac{1}{2} \brac{1+ \frac{\levelset}{\epsilon} + \frac{1}{\epsilon}\sin \brac{\frac{\pi \levelset}{\epsilon }} } & \text{ if } - \epsilon \leq \levelset \leq \epsilon
+\end{cases}
+\end{align}
+%-----------
+where the interval $\crochet{-\epsilon; \epsilon}$ is an artificial interface thickness around the zero distance.
+Defining a diffuse interface rather than a sharp one, is also a common approach in phase field methods \citep{beckermann_modeling_1999,sun_diffuse_2004}.
+It is emphasized that the latter methods give physically meaningful analysis of a diffuse interface and the optimal thickness by thoroughly studying the 
+intricate phenomena happening at a microscopic scale. However, for level set methods, there has not been a formal 
+work leading the same type of analysis. For this reason, many aspects of the level set method lack physical meanings but still computationally useful.
+In a recent paper by \citet{gada_derivation_2009}, the authors respond partially to this problem by analysing and deriving conservation equations
+using a level set in a more meaningful way, but do not discuss the diffuse interface aspect. Finally, within the diffuse interface, fluids properties 
+may vary linearly or not, depending on the mixing law, which is presented in the next section.
+%----------------------
+\begin{figureth}
+% textwidth 
+{0.5}
+%path 
+{dummy.pdf}
+% caption
+{(a) Stepwise Heaviside (b) Smoothed Heaviside}
+% label
+\label{fig:heaviside}
+\end{figureth}
+%-----------------------------------
 %
+\subsection{Mixing Laws}
+A \emph{monolithic} resolution style, as opposed to a \emph{partitioned} resolution, is based on solving a single set of equations
+for both fluids separated by an interface, as if a single fluid were considered. 
+Level set is one many methods that use the monolithic style to derive a single set of conservation equations
+for both fluids. The switch from one material to the other is implicitly taken care of by using the Heaviside function as well mixing laws. These laws
+are crucial to define how properties vary across the diffuse interface in view of a more accurate resolution.
+%----------------------
+\begin{figureth}
+% textwidth 
+{0.75}
+%path
+{Chapter1/Graphics/mixing_laws.pdf}
+% caption
+{Three mixing laws, arithmetic, logarithmic and harmonic commonly used in monolithic formulations}
+% label
+\label{fig:mixinglaws}
+\end{figureth}
+%-----------------------------------
+The most frequently used mixing law in the literature is the arithmetic law. Other transitions are less known such as 
+the harmonic and logarithmic mixing. The first law is maybe the most intuitive and most used for properties mixture as it emanates
+from VOF-based methods. 
+If we consider any property $\psi$, for instance the fluid's dynamic viscosity $\mu$, then the arithmetic 
+law will give a mixed property $\mix{\psi}$ as follows:
+%---
+\begin{align}
+\label{eq:arithmetic}
+\mix{\psi} = \heaviside^{F_1} \psi^{F_1} + \heaviside^{F_2} \psi^{F_2}
+\end{align}
+%---
+Basically, the result is an average property that follows the same trend as the Heaviside function. As for the harmonic law, it writes:
+%---
+\begin{align}
+\label{eq:harmonic}
+\mix{\psi} = \brac{\frac{\heaviside^{F_1}}{\psi^{F_1}} + \frac{\heaviside^{F_2}}{\psi^{F_2}} }^{-1}
+\end{align}
+%---
+and last, the logarithmic law writes:
+%---
+\begin{align}
+\label{eq:logarithmic}
+\mix{\psi} =  n^{\brac{\heaviside^{F_1} \log_n \psi^{F_1} + \heaviside^{F_2} \log_n \psi^{F_2}}}
+\end{align}
+%---
+where $n$ is any real number serving as a logarithm base, which often is either the exponential $e$ or $10$.
+The mixture result with this law is the same, regardless of the value of $n$.
+By looking to \cref{fig:mixinglaws}, we clearly see that the difference between all three approaches is the property weight given to each side 
+of the level set in the mixture. The arithmetic law, being symmetric, has equal weights, $\psi^{F_1}$ and $\psi^{F_2}$, in the final mixture. 
+Nevertheless, the asymmetric harmonic mixing varies inside the diffuse interface with a dominant weight of one property 
+over the other. As for the logarithmic mixture, it can be seen as an intermediate transition between the preceding laws.
+
+As long as the interface thickness is small enough, the choice of a mixing law should not drastically change the result, 
+inasmuch as it depends on the discretisation resolution of the interface. This fact made the arithmetic mixing
+the most applied one, because it is symmetric and easy to implement (no handling of potential division problems like harmonic laws for instance). 
+However, \citet{strotos_numerical_2008} claim that the harmonic law proves to conserve better diffusive fluxes at the interface.
+Otherwise, little work has been found in the literature on the effect of mixture type on simulation results.
 %----------------------------------
-\subsection{Transport and reiniliaztion}
+%
+\subsection{Transport and regularisation} % reinitialisation % regularisation
+An interface between two fluids may constanly move, consequently the level set transport allows
+following the real interface.
+
+%----------------------
+\begin{figureth}
+% textwidth 
+{0.5}
+%path 
+{dummy.pdf}
+% caption
+{Simulation of moving level set interface (a) without then (b) with regularisation}
+% label
+\label{fig:tansport_no_reinit}
+\end{figureth}
+%-----------------------------------
 Strong and weak form of transport \\
 Numerical stability \\
 %
 %----------------------------------
-\subsubsection{Convective reinitilization and Hamilton-Jacobi equations}
+\subsubsection{Convective reinitialisation and Hamilton-Jacobi equations}
 \subsubsection{Geometric reinitialization}
 
 \subsection{Interface Remeshing}
@@ -395,5 +549,3 @@ Importance when using a static level set and more importantly when LS is transpo
 influence of mixing area \emph{thickness} and \emph{resolution} (i.e. nb of nodes with the area),
 Isotropic or anisotropic ? the first is more important to composition calculation while the second
 is more relevant if we mean do thermohydraulics without macrosegregation
-
-\subsection{Mixing Laws}
