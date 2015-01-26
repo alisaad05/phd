@@ -106,7 +106,7 @@ It is thus essential to study the effect of homogenisation on the segregation be
 % textwidth 
 {0.25}
 %path 
-{dummy.pdf}
+{Misc/dummy.pdf}
 % caption
 {Simplified binary phase diagram}
 % label
@@ -243,7 +243,7 @@ The considered equations are mass, energy, liquid momentum and species conservat
 \centering
 
 \caption{Summary of conservation equations with their variables}
-{\tabulinesep=1.0mm
+{\tabulinesep=1.5mm
 \begin{tabu}{ p{5cm} p{1cm} p{1cm} p{1cm}}
 \tabucline[1pt]{-}
 Conservation Equation & $\psi$ & $\vec{j_{\psi}}$ & $Q_{\psi}$ \\\tabucline[1pt]{-}
@@ -251,7 +251,7 @@ Conservation Equation & $\psi$ & $\vec{j_{\psi}}$ & $Q_{\psi}$ \\\tabucline[1pt]
 Mass				& 	$\avg{\rho}$  		& $-$ 						& $-$		\\
 Energy				& 	$\avg{\rho h}$  	& $\avg{\vec{q}}$ 			& $-$		\\
 Species				& 	$\avg{\rho w_i}$  	& $\avg{\vec{j_i}}$ 		& $-$		\\
-Liquid momentum		&	$\avg{\rho \vl}$  	& $-\avg{\mat{\sigma^l}}$ 	& $\Fv$		\\\tabucline[1pt]{-} %\vec{\Gamma}^{l}
+Liquid momentum		&	$\avg{\rho \vl}$  	& $-\avg{\sigmal}$ 			& $\Fv$		\\\tabucline[1pt]{-} %\vec{\Gamma}^{l}
 %-----------------------------
 \end{tabu}}
 \label{tab:conservationeqs}
@@ -260,12 +260,17 @@ Liquid momentum		&	$\avg{\rho \vl}$  	& $-\avg{\mat{\sigma^l}}$ 	& $\Fv$		\\\tab
 We develop the ingredients of these equations using the averaging technique, as follows:
 %-------
 \begin{align}
-\label{eq:mainingredients}
+\label{eq:mainingredients1}
 & \avg{\rho} = \gl \rhol + \gs \rhos \\
+\label{eq:mainingredients2}
 & \avg{\rho \vec{v}} = \gl \rhol \vl + \cancel{\gs \rhos \vs} \\
+\label{eq:mainingredients3}
 & \avg{\rho h} = \gl \rhol \hl + \gs \rhos \hs \\
+\label{eq:mainingredients4}
 & \avg{\rho h \vec{v}} = \gl \rhol \hl \vl + \cancel{\gs \rhos \hs \vs} \\
+\label{eq:mainingredients5}
 & \avg{\rho w_i} = \gl \rhol \wil + \gs \rhos \wis \\
+\label{eq:mainingredients6}
 & \avg{\rho w_i \vec{v}} = \gl \rhol \wil \vl + \cancel{\gs \rhos \wis \vs}
 \end{align}
 %-------
@@ -283,23 +288,125 @@ Next we define the average diffusive fluxes, $\vec{q}$ for energy and $\vec{j_i}
 In \cref{eq:ficklaw}, the solid diffusion coefficient is neglected, 
 by considering that for macroscopic scales, the average composition of the alloy is much more influenced by advective 
 and diffusive transport in the liquid.
-%------------
-Now that the main conservation equations ingredients are properly defined, we may write each averged conservation
-equation starting with the mass balance:
+In \cref{eq:fourierlaw}, we assumed that phases are are thermal equilibrium, that is, temperature is uniform in the RVE.
+
+Now that the main conservation equations ingredients are properly defined, we may write each averaged conservation
+equations as the sum of two local conservation equations for each phase in the RVE, hence introducing also interfacial average terms.
+For instance, the local mass balance in each phase is given by:
+%----
+\begin{subequations}
+\begin{align}
+\label{eq:mass_liquid}
+& \temp{\gl \rhol} + \nabla \cdot \brac{\gl \rhol \vl} = S_V \langle \rhol \vlstar \cdot \vec{n} \rangle^* - S_V \langle \rhol \vstar \cdot \vec{n} \rangle^* \\
+\label{eq:mass_solid}
+& \temp{\gs \rhos} + \nabla \cdot \brac{\gs \rhos \vs} = - S_V \langle \rhos \vsstar \cdot \vec{n} \rangle^* + S_V \langle \rhos \vstar \cdot \vec{n} \rangle^*
+\end{align}
+\end{subequations}
+%----
+where $S_V= A_{sl}/\rev$ is the specific surface area, $\vec{v}^{l^*}$ and $\vec{v}^{s^*}$ are respectively, the liquid 
+and solid phase velocity at the interface and $\vec{v}^*$ is the previously introduced solid-liquid interface velocity. 
+For instance, the first interfacial exchange term in the RHS is expanded as follows \citep{dantzig_solidification_2009}:
+%----
+\begin{subequations}
+\begin{align}
+S_V \langle \rhol \vlstar \cdot \vec{n} \rangle^*
+  &= \frac{A_{sl}}{\rev} \brac{ \frac{1}{A_{sl}} \int_{A_{sl}} \rhol \vlstar \cdot \vec{n} dA} \\
+&=\frac{1}{\rev} \int_{A_{sl}} \rhol \vlstar \cdot \vec{n} dA
+\end{align}
+\end{subequations}
+%----
+Summing equations \eqref{eq:mass_liquid} and \eqref{eq:mass_solid}, results in the overall mass balance
+in the RVE:
+%----
+\begin{align}
+\label{eq:conservation_mass_local}
+& \temp{\gl \rhol + \gs \rhos}  +  \nabla \cdot \brac{\gl \rhol \vl + \gs \rhos \vs}
+   =  S_V \avg{\rhol \brac{\vlstar-\vstar} \cdot \vec{n}}^*  
+   -  S_V \avg{\rhos \brac{\vsstar-\vstar} \cdot \vec{n}}^*
+\end{align}
+%----
+where the RHS cancels to zero as shown by \citet{ni_volume-averaged_1991}. Moreover, the authors show that with their averaging technique, 
+interfacial exchanges for energy, chemical species and momentum cancel out as they are equal in absolute value but opposite in sign. 
+Using \cref{eq:mainingredients1,eq:mainingredients2,eq:mainingredients3,eq:mainingredients4,eq:mainingredients5,eq:mainingredients6,eq:fourierlaw,eq:ficklaw}
+and following the same procedure done in \cref{eq:conservation_mass_local}, the averaged mass balance hence writes:
 %------
 \begin{align}
 \label{eq:conservation_mass}
 & \frac{\partial \avg{\rho}}{\partial t} + \nabla \cdot \avg{\rho \vec{v}} = 0
 \end{align}
 %------------
-then for energy:
+whereas the averaged energy balance writes:
 %------
 \begin{align}
 \label{eq:conservation_energy}
-& \frac{\partial \avg{\rho h}}{\partial t} + \nabla \cdot \avg{\rho h \vec{v}} - \nabla \cdot \avg{\vec{q}} = 0
+& \frac{\partial \avg{\rho h}}{\partial t} + \nabla \cdot \avg{\rho h \vec{v}} + \nabla \cdot \brac{\avg{\kappa} \nabvec T} = 0
 \end{align}
 %------------
+and finally the species balance writes:
+%------
+\begin{align}
+\label{eq:conservation_solute}
+& \frac{\partial \avg{\rho w_i}}{\partial t} + \nabla \cdot \avg{\rho w_i \vec{v}} + \nabla \cdot \brac{\gl \Dl \nabvec \wil}= 0
+\end{align}
+%------------
+As stated previously, the momentum balance in the solid phase is not taken into consideration, hence no need to sum the corresponding 
+local conservation equations. The liquid momentum balance writes:
+%------
+\begin{align}
+\label{eq:conservation_momentumliq}
+& \temp{ \rhol \gl \vl } + \nabvec \cdot \brac{\rhol \gl \vl \times \vl} = 
+	\nabvec \cdot \brac{\gl \sigmal} +\gl \Fv + \vec{\Gamma}^{l}
+\end{align}
+%------------
+The interfacial momentum transfer between the solid and liquid phases is modelled by a momentum flux vector $\vec{\Gamma}^{l}$, consisting of
+hydrostatic and deviatoric parts, such that:
+%------------
+%\begin{subequations}
+\begin{align}
+\label{eq:eq_interfacial_momentum_init}
+		& \vec{\Gamma}^{l} =  \vec{\Gamma}_{p}^{l} + \vec{\Gamma}_{\mathbb{S}}^{l}						\\
+		& \vec{\Gamma}_{p}^{l} = p^{l^{*}} \nabvec g^{l} = p^{l} \nabvec g^{l}			  \\
+		& \vec{\Gamma}_{\mathbb{S}}^{l} = -{g^{l}}^{2} \mu^{l} \mathbb{K}^{-1} \brac{ \vl - \cancel{\vs} }  
+\end{align}
+%\end{subequations}
+%------------
+where $p^{l^{*}}$ is the pressure at the interface, considered to be equal to the liquid hydrostatic 
+pressure $\pl$, $\mathbb{K}$ is a permeability scalar (isotropic) computed using \cref{eq:darcy} and $\mu^l$ is the liquid's 
+dynamic viscosity. 
+The general form of the Cauchy liquid stress tensor in \cref{eq:conservation_momentumliq} is decomposed as follows: 
+%------------
+%\begin{subequations} 
+\begin{align}
+\label{eq:stress_liq}
+& \avg{\sigmal} = \gl \sigmal = - \brac{\avg{\pl} -\lambda \nabla \cdot \vit} \I + \avg{\mat{\mathbb{S}}^{l}}
+\end{align}
+%\end{subequations}
+%------------
+where $\lambda$ is a dilatational viscosity \citep{dantzig_solidification_2009} and $\mat{\mathbb{S}}^{l}$ is the
+liquid strain deviator tensor. In the literature, the coefficient $\lambda$ is taken proportional to the 
+viscosity: $\lambda = \frac{2}{3} \mu^l $. However, as we consider an incompressible flow, the divergence 
+term vanishes, thus rewriting \cref{eq:stress_liq} as follows:
+%------------
+\begin{subequations} 
+\begin{align}
+\label{eq:stress_liq_incompressible1}
+& \avg{\sigmal} = - \avg{\pl} \I + \avg{\mat{\mathbb{S}}^{l}} \\
+\label{eq:stress_liq_incompressible2}
+& \avg{\sigmal} = - \avg{\pl} \I + 2 \mul \strainrate 
+\end{align}
+\end{subequations}
+%------------
+where the transition from \cref{eq:stress_liq_incompressible1} to \cref{eq:stress_liq_incompressible2} is made
+possible by assuming a Newtonian behaviour for the liquid phase. The strain rate tensor, $\strainrate$, depends on 
+the average liquid velocity:
+%------------
+\begin{align}
+\label{eq:tensor_strainrate}
+\strainrate = \nabmat \vit  +  \nabmattransp \vit 
+\end{align}
+
 %%-------------------------------------------------------------------------------------------
+\subsection{garbage}
 Macro models:
 \begin{itemize}
 \item Rivaux ?
@@ -418,7 +525,7 @@ to which the node belongs.
 % textwidth 
 {0.5}
 %path 
-{dummy.pdf}
+{Misc/dummy.pdf}
 % caption
 {Schematic of a distance function}
 % label
@@ -470,7 +577,7 @@ may vary linearly or not, depending on the mixing law, which is presented in the
 % textwidth 
 {0.5}
 %path 
-{dummy.pdf}
+{Misc/dummy.pdf}
 % caption
 {(a) Stepwise Heaviside (b) Smoothed Heaviside}
 % label
@@ -544,7 +651,7 @@ following the real interface.
 % textwidth 
 {0.5}
 %path 
-{dummy.pdf}
+{Misc/dummy.pdf}
 % caption
 {Simulation of moving level set interface (a) without then (b) with regularisation}
 % label
