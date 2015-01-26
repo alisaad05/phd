@@ -108,7 +108,7 @@ It is thus essential to study the effect of homogenisation on the segregation be
 %path 
 {Misc/dummy.pdf}
 % caption
-{Simplified binary phase diagram}
+{Simplified binary phase diagram.}
 % label
 \label{fig:binary_diag}
 \end{figureth}
@@ -242,7 +242,7 @@ The considered equations are mass, energy, liquid momentum and species conservat
 \begin{tableth}
 \centering
 
-\caption{Summary of conservation equations with their variables}
+\caption{Summary of conservation equations with their variables.}
 {\tabulinesep=1.5mm
 \begin{tabu}{ p{5cm} p{1cm} p{1cm} p{1cm}}
 \tabucline[1pt]{-}
@@ -570,18 +570,23 @@ It is emphasized that the latter methods give physically meaningful analysis of 
 intricate phenomena happening at a microscopic scale. However, for level set methods, there has not been a formal 
 work leading the same type of analysis. For this reason, many aspects of the level set method lack physical meanings but still computationally useful.
 In a recent paper by \citet{gada_derivation_2009}, the authors respond partially to this problem by analysing and deriving conservation equations
-using a level set in a more meaningful way, but do not discuss the diffuse interface aspect. Finally, within the diffuse interface, fluids properties 
+using a level set in a more meaningful way, but do not discuss the diffuse interface aspect. 
+
+Other features can be deduced HERRRRE
+
+Finally, within the diffuse interface, fluids properties 
 may vary linearly or not, depending on the mixing law, which is presented in the next section.
 %----------------------
 \begin{figureth}
 % textwidth 
-{0.5}
+{0.75}
 %path 
-{Misc/dummy.pdf}
+{Chapter1/Graphics/HeavisideDirac.pdf}
 % caption
-{(a) Stepwise Heaviside (b) Smoothed Heaviside}
+{Schematic of two level properties inside the diffuse interface: Heavisde and Dirac delta functions.
+In this example, the interface thickness is 800 $\mu m$.}
 % label
-\label{fig:heaviside}
+\label{fig:heaviside_dirac}
 \end{figureth}
 %-----------------------------------
 %
@@ -591,18 +596,6 @@ for both fluids separated by an interface, as if a single fluid were considered.
 Level set is one many methods that use the monolithic style to derive a single set of conservation equations
 for both fluids. The switch from one material to the other is implicitly taken care of by using the Heaviside function as well mixing laws. These laws
 are crucial to define how properties vary across the diffuse interface in view of a more accurate resolution.
-%----------------------
-\begin{figureth}
-% textwidth 
-{0.75}
-%path
-{Chapter1/Graphics/mixing_laws.pdf}
-% caption
-{Three mixing laws, arithmetic, logarithmic and harmonic commonly used in monolithic formulations}
-% label
-\label{fig:mixinglaws}
-\end{figureth}
-%-----------------------------------
 The most frequently used mixing law in the literature is the arithmetic law. Other transitions are less known such as 
 the harmonic and logarithmic mixing. The first law is maybe the most intuitive and most used for properties mixture as it emanates
 from VOF-based methods. 
@@ -634,7 +627,18 @@ By looking to \cref{fig:mixinglaws}, we clearly see that the difference between 
 of the level set in the mixture. The arithmetic law, being symmetric, has equal weights, $\psi^{F_1}$ and $\psi^{F_2}$, in the final mixture. 
 Nevertheless, the asymmetric harmonic mixing varies inside the diffuse interface with a dominant weight of one property 
 over the other. As for the logarithmic mixture, it can be seen as an intermediate transition between the preceding laws.
-
+%----------------------
+\begin{figureth}
+% textwidth 
+{0.75}
+%path
+{Chapter1/Graphics/mixinglaws.pdf}
+% caption
+{Three mixing laws, arithmetic, logarithmic and harmonic commonly used in monolithic formulations.}
+% label
+\label{fig:mixinglaws}
+\end{figureth}
+%-----------------------------------
 As long as the interface thickness is small enough, the choice of a mixing law should not drastically change the result, 
 inasmuch as it depends on the discretisation resolution of the interface. This fact made the arithmetic mixing
 the most applied one, because it is symmetric and easy to implement (no handling of potential division problems like harmonic laws for instance). 
@@ -643,7 +647,7 @@ Otherwise, little work has been found in the literature on the effect of mixture
 %----------------------------------
 %
 \subsection{Transport and regularisation} % reinitialisation % regularisation
-An interface between two fluids may constanly move, consequently the level set transport allows
+An interface between two fluids may constantly move, consequently the level set transport allows
 following the real interface.
 
 %----------------------
@@ -653,7 +657,7 @@ following the real interface.
 %path 
 {Misc/dummy.pdf}
 % caption
-{Simulation of moving level set interface (a) without then (b) with regularisation}
+{Simulation of moving level set interface (a) without then (b) with regularisation.}
 % label
 \label{fig:tansport_no_reinit}
 \end{figureth}

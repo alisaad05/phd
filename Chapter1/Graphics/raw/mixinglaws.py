@@ -14,9 +14,6 @@ rc('legend', fontsize=sz)
 #===========
 eps = 4e-4 # 10.0
 view_factor = 1.5
-MIXING_LAW = "LINEAR"
-gl_a= 0.0001
-gl_m= 1.0
 NbNodes= 100
 #===========
 # PLOT DATA
@@ -125,7 +122,7 @@ ax.axhline(y=-eps, lw=2, ls="--", color="k")
 ax.axhline(y=0, lw=2, ls="-", color="k")
 ax.axvline(x=mu_a, lw=1, ls="-.", color="k")
 ax.axvline(x=mu_m, lw=1, ls="-.", color="k")
-legend = ax.legend(loc='best', shadow=True)
+legend = ax.legend(loc='best', shadow=True, fancybox=True)
 plt.xlabel('Material property $\widehat{\psi}$', fontsize=fs)
 plt.ylabel('Distance', fontsize=fs)
 # plt.title('Mixing laws')
@@ -134,9 +131,9 @@ plt.xlim(xmin= mu_a*0.1 , xmax= mu_m*1.1)
 plt.gca().invert_yaxis()
 ax.xaxis.tick_top()
 
-#====================
+#======================
 # SET CUSTOM AXIS LABEL
-#====================
+#======================
 # a=ax.get_xticks().tolist() 
 # a=[]
 a=["","","","","",""]
@@ -153,6 +150,6 @@ ax.set_yticklabels(b)
 plt.grid()
 
 # plt.show()
-plt.savefig("mixing_laws.png",  dpi=300, bbox_inches='tight')
-plt.savefig("mixing_laws.pdf",  dpi=300, bbox_inches='tight')
+plt.savefig("mixinglaws.png",  dpi=300, bbox_inches='tight')
+plt.savefig("mixinglaws.pdf",  dpi=300, bbox_inches='tight')
 # plt.savefig("mixing_laws.svg",  dpi=300, bbox_inches='tight')
