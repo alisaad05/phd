@@ -79,7 +79,7 @@ The present work uses Carman-Kozeny as a constitutive model for the permeability
 %
 %
 \subsection{Microsegregation}
-Microsegregation is a fundamental phenomenon in solidification. The simplest definition would be 
+Microsegregation is a fundamental phenomenon in solidification. The simplest definition is 
 an uneven distribution of solute between liquid and the herein growing solid, at the microscopic scale
 of the interface separating these phases. If we consider a binary alloy, then the solubility limit is 
 the key factor that dictates the composition at which a primary solid phase exists in equilibrium. 
@@ -310,8 +310,8 @@ For instance, the first interfacial exchange term in the RHS is expanded as foll
 \begin{subequations}
 \begin{align}
 S_V \langle \rhol \vlstar \cdot \vec{n} \rangle^*
-  &= \frac{A_{sl}}{\rev} \brac{ \frac{1}{A_{sl}} \int_{A_{sl}} \rhol \vlstar \cdot \vec{n} dA} \\
-&=\frac{1}{\rev} \int_{A_{sl}} \rhol \vlstar \cdot \vec{n} dA
+&= \frac{A_{sl}}{\rev} \brac{ \frac{1}{A_{sl}}  \int_{A_{sl}} \rhol \vlstar \cdot \vec{n} dA} \\
+&= \frac{1}{\rev}  \int_{A_{sl}} \rhol \vlstar \cdot \vec{n} dA
 \end{align}
 \end{subequations}
 %----
@@ -402,7 +402,7 @@ the average liquid velocity:
 %------------
 \begin{align}
 \label{eq:tensor_strainrate}
-\strainrate = \nabmat \vit  +  \nabmattransp \vit 
+\strainrate = \frac{1}{2} \brac{\nabmat \vit  +  \nabmattransp \vit }
 \end{align}
 
 %%-------------------------------------------------------------------------------------------
@@ -433,11 +433,11 @@ end by talking about taking air into account and the need for an interface captu
 In mechanics, it is possible to describe motion using two well-known motion description: Eulerian and Lagrangian descrptions.
 To start with the latter, it describes the motion of a particle by attributed a reference frame that moves with the particle.
 In other words, the particle itself is the center of a reference frame moving at the same speed during time. The particle
-position is hence updated as follows:
+position, denoted $x$, is hence updated as follows:
 %------
 \begin{align}
 \label{eq:lagrangian}
-& x^{(t)} = x^{(t+1)} + \vec{v} \Delta t
+& x^{(t+1)} = x^{(t)} + \vec{v} \Delta t
 \end{align}
 %------------
 As such, the total variation of any physical quantity $\psi$ related to the particle 
@@ -499,7 +499,10 @@ the grain structure in the heat affected zone essentially.
 More recently, in a related context, \citet{courtois_complete_2014} used the same methodology but this time to predict keyhole defect formation
 in spot laser welding. The tracked interface in this case was that between the molten alloy and the corresponding vapor phase.
 %----------------------------------
+%
+%
 \section{The level set method}
+%
 Firstly introduced by \citet{osher_fronts_1988}, this method became very popular in studying multiphase flows.
 It is reminded that the term \emph{multiphase} in computational domains usually refers to multiple fluids, and thus
 should not be mixed with definition of a phase in the current solidification context. For disambiguation, we shall
@@ -512,7 +515,7 @@ to which the node belongs.
 %------------
 \begin{align}
 \label{eq:levelset_defintion}
-\levelset = 
+\levelsetx = 
 \begin{cases}
  d_{\Gamma} \brac{x} 		& \text{ if } x \in F_1 \\ 
  -d_{\Gamma} \brac{x}	 	& \text{ if } x \in F_2 \\ 
@@ -542,8 +545,8 @@ Heaviside function is continuous but non differentiable, with an abrupt transiti
 \label{eq:no_smoothing}
 \heaviside = 
 \begin{cases}
-	0  & \text{ if } \levelset < 0 \\
-    1  & \text{ if } \levelset \geqslant 0 \\  
+	0  & \text{ if } \levelsetx < 0 \\
+    1  & \text{ if } \levelsetx \geqslant 0 \\  
 \end{cases}
 \end{align}
 %----------
@@ -558,9 +561,9 @@ Sinusoidal smoothing in \cref{eq:sinusoidal_smoothing} is widely used with level
 \label{eq:sinusoidal_smoothing}
 \heaviside= 
 \begin{cases}
-	0  & \text{ if } \levelset < -\epsilon \\
-    1  & \text{ if } \levelset > \epsilon \\  
-    \frac{1}{2} \brac{1+ \frac{\levelset}{\epsilon} + \frac{1}{\epsilon}\sin \brac{\frac{\pi \levelset}{\epsilon }} } & \text{ if } - \epsilon \leq \levelset \leq \epsilon
+	0  & \text{ if } \levelsetx < -\epsilon \\
+    1  & \text{ if } \levelsetx > \epsilon \\  
+    \frac{1}{2} \brac{1+ \frac{\levelsetx}{\epsilon} + \frac{1}{\epsilon}\sin \brac{\frac{\pi \levelsetx}{\epsilon }} } & \text{ if } - \epsilon \leq \levelsetx \leq \epsilon
 \end{cases}
 \end{align}
 %-----------
@@ -572,18 +575,18 @@ work leading the same type of analysis. For this reason, many aspects of the lev
 In a recent paper by \citet{gada_derivation_2009}, the authors respond partially to this problem by analysing and deriving conservation equations
 using a level set in a more meaningful way, but do not discuss the diffuse interface aspect. 
 
-Other features can be deduced HERRRRE
+\comment{add two sentence about dirac and curvature, as properties that can be readily obtained from the level set}
 
 Finally, within the diffuse interface, fluids properties 
 may vary linearly or not, depending on the mixing law, which is presented in the next section.
 %----------------------
 \begin{figureth}
 % textwidth 
-{0.75}
+{0.6}
 %path 
 {Chapter1/Graphics/HeavisideDirac.pdf}
 % caption
-{Schematic of two level properties inside the diffuse interface: Heavisde and Dirac delta functions.
+{Schematic of two level properties inside the diffuse interface: Heaviside (lower x-axis) and Dirac delta (upper x-axis) functions.
 In this example, the interface thickness is 800 $\mu m$.}
 % label
 \label{fig:heaviside_dirac}
@@ -630,7 +633,7 @@ over the other. As for the logarithmic mixture, it can be seen as an intermediat
 %----------------------
 \begin{figureth}
 % textwidth 
-{0.75}
+{0.6}
 %path
 {Chapter1/Graphics/mixinglaws.pdf}
 % caption
@@ -643,17 +646,52 @@ As long as the interface thickness is small enough, the choice of a mixing law s
 inasmuch as it depends on the discretisation resolution of the interface. This fact made the arithmetic mixing
 the most applied one, because it is symmetric and easy to implement (no handling of potential division problems like harmonic laws for instance). 
 However, \citet{strotos_numerical_2008} claim that the harmonic law proves to conserve better diffusive fluxes at the interface.
-Otherwise, little work has been found in the literature on the effect of mixture type on simulation results.
+More recently, an interesting study made by \citet{ettrich_modelling_2014} focused on mixing thermal properties using a phase field method.
+They define a diffuse interface in which they separately mix the thermal conductivity, $\kappa$, and the heat capacity, $C_\text{v}$,
+then compute the thermal diffusivity as the ratio of these properties. Later, the authors compare the temperature field obtained by diffusion
+to a reference case in order to decide which combination of mixing laws gives the best result. Despite not being directly related to a level set 
+method, this work gives an insight of the mixture possibities and their effect on a pure thermal diffusion.
+Otherwise, little work has been found in the literature on the broad effects of mixture types on simulation results in a level set context.
 %----------------------------------
 %
+%*****************************************
 \subsection{Transport and regularisation} % reinitialisation % regularisation
-An interface between two fluids may constantly move, consequently the level set transport allows
-following the real interface.
-
+%****************************************
+When a physical interface needs to have topology changes because
+of fluid structure interaction or surface tension for instance, the level set model 
+can easily follow these changes by a transport step. The idea is the advect the signed distance
+function, its zero isovalue representing the interface and all other distant isovalues, with the
+velocity field as input. The problem can be simply written as:
+%------
+\begin{align}
+\label{eq:transport_strong}
+& \frac{d \levelset}{d t}  = \frac{\partial \levelset}{\partial t} + \vec{v} \cdot \nabvec \levelset = 0
+\end{align}
+%------------
+The fully discretised weak form of \cref{eq:transport_strong} writes:
+%------
+\begin{align}
+\label{eq:transport_weak}
+& \frac{d \levelset}{d t}  = \frac{\partial \levelset}{\partial t} + \vec{v} \cdot \nabvec \levelset = 0
+\end{align}
+%------------
+However, upon transport the distance function field, a crucial property of the level set may be partially or totally 
+lost over the domain, which is:
+%------
+\begin{align}
+\label{eq:transport_property}
+& \norm{\nabvec \levelset} = 1
+\end{align}
+%------------
+The closer this $L^2$-norm to one, the more regular the level set. An irregular distance function cannot
+accurately capture the physical interface and thus results in numerical errors, because of wrong distance information. 
+When the transport equation in \cref{eq:transport_strong} is discretized in time then solved, a \emph{regularisation} 
+(also known as \emph{reinitialisation}) is necessary to conserve as much as possible the property in \cref{eq:transport_property}.
+In the forthcoming sections, we present two regularisation methods, then show their strong and weak points.
 %----------------------
 \begin{figureth}
 % textwidth 
-{0.5}
+{0.4}
 %path 
 {Misc/dummy.pdf}
 % caption
