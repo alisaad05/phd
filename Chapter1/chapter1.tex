@@ -425,24 +425,14 @@ the average liquid velocity:
 \end{align}
 
 %%-------------------------------------------------------------------------------------------
-\subsection{garbage}
-Macro models:
-\begin{itemize}
-\item Rivaux ?
-\item Gu beckermann 1999 ?
-\end{itemize}
-%%----
-MICRO MACRO: 
-\begin{itemize}
-\item Tommy Carozzani (direct)
-\item P. Thévoz, J.-L. Desbiolles, M. Rappaz, Metallurgical and Materials TransactionsA 20 (2) (1989) 311–322
-\item guo  beckermann 2003
-\item Combeau 2009
-\item Miha Zaloznik 2010 (indirect)
-\end{itemize}
-end by talking about taking air into account and the need for an interface capturing method
-%
-%
+
+\comment{Macro models: Rivaux ? Gu beckermann 1999}
+
+\comment{Micro macro: Tommy Carozzani2013, guo  beckermann 2003,  Combeau 2009, Miha Zaloznik 2010 (indirect), 
+P. Thévoz, J.-L. Desbiolles, M. Rappaz, Metallurgical and Materials TransactionsA 20 (2) (1989) 311–322}
+
+\comment{end by talking about taking air into account and the need for an interface capturing method}
+
 %***********************************************
 \section{Eulerian and Lagrangian motion description}
 %%***********************************************
@@ -518,7 +508,7 @@ phenomena between the phases within the alloy, are averaged using the previously
 Very few models were found in the literature, combining solidification and level set as stated previously. 
 \citet{du_simulating_2001} applied it to track the interface between two molten alloys in a double casting technique. 
 Welding research, on another hand, has been more active adapting the level set methodology to corresponding applications. 
-In Cemef, two projects use the metal-air level set methodology in welding simulations and showed promising results. 
+In CEMEF, two projects use the metal-air level set methodology in welding simulations and showed promising results. 
 \comment{two sentences not more about the contribution of OD and SC}
 Firstly, \citet{desmaison_level_2014} ... \red{TODO}\\ %TODO
 Later, \citet{chen_three_2014} applied it to gas metal arc welding (GMAW) to predict 
@@ -708,9 +698,10 @@ velocity field as input. The problem can be simply written as:
 %------------
 The fully discretised weak form of \cref{eq:transport_strong} writes:
 %------
+\comment{weak form of transport}
 \begin{align}
 \label{eq:transport_weak}
-& \frac{d \levelset}{d t}  = \frac{\partial \levelset}{\partial t} + \vec{v} \cdot \nabvec \levelset = 0
+% & \frac{d \levelset}{d t}  = \frac{\partial \levelset}{\partial t} + \vec{v} \cdot \nabvec \levelset = 0
 \end{align}
 %------------
 However, upon transport the distance function field, a crucial property of the level set may be partially or totally 
@@ -723,7 +714,7 @@ lost over the domain, which is:
 %------------
 The closer this $L^2$-norm to one, the more regular the level set. An irregular distance function cannot
 accurately capture the physical interface and thus results in numerical errors, because of wrong distance information. 
-When the transport equation in \cref{eq:transport_strong} is discretized in time then solved, a \emph{regularisation} 
+When the transport equation in \cref{eq:transport_strong} is discretised in time then solved, a \emph{regularisation} 
 (also known as \emph{reinitialisation}) is necessary to conserve as much as possible the property in \cref{eq:transport_property}.
 In the forthcoming sections, we present two regularisation methods, then show their strong and weak points.
 %----------------------
@@ -738,8 +729,7 @@ In the forthcoming sections, we present two regularisation methods, then show th
 \label{fig:tansport_no_reinit}
 \end{figureth}
 %-----------------------------------
-Strong and weak form of transport \\
-Numerical stability \\
+\comment{Numerical stability}
 %
 %----------------------------------
 \subsubsection{Convective reinitialisation and Hamilton-Jacobi equations}
