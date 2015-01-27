@@ -4,13 +4,13 @@
 \end{nolinkcolors}
 \newpage
 
-%
+%***********************************************
 \section{Modelling macrosegreation}
-%-------------
+%***********************************************
 %
-%
+%***********************************************
 \subsection{Dendritic growth}
-%-------
+%***********************************************
 In a casting process, the chill surface i.e. the contact between the molten alloy and relatively cold moulds, is the first area to solidify. 
 Thermal gradient, $G$, and cooling rate $R$ are two crucial process parameters that define the interface speed $\vstar$, which in turn,
 affects the initial microstructure. Although it may be not easy to control them, it remains important to understand their implication in solidification.
@@ -24,7 +24,7 @@ In another scenario, where a real casting is considered, the interface speed is 
 The protuberance tip will be pulled into a liquid less rich in solute than the interface. The zone ahead of the solid-liquid interface is constitutionally undercooled \citep{tiller_redistribution_1953}, giving a greater driving force for the protuberance to grow in the direction
 of the thermal gradient. As it has a tree-like shape, we speak of \emph{dendritic growth}. Near the chill surface, dendrites are columnar, with a 
 favourable growth in the <100> direction for alloys with cubic lattices, but different orientations are also reported in the literature \citep[see][289]{dantzig_solidification_2009}.
-If temperature is uniform, which the case usually far from mould walls, a similar dendritic growth phenomenon occurs, but with an equiaxed morphology.
+If temperature is uniform, which is the case usually far from mould walls, a similar dendritic growth phenomenon occurs, but with an equiaxed morphology.
 
 Columnar dendrites are characterized by a primary spacing, $\pdas$, between the main trunks, and a secondary spacing, $\sdas$, for the arms that are perpendicular
 to the trunks. It should be noted that $\sdas$, together with the grain size, are two important microstructural parameters in the as-cast microstructure \citep{easton_grain_2011}.
@@ -43,11 +43,12 @@ Further branching may occur but will not be discussed here.
 \end{figureth}
 %-----------------------------------
 %
-%
+%***********************************************
 \subsection{Mush permeability}
+%***********************************************
 The dendritic geometry is crucial in solidification theory as it exhibits lower solid fraction compared to a microstructure formed by planar growth.
-This fact has consequences in the fluid-structure interaction in the mushy zone, namely the liquid flow through dendrites. At the chill surface,
-the solid  grows gradually from dispersed growing nuclei, to a permeable solid skeleton until finally grains have fully grown with the end of phase change.
+This fact has consequences on the fluid-structure interaction in the mushy zone, namely the liquid flow through dendrites. At the chill surface,
+the solid  grows gradually from dispersed growing nuclei to a permeable solid skeleton, until finally grains have fully grown at the end of phase change.
 The intermediate state where liquid can flow in and out of the mushy zone through the dendrites is a key phenomenon from a rheological perspective.
 %By defining a \emph{coherency temperature} $\Tcoh$, one can distinguish two behaviors. 
 %For temperatures below $\Tcoh$ (usually at low solid fractions), the liquid flow is characterized by an intrinsic velocity. 
@@ -58,10 +59,10 @@ The famous \citet{darcy_les_1856} law relates the pressure gradient ($\nabvec p$
 %----------------------
 \begin{align}
 \label{eq:darcy}
-& \vec{v} = \frac{\K}{\mu} \nabvec p
+& \vec{v} = \frac{\K}{\mul} \nabvec p
 \end{align}
 %----------------------
-where $\mu$ is the liquid dynamic viscosity and $\K$ is the permeability tensor. The latter parameter has been the subject of numerous studies that aimed
+where $\mul$ is the liquid dynamic viscosity and $\K$ is the permeability tensor. The latter parameter has been the subject of numerous studies that aimed
 to predict it from various microstructural or morphological parameters.
 Some of these studies has started even before the first attempts to model macrosegregation by \citet{flemings_macrosegregation:_1967, flemings_macrosegregation:_1968-1,flemings_macrosegregation:_1968}. Basically, all models include the solid fraction, $\gs$, as input 
 to predict mush permeability along with empirical data. An instance of such models is the work of \citet{xu_gravity-_1991}.
@@ -69,7 +70,7 @@ Some models rely additionally on the primary dendrite arm spacing $\pdas$ like B
 dendrite arm spacing $\sdas$ like Carman-Kozeny, as a meaningful parameter to determine an isotropic permeability. 
 Other models like \citet{poirier_permeability_1987,felicelli_simulation_1991} derive an anisotropic permeability based on both $\pdas$ and $\sdas$.
 
-The present work uses Carman-Kozeny as a constitutive model for the permeability scalar (zero order tensor):
+The present work uses Carman-Kozeny as a constitutive model for the isotropic permeability scalar (zero order tensor):
 %----------------------
 \begin{align}
 \label{eq:permeability}
@@ -77,10 +78,11 @@ The present work uses Carman-Kozeny as a constitutive model for the permeability
 \end{align}
 %-----------------------------------
 %
-%
+%***********************************************
 \subsection{Microsegregation}
+%***********************************************
 Microsegregation is a fundamental phenomenon in solidification. The simplest definition is 
-an uneven distribution of solute between liquid and the herein growing solid, at the microscopic scale
+an uneven distribution of solute between the liquid and the herein growing solid, at the microscopic scale
 of the interface separating these phases. If we consider a binary alloy, then the solubility limit is 
 the key factor that dictates the composition at which a primary solid phase exists in equilibrium. 
 The segregation (or partition) coefficient $\k$ determines the extent of solute rejection into the liquid during solidification:
@@ -92,7 +94,7 @@ The segregation (or partition) coefficient $\k$ determines the extent of solute 
 %----------------------
 where $\Csstar$ and $\Clstar$ are the compositions of the solid and liquid respectively, at the interface. When the 
 segregation coefficient is less than unity (such is the case for most alloys during dendritic solidification), 
-the first solid forms with a composition $\k \Clstar=\k \Cnominal$ less than the liquid's 
+the first solid forms with a composition $\Csstar=\k \Clstar=\k \Cnominal$ less than the liquid's 
 composition $\Cnominal$, the latter being initially at the nominal composition, $\Cnominal$. \Cref{fig:binary_diag} illustrates a typical binary 
 phase diagram where the real solidus and liquidus are represented by solid lines, while the corresponding linear approximations are in dashed lines.
 For most binary alloys, this linearisation simplifies derivation of microsegregation models, as $\k$ becomes independent of temperature.
@@ -114,19 +116,27 @@ It is thus essential to study the effect of homogenisation on the segregation be
 \end{figureth}
 %-----------------------------------
 %
-%
+%***********************************************
 \subsubsection{Microsegregation models}
-Solid formation depends greatly on the ability of chemicals species to diffuse within each of the solid and liquid phases, but also across the
-solid-liquid interface. Furthermore, chemical diffusion like all other diffusional process, is a time-dependent phenomenon. One can thus conclude that two factors
-influence the amount of solid formation: cooling rate and diffusion coefficients. However, convection and other mechanical mixing sources, 
-homogenise the composition much faster than atomic diffusion. As such, \emph{complete mixing} in the liquid is always an acceptable assumption, regardless of the 
-solidification time. We may speak of infinite diffusion in the liquid. Nevertheless, diffusion in the solid also known as \emph{back diffusion}, is the only transport mechanism with very low diffusion coefficients. Therefore, chemical species require a long time, i.e. low cooling rate, to completely diffuse within the solid.
-The difference in diffusional behaviour is summarized by two limiting segregation models of perfect equilibrium and nonequilibrium at the scale
-of a secondary dendrite arm, which are the lever rule and Gulliver-Scheil models, respectively. Afterwards, models with finite back diffusion are presented. 
+%***********************************************
+Solid formation depends greatly on the ability of chemicals species to diffuse within each of 
+the solid and liquid phases, but also across the solid-liquid interface. Furthermore, chemical diffusion like all other 
+diffusional process, is a time-dependent phenomenon. One can thus conclude that two factors
+influence the amount of solid formation: cooling rate and diffusion coefficients. However, 
+convection and other mechanical mixing sources, homogenise the composition much faster than atomic diffusion. 
+As such, \emph{complete mixing} in the liquid is always an acceptable assumption, regardless of the 
+solidification time. We may speak of infinite diffusion in the liquid. Nevertheless, diffusion in the solid, 
+also known as \emph{back diffusion}, is the only transport mechanism with very low diffusion coefficients. 
+Therefore, chemical species require a long time, i.e. low cooling rate, to completely diffuse within the solid.
+The difference in diffusional behaviour at the scale of a secondary dendrite arms, is summarized by two limiting 
+segregation models of perfect equilibrium  and nonequilibrium, which are the lever rule and Gulliver-Scheil models, respectively. 
+Afterwards, models with finite back diffusion are presented. 
+\comment{in the three following sections, maybe I should add a small schematic next to each each equation to visualize concentration profiles}
 %------------
 %
-%
+%***********************************************
 \subsubsection*{Lever rule}
+%***********************************************
 The lever rule considers an ideal equilibrium in all phases, i.e. solidification is extremely slow, hence phase compositions are 
 homogeneous ($ \Clstar = \Cl$ and $ \Csstar = \Cs$ ) at all times as a consequence of complete mixing. 
 These compositions are given by:
@@ -140,8 +150,9 @@ These compositions are given by:
 At the end of solidification, the composition of the solid phase is equal to the nominal composition, $\Cs = \Cnominal$
 %------------
 %
-%
+%***********************************************
 \subsubsection*{Gulliver-Scheil}
+%***********************************************
 The other limiting case is the absence of diffusion in the solid. That includes also the diffusion at the interface, so nothing diffuses in or out. The consequence is a steady increase of the homogeneous liquid composition while the solid composition remains non-uniform.
 Compared to a full equilibrium approach, higher fractions of liquid
 will remain until eutectic composition is reached, triggering a eutectic solidification. The phase compositions are given by:
@@ -153,8 +164,9 @@ will remain until eutectic composition is reached, triggering a eutectic solidif
 \end{align}
 %------------
 %
-%
+%***********************************************
 \subsubsection*{Finite back diffusion}
+%***********************************************
 It has been concluded that the assumption of a negligeable back diffusion overestimates the liquid composition
 and the resulting eutectic fraction. Therefore, many models studied the limited diffusion in the solid. One of the earliest models is the Brody-Flemings models \citep{khan_influence_2014} that is a based on a differential solute balance equation for a parabolic growth rate, as follows:
 %----------------------
@@ -172,23 +184,29 @@ solid diffusion coefficient $\Ds$, solidification time $\tsolidif$ and the secon
 & \Fos = \frac{\Ds \tsolidif}{\brac{\sdas / 2}^2}
 \end{align}
 %------------
-Several other models were since suggested and used. The interested reader is referred to the following non exhaustive list of publications: \citet{clyne_solute_1981,kobayashi_solute_1988,ni_volume-averaged_1991,wang_multiphase_1993,combeau_modeling_1996,martorano_solutal_2003,tourret_generalized_2009}.
+Several other models were since suggested and used. The interested reader is referred to the following non 
+exhaustive list of publications: \citet{clyne_solute_1981,kobayashi_solute_1988,ni_volume-averaged_1991,wang_multiphase_1993,
+combeau_modeling_1996,martorano_solutal_2003,tourret_generalized_2009}. It is noted that some of these publications consider 
+also a finite diffusion in the liquid phase.
 %------------------------------------
 %
 %
+%***********************************************
 \subsection{Macroscopic solidification model: monodomain}
+%***********************************************
 In this section, we will present the macroscopic conservations equations that enable us to predict 
 macrosegregation in the metal when the latter is the only domain in the system.
 %-------------
 %
-%
+%***********************************************
 \subsubsection{Volume averaging} \label{sec:volumeavg}
+%***********************************************
 It is crucial for a solidification model to represent phenomena on the microscale, then scale up to predict 
-macrscopic phenomena. Nevertheless, the characteristic length of a small scale in solidification may represent a dendrite arm spacing, for instance the mushy zone permeability, as it may also represent an atomic distance if one is interested, for instance, in the growth competition between diffusion and surface energy of the solid-liquid interface. Modelling infinitely small-scale phenomena could be prohibitively expensive in computation time, if the we target industrial scales. 
+macrscopic phenomena. Nevertheless, the characteristic length of a small scale in solidification may represent a dendrite arm spacing, for instance the mushy zone permeability, as it may also represent an atomic distance if one is interested, for instance, in the growth competition between diffusion and surface energy of the solid-liquid interface. Modelling infinitely small-scale phenomena could be prohibitively expensive in computation time, if we target industrial scales. 
 
 The volume averaging is a technique that allows bypassing this barrier by averaging
-small-scale variations on a so-called \emph{representative volume element} (RVE) \citep{dantzig_solidification_2009} with the 
-following dimensional constraints on its volume, \rev:
+small-scale variations on a so-called \emph{representative volume element} (RVE) \citep{dantzig_solidification_2009} of volume \rev, with the 
+following dimensional constraints:
 the element should be large enough to "see" and average microscopic fluctuations whilst being smaller than the scale of macroscopic variations.
 Solid and liquid may exist simultaneously in the RVE, but no gas phase is considered (volume saturation: $\Vs+\Vl=\rev$). 
 Moreover, temperature is assumed uniform and equal for all the phases.
@@ -217,15 +235,15 @@ where $\gphi$ is the volume fraction of the phase. To finalize, the averaging is
 where $\vstar$ is the local relative interface velocity and $\gammastar$ is the solid-liquid interface, 
 while $n^\phi$ is the normal to $\gammastar$, directed outwards. The surface integral term in 
 \cref{eq:volumeaveraging3,eq:volumeaveraging4} is an \emph{interfacial average} 
-that expresses interfacial exchanges between the phases. The previous equations will 
+that expresses exchanges between the phases across the interface. The previous equations will 
 be used to derive a set macroscopic conservation equations. 
 It is noted that the intrinsic average $\avg{\psi}^\phi$ may be replaced by ${\psi}^\phi$ 
 for notation simplicity, whenever the averaging technique applies.
 %
 %
-%----------------------------------
+%***********************************************
 \subsubsection{Macroscopic equations}
-%-----------
+%***********************************************
 A monodomain macroscopic model relies on four main conservation equations to predict 
 macrosegregation in a single alloy domain, i.e. the latter is considered without 
 any interaction with another alloy or ambient air. The general form of a conservation 
@@ -276,7 +294,7 @@ We develop the ingredients of these equations using the averaging technique, as 
 %-------
 % $\mat{\sigma}$ 
 %-------
-Next we define the average diffusive fluxes, $\vec{q}$ for energy and $\vec{j_i}$ for solutes, using Fourier's conduction law and Fick's first law respectively:
+Next, we define the average diffusive fluxes, $\vec{q}$ for energy and $\vec{j_i}$ for solutes, using Fourier's conduction law and Fick's first law, respectively:
 %------
 \begin{align}
 \label{eq:fourierlaw}
@@ -305,13 +323,14 @@ For instance, the local mass balance in each phase is given by:
 %----
 where $S_V= A_{sl}/\rev$ is the specific surface area, $\vec{v}^{l^*}$ and $\vec{v}^{s^*}$ are respectively, the liquid 
 and solid phase velocity at the interface and $\vec{v}^*$ is the previously introduced solid-liquid interface velocity. 
-For instance, the first interfacial exchange term in the RHS is expanded as follows \citep{dantzig_solidification_2009}:
+For instance, the first interfacial exchange term in the RHS of \cref{eq:mass_liquid} is expanded as follows \citep{dantzig_solidification_2009}:
 %----
+\comment{I should adopt only one symbol for the differential inside the surface integrals $\mathrm{d} A$ or $\mathrm{d} \Gamma$}
 \begin{subequations}
 \begin{align}
 S_V \langle \rhol \vlstar \cdot \vec{n} \rangle^*
-&= \frac{A_{sl}}{\rev} \brac{ \frac{1}{A_{sl}}  \int_{A_{sl}} \rhol \vlstar \cdot \vec{n} dA} \\
-&= \frac{1}{\rev}  \int_{A_{sl}} \rhol \vlstar \cdot \vec{n} dA
+&= \frac{A_{sl}}{\rev} \brac{ \frac{1}{A_{sl}} \integral{A_{sl}}{\rhol \vlstar \cdot \vec{n}}{A}} \\
+&= \frac{1}{\rev}  \integral{A_{sl}}{\rhol \vlstar \cdot \vec{n}}{A}
 \end{align}
 \end{subequations}
 %----
@@ -349,7 +368,7 @@ and finally the species balance writes:
 & \frac{\partial \avg{\rho w_i}}{\partial t} + \nabla \cdot \avg{\rho w_i \vec{v}} + \nabla \cdot \brac{\gl \Dl \nabvec \wil}= 0
 \end{align}
 %------------
-As stated previously, the momentum balance in the solid phase is not taken into consideration, hence no need to sum the corresponding 
+As stated previously, the momentum balance in the solid phase is not taken into consideration, hence we do not sum the corresponding 
 local conservation equations. The liquid momentum balance writes:
 %------
 \begin{align}
@@ -424,16 +443,17 @@ MICRO MACRO:
 end by talking about taking air into account and the need for an interface capturing method
 %
 %
-%----------------------------------
+%***********************************************
 \section{Eulerian and Lagrangian motion description}
+%%***********************************************
 %
-%----------------------------------
+%***********************************************
 \subsection{Overview}
-%
+%***********************************************
 In mechanics, it is possible to describe motion using two well-known motion description: Eulerian and Lagrangian descrptions.
-To start with the latter, it describes the motion of a particle by attributed a reference frame that moves with the particle.
-In other words, the particle itself is the center of a reference frame moving at the same speed during time. The particle
-position, denoted $x$, is hence updated as follows:
+To start with the latter, it describes the motion of a particle by attributing a reference frame that moves with the particle.
+In other words, the particle itself is the center of a reference frame moving at the same speed during time. 
+The position, denoted $x$, is hence updated as follows:
 %------
 \begin{align}
 \label{eq:lagrangian}
@@ -444,21 +464,23 @@ As such, the total variation of any physical quantity $\psi$ related to the part
 can be found by deriving with respect to time, $\frac{\mathrm{d} \psi}{\mathrm{d} t}$.
 %
 In contrast to the Lagrangian description, the Eulerian description considers a 
-fixed reference frame and independent of the particle's trajectory The total variation of $\psi$
+fixed reference frame and independent of the particle's trajectory. The total variation of $\psi$
 cannot be simply described by a temporal derivative, since the particle's velocity is not known to 
 the reference frame, and thus the velocity effect, namely the advective transport of $\psi$, should also be considered as follows:
 %------
 \begin{align}
 \label{eq:eulerian}
-& \frac{\mathrm{d} \psi}{\mathrm{d} t} = \frac{\partial \psi}{\partial t} + \underbrace{\vec{v} \cdot \nabvec \psi}_{\substack{\text{Advective} \\ \text{Transport}}}  
+& \frac{\mathrm{d} \psi}{\mathrm{d} t} = \frac{\partial \psi}{\partial t} 
+   + \underbrace{\vec{v} \cdot \nabvec \psi}_{\substack{\text{Advective} \\ \text{Transport}}}  
 \end{align}
 %------------
 In this case, the LHS term is also known as \emph{total} or \emph{material derivative}.
+
 The importance of these motion descriptions is essential to solve mechanics, whether for fluids or solids, using a numerical method like the finite 
 element method (FEM). One of the main steps of this method is to spatially discretise a continuum into a grid of points (nodes, vertices ...), where any 
 physical field shall be accordingly discretized. Now, if we focus on a node where velocity has a non zero value and following the previously made analysis,
 two outcomes are possible: either the node would be fixed (Eulerian) or it would move by a distance proportional to the prescribed velocity (Lagrangian).
-As a consequence, points located on the boundaries constantly require an update of the imposed boundary conditions.
+In the latter case, points located on the boundaries constantly require an update of the imposed boundary conditions.
 
 From these explanations, one can deduce that an Eulerian framework is suited for fluid mechanics problems where 
 velocities are high and may distort the mesh points, whereas the Lagrangian framework is better suited for solid mechanics 
@@ -468,9 +490,10 @@ Another motion description has emerged some decades ago, \citet{hirt_arbitrary_1
 ALE combines advantages from both previous descriptions as it dictates a Lagrangian behavior at "solid" nodes where solid is deforming, and
 an Eulerian behavior at "fluid" nodes.
 %
-%----------------------------------
-\subsection{Interface capturing}
 %
+%***********************************************
+\subsection{Interface capturing}
+%***********************************************
 As no solid deformation is considered in this work, the Eulerian framework is a convenient choice. Although solidification shrinkage is 
 to be considered in the current scope, it will deform the alloy's outter surface in contact with the air.
 We intend to track this interface and its motion over time via a numerical method. A wide variety of methods accomplish this 
@@ -478,11 +501,13 @@ task while they yield different advantages and disadvantages. Such methods fall 
 or interface capturing, among which we cite: marker-and-cell (MAC) \citep{harlow_numerical_1965}, volume of fluid (VOF) \citep{hirt_volume_1981}, 
 phase field methods (PF), level set method (LSM) \citep{osher_fronts_1988}, coupled level set - VOF method and others. 
 The interested reader may refer to quick references by \citet{prosperetti_navier-stokes_2002,maitre_review_2006} about these methods.
+
 In the past years, the level set method received a considerable attention in many computational fields, specifically in solidification.
 For this reason, we will focus on this method henceforth, giving a brief literature review and technical details in the next sections.
 %
-%----------------------------------
+%***********************************************
 \section{Solidification models with level set}
+%***********************************************
 In classic solidification problems, the need to track an interface occurs usually at the solid-liquid interface, that is why the phase field
 method \citep{karma_phase-field_1996,boettinger_phase-field_2002} and the level set method \citep{chen_simple_1997,gibou_level_2003,tan_level_2007} 
 were applied at a microscale to follow mainly the dendritic growth of a single crystal in an undercooled melt.
@@ -491,18 +516,21 @@ do not mean the solid-liquid interface inside the alloy, but it is the alloy(liq
 phenomena between the phases within the alloy, are averaged using the previously defined technique in \cref{sec:volumeavg}.
 
 Very few models were found in the literature, combining solidification and level set as stated previously. 
-\citet{du_simulating_2001} applied it to track the interface between two motlen alloys in a double casting technique. In welding research, on another hand, has been more
-active adapting the level set methodology to corresponding applications. In Cemef, two projects were already based on the metal-air level set
-in welding simulations and showed promising results. Firstly, \citet{desmaison_level_2014} ... \red{TODO}\\ %TODO
-Later, \citet{chen_three_2014} applied to gas metal arc welding (GMAW) to predict 
+\citet{du_simulating_2001} applied it to track the interface between two molten alloys in a double casting technique. 
+Welding research, on another hand, has been more active adapting the level set methodology to corresponding applications. 
+In Cemef, two projects use the metal-air level set methodology in welding simulations and showed promising results. 
+\comment{two sentences not more about the contribution of OD and SC}
+Firstly, \citet{desmaison_level_2014} ... \red{TODO}\\ %TODO
+Later, \citet{chen_three_2014} applied it to gas metal arc welding (GMAW) to predict 
 the grain structure in the heat affected zone essentially.
-More recently, in a related context, \citet{courtois_complete_2014} used the same methodology but this time to predict keyhole defect formation
+More recently, \citet{courtois_complete_2014} used the same methodology but this time to predict keyhole defect formation
 in spot laser welding. The tracked interface in this case was that between the molten alloy and the corresponding vapor phase.
 %----------------------------------
 %
 %
+%***********************************************
 \section{The level set method}
-%
+%%***********************************************
 Firstly introduced by \citet{osher_fronts_1988}, this method became very popular in studying multiphase flows.
 It is reminded that the term \emph{multiphase} in computational domains usually refers to multiple fluids, and thus
 should not be mixed with definition of a phase in the current solidification context. For disambiguation, we shall
@@ -510,7 +538,7 @@ use \emph{multifluid flow} when needed.
 The great advantage lies in the way the interface between two fluids, $F_1$ and $F_2$ is implicitly captured, unlike 
 other methods where the exact interface position is needed. In a discrete domain, the concept is to assign for each mesh node of position $x$, 
 the minimum distance $d_{\Gamma} \brac{x}$ separating it from an interface $\Gamma$. 
-The distance function, denoted $\alpha$ and defined in \cref{eq:levelset_defintion}, is then positive or negative based on the fluid or domain 
+The distance function, denoted $\alpha$ and defined in \cref{eq:levelset_defintion}, is then signed positive or negative, based on the fluid or domain 
 to which the node belongs.
 %------------
 \begin{align}
@@ -536,10 +564,14 @@ to which the node belongs.
 \end{figureth}
 %-----------------------------------
 %
+%***********************************************
 \subsection{Diffuse interface}
-The level set has many attractive properties that allows seamless implementation in 2D and 3D models. It is a continuously differentiable
-$C^1$-function. For instance, a \emph{Heaviside} function, denoted $\heaviside$, can be obtained by first order derivation of the level set function. The 
-Heaviside function is continuous but non differentiable, with an abrupt transition from 0 to 1 across the sharp interface, as follows:
+%***********************************************
+The level set has many attractive properties that allows seamless implementation in 2D and 3D models. 
+It is a continuously differentiable $C^1$-function. For instance, a \emph{Heaviside} function, 
+denoted $\heaviside$, can be obtained by first order derivation of the level set function. The 
+Heaviside function is continuous but non differentiable, with an abrupt transition from $0$ to $1$ 
+across the sharp interface, as follows:
 %----------
 \begin{align}
 \label{eq:no_smoothing}
@@ -550,10 +582,10 @@ Heaviside function is continuous but non differentiable, with an abrupt transiti
 \end{cases}
 \end{align}
 %----------
-The Heaviside function is crucial in the level set methodology as it is useful to define the geometric 
+With the help of \cref{eq:no_smoothing}, we can define the geometric 
 "presence" of a domain with respect to the interface. As such, material properties 
-depend upon this function, which will be discussed later in section \red{TODO}\\ %TODO
-It is established that a steep transition, as shown in \cref{fig:heaviside}, can lead to numerical problems, 
+depend upon this function, which will be discussed later in section \cref{sec:mixinglaws}.
+It is established that a steep transition can lead to numerical problems, 
 so the Heaviside function should be smoothed in a fixed thickness.
 Sinusoidal smoothing in \cref{eq:sinusoidal_smoothing} is widely used with level set formulations.
 %------------
@@ -568,14 +600,18 @@ Sinusoidal smoothing in \cref{eq:sinusoidal_smoothing} is widely used with level
 \end{align}
 %-----------
 where the interval $\crochet{-\epsilon; \epsilon}$ is an artificial interface thickness around the zero distance.
-Defining a diffuse interface rather than a sharp one, is also a common approach in phase field methods \citep{beckermann_modeling_1999,sun_diffuse_2004}.
-It is emphasized that the latter methods give physically meaningful analysis of a diffuse interface and the optimal thickness by thoroughly studying the 
-intricate phenomena happening at a microscopic scale. However, for level set methods, there has not been a formal 
-work leading the same type of analysis. For this reason, many aspects of the level set method lack physical meanings but still computationally useful.
-In a recent paper by \citet{gada_derivation_2009}, the authors respond partially to this problem by analysing and deriving conservation equations
-using a level set in a more meaningful way, but do not discuss the diffuse interface aspect. 
+Defining a diffuse interface rather than a sharp one, is also a common approach 
+in phase field methods \citep{beckermann_modeling_1999,sun_diffuse_2004}.
+It is emphasized that the latter methods give physically meaningful 
+analysis of a diffuse interface and the optimal thickness by thoroughly studying the 
+intricate phenomena happening at the scale of the interface. However, for level set methods, 
+there has not been a formal work leading the same type of analysis. For this reason, 
+many aspects of the level set method lack physical meanings but still computationally useful.
+In a recent paper by \citet{gada_derivation_2009}, the authors respond partially to this problem 
+by analysing and deriving conservation equations using a level set in a more meaningful way, but 
+do not discuss the diffuse interface aspect.
 
-\comment{add two sentence about dirac and curvature, as properties that can be readily obtained from the level set}
+\comment{add two sentences about dirac and curvature, as properties that can be readily obtained from the level set}
 
 Finally, within the diffuse interface, fluids properties 
 may vary linearly or not, depending on the mixing law, which is presented in the next section.
@@ -593,7 +629,9 @@ In this example, the interface thickness is 800 $\mu m$.}
 \end{figureth}
 %-----------------------------------
 %
-\subsection{Mixing Laws}
+%***********************************************
+\subsection{Mixing Laws} \label{sec:mixinglaws}
+%**********************************************
 A \emph{monolithic} resolution style, as opposed to a \emph{partitioned} resolution, is based on solving a single set of equations
 for both fluids separated by an interface, as if a single fluid were considered. 
 Level set is one many methods that use the monolithic style to derive a single set of conservation equations
