@@ -701,6 +701,7 @@ velocity field as input. The problem can be simply written as:
 The fully discretised weak form of \cref{eq:transport_strong} writes:
 %------
 \comment{weak form of transport}
+\comment{ Link \cref{fig:reinit_influence} with text}
 \begin{align}
 \label{eq:transport_weak}
 % & \frac{d \levelset}{d t}  = \frac{\partial \levelset}{\partial t} + \vec{v} \cdot \nabvec \levelset = 0
@@ -722,13 +723,16 @@ In the forthcoming sections, we present two regularisation methods, then show th
 %----------------------
 \begin{figureth}
 % textwidth 
-{0.4}
+{0.6}
 %path 
-{Misc/dummy.pdf}
+{Chapter1/Graphics/regularization.pdf}
 % caption
-{Simulation of moving level set interface (a) without then (b) with regularisation.}
+{Schematic of the influence of level set regularisation on the distance function: a) without any regularisation step, 
+the isovalue contours are distorted in the wake of the rising air bubble while being squeezed ahead of it, 
+b) in contrast to regularising the distance function, where the contours maintain their spacing and geometric 
+properties with respect to the tracked interface.}
 % label
-\label{fig:tansport_no_reinit}
+\label{fig:reinit_influence}
 \end{figureth}
 %-----------------------------------
 \comment{Numerical stability}
