@@ -698,16 +698,41 @@ velocity field as input. The problem can be simply written as:
 & \frac{d \levelset}{d t}  = \frac{\partial \levelset}{\partial t} + \vec{v} \cdot \nabvec \levelset = 0
 \end{align}
 %------------
-The fully discretised weak form of \cref{eq:transport_strong} writes:
-%------
-\comment{weak form of transport}
-\comment{ Link \cref{fig:reinit_influence} with text}
+\comment{Associated boundary conditions}
+%
+%
+\subsubsection{Transport formulation}
+The finite element method gives the fully discretised weak form of \cref{eq:transport_strong} by writing:
+%-----------
 \begin{align}
-\label{eq:transport_weak}
-% & \frac{d \levelset}{d t}  = \frac{\partial \levelset}{\partial t} + \vec{v} \cdot \nabvec \levelset = 0
+\label{eq:transport_weak1}
+&  \integral{\Omega}{\levelsettest \frac{\partial \levelset}{\partial t} }{\Omega} + \integral{\Omega}{\levelsettest \vec{v} \cdot \nabvec \levelset}{\Omega} = 0
+\qquad \forall \levelsettest \in \hilbert \brac{\Omega}   
 \end{align}
 %------------
-However, upon transport the distance function field, a crucial property of the level set may be partially or totally 
+If we opt for a forward finite difference for time discretisation and the following nodal discretisation in space, assuming $N$ the number
+of nodes in any simplex:
+%-----------
+\begin{align}
+\label{eq:transport_weak2}
+&  \levelset = \sum_N  N_j \levelset_j
+\end{align}
+%------------
+then \cref{eq:transport_weak1} can be recast as follows:
+\comment{continue weak form discretisation}
+%-----------
+\begin{align}
+\label{eq:transport_weak3}
+&  \frac{1}{\dt} \levelset_j \integral{\Omega}{N_i N_j }{\Omega} + \levelset_j \integral{\Omega}{\vec{v} \cdot \nabvec N_j }{\Omega}= 0
+\end{align}
+%------------
+%
+%
+%==============================
+\subsubsection{Regularisation}
+%==============================
+%
+Upon transport the distance function field, a crucial property of the level set may be partially or totally 
 lost over the domain, which is:
 %------
 \begin{align}
@@ -718,7 +743,25 @@ lost over the domain, which is:
 The closer this $L^2$-norm to one, the more regular the level set. An irregular distance function cannot
 accurately capture the physical interface and thus results in numerical errors, because of wrong distance information. 
 When the transport equation in \cref{eq:transport_strong} is discretised in time then solved, a \emph{regularisation} 
-(also known as \emph{reinitialisation}) is necessary to conserve as much as possible the property in \cref{eq:transport_property}.
+(also known as \emph{reinitialisation}) is necessary to conserve as much as 
+possible the property in \cref{eq:transport_property}.
+
+\Cref{fig:reinit_influence} shows the need of regularisation in two different 
+simulations of the same phenomenon: rising air bubble inside
+water. The importance of this well studied case \citep{hysing_quantitative_2009} 
+is that the interface between two fluids is highly deformable
+as the bubble rises because of buoyancy, and therefore the task of tracking the 
+dynamic interface while maintaining an accurate distance function
+is a considerable numerical task. In the first simulation, the distance contours 
+are squeezed against the zero-distance contour marked by the 
+thick black line. A closer look to the interface reveals undesired distortions, with a 
+"wavy" shape at some points. This effect is evidently an artefact
+of a level set transport lacking subsequent reinitialisation, inasmuch 
+as the surface tension tends to minimise the total surface area and make it as smooth
+as possible. Nevertheless, the second simulation unveils much better results, especially 
+how the interface shows no sign of destabilisation. We also note the regular spacing between contours,
+which is a consequence of conserving the property defined in \cref{eq:transport_property}.
+We attribute this improvement to the regularization done at each time step after the transport.
 In the forthcoming sections, we present two regularisation methods, then show their strong and weak points.
 %----------------------
 \begin{figureth}
@@ -727,8 +770,9 @@ In the forthcoming sections, we present two regularisation methods, then show th
 %path 
 {Chapter1/Graphics/regularization.pdf}
 % caption
-{Schematic of the influence of level set regularisation on the distance function: a) without any regularisation step, 
-the isovalue contours are distorted in the wake of the rising air bubble while being squeezed ahead of it, 
+{Schematic of the influence of level set regularisation on the distance function at the same time frame: 
+a) without any regularisation step, the isovalue contours are distorted in the wake of the rising air 
+bubble while being squeezed ahead of it, 
 b) in contrast to regularising the distance function, where the contours maintain their spacing and geometric 
 properties with respect to the tracked interface.}
 % label
