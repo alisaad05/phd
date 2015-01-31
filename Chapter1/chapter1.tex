@@ -702,7 +702,8 @@ velocity field as input. The problem can be simply written as:
 %
 %
 \subsubsection{Transport formulation}
-The finite element method gives the fully discretised weak form of \cref{eq:transport_strong} by using a convenient set of test functions $\levelsettest$:
+The finite element method gives the fully discretised weak form of \cref{eq:transport_strong} 
+by using a convenient set of test functions $\levelsettest$ belonging the hilbertian \emph{Sobolev} space:
 %-----------
 \begin{align}
 \label{eq:transport_weak1}
@@ -710,22 +711,33 @@ The finite element method gives the fully discretised weak form of \cref{eq:tran
 \qquad \forall \levelsettest \in \hilbert \brac{\Omega}   
 \end{align}
 %------------
-If we opt for a forward finite difference for time discretisation and the following nodal discretisation in space, assuming $N$ the number
-of nodes in any simplex:
+The spatial discretisation of $\levelset$ assigns, for each of the total $N$ nodes of a simplex, the following values:
 %-----------
 \begin{align}
 \label{eq:transport_weak2}
-&  \levelset = \sum_N  N_j \levelset_j
+&  \levelset = \sum_N  P_j \levelset_j
 \end{align}
 %------------
-then \cref{eq:transport_weak1} can be recast as follows:
+Furthermore, with the Galerkin method, we replace test functions by the interpolation functions $P_j$, 
+then we apply a temporal discretisation for the main unknowns by a forward finite difference in time.
+Consequently, \cref{eq:transport_weak1} can be recast as follows:
 \comment{continue weak form discretisation}
 %-----------
+\begin{subequations}
 \begin{align}
 \label{eq:transport_weak3}
-&  \frac{1}{\dt} \levelset_j \integral{\Omega}{N_i N_j }{\Omega} + \levelset_j \integral{\Omega}{\vec{v} \cdot \nabvec N_j }{\Omega}= 0
+  \frac{1}{\dt} \brac{\levelset_j^t - \levelset_j^{t-\dt}}  \integral{\Omega}{P_i P_j}{\Omega} 
+	+ \levelset_j^t   \integral{\Omega}{\vec{v} \cdot \nabvec P_j }{\Omega} &=  0 \\
+\crochet{\frac{1}{\dt} \integral{\Omega}{P_i P_j }{\Omega} + \integral{\Omega}{\vec{v}^t \cdot \nabvec P_j }{\Omega}} \levelset_j^t &= 
+\frac{1}{\dt}  \integral{\Omega}{ \levelset^{t-\dt} P_i }{\Omega} \\
+\label{eq:weakform_transport}
+\crochet{\Mij+\Aij} \levelset_j^t &= \Fi
 \end{align}
+\end{subequations}
 %------------
+where $\Mij$ and $\Aij$ are respectively the mass (or capacity) matrix and advection matrix, both written within a 
+finite element, whereas $\Fi$ is a local vector of known quantities from the previous time step. The solution of the linear
+system in \cref{eq:weakform_transport} is the transported distance function.
 %
 %
 %==============================
