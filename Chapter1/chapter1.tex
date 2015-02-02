@@ -444,11 +444,11 @@ P. Thévoz, J.-L. Desbiolles, M. Rappaz, Metallurgical and Materials Transaction
 In mechanics, it is possible to describe motion using two well-known motion description: Eulerian and Lagrangian descrptions.
 To start with the latter, it describes the motion of a particle by attributing a reference frame that moves with the particle.
 In other words, the particle itself is the center of a reference frame moving at the same speed during time. 
-The position, denoted $x$, is hence updated as follows:
+The position vector, denoted $\vec{x}$, is hence updated as follows:
 %------
 \begin{align}
 \label{eq:lagrangian}
-& x^{(t+1)} = x^{(t)} + \vec{v} \Delta t
+& \vec{x}^{(t+1)}  = \vec{x}^{(t)} + \vec{v} \Delta t
 \end{align}
 %------------
 As such, the total variation of any physical quantity $\psi$ related to the particle 
@@ -603,7 +603,12 @@ In a recent paper by \citet{gada_derivation_2009}, the authors respond partially
 by analysing and deriving conservation equations using a level set in a more meaningful way, but 
 do not discuss the diffuse interface aspect.
 
-\comment{add two sentences about dirac and curvature, as properties that can be readily obtained from the level set}
+\comment{Talk about properties that can be readily obtained from the level set \citet{peng_pde-based_1999}
+ normal vector
+ curvature
+ interface
+ volume
+}
 
 Finally, within the diffuse interface, fluids properties 
 may vary linearly or not, depending on the mixing law, which is presented in the next section.
@@ -680,7 +685,7 @@ More recently, an interesting study made by \citet{ettrich_modelling_2014} focus
 They define a diffuse interface in which they separately mix the thermal conductivity, $\kappa$, and the heat capacity, $C_\text{v}$,
 then compute the thermal diffusivity as the ratio of these properties. Later, the authors compare the temperature field obtained by diffusion
 to a reference case in order to decide which combination of mixing laws gives the best result. Despite not being directly related to a level set 
-method, this work gives an insight of the mixture possibities and their effect on a pure thermal diffusion.
+method, this work gives an insight of the mixture possibilities and their effect on a pure thermal diffusion.
 Otherwise, little work has been found in the literature on the broad effects of mixture types on simulation results in a level set context.
 %----------------------------------
 %
@@ -727,15 +732,15 @@ Consequently, \cref{eq:transport_weak1} can be recast as follows:
 \begin{align}
 \label{eq:transport_weak3}
   \frac{1}{\dt} \brac{\levelset_j^t - \levelset_j^{t-\dt}}  \integral{\Omega}{P_i P_j}{\Omega} 
-	+ \levelset_j^t   \integral{\Omega}{\vec{v} \cdot \nabvec P_j }{\Omega} &=  0 \\
-\crochet{\frac{1}{\dt} \integral{\Omega}{P_i P_j }{\Omega} + \integral{\Omega}{\vec{v}^t \cdot \nabvec P_j }{\Omega}} \levelset_j^t &= 
+	+ \levelset_j^t   \integral{\Omega}{\vec{v^t} \cdot \nabvec P_j }{\Omega} &=  0 \\
+\crochet{\frac{1}{\dt} \integral{\Omega}{P_i P_j }{\Omega} + \integral{\Omega}{\vec{v^t} \cdot \nabvec P_j }{\Omega}} \levelset_j^t &= 
 \frac{1}{\dt}  \integral{\Omega}{ \levelset^{t-\dt} P_i }{\Omega} \\
 \label{eq:weakform_transport}
 \crochet{\Mij+\Aij} \levelset_j^t &= \Fi
 \end{align}
 \end{subequations}
 %------------
-where $\Mij$ and $\Aij$ are respectively the mass (or capacity) matrix and advection matrix, both written within a 
+where $\Mij$ and $\Aij$ are respectively the mass (or capacity) matrix and advection matrix, both written within a local 
 finite element, whereas $\Fi$ is a local vector of known quantities from the previous time step. The solution of the linear
 system in \cref{eq:weakform_transport} is the transported distance function.
 %
@@ -749,18 +754,22 @@ lost over the domain, which is:
 %------
 \begin{align}
 \label{eq:transport_property}
-& \norm{\nabvec \levelset} = 1
+\begin{cases}
+\norm{\nabvec \levelset} = 1 \\ 
+\levelset (x,t) = 0 	\qquad  \text{ if } x \in \Gamma(t)
+\end{cases}
 \end{align}
 %------------
-The closer this $L^2$-norm to one, the more regular the level set. An irregular distance function cannot
-accurately capture the physical interface and thus results in numerical errors, because of wrong distance information. 
+The closer this $L^2$-norm to one, the more regular the level set. An irregular distance function induces 
+cumulative numerical erros in the transport step (\cref{eq:transport_strong}) and thus results in non 
+conservation of mass, because of spurious distance information. 
 When the transport equation in \cref{eq:transport_strong} is discretised in time then solved, a \emph{regularisation} 
 (also known as \emph{reinitialisation}) is necessary to conserve as much as 
 possible the property in \cref{eq:transport_property}.
 
 \Cref{fig:reinit_influence} shows the need of regularisation in two different 
 simulations of the same phenomenon: rising air bubble inside
-water. The importance of this well studied case \citep{hysing_quantitative_2009} 
+water. The importance of this well studied case \citep{sussman_level_1994,hysing_quantitative_2009}
 is that the interface between two fluids is highly deformable
 as the bubble rises because of buoyancy, and therefore the task of tracking the 
 dynamic interface while maintaining an accurate distance function
@@ -791,14 +800,94 @@ properties with respect to the tracked interface.}
 \label{fig:reinit_influence}
 \end{figureth}
 %-----------------------------------
-\comment{Numerical stability}
 %
 %----------------------------------
-\subsubsection{Convective reinitialisation and Hamilton-Jacobi equations}
+%
+\subsubsection{Classic Hamilton-Jacobi reinitialisation}
+%
+In order to repair a distance function impaired by convective transport, \citet{sussman_level_1994} proposed 
+solving a classic \emph{Hamilton-Jacobi} equation, given in its most general form:
+%\citep{vigneaux_methodes_2007}:
+%------
+\begin{align}
+\label{eq:hamilton_jacobi}
+& \frac{\partial \levelset}{\partial t} + \mathbb{H} \brac{\levelset,x,t} = 0 \qquad x \in \Omega, t>0
+\end{align}
+%------------
+where $\levelset (x,t=0) = \levelset _0$ is the initial value of the distance function. 
+The term $\mathbb{H}$ is known as the \emph{Hamiltonian}. When the sign of the level set and its metric 
+property $\norm{\nabvec \levelset}=1$ are considered, \cref{eq:hamilton_jacobi} reduces to:
+%------
+\begin{align}
+\label{eq:reinit_classic}
+& \frac{\partial \levelset}{\partial t}  + S(\levelset) \brac{\norm{\nabvec \levelset} - 1} = 0
+\end{align}
+%------------
+where $S(\levelset)$ is a step function giving the sign of the level set as follows:
+%------------
+\begin{align}
+\label{eq:levelset_sign}
+& S(\levelset) = \frac{\levelset}{\abval{\levelset}} = 
+\begin{cases}
+ -1 	& \text{ if } \levelset < 0 \\ 
+ 0	 	& \text{ if } \levelset = 0 \\ 
+ +1 	& \text{ if } \levelset > 0 
+\end{cases}
+\end{align}
+%------------
+The sign function defined in \cref{eq:levelset_sign} is often smoothed to avoid numerical problems, 
+as proposed for instance by \citet{sussman_level_1994}:
+%------
+\begin{align}
+\label{eq:levelset_sign_smoothed}
+& S(\levelset) = S_\varepsilon (\levelset) = \frac{\levelset}{\sqrt{\levelset^2 + \varepsilon^2}}
+\end{align}
+%------------
+where $\varepsilon$ is a smoothing parameter that depends on the mesh size around the interface. 
+However, one should be aware that within the smoothing thickness, the regularised function may suffer 
+from local oscillations because of the reciprocal reinitialisation taking place at each side of the level 
+set. \citet{peng_pde-based_1999} states that this problem is more likely to happen if the initial level set
+shows very weak or very steep gradients, and therefore is not regular enough. The authors eventually propose
+a new sign function which would reinitialise the distance function, as close as possible to the interface
+without modifying the latter, as follows:
+%------
+\begin{align}
+\label{eq:levelset_sign_smoothed2}
+& S(\levelset) = S_\varepsilon (\levelset) = \frac{\levelset}{\sqrt{\levelset^2 + \norm{\nabvec \levelset}^2 \varepsilon^2}}
+\end{align}
+%------------
+%
+\subsubsection{Convective reinitialization}
+Article ville silva 
+%
+%----------------------------------------
+%
 \subsubsection{Geometric reinitialization}
-
+%
+%
+%--------------------------------------
 \subsection{Interface Remeshing}
 Importance when using a static level set and more importantly when LS is transported,
 influence of mixing area \emph{thickness} and \emph{resolution} (i.e. nb of nodes with the area),
 Isotropic or anisotropic ? the first is more important to composition calculation while the second
 is more relevant if we mean do thermohydraulics without macrosegregation
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
