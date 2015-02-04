@@ -444,7 +444,7 @@ P. Thévoz, J.-L. Desbiolles, M. Rappaz, Metallurgical and Materials Transaction
 In mechanics, it is possible to describe motion using two well-known motion description: Eulerian and Lagrangian descrptions.
 To start with the latter, it describes the motion of a particle by attributing a reference frame that moves with the particle.
 In other words, the particle itself is the center of a reference frame moving at the same speed during time. 
-The position vector, denoted $\vec{x}$, is hence updated as follows:
+The position vector, denoted by $\vec{x}$, is hence updated as follows:
 %------
 \begin{align}
 \label{eq:lagrangian}
@@ -466,7 +466,6 @@ the reference frame, and thus the velocity effect, namely the advective transpor
 \end{align}
 %------------
 In this case, the LHS term is also known as \emph{total} or \emph{material derivative}.
-
 The importance of these motion descriptions is essential to solve mechanics, whether for fluids or solids, using a numerical method like the finite 
 element method (FEM). One of the main steps of this method is to spatially discretise a continuum into a grid of points (nodes, vertices ...), where any 
 physical field shall be accordingly discretized. Now, if we focus on a node where velocity has a non zero value and following the previously made analysis,
@@ -604,12 +603,11 @@ many aspects of the level set method lack physical meanings but still computatio
 In a recent paper by \citet{gada_derivation_2009}, the authors respond partially to this problem 
 by analysing and deriving conservation equations using a level set in a more meaningful way, but 
 do not discuss the diffuse interface aspect.
-
-The dirac delta function is also an important property to convert surface integrals to volume terms, which could
+The \emph{Dirac} delta-function is also an important property to convert surface integrals to volume terms, which could
 turn useful when modelling surface tension effects for instance, using 
 the \emph{continuum surface force} method (CSF) \citep{brackbill_continuum_1992}.
-The dirac function, plotted in \cref{fig:heaviside_dirac} along with the Heaviside function within an interface thickness 
-of $\crochet{-\varepsilon;+\varepsilon}$, is derived from the Heaviside as follows:
+The Dirac delta-function, plotted in \cref{fig:heaviside_dirac} along with the Heaviside function within an interface thickness 
+of $\crochet{-\varepsilon;+\varepsilon}$, is derived from the latter as follows:
 %--- --------------
 \begin{align}
 \label{eq:dirac}
@@ -620,14 +618,14 @@ of $\crochet{-\varepsilon;+\varepsilon}$, is derived from the Heaviside as follo
 \end{cases}
 \end{align}
 %-------------
-The Heaviside and delta dirac functions can be readily processed to obtain other geometric properties from the level set,
+The Heaviside and Dirac functions can be readily processed to obtain other geometric properties from the level set,
 which are extremely useful. We mention the most relevant ones \citep{peng_pde-based_1999}:
 %------------
 \begin{align}
 \label{eq:levelset_normal}
 \text{normal vector}: \vec{n} &= \frac{\nabvec \levelset}{\norm{\nabvec \levelset} } \\
 %
-\label{eq:levelset_normal}
+\label{eq:levelset_curvature}
 \text{curvature}: \zeta &= - \nabla \cdot \vec{n} \\
 %
 \label{eq:levelset_interface}
@@ -648,7 +646,8 @@ may vary linearly or not, depending on the mixing law, which is presented in the
 {Chapter1/Graphics/HeavisideDirac.pdf}
 % caption
 {Schematic of two level properties inside the diffuse interface: Heaviside (lower x-axis) and Dirac delta (upper x-axis) functions.
-In this example, the interface thickness is 800 $\mu m$.}
+Note that the peak of the Dirac delta-function depends on the interface thickness to ensure a unity integral of the delta function over $\Omega$. }
+%In this example, the interface thickness is 800 $\mu m$.
 % label
 \label{fig:heaviside_dirac}
 \end{figureth}
@@ -906,7 +905,7 @@ is close to the ratio $h/\dt$. Then, the classic Hamilton-Jacobi
 \end{align}
 %------------
 where $\vec{U}$ is a velocity vector in the normal direction to the interface, defined by $\vec{U}= S(\levelset) \vec{n}$.
-the normal vector $\vec{n}$ being previously defined in \red{TODO}. %TODO
+the normal vector $\vec{n}$ being previously defined in \cref{eq:levelset_normal}.
 The obvious shortcoming of convective reinitialisation is that it depends on a numerical parameter $\lambda_\tau$.
 Another limitation of the method is the use of a sinusoidal filter to modify the distance function by truncating
 its values beyond a thickness threshold, which is also another parameter to calibrate the resolution. The drawback
@@ -950,8 +949,9 @@ satisfied \citet{osher_signed_2003}:
 %------------
 A efficient implementation of this method is done by \citet{shakoor_efficient_2015} making use of \emph{k-d} trees
 to limit the search operations of elements and the subsequent distance evaluations in each of these elements.
-Moreover, the authors give a comparison of the previously stated methods on 2D and 3D cases, showing the great 
-performance of direction reinitialisation when used with k-d trees algorithm, hence we use it in the present work.
+Moreover, the authors compare the total time required by a Hamilton-Jacobi reinitalisation,  direct reinitialisation
+and the latter using k-d trees, all on the same 2D and 3D test cases. They ultimately demonstrate the great 
+performance of direct reinitialisation when used with k-d trees algorithm, hence we adopt their implementation in the present work.
 %
 %--------------------------------------
 \section*{To do ?}

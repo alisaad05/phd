@@ -1,8 +1,8 @@
 %%------------------------ FONTS -------------------------------
 %\usepackage{lmodern}
 %\usepackage{fouriernc}
-\usepackage{fourier} 		% Utopia font-typesetting including mathematical formula compatible with newer TeX-Distributions (>2010)
-%\usepackage{utopia} 		% on older systems -> use this package instead of fourier in combination with mathdesign for better looking results
+%\usepackage{fourier} 		% Utopia font-typesetting including mathematical formula compatible with newer TeX-Distributions (>2010)
+\usepackage{utopia} 		% on older systems -> use this package instead of fourier in combination with mathdesign for better looking results
 %\usepackage[adobe-utopia]{mathdesign}
 %\usepackage{ae,aecompl}
 
@@ -68,6 +68,10 @@
     \clearfield{urlyear}%
     \clearlist{language}
 }%
+
+%Fix first name last name order (by default only first author 
+%gets last-first then the others get first last)
+\DeclareNameAlias{sortname}{last-first}
 
 %Fix the comma problem after the journal name (via addcomma)
 \DeclareFieldFormat{journaltitle}{\mkbibemph{#1\isdot}\addcomma\space}
