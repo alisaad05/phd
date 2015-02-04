@@ -132,7 +132,6 @@ Therefore, chemical species require a long time, i.e. low cooling rate, to compl
 The difference in diffusional behaviour at the scale of a secondary dendrite arms, is summarized by two limiting 
 segregation models of perfect equilibrium  and nonequilibrium, which are the lever rule and Gulliver-Scheil models, respectively. 
 Afterwards, models with finite back diffusion are presented. 
-\comment{in the three following sections, maybe I should add a small schematic next to each each equation to visualize concentration profiles}
 %------------
 %
 %***********************************************
@@ -228,9 +227,9 @@ where $\psis$ and $\psil$ are phase averages of $\psi$. Then, for any phase $\ph
 where $\gphi$ is the volume fraction of the phase. To finalize, the averaging is applied to temporal and spatial derivation operators \citep{rivaux_simulation_2011}:
 \begin{align}
 \label{eq:volumeaveraging3}
-& \avg{ \frac{\partial \psi}{\partial t} ^\phi } = \frac{\partial \avg{\psi^\phi}}{\partial t} - \integral{\gammastar}{\psi^\phi \vstar \cdot \vec{n^\phi}}{\Gamma} \\
+& \avg{ \frac{\partial \psi}{\partial t} ^\phi } = \frac{\partial \avg{\psi^\phi}}{\partial t} - \integral{\gammastar}{\psi^\phi \vstar \cdot \vec{n^\phi}}{A} \\
 \label{eq:volumeaveraging4}
-& \avg{ \nabvec \psi^\phi } = \nabvec \avg{\psi^\phi} + \integral{\gammastar}{\psi^\phi \vec{n^\phi}}{\Gamma}
+& \avg{ \nabvec \psi^\phi } = \nabvec \avg{\psi^\phi} + \integral{\gammastar}{\psi^\phi \vec{n^\phi}}{A}
 \end{align}
 %------------
 where $\vstar$ is the local relative interface velocity and $\gammastar$ is the solid-liquid interface, 
@@ -326,7 +325,6 @@ where $S_V= A_{sl}/\rev$ is the specific surface area, $\vec{v}^{l^*}$ and $\vec
 and solid phase velocity at the interface and $\vec{v}^*$ is the previously introduced solid-liquid interface velocity. 
 For instance, the first interfacial exchange term in the RHS of \cref{eq:mass_liquid} is expanded as follows \citep{dantzig_solidification_2009}:
 %----
-\comment{I should adopt only one symbol for the differential inside the surface integrals $\mathrm{d} A$ or $\mathrm{d} \Gamma$}
 \begin{subequations}
 \begin{align}
 S_V \langle \rhol \vlstar \cdot \vec{n} \rangle^*
@@ -603,11 +601,12 @@ many aspects of the level set method lack physical meanings but still computatio
 In a recent paper by \citet{gada_derivation_2009}, the authors respond partially to this problem 
 by analysing and deriving conservation equations using a level set in a more meaningful way, but 
 do not discuss the diffuse interface aspect.
-The \emph{Dirac} delta-function is also an important property to convert surface integrals to volume terms, which could
+
+The dirac delta function is also an important property to convert surface integrals to volume terms, which could
 turn useful when modelling surface tension effects for instance, using 
 the \emph{continuum surface force} method (CSF) \citep{brackbill_continuum_1992}.
-The Dirac delta-function, plotted in \cref{fig:heaviside_dirac} along with the Heaviside function within an interface thickness 
-of $\crochet{-\varepsilon;+\varepsilon}$, is derived from the latter as follows:
+The dirac function, plotted in \cref{fig:heaviside_dirac} along with the Heaviside function within an interface thickness 
+of $\crochet{-\varepsilon;+\varepsilon}$, is derived from the Heaviside as follows:
 %--- --------------
 \begin{align}
 \label{eq:dirac}
@@ -618,7 +617,7 @@ of $\crochet{-\varepsilon;+\varepsilon}$, is derived from the latter as follows:
 \end{cases}
 \end{align}
 %-------------
-The Heaviside and Dirac functions can be readily processed to obtain other geometric properties from the level set,
+The Heaviside and delta dirac functions can be readily processed to obtain other geometric properties from the level set,
 which are extremely useful. We mention the most relevant ones \citep{peng_pde-based_1999}:
 %------------
 \begin{align}
@@ -629,13 +628,15 @@ which are extremely useful. We mention the most relevant ones \citep{peng_pde-ba
 \text{curvature}: \zeta &= - \nabla \cdot \vec{n} \\
 %
 \label{eq:levelset_interface}
-\text{interface surface area}: A &= \integral{\Omega}{\dirac \norm{\nabvec \levelset}}{\Omega} \\
+\text{interface surface area}: A^\Gamma &= \integral{\Omega}{\dirac \norm{\nabvec \levelset}}{\Omega} \\
 %
 \label{eq:levelset_volume}
-\text{inner volume}: V &= \integral{\Omega}{\heaviside}{\Omega}
+\text{metal volume}: V^M &= \integral{\Omega}{\heaviside^M}{\Omega}
 %
 \end{align}
 %-----------
+where, for the last two equations, we considered a three-dimensional domain $\Omega$ containing two subdomains, metal and air, seperated by an interface $\Gamma$.
+It is reminded that for a 2D case, \cref{eq:levelset_interface} evaluates a length instead of the area while \cref{eq:levelset_volume} gives the area instead of volume.
 Finally, within the diffuse interface, fluids properties 
 may vary linearly or not, depending on the mixing law, which is presented in the next section.
 %----------------------
@@ -646,7 +647,7 @@ may vary linearly or not, depending on the mixing law, which is presented in the
 {Chapter1/Graphics/HeavisideDirac.pdf}
 % caption
 {Schematic of two level properties inside the diffuse interface: Heaviside (lower x-axis) and Dirac delta (upper x-axis) functions.
-Note that the peak of the Dirac delta-function depends on the interface thickness to ensure a unity integral of the delta function over $\Omega$. }
+Note that the peak of the dirac function depends on the interface thickness to ensure a unity integral of the delta function over $\Omega$. }
 %In this example, the interface thickness is 800 $\mu m$.
 % label
 \label{fig:heaviside_dirac}
@@ -949,9 +950,8 @@ satisfied \citet{osher_signed_2003}:
 %------------
 A efficient implementation of this method is done by \citet{shakoor_efficient_2015} making use of \emph{k-d} trees
 to limit the search operations of elements and the subsequent distance evaluations in each of these elements.
-Moreover, the authors compare the total time required by a Hamilton-Jacobi reinitalisation,  direct reinitialisation
-and the latter using k-d trees, all on the same 2D and 3D test cases. They ultimately demonstrate the great 
-performance of direct reinitialisation when used with k-d trees algorithm, hence we adopt their implementation in the present work.
+Moreover, the authors give a comparison of the previously stated methods on 2D and 3D cases, showing the great 
+performance of direction reinitialisation when used with k-d trees algorithm, hence we use it in the present work.
 %
 %--------------------------------------
 \section*{To do ?}
