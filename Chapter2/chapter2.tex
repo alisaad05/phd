@@ -4,26 +4,54 @@
 \minitoc
 \end{nolinkcolors}
 \newpage
-
-\comment{ TODO: replace wt pct by the macro bin or tern }
-\comment{ TODO: correct equations references prefix after replacing autoref by eqref }	
-
-
-When we speak about macrosegregation in solidification, we have to remember that the problem is one that involves phase change.
-
-
+%
+%
+%=====================================
 \section{State of the art}
-\begin{itemize}
-\item Use of enthalpy resolution in the majority of works 
-\item motivation and advantages of TvsH without talking about resolution time
-\item use article's introduction to fill this section (or improvise new things)
-\end{itemize}
+%=====================================
+\comment{ Use of enthalpy resolution in the majority of works \\
+ motivation and advantages of TvsH without talking about resolution time\\
+ use article's introduction to fill this section (or improvise new things)}
+%
+\comment{ TODO: replace wt pct by the macro bin or tern }%
+%
+When speaking about macrosegregation, one needs to know that the problem involves phase change.
+For that, a minimum of four conservation equations are necessary:
+conservation  of  mass, momentum,  chemical  species and  energy. The  phase  change
+literature  contains a  wealth of numerical methods to solve energy conservation
+in solidifying alloys. A comprehensive overview of these methods is given by \citet{swaminathan._enthalpy_1993}.
+The corresponding equation associates the total average enthalpy to the
+temperature  via  intrinsic  alloy  properties, such  as the heat  capacity of  the
+phases and the latent  heat associated with the phase transformations. However, in the course
+of solidification and while macrosegregation is taking place, these  properties may change because the average
+composition may  vary  significantly: the  transformation paths are thus modified, as well as
+the phases' composition and heat capacity. Similarly, the latent heat of phase  transformations
+is  not a mere constant that could be distributed as a function of the phase fractions
+assuming only temperature-dependent phases' properties, as often found in the literature \citep{bellet_call_2009}.
+It is thus impossible to establish a priori the dependence of the enthalpy with respect
+to temperature when macrosegregation takes place, even in the case of full thermodynamic equilibrium
+between phases. In this chapter, we discuss a suitable numerical scheme based on an enthalpy method,
+already used in the literature  to  alleviate this macrosegregation-related problem \citep{swaminathan._enthalpy_1993,
+carozzani_direct_2013}. Later on, we introduce a modified formulation, using the effective heat capacity method that 
+increases the original scheme's efficiency. 
 
-
+The current method is thus an enthalpy method that makes use of a temperature-based solver. 
+Moreover, it uses tabulated thermodynamic quantities (solidification paths, phases' enthalpy  and composition) 
+in a range of average compositions and temperatures as found in the literature 
+\citep{dore_modelling_2000,thuinet_prediction_2004,du_modeling_2007}, 
+with the aim of evaluating the total average enthalpy as well as the effective heat capacity. 
+The novelty of the modified method resides in the use of thermodynamic tabulations without losing 
+the advantages of the previous method, thus yielding faster computation times while maintaining a 
+good accuracy.
+%
+%
+%=====================================
 \section{Thermodynamic considerations}
-\comment{ this section should be revised for missing symbols, equations and figures from the corresponding article }
-
+%=====================================
+%
+%-----------------------------
 \subsection{Volume averaging} 
+%-----------------------------
 \comment{the following paragraph will be deleted once the volume averaging has been introduced in chapter 1}
 \red{A volume averaging technique was suggested to deal with the presence of multiple phases \citep{ni_volume-averaged_1991}. It locally considers a 
 Representative Volume Element (RVE) that contains a single or several phases (these are not necessarily in thermodynamic equilibrium) 
@@ -118,13 +146,15 @@ backward search for a temperature, hence it’s slower. This conversion’s spee
 increase in size (e.g. large number of temperature and composition steps) and complexity (e.g., multicomponent 
 industrial alloys used in casting), since the search gets more complicated with the increasing number of input 
 columns (one column for each alloying element).
-
-\section{Formulation}
-\comment{ Coming soon }
-
+%
+%
+%==================
 \section{Validation}
-
+%==================
+%
+%------------------------------
 \subsection{Pure diffusion}
+%------------------------------
 The two solvers are first tested in a purely diffusive case for a one-dimensional solidification configuration. 
 Predictions with a 1D front tracking model \citep{gandin_constrained_2000} is used as a benchmark. It provides 
 solutions for the temperature and solid fraction during directional solidification of a 10 cm long Al – 7 wt.\% Si 
@@ -217,7 +247,8 @@ sample, from \SI{0}{\centi \metre} (cooling side) to \SI{10}{\centi \metre} (ins
 
 The Tsolver’s ability to be coupled with various physical phenomena like macrosegregation and fluid flow 
 in porous medium is displayed in this test case. It consists of a solidification benchmark where a \SI{10}{\centi \metre}
-width × \SI{6}{\centi \metre} height × \SI{1}{\centi \metre} thick cavity containing a Sn – 3 wt.\% Pb melt is cooled down from its two 
+width $\times$ \SI{6}{\centi \metre} height $\times$ \SI{1}{\centi \metre} thick cavity containing 
+a Sn – 3 wt.\% Pb melt is cooled down from its two 
 narrowest vertical sides using heat exchangers (LHE: left heat exchanger, RHE: right heat exchanger). The 
 experiment, inspired by \citet{hebditch_observations_1974} similar set up, has been 
 revisited by \citet{hachani_experimental_2012} who performed the solidification with better 

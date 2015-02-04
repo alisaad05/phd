@@ -7,9 +7,8 @@
 %\usepackage{ae,aecompl}
 
 %------------------------ LANGUAGES-FRENCH ACCENTS -------------------------------
-\usepackage[utf8]{inputenc}
-% For the front page
-\usepackage[T1]{fontenc}		
+\usepackage[T1]{fontenc}
+\usepackage[utf8]{inputenc}		
 \usepackage[francais, english]{babel} % american
 %\usepackage{utopia} % lmodern % utopia % fourier
 
@@ -225,6 +224,7 @@ or
 \usepackage{amssymb}
 \usepackage[mathscr]{euscript}
 \usepackage{siunitx} % http://ftp.oleane.net/pub/CTAN/macros/latex/contrib/siunitx/siunitx.pdf
+\sisetup{detect-all} % detects the local font settings when using the SI macro
 % \num{.3e45}   ,  \num{3.45d-4}   , \numlist{10;30;50;70} ,  \numrange{10}{30} , 
 
 %%------------------------ Cross References  -------------------------------
@@ -382,7 +382,7 @@ or
 % Diagrams and Charts
 \usepackage{mathtools}
 \usepackage{tikz}
-\usetikzlibrary{positioning,shapes,snakes,backgrounds,fit,calc,shadows}
+\usetikzlibrary{mindmap,positioning,shapes,snakes,backgrounds,fit,calc,shadows}
 
 %%------------------------ ENVIRONMENTS  -------------------------------
 % Change hyperlink color to black in miniTOC, TOC, TOF ...
