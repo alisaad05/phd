@@ -1,0 +1,60 @@
+\chapter{Resolution algorithm with LSM}
+
+
+\tikzset{
+    schritt/.style={
+        draw,
+        rounded corners,
+        fill=blue!20,
+        inner xsep=2em,
+    },
+    background/.style={
+        draw,
+        fill=yellow!30,
+        align=right, rounded corners, minimum height=4.5em,drop shadow
+    }
+}
+
+% Returns three nodes: The argument, and the projections of the argument on the left and right borders of the bounding box
+\newcommand{\extendnode}[1]{
+    (#1)
+    ($(current bounding box.north east)!(#1)!(current bounding box.south east)$)
+    ($(current bounding box.north west)!(#1)!(current bounding box.south west)$)
+}
+
+\begin{tikzpicture}
+\matrix (matrix) [row sep=1.5cm,column sep=4.5cm] {
+  \node (elicit) [schritt] {Wissenserhebung}; & \\
+  
+  \node (interpret) [schritt] {%
+  $\begin{aligned}
+    \frac{\d \rh}{\d t} + \nabvec \cdot \rhv = \nabvec \cdot \brac{\avg{\kappa} \nabvec T} + \avg{\dot{Q}_V}
+  \end{aligned}$}; & \\
+  
+  \node (representation) [schritt] {%
+  $\begin{aligned}
+     \crochet{\frac{1}{\dt} \integral{\Omega}{P_i P_j }{\Omega} + 
+     \integral{\Omega}{\vec{v^t} \cdot \nabvec P_j }{\Omega}} \levelset_j^t &= 
+	\frac{1}{\dt}  \integral{\Omega}{ \levelset^{t-\dt} P_i }{\Omega}
+  \end{aligned}$}; & \\
+  \node (integration) [schritt] {Integration}; & \\
+  \node (maintenance) [schritt] {Wartung}; & \\
+};
+
+\path[->]
+  (elicit) edge (interpret)
+  (interpret) edge (representation)
+  (representation) edge (integration)
+  (integration) edge (maintenance);
+
+\begin{pgfonlayer}{background}
+
+  \path [use as bounding box] (current bounding box.north west) (current bounding box.south east); % Freeze current bounding box
+  \node [fit={\extendnode{elicit}}, background] {Conservation of Energy};
+  \node [fit={\extendnode{interpret}}, background] {Conservation of Solute};
+  \node [fit=\extendnode{representation}, background] {Conservation of Momentum};
+  \node [fit=\extendnode{integration}, background] {Level set Transport + Reinit};
+  \node [fit=\extendnode{maintenance}, background] {Adaptive Remeshing};
+
+\end{pgfonlayer}
+\end{tikzpicture}

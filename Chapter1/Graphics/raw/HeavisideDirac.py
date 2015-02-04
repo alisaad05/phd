@@ -80,6 +80,7 @@ a[2]=""
 c[2]=""
 a[3]=""
 c[3]=""
+c[4]="$1/\\varepsilon$" # \\frac{1}{\\varepsilon}
 ax.set_xticklabels(a) 
 ax2.set_xticklabels(c) 
 

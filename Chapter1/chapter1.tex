@@ -527,8 +527,8 @@ It is reminded that the term \emph{multiphase} in computational domains usually 
 should not be mixed with definition of a phase in the current solidification context. For disambiguation, we shall
 use \emph{multifluid flow} when needed.
 The great advantage lies in the way the interface between two fluids, $F_1$ and $F_2$ is implicitly captured, unlike 
-other methods where the exact interface position is needed. In a discrete domain, the concept is to assign for each mesh node of position $x$, 
-the minimum distance $d_{\Gamma} \brac{x}$ separating it from an interface $\Gamma$. 
+other methods where the exact interface position is needed. In a discrete domain, the concept is to assign for each 
+mesh node of position vector$\vec{x}$, the minimum distance $d_\Gamma(\vec{x})$ separating it from an interface $\Gamma$. 
 The distance function, denoted $\alpha$ and defined in \cref{eq:levelset_defintion}, is then signed positive or negative, based on the fluid or domain 
 to which the node belongs.
 %------------
@@ -536,9 +536,9 @@ to which the node belongs.
 \label{eq:levelset_defintion}
 \levelsetx = 
 \begin{cases}
- d_{\Gamma} \brac{x} 		& \text{ if } x \in F_1 \\ 
- -d_{\Gamma} \brac{x}	 	& \text{ if } x \in F_2 \\ 
- 0 							& \text{ if } x \in \Gamma_{F1, F2} 
+  d_\Gamma(\vec{x}) 		& \text{ if } \vec{x} \in F_1 \\ 
+ -d_\Gamma(\vec{x})			& \text{ if } \vec{x} \in F_2 \\ 
+  0 						& \text{ if } \vec{x} \in \Gamma_{F1, F2} 
 \end{cases}
 \end{align}
 %------------
@@ -549,8 +549,9 @@ to which the node belongs.
 %path 
 {Chapter1/Graphics/distancefunction.pdf}
 % caption
-{Schematic of the interface (thick black line) of a rising air bubble in water. The other contours represent isovalues
-of the distance function around and inside the interface contour.}
+{Schematic of the interface $\Gamma$ (thick black line) of a rising air bubble ($\Omega$) in water. The other contours represent isovalues
+of the distance function around and inside the interface contour. Those outside are signed negative whereas inside they are signed
+positive.}
 % label
 \label{fig:distance_function}
 \end{figureth}
@@ -567,7 +568,7 @@ across the sharp interface, as follows:
 %----------
 \begin{align}
 \label{eq:no_smoothing}
-\heaviside = 
+\heaviside = \heaviside \brac{\levelsetx} = 
 \begin{cases}
 	0  & \text{ if } \levelsetx < 0 \\
     1  & \text{ if } \levelsetx \geqslant 0 \\  
@@ -585,13 +586,14 @@ Sinusoidal smoothing in \cref{eq:sinusoidal_smoothing} is widely used with level
 \label{eq:sinusoidal_smoothing}
 \heaviside= 
 \begin{cases}
-	0  & \text{ if } \levelsetx < -\epsilon \\
-    1  & \text{ if } \levelsetx > \epsilon \\  
-    \frac{1}{2} \brac{1+ \frac{\levelsetx}{\epsilon} + \frac{1}{\epsilon}\sin \brac{\frac{\pi \levelsetx}{\epsilon }} } & \text{ if } - \epsilon \leq \levelsetx \leq \epsilon
+	0  & \text{ if } \levelsetx < -\varepsilon \\
+    1  & \text{ if } \levelsetx > \varepsilon \\  
+    \frac{1}{2} \brac{1+ \frac{\levelsetx}{\varepsilon} 
+    + \frac{1}{\pi}\sin \brac{\frac{\pi \levelsetx}{\varepsilon }} } & \text{ if } - \varepsilon \leq \levelsetx \leq \varepsilon
 \end{cases}
 \end{align}
 %-----------
-where the interval $\crochet{-\epsilon; \epsilon}$ is an artificial interface thickness around the zero distance.
+where the interval $\crochet{-\varepsilon; +\varepsilon}$ is an artificial interface thickness around the zero distance.
 Defining a diffuse interface rather than a sharp one, is also a common approach 
 in phase field methods \citep{beckermann_modeling_1999,sun_diffuse_2004}.
 It is emphasized that the latter methods give physically meaningful 
@@ -603,13 +605,39 @@ In a recent paper by \citet{gada_derivation_2009}, the authors respond partially
 by analysing and deriving conservation equations using a level set in a more meaningful way, but 
 do not discuss the diffuse interface aspect.
 
-\comment{Talk about properties that can be readily obtained from the level set \citet{peng_pde-based_1999}
- normal vector
- curvature
- interface
- volume
-}
-
+The dirac delta function is also an important property to convert surface integrals to volume terms, which could
+turn useful when modelling surface tension effects for instance, using 
+the \emph{continuum surface force} method (CSF) \citep{brackbill_continuum_1992}.
+The dirac function, plotted in \cref{fig:heaviside_dirac} along with the Heaviside function within an interface thickness 
+of $\crochet{-\varepsilon;+\varepsilon}$, is derived from the Heaviside as follows:
+%--- --------------
+\begin{align}
+\label{eq:dirac}
+\dirac = \delta \brac{\levelsetx} = \frac{\partial \heaviside  }{\partial \levelsetx}=
+\begin{cases}
+\frac{1}{2\varepsilon} \brac{ 1 + \cos \brac{\frac{\pi \levelsetx}{\varepsilon }} }  & \text{ if } \abval{\levelsetx} \leqslant  \varepsilon \\
+    0  & \text{ if } \abval{\levelsetx} > \varepsilon
+\end{cases}
+\end{align}
+%-------------
+The Heaviside and delta dirac functions can be readily processed to obtain other geometric properties from the level set,
+which are extremely useful. We mention the most relevant ones \citep{peng_pde-based_1999}:
+%------------
+\begin{align}
+\label{eq:levelset_normal}
+\text{normal vector}: \vec{n} &= \frac{\nabvec \levelset}{\norm{\nabvec \levelset} } \\
+%
+\label{eq:levelset_normal}
+\text{curvature}: \zeta &= - \nabla \cdot \vec{n} \\
+%
+\label{eq:levelset_interface}
+\text{interface surface area}: A &= \integral{\Omega}{\dirac \norm{\nabvec \levelset}}{\Omega} \\
+%
+\label{eq:levelset_volume}
+\text{inner volume}: V &= \integral{\Omega}{\heaviside}{\Omega}
+%
+\end{align}
+%-----------
 Finally, within the diffuse interface, fluids properties 
 may vary linearly or not, depending on the mixing law, which is presented in the next section.
 %----------------------
@@ -690,13 +718,13 @@ Otherwise, little work has been found in the literature on the broad effects of 
 %----------------------------------
 %
 %*****************************************
-\subsection{Transport and regularisation} % reinitialisation % regularisation
+\section{Interface motion} % reinitialisation % regularisation
 %****************************************
 When a physical interface needs to have topology changes because
 of fluid structure interaction or surface tension for instance, the level set model 
 can easily follow these changes by a transport step. The idea is the advect the signed distance
 function, its zero isovalue representing the interface and all other distant isovalues, with the
-velocity field as input. The problem can be simply written as:
+velocity field as input. The motion of the interface is thus expressed by:
 %------
 \begin{align}
 \label{eq:transport_strong}
@@ -706,7 +734,7 @@ velocity field as input. The problem can be simply written as:
 \comment{Associated boundary conditions}
 %
 %
-\subsubsection{Transport formulation}
+\subsection{Level set transport}
 The finite element method gives the fully discretised weak form of \cref{eq:transport_strong} 
 by using a convenient set of test functions $\levelsettest$ belonging the hilbertian \emph{Sobolev} space:
 %-----------
@@ -726,7 +754,6 @@ The spatial discretisation of $\levelset$ assigns, for each of the total $N$ nod
 Furthermore, with the Galerkin method, we replace test functions by the interpolation functions $P_j$, 
 then we apply a temporal discretisation for the main unknowns by a forward finite difference in time.
 Consequently, \cref{eq:transport_weak1} can be recast as follows:
-\comment{continue weak form discretisation}
 %-----------
 \begin{subequations}
 \begin{align}
@@ -746,7 +773,7 @@ system in \cref{eq:weakform_transport} is the transported distance function.
 %
 %
 %==============================
-\subsubsection{Regularisation}
+\subsection{Level set regularisation}
 %==============================
 %
 Upon transport the distance function field, a crucial property of the level set may be partially or totally 
@@ -801,8 +828,7 @@ properties with respect to the tracked interface.}
 \end{figureth}
 %-----------------------------------
 %
-%----------------------------------
-%
+%---------------------------------------------------------------------
 \subsubsection{Classic Hamilton-Jacobi reinitialisation}
 %
 In order to repair a distance function impaired by convective transport, \citet{sussman_level_1994} proposed 
@@ -816,7 +842,7 @@ solving a classic \emph{Hamilton-Jacobi} equation, given in its most general for
 %------------
 where $\levelset (x,t=0) = \levelset _0$ is the initial value of the distance function. 
 The term $\mathbb{H}$ is known as the \emph{Hamiltonian}. When the sign of the level set and its metric 
-property $\norm{\nabvec \levelset}=1$ are considered, \cref{eq:hamilton_jacobi} reduces to:
+property ($\norm{\nabvec \levelset}=1$) are considered, \cref{eq:hamilton_jacobi} reduces to:
 %------
 \begin{align}
 \label{eq:reinit_classic}
@@ -858,22 +884,81 @@ without modifying the latter, as follows:
 %------------
 %
 \subsubsection{Convective reinitialization}
-Article ville silva 
 %
+A recent work by \citet{ville_convected_2011} introduced another concept for reinialisation 
+called the \emph{convective reinitialisation}. The idea lies in combining both level set advection 
+and regularisation in a single equation, saving resolution time. The key components of their method
+starts by defining a pseudo time step, $\Delta \tau$, that is linked to the main time variable through
+a numerical parameter $\lambda_\tau$, as follows:
+%------
+\begin{align}
+\label{eq:pseudotimestep}
+& \lambda_\tau = \frac{\partial \tau}{ \partial t}
+\end{align}
+%------------
+The order of magnitude of $\lambda_\tau$, which can be seen as a relaxation parameter \citep[see][89]{vigneaux_methodes_2007}, 
+is close to the ratio $h/\dt$. Then, the classic Hamilton-Jacobi 
+\cref{eq:hamilton_jacobi} is combined into the convection step by writing:
+%------
+\begin{align}
+\label{eq:leveller}
+& \frac{\partial \levelset}{ \partial t} + \brac{\vec{v} + \lambda_\tau \vec{U}} \cdot \nabvec \levelset = \lambda_\tau S(\levelset)
+\end{align}
+%------------
+where $\vec{U}$ is a velocity vector in the normal direction to the interface, defined by $\vec{U}= S(\levelset) \vec{n}$.
+the normal vector $\vec{n}$ being previously defined in \red{TODO}. %TODO
+The obvious shortcoming of convective reinitialisation is that it depends on a numerical parameter $\lambda_\tau$.
+Another limitation of the method is the use of a sinusoidal filter to modify the distance function by truncating
+its values beyond a thickness threshold, which is also another parameter to calibrate the resolution. The drawback
+of truncating the level set is the loss of information far from the interface and the inability to fully reconstruct
+the distance function.
+If we denote this threshold by $E$ and the modified level set by $\widetilde\levelset$ inside the thickness, 
+then \cref{eq:leveller} is recast as:
+%------
+\begin{align}
+\label{eq:leveller_s}
+& \frac{\partial \levelset}{ \partial t} + \brac{\vec{v} + 
+\lambda_\tau \vec{U}} \cdot \nabvec \levelset = \lambda_\tau S(\levelset)
+\sqrt{1-\brac{\frac{\pi}{2 E} \widetilde\levelset}^2}
+\end{align}
+%------------
+\Cref{eq:leveller_s} describes the transport and partial reconstruction of the distance function $\levelset$,
+knowing its value $\widetilde\levelset$ inside the thickness $E$. 
 %----------------------------------------
 %
+%-----------------------------------------
 \subsubsection{Geometric reinitialization}
 %
+This category of methods go from the level set's basic geometric principle to construct a distance function,
+instead of solving a partial differential system of equations as in the classic Hamilton-Jacobi reinitialisation.
+A widely known instance of this category is the \emph{fast marching method} developed by \citet{sethian_fast_1996}
+and influenced by the \citet{dijkstra_note_1959}'s method to compute the shortest path in a network of nodes. 
+The method aims to solve the eikonal equation in \cref{eq:transport_property} to propagate the distance function in a 
+single direction by \emph{upwinding}, i.e. going from low to high values of the distance function, 
+while preserving a unitary distance gradient.
+
+\emph{Direct reinitialisation} is another interesting method in the geometric reinitialise category. However,
+it has not gained noticeable attention in the literature given the terribly cost in terms of computation time and efficiency.
+The main idea is very simple: reconstruct the distance function over $\Omega$ ar a subset of $\Omega$, by computing the minimum distance between each 
+the mesh node and the interface. It means that, for any point $\vec{x} \in \Omega$, the following constraint should be 
+satisfied \citet{osher_signed_2003}:
+%------
+\begin{align}
+\label{eq:min_distance}
+& d_\Gamma(\vec{x}) = \min \norm{\vec{x}-\vec{x_\Gamma}} \qquad \forall \vec{x_\Gamma} \in \partial \Omega = \Gamma,
+\end{align}
+%------------
+A efficient implementation of this method is done by \citet{shakoor_efficient_2015} making use of \emph{k-d} trees
+to limit the search operations of elements and the subsequent distance evaluations in each of these elements.
+Moreover, the authors give a comparison of the previously stated methods on 2D and 3D cases, showing the great 
+performance of direction reinitialisation when used with k-d trees algorithm, hence we use it in the present work.
 %
 %--------------------------------------
-\subsection{Interface Remeshing}
-Importance when using a static level set and more importantly when LS is transported,
+\section*{To do ?}
+\comment{Interface Remeshing: Importance when using a static level set and more importantly when LS is transported,
 influence of mixing area \emph{thickness} and \emph{resolution} (i.e. nb of nodes with the area),
 Isotropic or anisotropic ? the first is more important to composition calculation while the second
-is more relevant if we mean do thermohydraulics without macrosegregation
-
-
-
+is more relevant if we mean do thermohydraulics without macrosegregation}
 
 
 
