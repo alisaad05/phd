@@ -1,0 +1,112 @@
+\documentclass{article}
+
+\input{post_commands}
+\usepackage{mathtools}
+\usepackage{tikz}
+\usetikzlibrary{backgrounds,fit,calc,shadows,positioning}
+
+
+\begin{document}
+
+\newcommand{\vI}{\textbf{v}_{\text{I}}  }
+\newcommand{\vII}{\textbf{v}_{\text{II}}  }
+\newcommand{\capt}{\;\mathrm{capt}}
+\newcommand{\deriv}[1]{\frac{\partial #1 }{\partial t}}
+\newcommand{\diff}[2]{ \ensuremath{\nabla \cdot\left( #1 \nabla #2 \right)  }}
+% This command is useful to have quick control over the format of all header titles
+\newcommand{\name}[1]{\textbf{#1}}
+
+
+\section{Monodomain model: without level set}
+
+\begin{figure}[h!]
+\newlength{\largeur}
+\newlength{\llargeur}
+\newlength{\rlargeur}
+
+\setlength{\largeur}{4.5cm}
+\setlength{\llargeur}{10cm}
+\centering
+\begin{tikzpicture}[node distance=0.4cm]
+
+\tikzstyle{rect}=[rectangle,draw,text=black, fill=red!10, drop shadow, rounded corners]
+\tikzstyle{test}=[diamond,aspect=3,draw,text=black]
+\tikzstyle{fleche}=[->,>=stealth]
+\tikzstyle{trait}=[]
+
+\setlength{\rlargeur}{\largeur}
+\addtolength{\rlargeur}{-1.\tabcolsep}
+\addtolength{\rlargeur}{-1.\llargeur}
+
+\node[rect,below=of mecaflu] (energy)
+{
+	\begin{tabular}{@{}p{\llargeur}p{\rlargeur}@{}}
+	\name{Conservation of energy (Nonlinear Heat Transfer)} 
+	\begin{equation*}
+		\frac{\partial \avg{\rho h}}{\partial t} + \nabla \cdot \avg{\rho h \vec{v}} + \nabla \cdot \brac{\avg{\kappa} \nabvec T} = 0
+	\end{equation*}
+	\end{tabular}
+};
+
+% ===========================================================
+% ===========================================================
+
+\node[rect, below=of energy] (mecaflu)
+{
+	\begin{tabular}{@{}p{\llargeur}p{\rlargeur}@{}}
+	\name{Mechanics Step II : Fluid-oriented Resolution}
+	\begin{equation*}
+	  \begin{array}{l l}
+	    %{\rho}^{l}_{\text{ref}} 
+		%\brac{\frac{\partial \brac{g^{l} \vII }}{\partial t} + 
+		% \nabla \cdot\brac{g^{l} \vII  \times \vII  }} = \nabla\cdot \brac{g^{l}\mathbb{S}^{l}} 
+		%-  g^{l} \nabla p^{l} + g^{l} {\rho}^{l} \vec{\mathbb{G}} - {g^{l}}^{2} \mu^{l} \mathbb{K}^{-1} \brac{ \vII  - \vI  } } \\ 
+	    \nabla \cdot \vII = 0
+	  \end{array} 	
+	\end{equation*}
+	\end{tabular}
+};
+
+
+
+
+
+\node[rect,below=of energy] (macroseg)
+{
+	\begin{tabular}{@{}p{\llargeur}p{\rlargeur}@{}}
+	\name{Conservation of chemical species (Macrosegregation)} 
+	\begin{equation*}
+		\frac{\partial \langle w_i \rangle}{\partial t} + 	
+		\avg{\vII}  \cdot   \nabla \langle w_i \rangle^{l} = 
+		\nabla\cdot  ( \langle D^{l} \rangle \nabla \langle w_i \rangle^{l} )
+	\end{equation*}
+	\end{tabular}
+};
+
+\node[rect,below=of macroseg] (microseg)
+{
+	\begin{tabular}{@{}p{\llargeur}p{\rlargeur}@{}}
+	\name{Microsegregation} 
+	\begin{equation*}	   
+	  \begin{array}{l l}
+	    \brac{g^{\phi} , \avg{w_i^{\phi}}^{\phi} } = f\brac{\avg{w_i} , T }  \\ 
+	    \frac{\partial \avg{\rho h} }{\partial T} = 
+		 \frac{\partial}{\partial T} \brac{\sum_{\phi} g^{\phi}  \avg{\rho h}^{\phi} }
+	  \end{array} 	
+	\end{equation*}
+	\end{tabular}
+};
+
+
+\draw[trait] (mecaflu) -- (energy);
+\draw[trait] (energy) -- (macroseg);
+\draw[trait] (macroseg) -- (microseg);
+
+\end{tikzpicture}
+
+%\caption{Coupling algorithm for structures i, without iterations. Solidification path is computed at nodes.}
+
+\end{figure}
+
+
+\end{document}
