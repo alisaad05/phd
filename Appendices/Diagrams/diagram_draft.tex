@@ -15,6 +15,9 @@
 \newcommand{\diff}[2]{ \ensuremath{\nabla \cdot\left( #1 \nabla #2 \right)  }}
 % This command is useful to have quick control over the format of all header titles
 \newcommand{\name}[1]{\textbf{#1}}
+\newcommand{\heavisideM}{ \ensuremath{\heaviside^M}}
+\newcommand{\heavisideA}{ \ensuremath{\heaviside^A}}
+
 
 
 \section{Monodomain model: without level set}
@@ -38,47 +41,35 @@
 \addtolength{\rlargeur}{-1.\tabcolsep}
 \addtolength{\rlargeur}{-1.\llargeur}
 
-\node[rect,below=of mecaflu] (energy)
+\node[rect] (energy)
 {
 	\begin{tabular}{@{}p{\llargeur}p{\rlargeur}@{}}
 	\name{Conservation of energy (Nonlinear Heat Transfer)} 
 	\begin{equation*}
-		\frac{\partial \avg{\rho h}}{\partial t} + \nabla \cdot \avg{\rho h \vec{v}} + \nabla \cdot \brac{\avg{\kappa} \nabvec T} = 0
+		 \frac{\partial \avg{\rho h}}{\partial t} + \nabla \cdot \avg{\rho h \vec{v}} + \nabla \cdot \brac{\avg{\kappa} \nabvec T} = 0
 	\end{equation*}
 	\end{tabular}
 };
 
-% ===========================================================
-% ===========================================================
 
 \node[rect, below=of energy] (mecaflu)
 {
 	\begin{tabular}{@{}p{\llargeur}p{\rlargeur}@{}}
-	\name{Mechanics Step II : Fluid-oriented Resolution}
+	\name{Conservation of liquid momentum (Navier Stokes)}
 	\begin{equation*}
-	  \begin{array}{l l}
-	    %{\rho}^{l}_{\text{ref}} 
-		%\brac{\frac{\partial \brac{g^{l} \vII }}{\partial t} + 
-		% \nabla \cdot\brac{g^{l} \vII  \times \vII  }} = \nabla\cdot \brac{g^{l}\mathbb{S}^{l}} 
-		%-  g^{l} \nabla p^{l} + g^{l} {\rho}^{l} \vec{\mathbb{G}} - {g^{l}}^{2} \mu^{l} \mathbb{K}^{-1} \brac{ \vII  - \vI  } } \\ 
-	    \nabla \cdot \vII = 0
-	  \end{array} 	
+	 \temp{ \rhol \gl \vl } + \nabvec \cdot \brac{\rhol \gl \vl \times \vl} = 
+	\nabvec \cdot \brac{\gl \sigmal} +\gl \Fv + \vec{\Gamma}^{l}
 	\end{equation*}
 	\end{tabular}
 };
 
 
-
-
-
-\node[rect,below=of energy] (macroseg)
+\node[rect,below=of mecaflu] (macroseg)
 {
 	\begin{tabular}{@{}p{\llargeur}p{\rlargeur}@{}}
 	\name{Conservation of chemical species (Macrosegregation)} 
 	\begin{equation*}
-		\frac{\partial \langle w_i \rangle}{\partial t} + 	
-		\avg{\vII}  \cdot   \nabla \langle w_i \rangle^{l} = 
-		\nabla\cdot  ( \langle D^{l} \rangle \nabla \langle w_i \rangle^{l} )
+		\frac{\partial \avg{\rho w_i}}{\partial t} + \nabla \cdot \avg{\rho w_i \vec{v}} + \nabla \cdot \brac{\gl \Dl \nabvec \wil}= 0
 	\end{equation*}
 	\end{tabular}
 };
@@ -98,8 +89,104 @@
 };
 
 
-\draw[trait] (mecaflu) -- (energy);
-\draw[trait] (energy) -- (macroseg);
+\draw[trait] (energy) -- (mecaflu);
+\draw[trait] (mecaflu) -- (macroseg);
+\draw[trait] (macroseg) -- (microseg);
+
+\end{tikzpicture}
+
+%\caption{Coupling algorithm for structures i, without iterations. Solidification path is computed at nodes.}
+
+\end{figure}
+
+
+
+
+%=======================================================================
+%************************************************************************
+%=======================================================================
+\newpage
+\section{Multidomain model: with level set}
+
+\begin{figure}[h!]
+\setlength{\largeur}{4.5cm}
+\setlength{\llargeur}{10cm}
+\centering
+\begin{tikzpicture}[node distance=0.4cm]
+
+\tikzstyle{rect}=[rectangle,draw,text=black, fill=red!10, drop shadow, rounded corners]
+\tikzstyle{test}=[diamond,aspect=3,draw,text=black]
+\tikzstyle{fleche}=[->,>=stealth]
+\tikzstyle{trait}=[]
+
+\setlength{\rlargeur}{\largeur}
+\addtolength{\rlargeur}{-1.\tabcolsep}
+\addtolength{\rlargeur}{-1.\llargeur}
+
+\node[rect] (lsmixing)
+{
+	\begin{tabular}{@{}p{\llargeur}p{\rlargeur}@{}}
+	\name{Property mixing in the diffuse interface} 
+	\begin{equation*}
+		 \widehat{\kappa} = \heavisideM \avg{\kappa} + \heavisideA \kappa^A
+	\end{equation*}
+		\begin{equation*}
+		 \widehat{\mu} = \heavisideM \mul + \heavisideA \mu^A
+	\end{equation*}
+	\end{tabular}
+};
+
+
+\node[rect, below=of lsmixing] (energy)
+{
+	\begin{tabular}{@{}p{\llargeur}p{\rlargeur}@{}}
+	\name{Conservation of energy (Nonlinear Heat Transfer)} 
+	\begin{equation*}
+		 \frac{\partial \avg{\rho h}}{\partial t} + \nabla \cdot \avg{\rho h \vec{v}} + \nabla \cdot \brac{\widehat{\kappa} \nabvec T} = 0
+	\end{equation*}
+	\end{tabular}
+};
+
+
+\node[rect, below=of energy] (mecaflu)
+{
+	\begin{tabular}{@{}p{\llargeur}p{\rlargeur}@{}}
+	\name{Conservation of liquid momentum (Navier Stokes)}
+	\begin{equation*}
+	 \temp{ \rhol \gl \vl } + \nabvec \cdot \brac{\rhol \gl \vl \times \vl} = 
+	\nabvec \cdot \brac{\gl \sigmal} +\gl \Fv + \vec{\Gamma}^{l}
+	\end{equation*}
+	\end{tabular}
+};
+
+
+\node[rect,below=of mecaflu] (macroseg)
+{
+	\begin{tabular}{@{}p{\llargeur}p{\rlargeur}@{}}
+	\name{Conservation of chemical species (Macrosegregation)} 
+	\begin{equation*}
+		\frac{\partial \avg{\rho w_i}}{\partial t} + \nabla \cdot \avg{\rho w_i \vec{v}} + \nabla \cdot \brac{\gl \Dl \nabvec \wil}= 0
+	\end{equation*}
+	\end{tabular}
+};
+
+\node[rect,below=of macroseg] (microseg)
+{
+	\begin{tabular}{@{}p{\llargeur}p{\rlargeur}@{}}
+	\name{Microsegregation} 
+	\begin{equation*}	   
+	  \begin{array}{l l}
+	    \brac{g^{\phi} , \avg{w_i^{\phi}}^{\phi} } = f\brac{\avg{w_i} , T }  \\ 
+	    \frac{\partial \avg{\rho h} }{\partial T} = 
+		 \frac{\partial}{\partial T} \brac{\sum_{\phi} g^{\phi}  \avg{\rho h}^{\phi} }
+	  \end{array} 	
+	\end{equation*}
+	\end{tabular}
+};
+
+
+\draw[trait] (energy) -- (mecaflu);
+\draw[trait] (mecaflu) -- (macroseg);
 \draw[trait] (macroseg) -- (microseg);
 
 \end{tikzpicture}
