@@ -2,6 +2,9 @@
 
 \input{post_commands}
 \usepackage{mathtools}
+\usepackage{amsfonts}
+\usepackage{amsmath}
+\usepackage{amssymb}
 \usepackage{tikz}
 \usetikzlibrary{backgrounds,fit,calc,shadows,positioning}
 
@@ -28,7 +31,7 @@
 \newlength{\rlargeur}
 
 \setlength{\largeur}{4.5cm}
-\setlength{\llargeur}{10cm}
+\setlength{\llargeur}{12cm}
 \centering
 \begin{tikzpicture}[node distance=0.4cm]
 
@@ -56,10 +59,11 @@
 {
 	\begin{tabular}{@{}p{\llargeur}p{\rlargeur}@{}}
 	\name{Conservation of liquid momentum (Navier Stokes)}
-	\begin{equation*}
-	 \temp{ \rhol \gl \vl } + \nabvec \cdot \brac{\rhol \gl \vl \times \vl} = 
-	\nabvec \cdot \brac{\gl \sigmal} +\gl \Fv + \vec{\Gamma}^{l}
-	\end{equation*}
+	\begin{multline*}
+ \temp{ \rhol \vit } + \frac{1}{\gl} \nabvec \cdot \brac{\rhol \vit \times \vit} = \\
+	  - \gl\nabvec \pl - 2 \mul \nabvec \cdot \brac{\nabmat \vit + \nabmattransp \vit}
+	  - \gl \mul \K^{-1} \vit + \gl \rhol \gravity
+	\end{multline*}
 	\end{tabular}
 };
 

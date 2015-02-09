@@ -336,12 +336,12 @@ S_V \langle \rhol \vlstar \cdot \vec{n} \rangle^*
 Summing equations \eqref{eq:mass_liquid} and \eqref{eq:mass_solid}, results in the overall mass balance
 in the RVE:
 %----
-\begin{align}
+\begin{multline}
 \label{eq:conservation_mass_local}
-& \temp{\gl \rhol + \gs \rhos}  +  \nabla \cdot \brac{\gl \rhol \vl + \gs \rhos \vs}
-   =  S_V \avg{\rhol \brac{\vlstar-\vstar} \cdot \vec{n}}^*  
+ \temp{\gl \rhol + \gs \rhos}  +  \nabla \cdot \brac{\gl \rhol \vl + \gs \rhos \vs} = \\  
+	  S_V \avg{\rhol \brac{\vlstar-\vstar} \cdot \vec{n}}^*  
    -  S_V \avg{\rhos \brac{\vsstar-\vstar} \cdot \vec{n}}^*
-\end{align}
+\end{multline}
 %----
 where the RHS cancels to zero as shown by \citet{ni_volume-averaged_1991}. Moreover, the authors show that with their averaging technique, 
 interfacial exchanges for energy, chemical species and momentum cancel out as they are equal in absolute value but opposite in sign. 
@@ -371,27 +371,36 @@ As stated previously, the momentum balance in the solid phase is not taken into 
 local conservation equations. The liquid momentum balance writes:
 %------
 \begin{align}
-\label{eq:conservation_momentumliq}
+\label{eq:conservation_momentumliq_init}
 & \temp{ \rhol \gl \vl } + \nabvec \cdot \brac{\rhol \gl \vl \times \vl} = 
 	\nabvec \cdot \brac{\gl \sigmal} +\gl \Fv + \vec{\Gamma}^{l}
 \end{align}
 %------------
-The interfacial momentum transfer between the solid and liquid phases is modelled by a momentum flux vector $\vec{\Gamma}^{l}$, consisting of
-hydrostatic and deviatoric parts, such that:
+where $\Fv$ is the vector of external body forces exerted on the liquid phase. In our case, it accounts for the fluid's weight:
+%------
+\begin{align}
+\label{eq:fluid_weight}
+& \Fv = \rhol \gravity
+\end{align}
+%------------
+The interfacial momentum transfer between the solid and liquid phases in \cref{eq:conservation_momentumliq_init} is modelled 
+by a momentum flux vector $\vec{\Gamma}^{l}$, consisting of hydrostatic and deviatoric parts, such that:
 %------------
 %\begin{subequations}
 \begin{align}
-\label{eq:eq_interfacial_momentum_init}
-		& \vec{\Gamma}^{l} =  \vec{\Gamma}_{p}^{l} + \vec{\Gamma}_{\mathbb{S}}^{l}						\\
-		& \vec{\Gamma}_{p}^{l} = p^{l^{*}} \nabvec g^{l} = p^{l} \nabvec g^{l}			  \\
-		& \vec{\Gamma}_{\mathbb{S}}^{l} = -{g^{l}}^{2} \mu^{l} \mathbb{K}^{-1} \brac{ \vl - \cancel{\vs} }  
+	\label{eq:interfacial_momentum_total}
+	& \vec{\Gamma}^{l} =  \vec{\Gamma}_{p}^{l} + \vec{\Gamma}_{\mathbb{S}}^{l}	\\
+	\label{eq:interfacial_momentum_hydrostatic}
+	& \vec{\Gamma}_{p}^{l} = p^{l^{*}} \nabvec g^{l} = p^{l} \nabvec g^{l}		\\
+	\label{eq:interfacial_momentum_deviatoric}
+	& \vec{\Gamma}_{\mathbb{S}}^{l} = - \gl^2 \mul \K^{-1} \brac{ \vl - \cancel{\vs} }  
 \end{align}
 %\end{subequations}
 %------------
 where $p^{l^{*}}$ is the pressure at the interface, considered to be equal to the liquid hydrostatic 
-pressure $\pl$, $\mathbb{K}$ is a permeability scalar (isotropic) computed using \cref{eq:darcy} and $\mu^l$ is the liquid's 
-dynamic viscosity. 
-The general form of the Cauchy liquid stress tensor in \cref{eq:conservation_momentumliq} is decomposed as follows: 
+pressure $\pl$, $\K$ is a permeability scalar (isotropic) computed using \cref{eq:darcy} and $\mul$ is the liquid's 
+dynamic viscosity. The general form of the Cauchy liquid stress tensor in \cref{eq:conservation_momentumliq_init} 
+is decomposed as follows: 
 %------------
 %\begin{subequations} 
 \begin{align}
@@ -420,11 +429,23 @@ the average liquid velocity:
 %------------
 \begin{align}
 \label{eq:tensor_strainrate}
-\strainrate = \frac{1}{2} \brac{\nabmat \vit  +  \nabmattransp \vit }
+\strainrate = \frac{1}{2} \brac{\nabmat \vit  +  \nabmattransp \vit}
 \end{align}
-
-%%-------------------------------------------------------------------------------------------
-
+%-------------------------------------------------------------------------------------------
+Finally, using \cref{eq:fluid_weight,eq:interfacial_momentum_hydrostatic,eq:interfacial_momentum_deviatoric,eq:stress_liq_incompressible2,eq:tensor_strainrate} 
+in \cref{eq:conservation_momentumliq_init}, we obtain the final form of momentum conservation in the liquid phase:
+%------
+% \begin{align}
+\begin{multline}
+\label{eq:conservation_momentumliq}
+ \temp{ \rhol \vit } + \frac{1}{\gl} \nabvec \cdot \brac{\rhol \vit \times \vit} = \\
+	  - \gl\nabvec \pl - 2 \mul \nabvec \cdot \brac{\nabmat \vit + \nabmattransp \vit}
+	  - \gl \mul \K^{-1} \vit + \gl \rhol \gravity
+\end{multline}
+% \end{align}
+%------------
+where we intentionally employed the \emph{superficial velocity}, $\vit = \gl \vl$, as the main unknown, together with the liquid pressure $\pl$.
+%%------------------------------------------------------------------------------------------
 \comment{Macro models: Rivaux ? Gu beckermann 1999}
 
 \comment{Micro macro: Tommy Carozzani2013, guo  beckermann 2003,  Combeau 2009, Miha Zaloznik 2010 (indirect), 
