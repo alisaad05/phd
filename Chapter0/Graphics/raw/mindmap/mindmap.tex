@@ -1,11 +1,10 @@
+% Numerical model with components interaction
+% Author: Ali Saad
 \documentclass{standalone}
 \usepackage{tikz}
-\usepackage{fourier}
+\usepackage{utopia}
 \usetikzlibrary{mindmap,backgrounds}
-
-
 \begin{document}
-
 
 \begin{tikzpicture}[
   mindmap,
@@ -19,6 +18,7 @@
   level 2/.append style={level distance=3cm,sibling angle=40},
 ]
 %-------------------------------------------------------------
+% Custom colors
 \newcommand{\coloris}{white!60!black}
 \newcommand{\colorisE}{red!70!black}
 \newcommand{\colorisM}{orange}
@@ -27,7 +27,8 @@
 \newcommand{\coloriss}{brown!60!black}
 \newcommand{\colorisL}{blue!60!black} 
 
-
+%-------------------------------------------------------------
+% Main mindmap elements
 \node[root concept] {Macrosegregation with a level set approach} % root
 %============================================================
 child[concept color=\colorisS] { node {Species Conservation}
@@ -70,7 +71,8 @@ child { node (E2) {Temperature}  }
 };
 %============================================================
 
-
+%---------------------------------------------------
+% Background interaction lines
 \begin{pgfonlayer}{background}
 	\draw[\coloriss, thick, dashed] (s1) edge[->] (M1);
 	\draw[\coloriss, thick, dashed] (s2) edge[->] (S1);
@@ -98,9 +100,7 @@ child { node (E2) {Temperature}  }
 	\draw[\colorisV, thick, dashed] (V2) edge[->] (L4);
 	\draw[\colorisM, thick, dashed] (M2) edge[->] (L4);
 	\draw[\colorisE, thick, dashed] (E3) edge[->] (L4);
-
 \end{pgfonlayer}
 
 \end{tikzpicture}
-
 \end{document}
