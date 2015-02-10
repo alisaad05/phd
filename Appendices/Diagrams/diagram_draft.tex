@@ -6,6 +6,8 @@
 \usepackage{amsmath}
 \usepackage{amssymb}
 \usepackage{tikz}
+\usepackage{cancel}
+\usepackage{fullpage}
 \usetikzlibrary{backgrounds,fit,calc,shadows,positioning,matrix}
 
 
@@ -23,7 +25,7 @@
 
 
 
-\section{Monodomain model: without level set}
+\section{General monodomain model: without level set}
 
 \begin{figure}[h!]
 \newlength{\largeur}
@@ -167,7 +169,7 @@
 %************************************************************************
 %=======================================================================
 \newpage
-\section{Multidomain model: with level set}
+\section{General multidomain model: with level set}
 
 \begin{figure}[h!]
 \setlength{\largeur}{2cm}
@@ -205,7 +207,8 @@
 	\begin{equation*}	   
 	  \begin{array}{l l}
 	    \brac{\gphi , \avg{w_i^{\phi}}^{\phi} } = f\brac{\wi , T }  \\ 
-	  \mix{\avg{\rho h}} =  \heavisideM \avg{\rho h} + \heavisideA \rhoa \ha 	
+	  \mix{\avg{\rho h}} =  \heavisideM \avg{\rho h} + \heavisideA \rhoa \ha \\
+	  \gf = \heavisideM \gl + \heavisideA \ga = \heavisideM \gl + \heavisideA
 	  \end{array}
 	\end{equation*}
 	\end{tabular}
@@ -229,10 +232,10 @@
 	\begin{equation*}
    \left\{
    \begin{aligned}
-      & \temp{ \rhol \vitf } + \frac{1}{\gf} \nabvec \cdot \brac{\rhol \vitf \times \vitf} = \\
+      & \temp{ \rhof \vitf } + \frac{1}{\gf} \nabvec \cdot \brac{\rhof \vitf \times \vitf} = \\
 	  &- \gf\nabvec \pf - 2 \mix{\mu} \nabvec \cdot \brac{\nabmat \vitf + \nabmattransp \vitf}
-	  - \gf \mix{\mu} \K^{-1} \vit + \gf \rhol \gravity\\ \\
-      & \nabla \cdot \vit =0
+	  - \gf \mix{\mu} \widetilde\K^{-1} \vitf + \gf \rhol \gravity\\ \\
+      & \nabla \cdot \vitf = \heavisideM \nabla \cdot \vit + \cancel{\heavisideA \nabla \cdot \vita}
     \end{aligned}
     \right.
 \end{equation*}
@@ -244,7 +247,7 @@
 	\begin{tabular}{p{\llargeur}}
 	\name{Level set transport and reinitialisation}
 	\begin{align*}
- \frac{d \levelset}{d t}  = \frac{\partial \levelset}{\partial t} + \vec{v} \cdot \nabvec \levelset = 0
+ 			\frac{d \levelset}{d t}  = \frac{\partial \levelset}{\partial t} + \vec{v} \cdot \nabvec \levelset = 0
 	\end{align*}
 	\end{tabular}
 };
@@ -263,10 +266,12 @@
 	\name{Property mixing in the diffuse interface} 
 	
 	\begin{tabular}{cc}
-	$ \mix{\kappa} = \heavisideM \avg{\kappa} + \heavisideA \kappa^A $ & \qquad
+	$ \mix{\rho} = \heavisideM \rhol + \heavisideA \rhoa $			& \qquad
 	$ \mix{\mu} = \heavisideM \mul + \heavisideA \mu^A $ \\
-	$ \mix{\kappa} = \heavisideM \avg{\kappa} + \heavisideA \kappa^A $ & \qquad
+	$ \rhof \hf = \heavisideM \rhol \hl + \heavisideA \rhoa \ha $ 	& \qquad
 	$ \mix{D} = \heavisideM \Dl + \heavisideA D^A $ \\
+	$ \widetilde\K = {\sdas^2 \gf^3/}{180\brac{1-\gf}^2}	$	& \qquad	
+	$ \mix{\kappa} = \heavisideM \avg{\kappa} + \heavisideA \kappa^A $
 	\end{tabular}
 	\end{tabular}
 };
@@ -305,7 +310,16 @@
 {
 	\begin{tabular}{p{\llargeurOut}}
 	\begin{equation*}
-		 (\gl)^t , (\wil)^t , (\wis)^t
+		 (\gf)^t , (\wil)^t , (\wis)^t
+	\end{equation*}
+	\end{tabular}
+};
+
+\node[output,right=of transport] (transportOut)
+{
+	\begin{tabular}{p{\llargeurOut}}
+	\begin{equation*}
+		 \levelset^t_\text{regular}
 	\end{equation*}
 	\end{tabular}
 };
@@ -315,12 +329,14 @@
 \draw[trait] (microseg) -- (macroseg);
 \draw[trait] (macroseg) -- (mecaflu);
 \draw[trait] (mecaflu) -- (transport);
-\draw[trait] (transport) -- (remesh);
+\draw[trait] (transport) -- (remesh); 
+\draw[trait] (remesh) -- (lsmixing);
 
 \draw[trait] (energy) -- (energyOut);
 \draw[trait] (mecaflu) -- (mecafluOut);
 \draw[trait] (macroseg) -- (macrosegOut);
 \draw[trait] (microseg) -- (microsegOut);
+\draw[trait] (transport) -- (transportOut);
 
 \end{tikzpicture}
 
