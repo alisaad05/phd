@@ -8,6 +8,8 @@
 
 \renewcommand\d{\ensuremath{\partial}}
 \newcommand\integral[3]{\ensuremath{\int_{#1} #2\: \mathrm{d}#3}}
+\newcommand{\deriv}[1]{\frac{\partial #1 }{\partial t}}
+\newcommand{\diff}[2]{ \ensuremath{\nabla \cdot\left( #1 \nabla #2 \right)  }}
 
 %\newcommand{\mtrx}[1]{{\underline{\underline{#1}}} }
 \newcommand{\mtrx}[1]{{\overline{\overline{#1}}} }
@@ -144,6 +146,8 @@
 \newcommand\rhog{\ensuremath{\rho \vec{g}}}  
 \newcommand\rhobouss{\ensuremath{\widetilde{\rho}}} 
 \newcommand\heaviside{\ensuremath{H}}  
+\newcommand{\heavisideM}{ \ensuremath{\heaviside^M}}
+\newcommand{\heavisideA}{ \ensuremath{\heaviside^A}}
 \newcommand\dirac{\ensuremath{\delta \brac{\levelset}}}
 \newcommand\levelset{\ensuremath{\alpha}}
 \newcommand\levelsettest{\ensuremath{\alpha^\text{*}}}
@@ -156,6 +160,7 @@
 \newcommand{\thercast}{\emph{Thercast\registered }}
 \newcommand{\ccemlcc}{\emph{CCEMLCC }} 
 \newcommand{\doitpoms}{\emph{© DoITPoMS, University of Cambridge}} 
+
 
 % Colors
 \newcommand{\red}[1]{{\color{Red} #1}}

@@ -16,18 +16,15 @@
 \newcommand{\vI}{\textbf{v}_{\text{I}}  }
 \newcommand{\vII}{\textbf{v}_{\text{II}}  }
 \newcommand{\capt}{\;\mathrm{capt}}
-\newcommand{\deriv}[1]{\frac{\partial #1 }{\partial t}}
-\newcommand{\diff}[2]{ \ensuremath{\nabla \cdot\left( #1 \nabla #2 \right)  }}
+
 % This command is useful to have quick control over the format of all header titles
 \newcommand{\name}[1]{\textbf{#1}}
-\newcommand{\heavisideM}{ \ensuremath{\heaviside^M}}
-\newcommand{\heavisideA}{ \ensuremath{\heaviside^A}}
 
 
-
+%======================================================
 \section{General monodomain model: without level set}
 
-\begin{figure}[h!]
+\begin{figure}[h]
 \newlength{\largeur}
 \newlength{\llargeur}
 \newlength{\llargeurOut}
@@ -65,7 +62,11 @@
 \node[rect,below=of energy] (microseg)
 {
 	\begin{tabular}{p{\llargeur}}
-	\name{Microsegregation (Direct lever rule or discrete mapping)} 
+	\name{Microsegregation}
+	
+	\vspace{3mm}
+	Discrete mapping:  $\brac{\gphi , \avg{w_i^{\phi}}^{\phi} } = f\brac{\wi , T }$ \\
+	Direct lever rule:	
 	\begin{equation*}
    		\left.
 		\begin{aligned}	   
@@ -82,7 +83,7 @@
 	\begin{tabular}{p{\llargeur}}
 	\name{Conservation of chemical species (Macrosegregation)} 
 	\begin{equation*}
-		\frac{\partial \avg{\rho w_i}}{\partial t} + \nabla \cdot \avg{\rho w_i \vl} + \nabla \cdot \brac{\gl \Dl \nabvec \wil}= 0
+		\frac{\partial \avg{\rho w_i}}{\partial t} + \vit \cdot \nabla \brac{\rhol \wil} + \nabla \cdot \brac{\gl \Dl \nabvec \brac{\rhol \wil}}= 0
 	\end{equation*}
 	\end{tabular}
 };
@@ -139,7 +140,12 @@
 {
 	\begin{tabular}{p{\llargeurOut}}
 	\begin{equation*}
-		 (\gl)^t , (\wil)^t , (\wis)^t
+   		\left.
+		\begin{aligned}	   
+ 			& (\gphi)^t  \\
+  			& (\wil)^t , (\wis)^t
+		\end{aligned}
+		\right.
 	\end{equation*}
 	\end{tabular}
 };
@@ -177,7 +183,7 @@
 \setlength{\llargeurOut}{2.5cm}
 \setlength{\rlargeurOut}{0.25cm}
 \centering
-\begin{tikzpicture}[node distance=0.4cm]
+\begin{tikzpicture}[node distance=0.3cm]
 
 \tikzstyle{rect}=[rectangle,draw,text=black, fill=red!10, drop shadow, rounded corners]
 \tikzstyle{output}=[rectangle,draw,text=black, fill=blue!10, drop shadow, rounded corners,minimum height=0.01cm]
@@ -203,12 +209,18 @@
 \node[rect,below=of energy] (microseg)
 {
 	\begin{tabular}{p{\llargeur}}
-	\name{Microsegregation} 
+	\name{Microsegregation (Discrete mapping)} 
 	\begin{equation*}	   
 	  \begin{array}{l l}
-	    \brac{\gphi , \avg{w_i^{\phi}}^{\phi} } = f\brac{\wi , T }  \\ 
-	  \mix{\avg{\rho h}} =  \heavisideM \avg{\rho h} + \heavisideA \rhoa \ha \\
-	  \gf = \heavisideM \gl + \heavisideA \ga = \heavisideM \gl + \heavisideA
+	  \text{Metal: }  \brac{\gphi , \avg{w_i^{\phi}}^{\phi} } = f\brac{\wi , T }  \\ 
+	  %
+	  \text{Fluid fraction: } \gf = \heavisideM \gl + \heavisideA \ga = \heavisideM \gl + \heavisideA \\
+	  %	  
+	  \begin{aligned}
+        \text{Total volume enthalpy: } \mix{\avg{\rho h}} &=  \heavisideM \avg{\rho h} + \heavisideA \rhoa \ha \\
+       &=  \heavisideM \sum_{\phi \in \text{metal}}  \gphi \hphi + \heavisideA \rhoa \ha 
+      \end{aligned} \\
+	  % 
 	  \end{array}
 	\end{equation*}
 	\end{tabular}
@@ -219,7 +231,7 @@
 	\begin{tabular}{p{\llargeur}}
 	\name{Conservation of chemical species (Macrosegregation)} 
 	\begin{equation*}
-		\frac{\partial \avg{\rho w_i}}{\partial t} + \nabla \cdot \avg{\rho w_i \vf} + \nabla \cdot \brac{\gf \mix{D} \nabvec \wil}= 0
+		\frac{\partial \avg{\rho w_i}}{\partial t} + \vitf \cdot \nabla \brac{\rhol \wil} + \nabla \cdot \brac{\gf \mix{D} \nabvec \brac{\rhol \wil}}= 0
 	\end{equation*}
 	\end{tabular}
 };
@@ -232,7 +244,7 @@
 	\begin{equation*}
    \left\{
    \begin{aligned}
-      & \temp{ \rhof \vitf } + \frac{1}{\gf} \nabvec \cdot \brac{\rhof \vitf \times \vitf} = \\
+      & \temp{ \mix{\rho} \vitf } + \frac{1}{\gf} \nabvec \cdot \brac{\mix{\rho} \vitf \times \vitf} = \\
 	  &- \gf\nabvec \pf - 2 \mix{\mu} \nabvec \cdot \brac{\nabmat \vitf + \nabmattransp \vitf}
 	  - \gf \mix{\mu} \widetilde\K^{-1} \vitf + \gf \rhol \gravity\\ \\
       & \nabla \cdot \vitf = \heavisideM \nabla \cdot \vit + \cancel{\heavisideA \nabla \cdot \vita}
@@ -245,7 +257,7 @@
 \node[rect, below=of mecaflu] (transport)
 {
 	\begin{tabular}{p{\llargeur}}
-	\name{Level set transport and reinitialisation}
+	\name{Level set transport - reinitialisation - Interface remeshing}
 	\begin{align*}
  			\frac{d \levelset}{d t}  = \frac{\partial \levelset}{\partial t} + \vec{v} \cdot \nabvec \levelset = 0
 	\end{align*}
@@ -253,24 +265,18 @@
 };
 
 
-\node[rect, below=of transport] (remesh)
+\node[rect, below=of transport] (lsmixing)
 {
 	\begin{tabular}{p{\llargeur}}
-	\name{Interface remeshing}
-	\end{tabular}
-};
-
-\node[rect, below=of remesh] (lsmixing)
-{
-	\begin{tabular}{@{}p{\llargeur}p{\rlargeur}@{}}
-	\name{Property mixing in the diffuse interface} 
+	\name{Property mixing in the diffuse interface }
 	
+	\vspace{3mm}
 	\begin{tabular}{cc}
 	$ \mix{\rho} = \heavisideM \rhol + \heavisideA \rhoa $			& \qquad
 	$ \mix{\mu} = \heavisideM \mul + \heavisideA \mu^A $ \\
 	$ \rhof \hf = \heavisideM \rhol \hl + \heavisideA \rhoa \ha $ 	& \qquad
 	$ \mix{D} = \heavisideM \Dl + \heavisideA D^A $ \\
-	$ \widetilde\K = {\sdas^2 \gf^3/}{180\brac{1-\gf}^2}	$	& \qquad	
+	$ \widetilde\K = {\sdas^2 \gf^3/}{180\brac{1-\gf}^2}	$		& \qquad	
 	$ \mix{\kappa} = \heavisideM \avg{\kappa} + \heavisideA \kappa^A $
 	\end{tabular}
 	\end{tabular}
@@ -310,7 +316,12 @@
 {
 	\begin{tabular}{p{\llargeurOut}}
 	\begin{equation*}
-		 (\gf)^t , (\wil)^t , (\wis)^t
+   		\left.
+		\begin{aligned}	   
+ 			& (\gphi)^t , (\gf)^t  \\
+  			& (\wil)^t , (\wis)^t
+		\end{aligned}
+		\right.
 	\end{equation*}
 	\end{tabular}
 };
@@ -329,8 +340,7 @@
 \draw[trait] (microseg) -- (macroseg);
 \draw[trait] (macroseg) -- (mecaflu);
 \draw[trait] (mecaflu) -- (transport);
-\draw[trait] (transport) -- (remesh); 
-\draw[trait] (remesh) -- (lsmixing);
+\draw[trait] (transport) -- (lsmixing); 
 
 \draw[trait] (energy) -- (energyOut);
 \draw[trait] (mecaflu) -- (mecafluOut);

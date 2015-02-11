@@ -356,19 +356,29 @@ and following the same procedure done in \cref{eq:conservation_mass_local}, the 
 whereas the averaged energy balance writes:
 %------
 \begin{align}
-\label{eq:conservation_energy}
+\label{eq:conservation_energy_init}
 & \frac{\partial \avg{\rho h}}{\partial t} + \nabla \cdot \avg{\rho h \vec{v}} + \nabla \cdot \brac{\avg{\kappa} \nabvec T} = 0
 \end{align}
 %------------
 and finally the species balance writes:
 %------
 \begin{align}
-\label{eq:conservation_solute}
-& \frac{\partial \avg{\rho w_i}}{\partial t} + \nabla \cdot \avg{\rho w_i \vec{v}} + \nabla \cdot \brac{\gl \Dl \nabvec \wil}= 0
+\label{eq:conservation_solute_init}
+& \frac{\partial \avg{\rho w_i}}{\partial t} + \nabla \cdot \avg{\rho w_i \vec{v}} + \nabla \cdot \brac{\gl \Dl \nabvec \brac{\rhol \wil}}= 0
 \end{align}
 %------------
 As stated previously, the momentum balance in the solid phase is not taken into consideration, hence we do not sum the corresponding 
-local conservation equations. The liquid momentum balance writes:
+local conservation equations. This has consequences on the advection terms in energy and species conservation, and later on we will show
+the consequences on the momentum conservation in the liquid. First, the advection terms in \cref{eq:conservation_energy_init,eq:conservation_solute_init}
+shall be redefined by considering that the fluid is incompressible $\brac{\nabla \cdot \vit = 0}$, which yields:
+%------
+\begin{align}
+\label{eq:advection_no_solid}
+& \nabla \cdot \avg{\rho h \vec{v}} = \vit \cdot \nabvec \brac{\rhol \hl} \\
+& \nabla \cdot \avg{\rho w_i \vec{v}} = \vit \cdot \nabvec \brac{\rhol \wil}
+\end{align}
+%------------
+As for the liquid momentum balance, we write:
 %------
 \begin{align}
 \label{eq:conservation_momentumliq_init}
@@ -432,8 +442,8 @@ the average liquid velocity:
 \strainrate = \frac{1}{2} \brac{\nabmat \vit  +  \nabmattransp \vit}
 \end{align}
 %-------------------------------------------------------------------------------------------
-Finally, using \cref{eq:fluid_weight,eq:interfacial_momentum_hydrostatic,eq:interfacial_momentum_deviatoric,eq:stress_liq_incompressible2,eq:tensor_strainrate} 
-in \cref{eq:conservation_momentumliq_init}, we obtain the final form of momentum conservation in the liquid phase:
+Finally, we obtain the final form of momentum conservation in the liquid phase coupled with the averaged mass balance, by injecting \cref{eq:fluid_weight,eq:interfacial_momentum_hydrostatic,eq:interfacial_momentum_deviatoric,eq:stress_liq_incompressible2,eq:tensor_strainrate}
+in \cref{eq:conservation_momentumliq_init}:
 %------
 % \begin{align}
 \begin{multline}
@@ -445,6 +455,163 @@ in \cref{eq:conservation_momentumliq_init}, we obtain the final form of momentum
 % \end{align}
 %------------
 where we intentionally employed the \emph{superficial velocity}, $\vit = \gl \vl$, as the main unknown, together with the liquid pressure $\pl$.
+This system, when modelled in 3D, has a total of 4 unknowns (velocity vector and pressure) and 3 equations ($X$,$Y$ and $Z$ projections for the velocity vector).
+A fourth equation is therefore added for closure, it's the mass balance for an incompressible fluid, derived from \cref{eq:conservation_mass}, 
+thus yields the so-called \emph{Navier-Stokes} equations:
+%------
+\begin{equation}
+   \left\{
+   \begin{aligned}
+      & \temp{ \rhol \vit } + \frac{1}{\gl} \nabvec \cdot \brac{\rhol \vit \times \vit} = \\
+	  &- \gl\nabvec \pl - 2 \mul \nabvec \cdot \brac{\nabmat \vit + \nabmattransp \vit}
+	  - \gl \mul \K^{-1} \vit + \gl \rhol \gravity\\ \\
+      & \nabla \cdot \vit =0
+    \end{aligned}
+    \right.
+\end{equation}
+%------------
+Since all conservation equations were presented and simplified by the main assumption of a static solid phase, 
+we may include them in a graphical summary in \cref{fig:algo_monodomain}
+%---------------
+\begin{figure}[htbp]
+\label{fig:algo_monodomain}
+\newlength{\largeur}
+\newlength{\llargeur}
+\newlength{\llargeurOut}
+\newlength{\rlargeur}
+\newlength{\rlargeurOut}
+%=========
+\setlength{\largeur}{2cm}
+\setlength{\llargeur}{11cm}
+\setlength{\llargeurOut}{2.5cm}
+\setlength{\rlargeurOut}{0.25cm}
+\centering
+%=========
+\begin{tikzpicture}[node distance=0.5cm]
+
+\tikzstyle{rect}=[rectangle,draw,text=black, fill=red!10, drop shadow, rounded corners,minimum height=0.01cm]
+\tikzstyle{output}=[rectangle,draw,text=black, fill=blue!15, drop shadow, rounded corners,minimum height=0.01cm]
+%\tikzstyle{test}=[diamond,aspect=3,draw,text=black]
+%\tikzstyle{fleche}=[->,>=stealth]
+\tikzstyle{trait}=[]
+%=========
+\setlength{\rlargeur}{\largeur}
+\addtolength{\rlargeur}{-1.\tabcolsep}
+\addtolength{\rlargeur}{-1.\llargeur}
+%=========
+\node[rect] (energy)
+{
+	\begin{tabular}{p{\llargeur}}
+	\textbf{Conservation of energy (Nonlinear Heat Transfer)} 
+	\begin{equation*}
+		 \frac{\partial \avg{\rho h}}{\partial t} + \vit \cdot \nabla \brac{\rhol \hl} + \nabla \cdot \brac{\avg{\kappa} \nabvec T} = 0
+	\end{equation*}
+	\end{tabular}
+};
+%==========
+\node[rect,below=of energy] (microseg)
+{
+	\begin{tabular}{p{\llargeur}}
+	\textbf{Microsegregation}
+	
+	\vspace{3mm}
+	Discrete mapping:  $\brac{\gphi , \avg{w_i^{\phi}}^{\phi} } = f\brac{\wi , T }$ \\
+	Direct lever rule:	
+	\begin{equation*}
+   		\left.
+		\begin{aligned}	   
+ 			& \Cl= \Clstar = \k \Csstar = \k \Cs   \\
+  			& \Cs= \Csstar = \frac{\Cnominal}{\k(1-\fs) + \fs}
+		\end{aligned}
+		\right.
+	\end{equation*}
+	\end{tabular}
+};
+%==========
+\node[rect,below=of microseg] (macroseg)
+{
+	\begin{tabular}{p{\llargeur}}
+	\textbf{Conservation of chemical species (Macrosegregation)} 
+	\begin{equation*}
+		\frac{\partial \avg{\rho w_i}}{\partial t} + \vit \cdot \nabla \brac{\rhol \wil} + \nabla \cdot \brac{\gl \Dl \nabvec \brac{\rhol \wil}}= 0
+	\end{equation*}
+	\end{tabular}
+};
+%==========
+\node[rect, below=of macroseg] (mecaflu)
+{
+	\begin{tabular}{p{\llargeur}}
+	\textbf{Conservation of liquid momentum (Navier Stokes)}
+	\begin{equation*}
+   \left\{
+   \begin{aligned}
+      & \temp{ \rhol \vit } + \frac{1}{\gl} \nabvec \cdot \brac{\rhol \vit \times \vit} = \\
+	  &- \gl\nabvec \pl - 2 \mul \nabvec \cdot \brac{\nabmat \vit + \nabmattransp \vit}
+	  - \gl \mul \K^{-1} \vit + \gl \rhol \gravity\\ \\
+      & \nabla \cdot \vit =0
+    \end{aligned}
+    \right.
+\end{equation*}
+	\end{tabular}
+};
+%%%%%% OUTPUT NODES %%%%%%%%%%%%%%%%
+\node[output,right=of energy] (energyOut)
+{
+	\begin{tabular}{p{\llargeurOut}}
+	\begin{equation*}
+		 T^t
+	\end{equation*}
+	\end{tabular}
+};
+%==========
+\node[output,right=of mecaflu] (mecafluOut)
+{
+	\begin{tabular}{p{\llargeurOut}}
+	\begin{equation*}
+		 \vit^t , (\pl)^t
+	\end{equation*}
+	\end{tabular}
+};
+%==========
+\node[output,right=of macroseg] (macrosegOut)
+{
+	\begin{tabular}{p{\llargeurOut}}
+	\begin{equation*}
+		 \avg{\rho w_i}^t
+	\end{equation*}
+	\end{tabular}
+};
+%==========
+\node[output,right=of microseg] (microsegOut)
+{
+	\begin{tabular}{p{\llargeurOut}}
+	\begin{equation*}
+   		\left.
+		\begin{aligned}	   
+ 			& (\gphi)^t  \\
+  			& (\wil)^t , (\wis)^t
+		\end{aligned}
+		\right.
+	\end{equation*}
+	\end{tabular}
+};
+%==========
+%Connectivity
+\draw[trait] (energy) -- (microseg);
+\draw[trait] (microseg) -- (macroseg);
+\draw[trait] (macroseg) -- (mecaflu);
+%-----
+\draw[trait] (energy) -- (energyOut);
+\draw[trait] (mecaflu) -- (mecafluOut);
+\draw[trait] (macroseg) -- (macrosegOut);
+\draw[trait] (microseg) -- (microsegOut);
+%==========
+\end{tikzpicture}
+\caption{Graphical resolution algorithm of the conservation equations used in a 
+monodomain macroscopic model to predict macrosegregation. The blue boxes represent the output of each equation at a time step $t$.}
+\end{figure}
+%%------------------------------------------------------------------------------------------
+%%------------------------------------------------------------------------------------------
 %%------------------------------------------------------------------------------------------
 \comment{Macro models: Rivaux ? Gu beckermann 1999}
 
