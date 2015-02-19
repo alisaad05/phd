@@ -61,7 +61,7 @@ child [sibling angle=45, level distance=4cm] { node (L4) {Properties mixture} }
 %============================================================
 child[concept color=\colorisV] { node (V) {Mass Conservation}  
 child [sibling angle=60] { node (V1) {Phase velocities}  } 
-child [sibling angle=60] { node (V2) {Phase densities}  }
+child [sibling angle=80] { node (V2) {Phase densities}  }
 }
 %============================================================
 child[concept color=\colorisM] { node (M) {Fluid Momentum Conservation}  
@@ -78,8 +78,8 @@ child [level distance=3.8cm] { node (s3) {Phase enthalpies} }
 }
 %============================================================
 child[concept color=\colorisE] { node (E) {Energy Conservation} 
-child { node (E1) {Total enthalpy}  } 
-child { node (E3) {Thermal diffusion}  } 
+child [sibling angle=45, level distance=3cm] { node (E1) {Total enthalpy}  } 
+child [sibling angle=55, level distance=3cm] { node (E3) {Thermal diffusion}  } 
 child { node (E4) {Thermal advection} }
 child { node (E2) {Temperature}  } 
 };
@@ -122,10 +122,7 @@ child { node (E2) {Temperature}  }
 	% \draw[\colorisE, thick, dashed] (E2) edge[->] (s2);
 	% \draw[\colorisS, thick, dashed] (S2) edge[->] (s1);
 	% \draw[\colorisS, thick, dashed] (S2) edge[->] (s2);
-	
-	\draw[arrowL] (L2) -- (s1);
-	% \draw[\colorisL, thick, dashed] (L2) edge[->] (s1);
-	
+		
 	\draw[arrowS] (S3) -- (L4);
 	\draw[arrowV] (V2) -- (L4);
 	\draw[arrowM] (M2) -- (L4);
@@ -135,10 +132,10 @@ child { node (E2) {Temperature}  }
 	% \draw[\colorisM, thick, dashed] (M2) edge[->] (L4);
 	% \draw[\colorisE, thick, dashed] (E3) edge[->] (L4);
 
-	\draw[arrowL] (L2) -- (M);
-	\draw[arrowL] (L2) -- (S);
-	\draw[arrowL] (L2) -- (E);
-	\draw[arrowL] (L2) -- (V);
+	\draw[arrowL] (L) -- (M);
+	\draw[arrowL] (L) -- (S);
+	\draw[arrowL] (L) -- (E);
+	\draw[arrowL] (L) -- (V);
 	% \draw[\colorisL, thick, dashed] (L2) edge[->] (M);
 	% \draw[\colorisL, thick, dashed] (L2) edge[->] (S);
 	% \draw[\colorisL, thick, dashed] (L2) edge[->] (E);
