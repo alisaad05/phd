@@ -27,43 +27,57 @@
 \newcommand{\coloriss}{brown!60!black}
 \newcommand{\colorisL}{blue!60!black} 
 
+%\tikzset{arrow/.style args={width #1 color #2}{draw,-stealth,line width=#1,#2}}
+\tikzset{arrow/.style args={color #1}{draw,-stealth,line width=1pt,#1, dashed}}
+
+%\tikzset{arrow/.default=width 1pt color \coloris}
+\tikzset{arrow/.default=color \coloris}
+
+%\tikzset{arrowV/.style={arrow= width 1pt color \colorisV}}
+\tikzset{arrowE/.style={arrow= color \colorisE}}
+\tikzset{arrowM/.style={arrow= color \colorisM}}
+\tikzset{arrowV/.style={arrow= color \colorisV}}
+\tikzset{arrowS/.style={arrow= color \colorisS}}
+\tikzset{arrowss/.style={arrow= color \coloriss}}
+\tikzset{arrowL/.style={arrow= color \colorisL}}
+  
 %-------------------------------------------------------------
 % Main mindmap elements
 \node[root concept] {Macrosegregation with a level set approach} % root
 %============================================================
-child[concept color=\colorisS] { node {Species Conservation}
+child[concept color=\colorisS] { node (S) {Species Conservation}  
 child { node (S1) {Liquid composition}  } 
 child { node (S2) {Average composition}  } 
 child { node (S3) {Solutal diffusion} }
 child { node (S4) {Solutal advection} }
 }
 %============================================================
-child[concept color=\colorisL] { node  {Level set}
+child[concept color=\colorisL] { node (L) {Level set}  
 child { node (L1) {Interface motion} }
 child  { node (L3) {Reinitialisation} }
 child [sibling angle=60] { node (L2) {Interface position} }
 child [sibling angle=45, level distance=4cm] { node (L4) {Properties mixture} }
 }
 %============================================================
-child[concept color=\colorisV] { node {Mass Conservation}
+child[concept color=\colorisV] { node (V) {Mass Conservation}  
 child [sibling angle=60] { node (V1) {Phase velocities}  } 
 child [sibling angle=60] { node (V2) {Phase densities}  }
 }
 %============================================================
-child[concept color=\colorisM] { node  {Momentum Conservation}
+child[concept color=\colorisM] { node (M) {Fluid Momentum Conservation}  
 child { node (M1) {Permeability}  } 
 child { node (M2) {Fluids viscosity}  }
 child { node (M3) {Buoyancy forces}  }
 child { node (M4) {Fluids velocity}  }
 }
 %============================================================
-child[concept color=\coloriss] { node  {Micro-segregation}
+child[concept color=\coloriss] { node (s) {Micro-segregation} 
 child [level distance=3.8cm] { node (s1) {Phase fractions} }
 child { node (s2) {Phase compositions} }
 child [level distance=3.8cm] { node (s3) {Phase enthalpies} }
 }
 %============================================================
-child[concept color=\colorisE] { node  {Energy Conservation}
+child[concept color=\colorisE] { node (E) {Energy Conservation} 
 child { node (E1) {Total enthalpy}  } 
 child { node (E3) {Thermal diffusion}  } 
 child { node (E4) {Thermal advection} }
@@ -74,32 +88,61 @@ child { node (E2) {Temperature}  }
 %---------------------------------------------------
 % Background interaction lines
 \begin{pgfonlayer}{background}
-	\draw[\coloriss, thick, dashed] (s1) edge[->] (M1);
-	\draw[\coloriss, thick, dashed] (s2) edge[->] (S1);
-	
-	\draw[\coloriss, thick, dashed] (s3) edge[->] (E1);
-	\draw[\colorisV, thick, dashed] (V2) edge[->] (E1);	
-	\draw[\coloriss, thick, dashed] (s1) edge[->] (E1);
 
-	\draw[\colorisM, thick, dashed] (M4) edge[->] (V1);
-	\draw[\colorisM, thick, dashed] (M4) edge[->] (S4);
-	\draw[\colorisM, thick, dashed] (M4) edge[->] (E4);
-	\draw[\colorisM, thick, dashed] (M4) edge[->] (L1);
+	\draw[arrowss] (s1) -- (M1);
+	\draw[arrowss] (s2) -- (S1);
+	% \draw[\coloriss, thick, dashed] (s2) edge[->] (S1);
 	
-	\draw[\colorisE, thick, dashed] (E2) edge[->] (M3);
-	\draw[\colorisS, thick, dashed] (S1) edge[->] (M3);
+	\draw[arrowss] (s1) -- (E1);
+	\draw[arrowss] (s3) -- (E1);
+	\draw[arrowV] (V2) -- (E1);
+	% \draw[\coloriss, thick, dashed] (s3) edge[->] (E1);
+	% \draw[\colorisV, thick, dashed] (V2) edge[->] (E1);	
+	% \draw[\coloriss, thick, dashed] (s1) edge[->] (E1);
+
+	\draw[arrowM] (M4) -- (V1);
+	\draw[arrowM] (M4) -- (S4);
+	\draw[arrowM] (M4) -- (E4);
+	\draw[arrowM] (M4) -- (L1);
+	% \draw[\colorisM, thick, dashed] (M4) edge[->] (V1);
+	% \draw[\colorisM, thick, dashed] (M4) edge[->] (S4);
+	% \draw[\colorisM, thick, dashed] (M4) edge[->] (E4);
+	% \draw[\colorisM, thick, dashed] (M4) edge[->] (L1);
 	
-	\draw[\colorisE, thick, dashed] (E2) edge[->] (s1);
-	\draw[\colorisE, thick, dashed] (E2) edge[->] (s2);
-	\draw[\colorisS, thick, dashed] (S2) edge[->] (s1);
-	\draw[\colorisS, thick, dashed] (S2) edge[->] (s2);
+	\draw[arrowE] (E2) -- (M3);
+	\draw[arrowS] (S1) -- (M3);
+	% \draw[\colorisE, thick, dashed] (E2) edge[->] (M3);
+	% \draw[\colorisS, thick, dashed] (S1) edge[->] (M3);
 	
-	\draw[\colorisL, thick, dashed] (L2) edge[->] (s1);
+	\draw[arrowE] (E2) -- (s1);
+	\draw[arrowE] (E2) -- (s2);
+	\draw[arrowS] (S2) -- (s1);
+	\draw[arrowS] (S2) -- (s2);
+	% \draw[\colorisE, thick, dashed] (E2) edge[->] (s1);
+	% \draw[\colorisE, thick, dashed] (E2) edge[->] (s2);
+	% \draw[\colorisS, thick, dashed] (S2) edge[->] (s1);
+	% \draw[\colorisS, thick, dashed] (S2) edge[->] (s2);
 	
-	\draw[\colorisS, thick, dashed] (S3) edge[->] (L4);
-	\draw[\colorisV, thick, dashed] (V2) edge[->] (L4);
-	\draw[\colorisM, thick, dashed] (M2) edge[->] (L4);
-	\draw[\colorisE, thick, dashed] (E3) edge[->] (L4);
+	\draw[arrowL] (L2) -- (s1);
+	% \draw[\colorisL, thick, dashed] (L2) edge[->] (s1);
+	
+	\draw[arrowS] (S3) -- (L4);
+	\draw[arrowV] (V2) -- (L4);
+	\draw[arrowM] (M2) -- (L4);
+	\draw[arrowE] (E3) -- (L4);
+	% \draw[\colorisS, thick, dashed] (S3) edge[->] (L4);
+	% \draw[\colorisV, thick, dashed] (V2) edge[->] (L4);
+	% \draw[\colorisM, thick, dashed] (M2) edge[->] (L4);
+	% \draw[\colorisE, thick, dashed] (E3) edge[->] (L4);
+
+	\draw[arrowL] (L2) -- (M);
+	\draw[arrowL] (L2) -- (S);
+	\draw[arrowL] (L2) -- (E);
+	\draw[arrowL] (L2) -- (V);
+	% \draw[\colorisL, thick, dashed] (L2) edge[->] (M);
+	% \draw[\colorisL, thick, dashed] (L2) edge[->] (S);
+	% \draw[\colorisL, thick, dashed] (L2) edge[->] (E);
+	% \draw[\colorisL, thick, dashed] (L2) edge[->] (V);
 \end{pgfonlayer}
 
 \end{tikzpicture}

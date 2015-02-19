@@ -13,7 +13,7 @@ like grains growth and large scales like convection in the melt. From the nuclea
 %path 
 {Chapter0/Graphics/cc_process}
 % caption
-{Main steps in a continuous casting plant}
+{Main steps in a integrated steel plant}
 % label
 \label{fig:cc_process}
 \end{figureth}
@@ -28,7 +28,7 @@ where the cast product is not serviceable and hence rejected. This leads to a
 systematic product recycling, i.e. the product is ditched to be reheated, remelted 
 and then cast again. From an economic point view, the operation is expensive timewise 
 and profitwise. Understanding and preventing defects when possible, is thus crucial in 
-the casting industry. We focus hereafter on the main encountered defects.
+the casting industry. We briefly list hereafter the main encountered defects.
 %
 %-------------------------------------------------------------------------------------------
 %
@@ -63,10 +63,10 @@ differences between the interdendritic liquid and solid network, the latter bein
 than the former (\cref{fig:porosity3,fig:porosity4}). It is basically, the same reason that initiates hot cracks. 
 The second factor is the presence of dissolved gaseous phases in the melt (\cref{fig:porosity1,fig:porosity2}). 
 According to \citet{dantzig_solidification_2009}, these gases may be initially in the melt, or created by the 
-reaction between the metal and water found in the air or at trapped in grooves at the moulds surface. If the 
+reaction between the metal and water found in the air or trapped in grooves at the moulds surface. If the 
 decreasing temperature and pressure drop in the liquid are large enough, the latter becomes supersaturated. 
-Consequently, the nucleation of gaseous phase is triggered (just like when you a cold bottle of coca-cola is opened !).
-\begin{figure}[htbp] %h!
+Consequently, the nucleation of gaseous phase is triggered (just like when a cold bottle of coca-cola is opened !).
+\begin{figure}[htbp]
 %Porosity1-2: http://www.afsinc.org/about/content.cfm?ItemNumber=6933
 %Porosity3: http://www.weldreality.com/aluminumalloys.htm
 %Porosity4: http://www.esab.com/global/en/education/new-lean-duplex-steels.cfm
@@ -75,7 +75,7 @@ Consequently, the nucleation of gaseous phase is triggered (just like when you a
   \begin{subfigure}[t]{0.3\textwidth}
     \centering
 	\includegraphics[width=\textwidth]{Chapter0/Graphics/porosity1.jpg}
-	\caption{Gas porosity in casting}
+	\caption{Gas porosity in casting \citep{afs_american_2014}.}
     \label{fig:porosity1}
   \end{subfigure}
    %------------
@@ -83,7 +83,7 @@ Consequently, the nucleation of gaseous phase is triggered (just like when you a
    \begin{subfigure}[t]{0.25\textwidth}
     \centering
 	\includegraphics[width=\textwidth]{Chapter0/Graphics/porosity2.jpg}
-	\caption{Shrinkage porosity}
+	\caption{Shrinkage porosity \citep{afs_american_2014}.}
     \label{fig:porosity2}
   \end{subfigure}
   %------------------------------
@@ -92,7 +92,7 @@ Consequently, the nucleation of gaseous phase is triggered (just like when you a
   \begin{subfigure}[t]{0.3\textwidth}
     \centering
 	\includegraphics[width=\textwidth]{Chapter0/Graphics/porosity3.jpg}
-	\caption{Gas porosity in aluminium welding}
+	\caption{Gas porosity in aluminium welding \citep{weldreality_aluminum_2014}.}
     \label{fig:porosity3}
   \end{subfigure}
    %------------
@@ -100,7 +100,7 @@ Consequently, the nucleation of gaseous phase is triggered (just like when you a
    \begin{subfigure}[t]{0.25\textwidth}
     \centering
 	\includegraphics[width=\textwidth]{Chapter0/Graphics/porosity4.jpg}
-	\caption{Xray of volume void inside welded duplex steel}
+	\caption{Xray of volume void inside welded duplex steel \citep{esab_new_2014}.}
     \label{fig:porosity4}
   \end{subfigure}
    %------------
@@ -117,7 +117,7 @@ Upon solidification, solid forms while rejecting some solute in the liquid due t
 When segregated solute is the lighter species, an increasing concentration in the liquid phase 
 produces a solutal driving force inside the mushy zone, generating unstable convection currents, 
 with "plume" shapes as often reported in the literature \citep{sarazin_studies_1992, schneider_modeling_1997,
-shevchenko_chimney_2013}. When temperature gradient is an additional force of convection, the latter is hence 
+shevchenko_chimney_2013}. Temperature gradient is often an additional force of convection, the latter is hence 
 qualified as "thermosolutal".
 %-------------------------------------------------------------------------------------------------------------------------------------------------
 %
@@ -130,7 +130,7 @@ will propagate the composition heterogeneity on a scale much larger than just a 
 This is why macrosegregation could be observed on the scale of a casting, up to several meters in length. 
 While microsegreation can be healed by annealing the alloy to speed up the diffusion process and allow homogenization, heterogneities 
 spanning on larger distances cannot be treated after solidification. It is obvious that macrosegregation is irreversible defect. 
-Failure to prevent it may lead to a substantial decline in the alloy's mechanical behavior, hence its serviceability.
+Failure to prevent it, may lead to a substantial decline in the alloy's mechanical behavior, hence its serviceability.
 %--------------------------------------------------------
 %
 %
@@ -153,8 +153,8 @@ During solidification, thermal and solutal gradients result in density gradients
 %
 In \cref{eq:rholiq}, density is assumed to vary linearly with temperature and phase composition 
 for each chemical species (index $i$). The slopes defining such variations are respectively the 
-thermal expansion coefficient $\betaT$ and solutal expansion coefficient $\betawil$, given by 
-\citep{kohler_peritectic_2008}:
+thermal expansion coefficient $\betaT$ and the solutal expansion coefficients $\betawil$, given by:
+% \citep{kohler_peritectic_2008}
 %
 %--------------
 \begin{subequations}
@@ -168,7 +168,8 @@ thermal expansion coefficient $\betaT$ and solutal expansion coefficient $\betaw
 %--------------
 %
 The linear fit assumes also that the density takes a reference value, $\rhoref$, when temperature 
-and liquid composition reach reference values, respectively $\Tref$ and $\wilref$. However, in some 
+and liquid composition reach reference values, respectively $\Tref$ and $\wilref$, while the
+coefficients $betawil$ remain constant. However, in some 
 situations, a suitable thermodynamic database providing accurate density values is far better than a 
 linear fit, especially in the current context of macrosegregation. 
 Such possibility will be discussed later in the manuscript (cf. SECTION \red{TODO})\\ %TODO ) 
@@ -177,14 +178,14 @@ in the liquid bulk and a subsequent macrosegregation.
 %
 % 
 \subsubsection*{Solidification shrinkage}
-Solid alloys have a greater density than the liquid phase ($\rhos > \rhol$), thus occupy less volume. 
+Solid alloys generally have a greater density than the liquid phase ($\rhos > \rhol$), 
+thus occupy less volume, with the exception of silicon where the opposite is true. 
 Upon solidification, the liquid moves towards the solidification front to compensate for the volume 
 difference caused by the phase change, as well as the thermal contraction. When macrosegregation is 
-triggered by solidification shrinkage, we speak of \emph{inverse segregation} Theoretically, if solute 
-mass is conserved, a decreasing volume results in a positive segregation. Shrinkage deforms the outer
-surface of a solidifying alloy, causing positive macrosegregation. While one would naturally expect 
+triggered by solidification shrinkage, we speak of \emph{inverse segregation}: while one would naturally expect 
 negative macrosegregation in areas where solidification begins and positive inside the alloy, shrinkage 
-promotes the opposit phenomenon, hence the term \emph{inverse segregation}.
+promotes the opposit phenomenon, by bringing solute-richer liquid towards the solidifyings areas, thus raising 
+their solute content, and resulting in a positively segregated solid.
 In contrast to liquid convection, shrinkage flow may cause macrosegregation even without gravity.
 %
 %
@@ -204,13 +205,13 @@ flow in the inward (tensile stresses) or outward (compressive stresses) directio
 %--------------------------------------------------------------------------------------------------------------------------------------------------
 %
 %
-\subsection{Types}
+\subsection{Examples}
 %
 \subsubsection*{In continuous casting}
 %
-The semi-solid billet is carried through a series of rolls that exert a radial force to straighten it and get it to its horizontal position.
+The partially solidified slab is carried through a series of rolls that exert contact forces to straighten it.
 As the mushy part of a slab enters through these rolls, interdendritic liquid is expelled backwards, i.e. regions with lower solid fraction.
-Since the the boundaries solidify earlier than the centre, the enriched liquid accumulates halfway in thickness, forming a centreline macrosegregation
+Since the boundaries solidify earlier than the centre, the enriched liquid accumulates halfway in thickness, forming a centreline macrosegregation
 as shown in \cref{fig:macroseg_centreline}. Other types of segregates (channels, A-segregates ...) can also be found but remain more specific to ingot casting. 
 %--------------
 \begin{figureth}
@@ -255,7 +256,7 @@ As such, their scale is finer than macrosegregation, hence called "mesosegregate
 %
 This process is widely used to cast single-crystal (SC) alloys for turbines and other applications 
 that require excellent mechanical behavior \citep{giamei_nature_1970}.
-During directional solidification, thermosolutal forces thrust segregated species outside of the 
+When performed by directional solidification, thermosolutal forces thrust segregated species outside of the 
 mushy zone into the liquid bulk. The segregation scale ranges from a few dendrites to a few hundreds 
 of them, hence forming "long and narrow trails" (\cref{fig:freckle1}) as described by \citet{felicelli_simulation_1991}. 
 Freckles are frequently formed by small equiaxed grains (\cref{fig:freckle2}), probably caused by a uniform temperature gradient 
@@ -270,7 +271,7 @@ that settles as the channels become richer in solute. They can be observed on th
   \begin{subfigure}[t]{0.25\textwidth}
     \centering
 	\includegraphics[height=5cm]{Chapter0/Graphics/freckle1.png}
-	\caption{Small cylinder ingot showing freckles on the outter surface}
+	\caption{Small cylinder ingot showing freckles on the outer surface}
     \label{fig:freckle1}
   \end{subfigure}
    %------------
@@ -325,7 +326,7 @@ in research, with the aim of understanding better the phenomena leading to casti
 \end{axis}
 %\addplot table [x expr=\coordindex, y=EU] {Chapter0/Data/steel_production.csv};
 \end{tikzpicture}
-\caption{Evolution curves of crude steel worldwide production from 1980 to 2013}
+\caption{Evolution curves of crude steel worldwide production from 1980 to 2013 \citep{wsa_world_2014}.}
 \label{fig:steel_production}
 \end{figure}
 
@@ -360,7 +361,8 @@ The three-year contract from 2011 to late 2014 denoted \ccemlcc II, was preceded
 from 2007 to 2009. The main focus is studying containerless solidification of steel under microgravity conditions. 
 A chill plate is later used to extract heat from the alloy, simulating the contact effect with a mould in continuous casting
 or ingot casting.
-A partnership of 7 industrial and academic entities was formed in \ccemlcc II. A brief summary of each partner's commitment:\\
+A partnership of 7 industrial and academic entities was formed in \ccemlcc II. 
+Here is a brief summary of each partner's commitment:\\
 
 \textbf{Academic partners} 
  \begin{itemize}
@@ -382,7 +384,7 @@ in chill-cooled and undercooled steel alloys
 \end{itemize}
 
 CEMEF, as an academic partner, contributed to the work by proposing numerical models in view of predicting the chill cooling of steel droplets. 
-A first model was developed by \citet{rivaux_simulation_2011} whereas the present discusses a new model. 
+A first model was developed by \citet{rivaux_simulation_2011} whereas the present thesis discusses a new model. 
 The experimental work considered various facilities and environments to set a droplet of molten alloy in levitation: 
 EML (\cref{fig:eml}) for ground-based experiments, 
 microgravity in parabolic flight or sounding rockets and last, microgravity condition on-board the International Space Station (ISS)
@@ -393,7 +395,7 @@ microgravity in parabolic flight or sounding rockets and last, microgravity cond
 %path 
 {Chapter0/Graphics/eml1.jpg}
 % caption
-{Electromagnetic levitation}
+{Electromagnetic levitation \citep{dlr_electomagnetic_2014}.}
 % label
 \label{fig:eml}
 \end{figureth}
@@ -415,7 +417,10 @@ iv) solidification paths at full equilibrium for multicomponent alloys microsegr
 Moreover, all equations are formulated in a pure Eulerian description while using the Level Set method to keep 
 implicitly track of the interface between the alloy and surrounding gas. To the author's knowledge, this work 
 combining macrosegregation prediction using the level set methodology to track the metal-air interface during 
-shrinkage has no precedent in casting and solidification literature.
+shrinkage has no precedent in casting and solidification literature. The model couples in a weak fashion, all four
+conservation equations presented in \cref{fig:mindmap}, showing on the one hand, that microsegregation is an essential 
+common link between these equations, while on the other hand, the level set interacts with conservations equations by
+giving the interface position. 
 
 %Aside from the main modelling task regarding macrosegregation, several goals 
 \comment{Numerical tools: Cimlib relying on PETSc, parallelized with MPICH2, paraview and python as tools for postprocess and analysis. \\
@@ -434,7 +439,8 @@ This fully parallel library is the main academic research support for \thercast}
 {Chapter0/Graphics/mindmap.pdf}
 % caption
 {A graphical representation of the main ingredients of the macrosegregation model with the level set 
-methodology. The dashed lines represent the possible interaction between of the components.}
+methodology when no solid deformation or movement are considered. 
+The dashed lines represent the possible interaction between the components.}
 % label
 \label{fig:mindmap}
 \end{figureth}
