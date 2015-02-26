@@ -50,6 +50,7 @@
   \makeatother%
   \begin{picture}(1,1.41930359)%
     \put(0,0){\includegraphics[width=\unitlength]{Ingot_sl_1D_d.pdf}}%
-    \put(0.39418508,0.55788072){\color[rgb]{0,0,0}\makebox(0,0)[lb]{\smash{Solid}}}%
+    \put(0.39418508,0.44497381){\color[rgb]{0,0,0}\makebox(0,0)[lb]{\smash{Solid}}}%
+    \put(0.43943257,1.1258901){\color[rgb]{0,0,0}\makebox(0,0)[lb]{\smash{Air}}}%
   \end{picture}%
 \endgroup%

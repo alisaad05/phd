@@ -51,11 +51,11 @@
   \begin{picture}(1,1.41930359)%
     \put(0,0){\includegraphics[width=\unitlength]{Ingot_sl_1D_c.pdf}}%
     \put(0.39418508,0.04692249){\color[rgb]{0,0,0}\makebox(0,0)[lb]{\smash{Solid}}}%
-    \put(0.37430058,1.06759548){\color[rgb]{0,0,0}\makebox(0,0)[lb]{\smash{Liquid}}}%
-    \put(0.356437,0.69230177){\color[rgb]{0,0,0}\makebox(0,0)[lb]{\smash{Mushy}}}%
-    \put(0.53780009,0.30622998){\color[rgb]{0,0,0}\makebox(0,0)[lb]{\smash{$\nabvec T$}}}%
-    \put(0.06728637,0.8766493){\color[rgb]{0,0,0}\makebox(0,0)[lb]{\smash{$\vit$}}}%
-    \put(0.76985441,0.8766493){\color[rgb]{0,0,0}\makebox(0,0)[lb]{\smash{$\vit$}}}%
-    \put(0.44121417,1.3194249){\color[rgb]{0,0,0}\makebox(0,0)[lb]{\smash{Air}}}%
+    \put(0.37430058,0.81439736){\color[rgb]{0,0,0}\makebox(0,0)[lb]{\smash{Liquid}}}%
+    \put(0.356437,0.49019957){\color[rgb]{0,0,0}\makebox(0,0)[lb]{\smash{Mushy}}}%
+    \put(0.56973524,0.21042558){\color[rgb]{0,0,0}\makebox(0,0)[lb]{\smash{$\nabvec T$}}}%
+    \put(0.06728637,0.65310514){\color[rgb]{0,0,0}\makebox(0,0)[lb]{\smash{$\vit$}}}%
+    \put(0.76985441,0.65310514){\color[rgb]{0,0,0}\makebox(0,0)[lb]{\smash{$\vit$}}}%
+    \put(0.44121417,1.21175868){\color[rgb]{0,0,0}\makebox(0,0)[lb]{\smash{Air}}}%
   \end{picture}%
 \endgroup%

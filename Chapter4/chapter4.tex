@@ -15,9 +15,11 @@ this chapter discusses the following points:
 		we reach a smaller scale, the scale of the grain boundaries)
 \end{itemize}
 
+
 % ======================
-\section{Literature review}
+\section{Introduction}
 % ======================
+
 Solidification shrinkage is, by definition, the effect of relative density change between the liquid and solid phases.
 In general, it results in a progressive volume change during solidification, until the phase change has finished. 
 The four stages in \cref{fig:real_ingot_stage_a,fig:real_ingot_stage_c,fig:real_ingot_stage_b,fig:real_ingot_stage_d} depict the volume change with 
@@ -35,8 +37,9 @@ to a different overall volume ($V^s<V^l$) once solidification is complete, as co
 & V^s = \frac{\rhol}{\rhos} V^l
 \end{align}
 \end{subequations}
+
 %=============
-\begin{figure}[h!] %h!
+\begin{figure}[htbp]
 \centering
 %\begin{minipage}{.5\textwidth}
   \begin{subfigure}{0.3\textwidth}
@@ -80,6 +83,12 @@ to a different overall volume ($V^s<V^l$) once solidification is complete, as co
 \comment{ \textbf{Sutaria2012} talk about feeding paths, but more importantly they computed thermal shrinkage WITHOUT solving
 NavierStokes equations. To predict the interface shape, they solve a LS transport with an imposed velocity given by Gada et Sharma 2009}
 
+% ======================
+\section{Literature review}
+% ======================
+Talk and explain models in the literature that predict shrinkage (without or with macrosegregation): Beckermann, Wu ? \\
+Show and comment the experiments that have been done: Hebditch and Hunt, Smacs Hachani  ...
+
 %====================================================================
 \section{Level set treatment}
 
@@ -87,8 +96,6 @@ NavierStokes equations. To predict the interface shape, they solve a LS transpor
 How to mix liquid fraction, best using harmonic or arithmetic, in order to replicate the effect the of non slip condition at top for example \\
 Put the python plots from the presentations in "TEXUS monolithic" \\
 Put video animations of PSEUDO SMACS 2D without and with LS ???
-
-
 
 %====================================================================
 \section{Conservation equations}
@@ -98,13 +105,15 @@ Put video animations of PSEUDO SMACS 2D without and with LS ???
 \subsubsection{Assumptions}
 % ======================
 \begin{itemize}
+\itemsep0em
 \item Two phases are considered, liquid $l$ and solid $s: \gl+\gs =1 $ % \implies \frac{dg^l}{dt} =- \frac{dg^s}{dt}$ 
 \item The phase densities are constant but not equal: $ \rhol=cst_1 $ and $ \rhos=cst_2 $. Thermal and solutal expansion/contraction
 is neglected
 \item The solid phase is assumed static: $\vec{v^s}=\vec{0}$, which yields the following consequences:
-\begin{enumerate}
-\item $ \avg{\vec{v}}= \gl \vec{v^l} + \cancelto{0}{\gs \vec{v}^s} = \gl \vec{v}^l $
-\item $ \avg{\rho \vec{v}} = \gl \rhol \vec{v}^l + \cancelto{0}{\gs \rhol \vec{v}^s} = \gl \rhol \vec{v}^l $
+\begin{enumerate} % \cancelto{0}{blablabla}
+\itemsep0em
+\item $ \avg{\vec{v}}= \gl \vec{v^l} + \cancel{\gs \vec{v}^s} = \gl \vec{v}^l $
+\item $ \avg{\rho \vec{v}} = \gl \rhol \vec{v}^l + \cancel{\gs \rhol \vec{v}^s} = \gl \rhol \vec{v}^l $
 \item $\nabvec \rhol = \nabvec \rhos = \vec{0}$
 \end{enumerate}
 \end{itemize}
@@ -158,6 +167,7 @@ through the interfacial fluxes in the momentum conservation of the liquid phase.
 \subsubsection{Assumptions}
 % ======================
 \begin{itemize}
+\itemsep0em
 %%%
 \item The interfacial momentum transfer between the solid and liquid phases is modelled 
 by a momentum flux vector $\vec{\Gamma}^{l}$, consisting of hydrostatic and deviatoric 
@@ -278,12 +288,14 @@ solve, after grouping the unknowns in the LHS and the remaining terms in the RHS
 %====================================================================
 \subsection{Energy Conservation}
 % ======================
-We have seen the averaged energy conservation equation in the case of two phases: a solid phase and an incompressible liquid phase. However, with the incorporation of the shrinkage effect, new terms should appear
-in the advective-diffusive heat transfer equation. 
+We have seen the averaged energy conservation equation in the case of two phases: 
+a solid phase and an incompressible liquid phase. However, with the incorporation of
+the shrinkage effect, new terms should appearin the advective-diffusive heat transfer equation. 
 % ======================
 \subsubsection{Assumptions}
 % ======================
 \begin{itemize}
+\itemsep0em
 \item The thermal conductivity is constant for both phases: $\avg{\kappa} = \ks = \kl= \kappa $ 
 %\item consideration of a fixed solid ($ \vec{v}^s=\vec{0} $).
 \item Consequence of the static solid phase: $\avg{\rho h \vec{v}} = \gl \rhol \hl \vl +  \cancel{\gs \rhos \hs \vs} = \gl \rhol \hl \vl$ 

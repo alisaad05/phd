@@ -10,12 +10,12 @@
    xmlns:xlink="http://www.w3.org/1999/xlink"
    xmlns:sodipodi="http://sodipodi.sourceforge.net/DTD/sodipodi-0.dtd"
    xmlns:inkscape="http://www.inkscape.org/namespaces/inkscape"
-   width="313.13715"
-   height="444.43668"
+   width="314.5625"
+   height="445.20966"
    id="svg2"
    version="1.1"
    inkscape:version="0.48.4 r9939"
-   sodipodi:docname="Ingot_sl_1D_a.svg">
+   sodipodi:docname="Ingot_sl_1D_a.pdf">
   <sodipodi:namedview
      id="base"
      pagecolor="#ffffff"
@@ -23,17 +23,17 @@
      borderopacity="1.0"
      inkscape:pageopacity="0.0"
      inkscape:pageshadow="2"
-     inkscape:zoom="0.98994949"
-     inkscape:cx="134.79751"
-     inkscape:cy="301.17821"
+     inkscape:zoom="2.8"
+     inkscape:cx="149.95568"
+     inkscape:cy="323.80667"
      inkscape:document-units="px"
      inkscape:current-layer="layer1"
      showgrid="false"
-     inkscape:window-width="824"
-     inkscape:window-height="950"
-     inkscape:window-x="840"
-     inkscape:window-y="0"
-     inkscape:window-maximized="0"
+     inkscape:window-width="1920"
+     inkscape:window-height="996"
+     inkscape:window-x="-8"
+     inkscape:window-y="-8"
+     inkscape:window-maximized="1"
      fit-margin-top="0"
      fit-margin-left="0"
      fit-margin-right="0"
@@ -43,15 +43,16 @@
     <marker
        inkscape:stockid="Arrow1Lend"
        orient="auto"
-       refY="0.0"
-       refX="0.0"
+       refY="0"
+       refX="0"
        id="Arrow1Lend"
-       style="overflow:visible;">
+       style="overflow:visible">
       <path
          id="path3816"
-         d="M 0.0,0.0 L 5.0,-5.0 L -12.5,0.0 L 5.0,5.0 L 0.0,0.0 z "
-         style="fill-rule:evenodd;stroke:#000000;stroke-width:1.0pt;"
-         transform="scale(0.8) rotate(180) translate(12.5,0)" />
+         d="M 0,0 5,-5 -12.5,0 5,5 0,0 z"
+         style="fill-rule:evenodd;stroke:#000000;stroke-width:1pt"
+         transform="matrix(-0.8,0,0,-0.8,-10,0)"
+         inkscape:connector-curvature="0" />
     </marker>
     <linearGradient
        inkscape:collect="always"
@@ -181,18 +182,18 @@
      inkscape:label="Layer 1"
      inkscape:groupmode="layer"
      id="layer1"
-     transform="translate(57.093864,-320.80136)">
+     transform="translate(57.09375,-320.6875)">
     <g
        id="g3773"
        transform="matrix(1.0991668,0,0,1,-36.911303,26)" />
     <g
        id="g4253"
-       transform="matrix(1.0064532,0,0,0.85640685,0.36821739,92.824598)">
+       transform="matrix(1.0064532,0,0,0.85640685,-0.65856833,91.931741)">
       <rect
-         y="267.03452"
-         x="-56.629353"
-         height="519.63031"
-         width="312.20813"
+         y="322.69907"
+         x="-55.581318"
+         height="463.81836"
+         width="311.58969"
          id="rect3019"
          style="fill:#ff0000;fill-opacity:0.66666667;stroke:#000000;stroke-width:0.92901903;stroke-miterlimit:4;stroke-opacity:1;stroke-dasharray:none"
          ry="0" />
@@ -200,14 +201,34 @@
     <text
        sodipodi:linespacing="129%"
        id="text3031"
-       y="535.06116"
+       y="585.06116"
        x="60.113552"
        style="font-size:40px;font-style:normal;font-variant:normal;font-weight:normal;font-stretch:normal;text-align:start;line-height:128.99999619%;letter-spacing:0px;word-spacing:0px;writing-mode:lr-tb;text-anchor:start;fill:#000000;fill-opacity:1;stroke:none;font-family:Calibri;-inkscape-font-specification:Calibri"
        xml:space="preserve"><tspan
          style="font-size:32px"
-         y="535.06116"
+         y="585.06116"
          x="60.113552"
          id="tspan3033"
          sodipodi:role="line">Liquid</tspan></text>
+    <rect
+       ry="0"
+       style="fill:#000400;fill-opacity:0.27513224;stroke:#000000;stroke-width:1.05193734;stroke-miterlimit:4;stroke-opacity:1;stroke-dasharray:none"
+       id="rect4653"
+       width="313.51379"
+       height="46.355206"
+       x="-56.56284"
+       y="321.20935" />
+    <text
+       xml:space="preserve"
+       style="font-size:40px;font-style:normal;font-variant:normal;font-weight:normal;font-stretch:normal;text-align:start;line-height:128.99999619%;letter-spacing:0px;word-spacing:0px;writing-mode:lr-tb;text-anchor:start;fill:#000000;fill-opacity:1;stroke:none;font-family:Calibri;-inkscape-font-specification:Calibri"
+       x="85.066681"
+       y="356.12976"
+       id="text4655"
+       sodipodi:linespacing="129%"><tspan
+         sodipodi:role="line"
+         id="tspan4657"
+         x="85.066681"
+         y="356.12976"
+         style="font-size:32px">Air</tspan></text>
   </g>
 </svg>
