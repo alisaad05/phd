@@ -29,9 +29,9 @@ to a different overall volume ($V^s<V^l$) once solidification is complete, as co
 \end{subequations}
 %------------
 Solidification shrinkage is not the only factor responsible for volume decrease. Thermal shrinkage in both solid and liquid phases, as well 
-as solutal shrinkage in the liquid phase are common causes in casting processes. Henceforth, we will focus on shrinkage due to phase change.
-
-%=============
+as solutal shrinkage in the liquid phase are also common causes in a casting process. Henceforth, we will focus on shrinkage due to phase change.
+%----------------
+%
 \begin{figure}[htbp]
 \centering
 %\begin{minipage}{.5\textwidth}
@@ -73,17 +73,21 @@ as solutal shrinkage in the liquid phase are common causes in casting processes.
 \caption{Schematic of the main cooling stages of an ingot against side and bottom mould walls (not shown)}
 \label{fig:real_ingot_stages}
 \end{figure}
-\comment{ \textbf{Sutaria2012} talk about feeding paths, but more importantly they computed thermal shrinkage WITHOUT solving
-NavierStokes equations. To predict the interface shape, they solve a LS transport with an imposed velocity given by Gada et Sharma 2009}
-
-% ======================
+%
+%---------------------
 \subsection*{Literature review}
-% ======================
+%
 Talk and explain models in the literature that predict shrinkage (without or with macrosegregation): Beckermann, Wu ? \\
 Show and comment the experiments that have been done: Hebditch and Hunt, Smacs Hachani  ...
-
-%====================================================================
+%
+\comment{ \textbf{Sutaria2012} talk about feeding paths, but more importantly they computed thermal shrinkage WITHOUT solving
+NavierStokes equations. To predict the interface shape, they solve a LS transport with an imposed velocity given by Gada et Sharma 2009}
+%
+%
+%--------------------------------------------------
 \section{FE model: Metal}
+%--------------------------------------------------
+%
 In this section, we start from a the monodomain finite element model presented in \cref{sec:monodomain} relevant to metal only, 
 then present the essential assumptions and formulations that allow predicting solidification shrinkage in a Eulerian context.
 
@@ -225,7 +229,8 @@ vector is in the opposite direction. The advective term writes:
 %\label{eq:}
 & \rhol \vit \cdot \nabvec \hl = - \rhol C_p^l \norm{\vit} \norm{\nabvec T}
 \end{align}
-% FIGURE %%
+%
+%----------------------------
 \begin{figure}
 \centering
 \begin{subfigure}[h!]{0.3\textwidth}\centering % h! or H
@@ -250,11 +255,12 @@ vector is in the opposite direction. The advective term writes:
 \end{subfigure}
 \caption{Effect of shrinkage flow on a solidifying ingot}
 \end{figure}
-%% FIGURE %%
-We see that the second RHS term in equation \eqref{eq:energy_balance} acts as 
+%----------------------
+%
+We see that the second LHS term in equation \eqref{eq:energy_balance} acts as 
 a heat source at the interface between the the phases, in this particular solidification
-scenario. Another heat power (of unit $Wm^{-3}$) adds to the system within the mushy, 
-that is the second term in the right-hand side of the same equation. This term is 
+scenario. Another heat power (of unit $Wm^{-3}$) adds to the system in the mushy zone, 
+that is the second term in the RHS of the same equation. This term is 
 proportional to the solidification rate. Finally, the first RHS term accounts for thermal 
 diffusion within the phases.
 \newline
@@ -263,7 +269,7 @@ equation \eqref{eq:gradient_liquid_enthalpy} applies when no macrosegregation oc
 Nonetheless, when the latter is considered, the phases specific and latent heats become 
 highly dependent on the local average composition. It then advisable to use the thermodynamic 
 tabulation approach, where the enthalpies are directly tabulated as functions of temperature 
-and composition. 
+and intrinsic phase compositions. 
 % ======================
 \subsection{Species Conservation}
 % ======================
@@ -326,13 +332,27 @@ However, in the current context, the volume is subject to changes, hence the for
 
 %====================================================================
 \section{FE model: Air}
-In this section, we start from a the monodomain finite element model presented in \cref{sec:monodomain} relevant to metal only, 
-then present the essential assumptions and formulations that allow predicting solidification shrinkage in a Eulerian context.
+Conservation equations for the air are close to those derived for the metal as a fluid, with the exception
+of some points:
+\begin{itemize}
+\itemsep0em
+\item air is a fluid that will not undergo any phase change, hence constant heat diffusivity;
+\item species conservation is irrelevant in the air as it is considered a pure material;
+\item unlike metal, air is considered incompressible at any time.
+\end{itemize}
+
+%-----------
+\subsection{Energy Conservation}
+
 
 %-----------------------------------
 
 \section{FE monolithic model}
 %---------------------------------------
+The monolithic model combines all conservations equations in metal and air in a unique set of equations to be solved on a fixed mesh. 
+This can be accomplished by using the Heaviside function (defined in \cref{sec:heaviside}) relative to each domain.
+
+%------------------
 \subsection{Interface treatment}
 %--------
 How to transport level set using velocity from momentum conservation DIRECTLY or AVERAGED PER ELEMENTS, 
@@ -341,6 +361,22 @@ Validation of LS transport:
 \comment{perform test case simulation of buoyancy driven air droplet in water by 2005Nagrath that I also have seen 
 in Shyamprasad's masters report)}
 \comment{ I read it quickly without noticing: what time step $\delta t$ did they use ? }
+%
+%----------------------
+\begin{figureth}
+% textwidth 
+{0.8}
+%path 
+{Chapter4/Graphics/AvgTransport/BottomSideCooling.pdf}
+% caption
+{Treatment of liquid free surface in bottom and side heat extraction configurations. The dashed line represents the 
+initial level of the free liquid surface.}
+%In this example, the interface thickness is 800 $\mu m$.
+% label
+\label{fig:free_liquid_surface}
+\end{figureth}
+%-----------------------------------
+%
 %---------------------------------------
 \subsection{Permeability mixing}
 %------
