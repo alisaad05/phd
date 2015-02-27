@@ -53,10 +53,12 @@ good accuracy.
 \subsection{Volume averaging} 
 %-----------------------------
 \comment{the following paragraph will be deleted once the volume averaging has been introduced in chapter 1}
-\red{A volume averaging technique was suggested to deal with the presence of multiple phases \citep{ni_volume-averaged_1991}. It locally considers a 
-Representative Volume Element (RVE) that contains a single or several phases (these are not necessarily in thermodynamic equilibrium) 
+\red{A volume averaging technique was suggested to deal with the presence of multiple 
+phases \citep{ni_volume-averaged_1991}. It locally considers a Representative Volume Element 
+(RVE) that contains a single or several phases (these are not necessarily in thermodynamic equilibrium) 
 at a mesoscopic scale. We represent, for each unknown $\psi$, an intrinsic volume average, $\avg{\psi}^{\phi}$ (also denoted $\avg{\psi^{\phi}}^{\phi}$ in the 
-literature), corresponding to a phase $\phi$. The volume average $\avg{\psi}$ for this unknown in the RVE, hence averaged over all the present phases writes:}
+literature), corresponding to a phase $\phi$. 
+The volume average $\avg{\psi}$ for this unknown in the RVE, hence averaged over all the present phases writes:}
 %%-------------
 \begin{align}
 \label{eq:volume_average_psi}
@@ -65,7 +67,8 @@ literature), corresponding to a phase $\phi$. The volume average $\avg{\psi}$ fo
 %%-------------
 where $g^\phi$ denotes the volume fraction of phase $\phi$ in the RVE. 
 It should be emphasized that the averaging technique applies to virtually all thermodynamic variables (enthalpy, density $\dots$). 
-Among these variables, the temperature is also considered to be uniform in the RVE. Applying the volume averaging technique to the energy 
+Among these variables, the temperature is also considered to be uniform in the RVE. 
+Applying the volume averaging technique to the energy 
 conservation principle along with interfacial balances between the phases, results in the following averaged equation \citep{rappaz_numerical_2003}:
 %%-------------
 \begin{align}
@@ -74,7 +77,8 @@ conservation principle along with interfacial balances between the phases, resul
 \end{align}
 %%-------------
 where $\rho$ stands for the density, $h$ the mass enthalpy, $\vec{v}$ the velocity field, $\kappa$ the thermal conductivity, $T$ the temperature 
-and $\dot{Q}_V$ a possible volume heat source. \eqref{eq:averaged_energy_eqn} is the standard averaged form of the energy conservation equation used in non-stationary phase 
+and $\dot{Q}_V$ a possible volume heat source. 
+\Cref{eq:averaged_energy_eqn} is the standard averaged form of the energy conservation equation used in non-stationary phase 
 change problems. 
 \comment{ I could elaborate more in this paragraph by showing the possible equations for the explicit formulation and maybe a figure to show the AlSi7
 computation that i did with a v small time step }
@@ -110,7 +114,7 @@ The complexity of performing a thermodynamic conversion is directly linked to th
 phase fractions and phase enthalpies. In the case of binary alloys and with several assumptions with respect to the system (e.g., linear monovariant 
 temperature composition relationships, constant heat capacity of phases and constant latent heat of transformations, equilibrium approximations between 
 phases) analytical calculations are often used to determine the properties. Nevertheless, analytical relations are more complex or even impossible to 
-derive in the case of multicomponent alloys (i>1). To overcome this problem, one can resort to thermodynamic databases and phase equilibrium calculations 
+derive in the case of multicomponent alloys ($i>1$). To overcome this problem, one can resort to thermodynamic databases and phase equilibrium calculations 
 to tabulate the transformation paths and the phase enthalpies for a given range of temperatures and average compositions. It is a handy solution for two 
 main reasons: first, the conversion is merely a binary search in a table; secondly, it is a simple solution for coupling with macrosegregation. In this way, 
 phase fractions $\gphi$ are tabulated as functions of temperature and average composition, while for each phase $\phi$ the mass enthalpy, $\hphi$, and 
@@ -118,11 +122,23 @@ the density, $\rphi$, are tabulated as functions of temperature and phase intrin
 Figure 1 summarizes the steps in order to perform a temperature-to-enthalpy (T2H) conversion using the predefined tabulation approach. In step 1, the 
 transformation path is acquired for each average composition and temperature to determine the list of phases, their volume fractions $\gphi$ and their intrinsic 
 compositions $\wi^{\phi}$. In step 2, the phase enthalpy $\hphi$  and density $\rphi$ are determined by searching for the temperature 
-and the already known phase composition $\wi^{\phi}$. In step 3, the average volume enthalpy is computed from the volume fraction, density and mass enthalpy 
-of phases using \eqref{eq:volume_average_enthalpy}.
-
-\comment{ Figure 3 goes here }
-
+and the already known phase composition $\wi^{\phi}$. In step 3, the average volume enthalpy is computed from the volume fraction, density and mass enthalpy of phases using \eqref{eq:volume_average_enthalpy}.
+%
+%---------------------------
+\begin{table}[htbp]
+\centering
+\caption{Tabulation processing for a T2H procedure}
+{\tabulinesep=1.0mm
+\begin{tabu}{|c|c|c|c|}
+\tabucline[1pt]{-}
+\textbf{Step Number} 	& 	\textbf{1}	& \textbf{2}	& 	\textbf{3} 				\\\tabucline[1pt]{-}
+\textbf{Inputs} 		&  ${T,\wi}$	& ${T,\wiphi}$	&	${\gphi, \rphi \hphi}$ \\
+\textbf{Outputs} 		&  ${\gphi,\wiphi}$	& ${\rphi,\hphi}$	&	${\avg{\rho h}}$ (\cref{eq:volume_average_enthalpy})
+				\\\tabucline[1pt]{-}
+\end{tabu}}
+\end{table}
+%---------------------------
+%
 The methodology to build the tabulations is straightforward. It is based on two main scans. On the one hand, intervals for the variation of the 
 average composition $\wi$ are chosen from the known alloy composition. These variations have to cover the extreme values adopted during the 
 simulation, which are not known a priori. An interval is also selected for the variation of temperature. The latter is easier to determine as it
