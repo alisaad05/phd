@@ -5,17 +5,6 @@
 \end{nolinkcolors}
 \newpage
 
-this chapter discusses the following points:
-\begin{itemize}
-\item Density variation during solidification (industrial point of view then how to handle numerically)
-\item Model equations
-\item Application to solidification benchmark SMACS
-\item Possible extension of application with grain structure (using Shijia's LS-air cells handling)
-\item Multiscale Freckle predicition: FE + grain structure (in which lies a part about nucleation-growth and how numerically 
-		we reach a smaller scale, the scale of the grain boundaries)
-\end{itemize}
-
-
 % ======================
 \section{Introduction}
 % ======================
@@ -31,12 +20,16 @@ the liquid metal in its direction (cf. \autoref{fig:real_ingot_stage_b}). As a d
 tends to gradually deform in the feeding direction, forming the so-called \emph{shrinkage pipe}. Since the mass of the alloy and its 
 chemical species is conserved, a density difference between the phases ($\rhol < \rhos \implies \frac{\rhol}{\rhos}<1$) eventually leads 
 to a different overall volume ($V^s<V^l$) once solidification is complete, as confirm the following equations:
+%------------
 \begin{subequations}
 \begin{align}
 & \rhol V^l = \rhos V^s  \\ 
 & V^s = \frac{\rhol}{\rhos} V^l
 \end{align}
 \end{subequations}
+%------------
+Solidification shrinkage is not the only factor responsible for volume decrease. Thermal shrinkage in both solid and liquid phases, as well 
+as solutal shrinkage in the liquid phase are common causes in casting processes. Henceforth, we will focus on shrinkage due to phase change.
 
 %=============
 \begin{figure}[htbp]
@@ -84,21 +77,15 @@ to a different overall volume ($V^s<V^l$) once solidification is complete, as co
 NavierStokes equations. To predict the interface shape, they solve a LS transport with an imposed velocity given by Gada et Sharma 2009}
 
 % ======================
-\section{Literature review}
+\subsection*{Literature review}
 % ======================
 Talk and explain models in the literature that predict shrinkage (without or with macrosegregation): Beckermann, Wu ? \\
 Show and comment the experiments that have been done: Hebditch and Hunt, Smacs Hachani  ...
 
 %====================================================================
-\section{Level set treatment}
-
-\subsection{Permeability mixing}
-How to mix liquid fraction, best using harmonic or arithmetic, in order to replicate the effect the of non slip condition at top for example \\
-Put the python plots from the presentations in "TEXUS monolithic" \\
-Put video animations of PSEUDO SMACS 2D without and with LS ???
-
-%====================================================================
-\section{Conservation equations}
+\section{FE model: Metal}
+In this section, we start from a the monodomain finite element model presented in \cref{sec:monodomain} relevant to metal only, 
+then present the essential assumptions and formulations that allow predicting solidification shrinkage in a Eulerian context.
 
 \subsection{Mass Conservation}
 % ======================
@@ -122,6 +109,7 @@ is neglected
 % ======================
 The mass balance equation averaged over the two phases, is expanded taking into account the aforementioned assumptions.
 \begin{subequations}
+\label{eq:shrinkage}
 \begin{align}
 & \frac{\partial \avg{\rho}}{\partial t} + \nabla \cdot \avg{\rho \vec{v}}  = 0 \\ 
 & \frac{\partial }{\partial t} \brac{ \gl \rhol + \gs \rhos} + \nabla \cdot \brac{ \gl \rhol \vec{v}^l} = 0 \\ 
@@ -142,148 +130,14 @@ The mass balance equation averaged over the two phases, is expanded taking into 
 \subsubsection{Discussion}
 % ======================
 With the assumptions of static solid phase and constant unequal phase densities, the average mass balance states that 
-the divergence of the liquid velocity is proportional to the solidification rate, the proportionality constant being the
-relative density change (which results in a relative volume change). This relation between the liquid velocity and the
-temporal derivative of the solid fraction, explains the flow due to shrinkage. In metallic alloys, the solid density is
+the divergence of the liquid velocity is proportional to the solidification rate, by a factor of density change, 
+which results in a relative volume change. \Cref{eq:mass_balance} explains the flow due to shrinkage. In metallic alloys, the solid density is
 usually greater than the liquid density, therefore the first term in the RHS is negative. As for the second term, if we
 neglect remelting, then it'll be positive in the solidifying areas of the alloy. A negative divergence term in these areas, 
 means that a liquid feeding is necessary to compensate for the density difference, hence acting as a flow driving force in the melt.
 In the case of constant densities, we can easily deduce that the divergence term is null, and therefore no flow is induced
-by solidification.
-\newline
-Numerically speaking, a non-zero divergence term in the mass balance is equivalent to a compressible fluid behaviour. Additional 
-terms should appear in the other conservation equations, balancing the volume change in the momentum, heat and species transport.
-
-%====================================================================
-\subsection{Momentum Conservation}
-% ======================
-In a typical volume averaging approach, one would write one momentum conservation 
-equation for each phase. Nonetheless, only one equation will be present in our case, 
-and that is the consequence of the assumption of the static solid, made in the previous 
-section. It should be emphasized that, despite considering a single conservation equation, 
-the effect of the solid movement with respect to the liquid's can still be incorporated 
-through the interfacial fluxes in the momentum conservation of the liquid phase. 
-% ======================
-\subsubsection{Assumptions}
-% ======================
-\begin{itemize}
-\itemsep0em
-%%%
-\item The interfacial momentum transfer between the solid and liquid phases is modelled 
-by a momentum flux vector $\vec{\Gamma}^{l}$, consisting of hydrostatic and deviatoric 
-parts, such that:
-\begin{subequations}
-\begin{align}
-\label{eq:eq_interfacial_momentum_init}
-		& \vec{\Gamma}^{l} =  \vec{\Gamma}_{p}^{l} + \vec{\Gamma}_{\mathbb{S}}^{l}						\\
-		& \vec{\Gamma}_{p}^{l} = p^{l^{*}} \nabvec g^{l} = p^{l} \nabvec g^{l}			  \\
-		& \vec{\Gamma}_{\mathbb{S}}^{l} = -{g^{l}}^{2} \mu^{l} \mathbb{K}^{-1} \brac{ \vl - \cancel{\vs} }  
-\end{align}
-\end{subequations}
-where $p^{l^{*}}$ is the pressure at the interface, considered to be equal to the liquid hydrostatic 
-pressure, $\mathbb{K}$ is the permeability computed by the Carman-Kozeny relation and $\mu^l$ is the 
-liquid's dynamic viscosity.  For the solid phase, the interfacial terms are the opposite, which cancels 
-them out with the liquid terms if the phase momentum equations are summed up.
-%%%
-\item The liquid is considered as a \emph{compressible} Newtonian fluid. It implies that the deviatoric part, $\mat{\mathbb{S}}^{l} $, of the Cauchy 
-stress tensor is decomposed as follows: 
-\comment{CAG: the liquid is incompressible, but the mixture is compressible, change it}
-\begin{subequations} 
-\begin{align}
-\label{eq:stress_liq}
-& \avg{ \mat{\sigma}^{l} } = - \avg{p^l} \mat{\mathbb{I}} + \avg{\mat{\mathbb{S}}^{l}}   \\
-& \avg{ \mat{\sigma}^{l} } = - \avg{p^l} \mat{\mathbb{I}} + 2\mu^{l} \strainrate + \avg{\mat{\tau}^l}
-\end{align}
-\end{subequations}
-where $ \avg{{\dot{\mat{\varepsilon}}}^l} $ is the strain rate tensor that depends on the average liquid velocity: 
-\begin{align}
-\label{eq:tensor_strainrate}
-\strainrate = \mat{\nabla} \vit  +  \mat{\nabla}^\text{\textbf{t}} \vit 
-\end{align}
-and  $\mat{\tau}^{l}$ is the extra stress tensor in the liquid, given by:
-\begin{subequations}
-\begin{align}
-\label{eq:tensor_extrastress}
- & \avg{\mat{\tau}^l} =  -\lambda \nabla \cdot \vit  \mat{\mathbb{I}} 
-\end{align}
-\end{subequations}
-where $\lambda$ is a dilatational viscosity \textbf{CITE RAP2003}. For an incompressible flow, the divergence term vanishes, hence the classical Newtonian constitutive law is retrieved. In the literature, the coefficient $\lambda$ is taken proportional to the viscosity: $\lambda = \frac{2}{3} \mu^l $
-\end{itemize}
-% ======================
-\subsubsection{Formulation}
-% ======================
-The momentum conservation equation in the liquid writes:
-\begin{align}
-\label{eq:momentum_liq}
-& \temp{\rho^l \gl \vec{v}^l } + \nabvec \cdot \brac{\rho^l \gl \vl \times \vl} = 
-	\nabvec \cdot \brac{\gl \mat{\sigma}^l} + \gl \vec{F}_\text{v} + \vec{\Gamma}^{l}
-\end{align}
-where $\vec{F}_\text{v}$ is an external volume force. The effect of the mass balance obtained in the previous section 
-is incorporated by expanding the temporal and spatial derivatives in the momentum equation, taking firstly the left-hand side of equation \eqref{eq:momentum_liq}.
-\begin{subequations}
-\begin{align}
-\label{eq:momentum_liq_LHS_a}
-	 \text{LHS} &=
-	 \rhol \temp{ \gl \vl } + \gl \vl \cancel{\frac{\partial \rhol}{\partial t}} 
-	+ \vl \nabla \cdot \brac{ \rhol \gl \vl } 
-	+ \nabmat \vl \brac{ \rhol \gl \vl } \\
-\label{eq:momentum_liq_LHS_b}
-	&= \rhol \underbrace{ \temp{ \gl \vl } }_{\substack{\text{Unsteady} \\ \text{Acceleration}}}
-	 + \brac{ \rhol - \rhos } \underbrace{ \frac{\partial  \gs }{\partial t} \vl}
-	    _{\substack{\text{Shrinkage}\\ \text{Acceleration}}}
-	+ \rhol  \underbrace{ \nabmat \vl \brac{ \gl \vl }}_{\substack{\text{Advective} \\ \text{Acceleration}}}     
-\end{align}
-\end{subequations}
-The development in \eqref{eq:momentum_liq_LHS_b} shows that the origin of the flow, namely its acceleration, is 
-attributed to three causes: 
- i) unsteady acceleration: a temporal change of a particle's velocity, ii) shrinkage-induced acceleration: a local "suction" effect at the solid-liquid interface (where $\frac{\partial  \gs }{\partial t} >0$) caused by the density jump $\brac{ \rhol - \rhos }$
-and iii) convective acceleration: a spatial change in the velocity field.
-The effect of the \emph{shrinkage-induced} flow is introduced using the mass balance in equation \eqref{eq:mass_balance}. The right-hand side of equation \eqref{eq:momentum_liq} is now expanded:
-\begin{subequations}
-\begin{align}
-\label{eq:momentum_liq_RHS}
-	\text{RHS} 
-	&=
-	 \nabvec \cdot \brac{\avg{p^l} \mat{\mathbb{I}} + 2\mu^{l} \strainrate + \avg{\mat{\tau}^l}} 
-	 + \gl \rhol \vec{g} 
-	 + \vec{\Gamma}_{p}^{l} + \vec{\Gamma}_{\mathbb{S}}^{l}	 \\
-	&=  -\nabvec \brac{\gl p^l} 
-		+ \nabvec \cdot \brac{ 2 \mu^l \strainrate }
-		+ \nabvec \cdot \brac{-\frac{2}{3} \mu^l \nabla \cdot \avg{\vl} \mat{\mathbb{I}}}
-		+ \gl \rhol \vec{g} 
-	 	+ \vec{\Gamma}_{p}^{l} + \vec{\Gamma}_{\mathbb{S}}^{l}	 \\
-	&=  \cancel{- p^l \nabvec \gl} - \gl \nabvec p^l
-		+ \nabvec \cdot \brac{ 2 \mu^l \strainrate }
-		+ \nabvec \cdot \brac{-\frac{2}{3} \mu^l \nabla \cdot \avg{\vec{v}^l} \mat{\mathbb{I}}}
-		+ \gl \rhol \vec{g} 
-	 	+ \cancel{\vec{\Gamma}_{p}^{l}} + \vec{\Gamma}_{\mathbb{S}}^{l}	 \\
-	&=   - \gl \nabvec p^l
-		+ \nabvec \cdot \brac{ \mu^l \brac{\mat{\nabla} \avg{\vec{v}^l} + ^\text{\textbf{t}} \mat{\nabla} \avg{\vec{v}^l} }}
-		+ \nabvec \brac{-\frac{2}{3} \mu^l \frac{\rho^l-\rho^s}{\rho^l} \frac{\partial  \gs }{\partial t} }
-		+ \gl \rhol \vec{g} 
-	 	- {\gl}^{2} \mu^l \mathbb{K}^{-1} \vec{v}^{l}
-\end{align}
-\end{subequations}
-The system thus consists of 3 equations (one for each of the components of $\vec{v}^l$) and 4 unknowns ($\vec{v}^l_x$, $\vec{v}^l_y$, $\vec{v}^l_z$ and $p$). An additional equation is provided by the mass continuity equation \eqref{eq:mass_balance}. For convenience, the superficial velocity $\vit$ will be chosen as a velocity unknown instead of the intrinsic average: $\vit = \gl \vec{v}^l$. The final system to 
-solve, after grouping the unknowns in the LHS and the remaining terms in the RHS, is given by:
-\comment{ I changed \emph{split} to \emph{align} here }
-%\begin{empheq}[box=\widefbox, left=\empheqlbrace]{align}
-\label{eq:momentum_liq_final}
-%\label{eq:momentum_liq_final_vitesse}
-\begin{align} % split
-& \rhol \frac{\partial \vit}{\partial t}
-	 + \frac{ \rhol - \rhos }{\gl}\frac{\partial  \gs }{\partial t} \vit
-	 + \rhol  \nabmat \vl \vit
-	 + \nabvec \cdot \brac{2 \mu^l \strainrate}
-	 + \gl \mu^l  \mathbb{K}^{-1} \vit  \\
-	 &\qquad  = \gl \nabvec p^l
-	 + \nabvec \brac{-\frac{2}{3} \mu^l \nabla \cdot \avg{\vec{v}^l}  }
-	 +  \gl \rhol \vec{g}  \\
-%\label{eq:momentum_liq_final_pression}
-&\nabla \cdot \vit= \frac{\rho^l-\rho^s}{\rho^l} \frac{\partial  \gs }{\partial t}
-\end{align} % split
-%\end{empheq}
-%\end{subequations}
+by solidification. Furthermore, additional terms should appear in the other conservation equations, balancing the volume 
+change in the momentum, heat and species transport.
 
 %====================================================================
 \subsection{Energy Conservation}
@@ -307,8 +161,7 @@ equation may contain a contribution attributed to volume compression/expansion:
 \end{align}
 In the literature, this contribution has been always neglected, even when accounting for solidification
 shrinkage, owing to the small variations of pressure.
-\item Another contribution is also neglected in solidification problems, that is the heat generated by
-mechanical deformation, $\mathbb{S}:\dot{\varepsilon}$ 
+\item The heat generated by mechanical deformation, $\mathbb{S}:\dot{\varepsilon}$, is neglected
 %\begin{enumerate}
 %\item $\avg{\rho h}= \gl \rhol \hl + \gs \rhos \hs $
 %\end{enumerate}
@@ -471,20 +324,55 @@ volume remains constant. It is thus convenient to compute composition variations
 However, in the current context, the volume is subject to changes, hence the formulation of equation 
 \eqref{eq:solute_balance} with $\avg{\rho w}$.
 
-\section{Test cases}
+%====================================================================
+\section{FE model: Air}
+In this section, we start from a the monodomain finite element model presented in \cref{sec:monodomain} relevant to metal only, 
+then present the essential assumptions and formulations that allow predicting solidification shrinkage in a Eulerian context.
 
-\subsection{Validation of LS transport}
-\comment{perform test case simulation of buyoancy driven air droplet in water by 2005Nagrath that I also have seen 
+%-----------------------------------
+
+\section{FE monolithic model}
+%---------------------------------------
+\subsection{Interface treatment}
+%--------
+How to transport level set using velocity from momentum conservation DIRECTLY or AVERAGED PER ELEMENTS, 
+show examples of instability/stability when using false/nominal air properties \\ 
+Validation of LS transport:
+\comment{perform test case simulation of buoyancy driven air droplet in water by 2005Nagrath that I also have seen 
 in Shyamprasad's masters report)}
 \comment{ I read it quickly without noticing: what time step $\delta t$ did they use ? }
-
-\subsection{Shrinkage without macrosegregation}
-Smacs or Pseudo-Smacs test case with Level set and shrinkage
-\subsubsection{Considerations}
+%---------------------------------------
+\subsection{Permeability mixing}
+%------
+How to mix liquid fraction, best using harmonic or arithmetic, in order to replicate the effect the of non slip condition at top for example \\
+Put the python plots from the presentations in "TEXUS monolithic" \\
+Put video animations of PSEUDO SMACS 2D without and with LS ???
+%---------------------------------------
+\subsection{Model equations}
+%-------
+Rewrite air-metal monolithic conservation equations using mixture laws.
+%--------------------------------
+\section{Shrinkage without macrosegregation}
 Explain how the flow and heat transfer in the air are not important \\ 
-\subsubsection{Model equations}
-Give the strong form equations to be solved OR simply refer the previous section where the model was defined
-\subsubsection{Initial and boundary conditions for energy and momentum}
-Initially we have liquid and air at rest. 
-\subsubsection{Results and discussion}
+Give the strong form equations to be solved OR simply refer the previous section where the model was defined \\
+Initial and boundary conditions for energy and momentum:  Initially we have liquid and air at rest. 
+%--
+\subsection{Al-7wt \% Si}
+Present pseudo 1D case with results + discussion
+%--
+\subsection{Pb-3wt \% Sn}
+Present 2D and 3D case with results + discussion
+%--
+%--------------------------------
+\section{Shrinkage with macrosegregation}
+Explain how the flow and heat transfer in the air are not important \\ 
+Give the strong form equations to be solved OR simply refer the previous section where the model was defined \\
+Initial and boundary conditions for energy and momentum:  Initially we have liquid and air at rest. 
+%--
+\subsection{Al-7wt \% Si}
+Present pseudo 1D case with results + discussion
+%--
+\subsection{Pb-3wt \% Sn}
+Present 2D and 3D case with results + discussion
+%--
 
