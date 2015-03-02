@@ -144,9 +144,9 @@ During solidification, thermal and solutal gradients result in density gradients
 \begin{subequations}
 \begin{align}
 \label{eq:rholiq}
-& \rhol = \rhoref ( 1 - \betaT (T - \Tref) - \sum_{i} \betawil (\wil - \wilref) )  \\ 
+& \rhol = \rholref ( 1 - \betaT (T - \Tref) - \sum_{i} \betawil (\wil - \wilref) )  \\ 
 \label{eq:gradrholiq}
-& \nabvec\rhol = -\rhoref (  \betaT \nabvec T + \sum_{i} \betawil \nabvec\wil  )
+& \nabvec\rhol = -\rholref (  \betaT \nabvec T + \sum_{i} \betawil \nabvec\wil  )
 \end{align}
 \end{subequations}
 %--------------
@@ -160,14 +160,14 @@ thermal expansion coefficient $\betaT$ and the solutal expansion coefficients $\
 \begin{subequations}
 \begin{align}
 \label{eq:betaT}
-& \betaT =  -\frac{1}{\rhoref} \brac{\frac{\partial\rhol}{\partial T}}  \\ 
+& \betaT =  -\frac{1}{\rholref} \brac{\frac{\partial\rhol}{\partial T}}  \\ 
 \label{eq:betawil}
-& \betawil = -\frac{1}{\rhoref} \brac{\frac{\partial \rhol}{\partial \wil}}  
+& \betawil = -\frac{1}{\rholref} \brac{\frac{\partial \rhol}{\partial \wil}}  
 \end{align}
 \end{subequations}
 %--------------
 %
-The linear fit assumes also that the density takes a reference value, $\rhoref$, when temperature 
+The linear fit assumes also that the density takes a reference value, $\rholref$, when temperature 
 and liquid composition reach reference values, respectively $\Tref$ and $\wilref$, while the
 coefficients $betawil$ remain constant. However, in some 
 situations, a suitable thermodynamic database providing accurate density values is far better than a 

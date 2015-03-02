@@ -91,7 +91,7 @@ NavierStokes equations. To predict the interface shape, they solve a LS transpor
 In this section, we start from a the monodomain finite element model presented in \cref{sec:monodomain} relevant to metal only, 
 then present the essential assumptions and formulations that allow predicting solidification shrinkage in a Eulerian context.
 
-\subsection{Mass Conservation}
+\subsection{Mass and momentum conservation}
 % ======================
 \subsubsection{Assumptions}
 % ======================
@@ -112,6 +112,8 @@ is neglected
 \subsubsection{Formulation}
 % ======================
 The mass balance equation averaged over the two phases, is expanded taking into account the aforementioned assumptions.
+%
+%--------------------------
 \begin{subequations}
 \label{eq:shrinkage}
 \begin{align}
@@ -125,30 +127,51 @@ The mass balance equation averaged over the two phases, is expanded taking into 
 \end{align}
 \end{subequations}
 \begin{align}
-\label{eq:mass_balance}
- \boxed{\nabla \cdot \brac{ \gl \vec{v}^l} 
- 	= \nabla \cdot \avg{\vec{v}^l} 
+\label{eq:mass_balance_metal}
+ \boxed{\nabla \cdot \brac{ \gl \vl} 
+ 	= \nabla \cdot \vit
  	= \frac{\rho^l-\rho^s}{\rho^l} \frac{\partial  \gs }{\partial t}}
 \end{align}
-% ======================
-\subsubsection{Discussion}
-% ======================
+%--------------------
+%
 With the assumptions of static solid phase and constant unequal phase densities, the average mass balance states that 
 the divergence of the liquid velocity is proportional to the solidification rate, by a factor of density change, 
-which results in a relative volume change. \Cref{eq:mass_balance} explains the flow due to shrinkage. In metallic alloys, the solid density is
+which results in a relative volume change. \Cref{eq:mass_balance_metal} explains the flow due to shrinkage. In metallic alloys, the solid density is
 usually greater than the liquid density, therefore the first term in the RHS is negative. As for the second term, if we
 neglect remelting, then it'll be positive in the solidifying areas of the alloy. A negative divergence term in these areas, 
 means that a liquid feeding is necessary to compensate for the density difference, hence acting as a flow driving force in the melt.
 In the case of constant densities, we can easily deduce that the divergence term is null, and therefore no flow is induced
 by solidification. Furthermore, additional terms should appear in the other conservation equations, balancing the volume 
-change in the momentum, heat and species transport.
-
+change in the heat and species transport.
+%
+%-----------------------------------
+%\subsection{Momentum Conservation}
+%-----------------------------
+%
+When the metal's density was considered constant during solidification, the assumption of an incompressible system made it possible to
+use the Boussinesq approximation. However, in the case of solidification shrinkage, the average density $\r = \gs \rhos + \gl \rhol $
+varies, since $\rhos$ and $\rhol$ are not equal. Naturally, these phase densities would depend on temperature and possibly on the phase composition. 
+Therefore, the incrompressibility condition may not be true. In such case, the earlier given system \cref{eq:Navier-Stokes2} is reformulated without 
+any reference value for density:
+%------
+\begin{equation}
+\label{eq:momentum_balance_metal}
+   \left\{
+   \begin{aligned}
+      & \rhol \brac{\tempup{ \vit } + \frac{1}{\gl} \nabvec \cdot \brac{\vit \times \vit}} = \\
+	  &- \gl\nabvec \pl - 2 \mul \nabvec \cdot \brac{\nabmat \vit + \nabmattransp \vit}
+	  - \gl \mul \K^{-1} \vit + \gl \rhol \gravity\\ \\
+      & \nabla \cdot \vit =  \frac{\rho^l-\rho^s}{\rho^l} \tempup{\gs}
+    \end{aligned}
+    \right.
+\end{equation}
+%------------
 %====================================================================
-\subsection{Energy Conservation}
+\subsection{Energy conservation}
 % ======================
 We have seen the averaged energy conservation equation in the case of two phases: 
 a solid phase and an incompressible liquid phase. However, with the incorporation of
-the shrinkage effect, new terms should appearin the advective-diffusive heat transfer equation. 
+the shrinkage effect, new terms should appear in the advective-diffusive heat transfer equation. 
 % ======================
 \subsubsection{Assumptions}
 % ======================
@@ -201,10 +224,8 @@ The unknowns in the energy conservation are the average volumetric enthalpy $\av
 		= \nabla  \cdot \brac{\kappa \nabvec T }
 		+ \brac{\rhos-\rhol} \hl \frac{\partial  \gs}{\partial t}}
 \end{align}
-
-% ======================
-\subsubsection{Discussion}
-% ======================
+%----------------
+%
 In order to keep things simple, the term "enthalpy" will refer henceforth to "volume enthalpy",
 otherwise, we will explicitly use the term "mass enthalpy". It is important to understand the 
 meaning of the terms in equation \eqref{eq:energy_balance}.
@@ -214,10 +235,14 @@ The second LHS term is a dot product between the superficial liquid velocity and
 of the liquid's enthalpy. Since phase densities are constant in our case, the gradient term reduces
 to the liquid's mass enthalpy. If we consider a representative volume element (RVE) in the liquid
 phase, far from the mushy zone, we can stipulate:
+%
+%--------------
 \begin{align}
 \label{eq:gradient_liquid_enthalpy}
 & \nabvec \hl = C_p^l \nabvec T
 \end{align}
+%--------------
+%
 assuming that the phase mass specific heat, $ C_p^l $, is constant. Therefore, the liquid enthalpy
 is advected in the case where the velocity vector is not orthogonal to the temperatre gradient.
 The advection reaches its maximum when the two vectors have the same direction. Consider, for instance,
@@ -225,10 +250,13 @@ a filled ingot with a cooling flux applied to its bottom surface. If the density
 were to be neglected, then the sole mechanical driving force in the melt is the density jump at the solid-liquid
 interface ahead of the mushy zone. The temperature gradient in such a case is vertical upward, while the velocity
 vector is in the opposite direction. The advective term writes:
+%
+%--------------
 \begin{align}
 %\label{eq:}
 & \rhol \vit \cdot \nabvec \hl = - \rhol C_p^l \norm{\vit} \norm{\nabvec T}
 \end{align}
+%--------------
 %
 %----------------------------
 \begin{figure}
@@ -253,7 +281,7 @@ vector is in the opposite direction. The advective term writes:
 	\caption{Final state}
 	\label{fig:ingot_1d_d}
 \end{subfigure}
-\caption{Effect of shrinkage flow on a solidifying ingot}
+\caption{Effect of one-dimensional shrinkage flow on a solidifying ingot}
 \end{figure}
 %----------------------
 %
@@ -271,7 +299,7 @@ highly dependent on the local average composition. It then advisable to use the 
 tabulation approach, where the enthalpies are directly tabulated as functions of temperature 
 and intrinsic phase compositions. 
 % ======================
-\subsection{Species Conservation}
+\subsection{Species conservation}
 % ======================
 The last conservation principle is applied to the chemical species or solutes. This principle allows predicting
 macrosegregation when applied to a solidification system, along with the mass, momentum and energy balances.
@@ -285,14 +313,16 @@ However, the conservation equation should be reformulated in the case of a melt 
 \item The solid fration is determined assuming complete mixing in both phases, hence the lever rule is applicable. It
 		should be mentionned that the solidification path in the current approach is tabulated using thermodynamic data at 
 		equilibrium
-\item The solutal diffusion coefficient $D^s$ in the solid phase is neglected in the mass diffusive flux term. The
+\item The macroscopic solutal diffusion coefficient $D^s$ in the solid phase is neglected in the mass diffusive flux term. The
 		remaining term, $D^l$, is a mass diffusion coefficient in the liquid phase, of unit $m^2 s^{-1}$
 \item Consequence of the static solid phase: $\avg{\rho w \vec{v}} = \gl \rhol \wl \vl +  \cancel{\gs \rhos \ws \vs} = \gl \rhol \wl \vl$ 
 \end{itemize}
 % ======================
 \subsubsection{Formulation}
 % ======================
-The species conservation is pretty similar the energy conservation formluted in the previous section. For a binary alloy, we can write:
+The species conservation is pretty similar the energy conservation formulated in the previous section. For a binary alloy, we can write:
+%
+%--------------------------
 \begin{subequations}
 \begin{align}
 	& \frac{\partial \avg{\rho w}}{\partial t} + \nabla \cdot \avg{\rho w \vec{v}} 
@@ -314,22 +344,21 @@ The species conservation is pretty similar the energy conservation formluted in 
 \end{align}
 \end{subequations}
 \begin{align}
-\label{eq:solute_balance}
+\label{eq:solute_balance_metal}
  \boxed{ \frac{\partial \avg{\rho w}}{\partial t} 
 		+ \rhol \vit \cdot \nabvec \wl
 		= \nabla  \cdot \brac{\rhol D^l \nabvec \wl }
 		+ \brac{\rhos-\rhol} \wl \frac{\partial  \gs}{\partial t}}
 \end{align}
-% ======================
-\subsubsection{Discussion}
-% ======================
+%--------------
+%
 The species transport equation is usually derived with the volumetric average composition $\avg{\rho w}$, then
 divided by the density, which is constant if no solidification shrinkage occurs. In the case where macrosegregation
 is solely due to fluid flow generated by natural or forced convection, the overall
 volume remains constant. It is thus convenient to compute composition variations using the mass variable $\wavg$.
 However, in the current context, the volume is subject to changes, hence the formulation of equation 
-\eqref{eq:solute_balance} with $\avg{\rho w}$.
-
+\eqref{eq:solute_balance_metal} with $\avg{\rho w}$.
+%
 %====================================================================
 \section{FE model: Air}
 Conservation equations for the air are close to those derived for the metal as a fluid, with the exception
@@ -341,17 +370,62 @@ of some points:
 \item unlike metal, air is considered incompressible at any time.
 \end{itemize}
 
+%------------
+\subsection{Mass and momentum conservation}
+
 %-----------
-\subsection{Energy Conservation}
+\subsection{Energy conservation}
 
-
+%------------
+\subsection{Species conservation}
+%
+The composition of alloying elements is crucial quantity to predict in this work. Nevertheless, such prediction is only relevant
+in the metallic alloy, even if the air is also made up of other chemical species (nitrogen, oxygen ...). For this obvious reason,
+the species conservation equation should not be solved in the air, but that of course is contradictory to the monolithic resolution.
+The consequence is that we should compute the conservation of chemical species in the air and the metal, but limit as much as possible
+the influence of the former, in a way to prevent a "numerical" solute exchange between these domains. To do so, the computed air velocity
+will not be used here for advection, but rather use a zero-velocity vector instead. 
+As diffusion is also another transport mechanism that may alter the conservation principle, a very low macroscopic solute diffusion 
+coefficient can be used, as long as its order of magnitude is at most a thousand times less than that in the melt.
+The low artificial diffusion in the air may slightly violate the wanted no-exchange condition at the air-liquid interface, but it is 
+known that suppressing the diffusion term in the air would result in a stiff partial differential equation that may be difficult to solve.
+%--------------------------
+\begin{subequations}
+\begin{align}
+	& \temp{\rhoa \wa}+ \nabla \cdot \avg{\rho w \vec{v}} 
+	= \nabla  \cdot \brac{\rhol \avg{D^l} \nabvec \wl } \\
+	& \frac{\partial \avg{\rho w}}{\partial t} + \nabla \cdot \brac{\gl \rhol \wl \vl}
+	= \nabla  \cdot \brac{\gl\rhol D^l \nabla \wl } \\ 
+	& \frac{\partial \avg{\rho w}}{\partial t} 
+		+ \rhol \wl  \nabla \cdot \vit
+		+ \vit \cdot \nabvec \brac{\rhol \wl}
+		= \nabla  \cdot \brac{\gl \rhol D^l \nabvec \wl } \\   
+	& \frac{\partial \avg{\rho w}}{\partial t} 
+		+ \cancel{\rhol} \wl  \frac{\rhol-\rhos}{\cancel{\rhol}} \frac{\partial  \gs }{\partial t}
+		+ \vit \cdot \nabvec \brac{\rhol \wl}
+		= \nabla  \cdot \brac{\gl \rhol D^l \nabvec \wl } \\ 
+	& \frac{\partial \avg{\rho w}}{\partial t} 
+		+ \brac{\rhol-\rhos} \wl \frac{\partial  \gs }{\partial t}
+		+ \vit \cdot \nabvec \brac{\rhol \wl}
+		= \nabla  \cdot \brac{\gl \rhol D^l \nabvec \wl }        
+\end{align}
+\end{subequations}
+\begin{align}
+\label{eq:solute_balance_air}
+ \boxed{ \frac{\partial \avg{\rho w}}{\partial t} 
+		+ \rhol \vit \cdot \nabvec \wl
+		= \nabla  \cdot \brac{\rhol D^l \nabvec \wl }
+		+ \brac{\rhos-\rhol} \wl \frac{\partial  \gs}{\partial t}}
+\end{align}
+%--------------
+%
 %-----------------------------------
 
 \section{FE monolithic model}
 %---------------------------------------
 The monolithic model combines all conservations equations in metal and air in a unique set of equations to be solved on a fixed mesh. 
 This can be accomplished by using the Heaviside function (defined in \cref{sec:heaviside}) relative to each domain.
-
+%
 %------------------
 \subsection{Interface treatment}
 %--------

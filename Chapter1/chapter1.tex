@@ -357,14 +357,14 @@ whereas the averaged energy balance writes:
 %------
 \begin{align}
 \label{eq:conservation_energy_init}
-& \frac{\partial \avg{\rho h}}{\partial t} + \nabla \cdot \avg{\rho h \vec{v}} + \nabla \cdot \brac{\avg{\kappa} \nabvec T} = 0
+& \frac{\partial \avg{\rho h}}{\partial t} + \nabla \cdot \avg{\rho h \vec{v}} - \nabla \cdot \brac{\avg{\kappa} \nabvec T} = 0
 \end{align}
 %------------
 and finally the species balance writes:
 %------
 \begin{align}
 \label{eq:conservation_solute_init}
-& \frac{\partial \avg{\rho w_i}}{\partial t} + \nabla \cdot \avg{\rho w_i \vec{v}} + \nabla \cdot \brac{\gl \Dl \nabvec \brac{\rhol \wil}}= 0
+& \frac{\partial \avg{\rho w_i}}{\partial t} + \nabla \cdot \avg{\rho w_i \vec{v}} - \nabla \cdot \brac{\gl \Dl \nabvec \brac{\rhol \wil}}= 0
 \end{align}
 %------------
 As stated previously, the momentum balance in the solid phase is not taken into consideration, hence we do not sum the corresponding 
@@ -456,10 +456,10 @@ in \cref{eq:conservation_momentumliq_init}:
 %------------
 where we intentionally employed the \emph{superficial velocity}, $\vit = \gl \vl$, as the main unknown, together with the liquid pressure $\pl$.
 This system, when modelled in 3D, has a total of 4 unknowns (velocity vector and pressure) and 3 equations ($X$,$Y$ and $Z$ projections for the velocity vector).
-A fourth equation is therefore added for closure, it's the mass balance for an incompressible fluid, derived from \cref{eq:conservation_mass}, 
-thus yields the so-called \emph{Navier-Stokes} equations:
+A fourth equation provided by the mass balance (\cref{eq:conservation_mass})is therefore added for closure, giving the following system of equations :
 %------
 \begin{equation}
+\label{eq:Navier-Stokes1}
    \left\{
    \begin{aligned}
       & \temp{ \rhol \vit } + \frac{1}{\gl} \nabvec \cdot \brac{\rhol \vit \times \vit} = \\
@@ -470,8 +470,24 @@ thus yields the so-called \emph{Navier-Stokes} equations:
     \right.
 \end{equation}
 %------------
+Last, the Boussinesq approximation allows taking a constant density in the inertial terms of \cref{eq:Navier-Stokes1} while the variations responsible for buoyancy forces can be computed
+using \cref{eq:rholiq}, if the system is incompressible. Hence, the final set of equations is better known as the incompressible \emph{Navier-Stokes} equations, applied to a solidifying melt:
+%------
+\begin{equation}
+\label{eq:Navier-Stokes2}
+   \left\{
+   \begin{aligned}
+      & \rholref \brac{\tempup{ \vit } + \frac{1}{\gl} \nabvec \cdot \brac{\vit \times \vit}} = \\
+	  &- \gl\nabvec \pl - 2 \mul \nabvec \cdot \brac{\nabmat \vit + \nabmattransp \vit}
+	  - \gl \mul \K^{-1} \vit + \gl \rhol \gravity\\ \\
+      & \nabla \cdot \vit =0
+    \end{aligned}
+    \right.
+\end{equation}
+%------------
 Since all conservation equations were presented and simplified by the main assumption of a static solid phase, 
 we may include them in a graphical summary in \cref{fig:algo_monodomain}
+\comment{correct definitions of $\Cl$ and $\Cs$}
 %---------------
 \begin{figure}[htbp]
 \label{fig:algo_monodomain}
@@ -504,7 +520,7 @@ we may include them in a graphical summary in \cref{fig:algo_monodomain}
 	\begin{tabular}{p{\llargeur}}
 	\textbf{Conservation of energy (Nonlinear Heat Transfer)} 
 	\begin{equation*}
-		 \frac{\partial \avg{\rho h}}{\partial t} + \vit \cdot \nabla \brac{\rhol \hl} + \nabla \cdot \brac{\avg{\kappa} \nabvec T} = 0
+		 \frac{\partial \avg{\rho h}}{\partial t} + \vit \cdot \nabla \brac{\rhol \hl} - \nabla \cdot \brac{\avg{\kappa} \nabvec T} = 0
 	\end{equation*}
 	\end{tabular}
 };
@@ -533,7 +549,7 @@ we may include them in a graphical summary in \cref{fig:algo_monodomain}
 	\begin{tabular}{p{\llargeur}}
 	\textbf{Conservation of chemical species (Macrosegregation)} 
 	\begin{equation*}
-		\frac{\partial \avg{\rho w_i}}{\partial t} + \vit \cdot \nabla \brac{\rhol \wil} + \nabla \cdot \brac{\gl \Dl \nabvec \brac{\rhol \wil}}= 0
+		\frac{\partial \avg{\rho w_i}}{\partial t} + \vit \cdot \nabla \brac{\rhol \wil} - \nabla \cdot \brac{\gl \Dl \nabvec \brac{\rhol \wil}}= 0
 	\end{equation*}
 	\end{tabular}
 };
@@ -545,7 +561,7 @@ we may include them in a graphical summary in \cref{fig:algo_monodomain}
 	\begin{equation*}
    \left\{
    \begin{aligned}
-      & \temp{ \rhol \vit } + \frac{1}{\gl} \nabvec \cdot \brac{\rhol \vit \times \vit} = \\
+      & \rholref \brac{\tempup{ \vit } + \frac{1}{\gl} \nabvec \cdot \brac{\vit \times \vit}} = \\
 	  &- \gl\nabvec \pl - 2 \mul \nabvec \cdot \brac{\nabmat \vit + \nabmattransp \vit}
 	  - \gl \mul \K^{-1} \vit + \gl \rhol \gravity\\ \\
       & \nabla \cdot \vit =0

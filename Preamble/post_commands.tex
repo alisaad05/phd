@@ -32,6 +32,8 @@
 
 \renewcommand\d{\ensuremath{\partial}}
 \newcommand\integral[3]{\ensuremath{\int_{#1} #2\: \mathrm{d}#3}}
+\newcommand{\deriv}[1]{\frac{\partial #1 }{\partial t}}
+\newcommand{\diff}[2]{ \ensuremath{\nabla \cdot\left( #1 \nabla #2 \right)  }}
 
 %\newcommand{\mtrx}[1]{{\underline{\underline{#1}}} }
 \newcommand{\mtrx}[1]{{\overline{\overline{#1}}} }
@@ -46,8 +48,11 @@
 \newcommand\nabvec{\ensuremath{\vec{\nabla}}}
 \newcommand\nabmat{\ensuremath{\mat{\nabla}}}
 \newcommand\nabmattransp{\ensuremath{\mat{\nabla^\text{t}}}}
-\newcommand\temp[1]{\ensuremath{\frac{\partial}{\partial t} \brac{#1} }}  
+\newcommand\temp[1]{\ensuremath{\frac{\partial}{\partial t} \brac{#1} }} 
+\newcommand\tempup[1]{\ensuremath{\frac{\partial #1}{\partial t} }} 
 \newcommand\vit{\ensuremath{\avg{\vec{v^l}}}}  
+\newcommand\vitf{\ensuremath{\avg{\vf}}}
+\newcommand\vita{\ensuremath{\avg{\va}}}
 \newcommand\strainrate{\ensuremath{\avg{\mat{\dot{\varepsilon}^l}}}}
 \newcommand\I{\ensuremath{\mat{\mathrm{I}}}}  
 
@@ -63,8 +68,8 @@
 %\newcommand\wil{\ensuremath{\avg{w_i}^l}}
 \newcommand\wil{\ensuremath{w_i^l}}
 \newcommand\wis{\ensuremath{w_i^s}}
-\newcommand\gphi{\ensuremath{g^{\phi} }}
-\newcommand\wiphi{\ensuremath{\avg{w_i}^\phi}}
+\newcommand\gphi{\ensuremath{{g^{\phi}} }}
+\newcommand\wiphi{\ensuremath{\wi^\phi}}
 \newcommand\rphi{\ensuremath{\rho^{\phi} }}
 \newcommand\hphi{\ensuremath{h^{\phi} }}
 \newcommand\Tk{\ensuremath{T^{\brac{k}}}}
@@ -75,10 +80,10 @@
 %TODO :redundant defnitions rhoref and rref
 \newcommand\rhoref{\ensuremath{\rho_{\text{ref}}}}
 \newcommand\rref{\ensuremath{\rho_{\text{ref}}}}
-
-\newcommand\Tref{\ensuremath{T_{\text{ref}}}}
-\newcommand\wlref{\ensuremath{w_{\text{ref}}^l}}
-\newcommand\wilref{\ensuremath{\wi_{\text{ref}}^l}}
+\newcommand\rholref{\ensuremath{\rho_{0}^{l}}}
+\newcommand\Tref{\ensuremath{T_{0}}}
+\newcommand\wlref{\ensuremath{w_{0}^l}}
+\newcommand\wilref{\ensuremath{\wi_{0}^l}}
 \newcommand\betaT{\ensuremath{\beta_T}}
 \newcommand\betawl{\ensuremath{\beta_{\wl}}}
 \newcommand\betawil{\ensuremath{\beta_{\wil}}}
@@ -88,12 +93,15 @@
 \newcommand\wavg{\ensuremath{\avg{w}}}
 \newcommand\wC{\ensuremath{\avg{w_\text{C}}}}
 \newcommand\wCR{\ensuremath{\avg{w_\text{Cr}}}}
-
+\newcommand\wl{\ensuremath{\avg{w}^l}}
+\newcommand\ws{\ensuremath{\avg{w}^s}}
+\newcommand\wa{\ensuremath{\avg{w}^A}}
 \newcommand\Cnominal{\ensuremath{{w}_0}}
 \newcommand\Cl{\ensuremath{{w}^l}}
 \newcommand\Clstar{\ensuremath{{w}^{l \text{*}} }}
 \newcommand\Cs{\ensuremath{{w}^s}}
 \newcommand\Csstar{\ensuremath{{w}^{s \text{*}} }}
+
 \renewcommand\k{\ensuremath{k}}
 \newcommand\ml{\ensuremath{{m}^l}}
 \newcommand\ms{\ensuremath{{m}^s}}
@@ -110,8 +118,8 @@
 \newcommand\psil{\ensuremath{\avg{\psi}^l}}
 \newcommand\gammastar{\ensuremath{{\Gamma}^{\text{*}} }}
 
-\newcommand\wl{\ensuremath{\avg{w}^l}}
-\newcommand\ws{\ensuremath{\avg{w}^s}}
+\newcommand\rhof{\ensuremath{\rho^F}}
+\newcommand\rhoa{\ensuremath{\rho^A}}
 \newcommand\rhol{\ensuremath{\rho^l}}
 \newcommand\rhos{\ensuremath{\rho^s}}
 \newcommand\rhov{\ensuremath{\avg{\rho \vec{v}}}}
@@ -119,12 +127,17 @@
 \newcommand\rhosvs{\ensuremath{\rho^s \vs}}
 \newcommand\kl{\ensuremath{\avg{\kappa^l}}}  % I added \avg
 \newcommand\ks{\ensuremath{\avg{\kappa^s}}}	 % I added \avg
+\newcommand\hf{\ensuremath{h^F}}
+\newcommand\ha{\ensuremath{h^A}}
 \newcommand\hl{\ensuremath{h^l}}
 \newcommand\hs{\ensuremath{h^s}}
+\newcommand\gf{\ensuremath{{g^F}}} % double braces useful for additional superscripts
+\newcommand\ga{\ensuremath{{g^A}}} % double braces useful for additional superscripts
 \newcommand\gl{\ensuremath{{g^l}}} % double braces useful for additional superscripts
 \newcommand\gs{\ensuremath{{g^s}}} % double braces useful for additional superscripts
 \newcommand\fl{\ensuremath{{f^l}}} % double braces useful for additional superscripts
 \newcommand\fs{\ensuremath{{f^s}}} % double braces useful for additional superscripts
+\newcommand\pf{\ensuremath{{p^F}}}
 \newcommand\pl{\ensuremath{{p^l}}}
 \newcommand\ps{\ensuremath{p^s}}
 \newcommand\Dl{\ensuremath{D^l}}
@@ -136,8 +149,10 @@
 \newcommand\sigmal{\ensuremath{\mat{\sigma^l}}}
 \newcommand\sigmas{\ensuremath{\mat{\sigma^s}}}
 
-\newcommand\vl{\ensuremath{\vec{v}^l}}
-\newcommand\vs{\ensuremath{\vec{v}^s}}
+\newcommand\vf{\ensuremath{\vec{v^F}}}
+\newcommand\va{\ensuremath{\vec{v^A}}}
+\newcommand\vl{\ensuremath{\vec{v^l}}}
+\newcommand\vs{\ensuremath{\vec{v^s}}}
 \newcommand\vphi{\ensuremath{\vec{v}^\phi}}
 \newcommand\vstar{\ensuremath{\vec{v}^\text{*}}}
 \newcommand\vlstar{\ensuremath{\vec{v}^{l \text{*}}}}
@@ -171,6 +186,7 @@
 \newcommand{\thercast}{\emph{Thercast\registered }}
 \newcommand{\ccemlcc}{\emph{CCEMLCC }} 
 \newcommand{\doitpoms}{\emph{© DoITPoMS, University of Cambridge}} 
+
 
 % Colors
 \newcommand{\red}[1]{{\color{Red} #1}}
