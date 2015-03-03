@@ -428,6 +428,8 @@ A "classical" coupling comes in the sense of "unmodified" coupling. This approac
 solver, then feed it as raw input to level set transport solver. The physical translation would be that the interface motion is dictated
 by the fluids flow in its vicinity. No treatment whatsoever is done between the two mentioned steps. While conservation principles are best
 satisfied with this approach, the latter yields some drawbacks, preventing its application in a generic way.
+For instance, the free liquid surface is not necessarily horizontal at all times and that can lead to the wrong shrinkage profile
+when solidification is complete.
 \comment{present the example of unstable interface when the ratio between fluids properties became greater than some value+discussion} 
 %----------------------------
 \begin{figure}[htbp]
@@ -461,8 +463,22 @@ The algorithm should simultaneously fulfil these requirements:
 \item follow shrinking metal surface profile in solidfying regions,
 \item satisfy the mass conservation principle, essentially in the metal.
 \end{itemize}
-We want to process the original transport velocity by imposing a uniform motion (speed and direction) at the nodes of the free surface,
-and at the same time, be able to follow the pipe formation at the surface as a result of solidification shrinkage.
+We want to process the original transport velocity by imposing a uniform motion (speed and direction) 
+at the nodes of the free surface, and at the same time, be able to follow the pipe formation at the 
+surface as a result of solidification shrinkage, as shown in \cref{fig:horizontal_liquid_surface}.
+%----------------------
+\begin{figureth}
+% textwidth 
+{0.8}
+%path 
+{Chapter4/Graphics/FreeSurface.pdf}
+% caption
+{Snapshot of a solidifying ingot by a cooling flux from the side. The profile of the actual surface changes in solid and mushy regions
+to adapt the new density while staying perfectly horizontal in the liquid phase.}
+% label
+\label{fig:horizontal_liquid_surface}
+\end{figureth}
+%-----------------------------------
 %
 \comment{How to transport level set using velocity from momentum conservation DIRECTLY or AVERAGED PER ELEMENTS, 
 show examples of instability/stability when using false/nominal air properties \\ 
@@ -476,13 +492,27 @@ in Shyamprasad's masters report). => I didnt notice: what time step $\delta t$ d
 %path 
 {Chapter4/Graphics/AvgTransport/BottomSideCooling.pdf}
 % caption
-{Treatment of liquid free surface in bottom and side heat extraction configurations. The dashed line represents the 
+{Treatment of liquid free surface in a) bottom and b) side heat extraction configurations. The dashed line represents the 
 initial level of the free liquid surface.}
-%In this example, the interface thickness is 800 $\mu m$.
 % label
-\label{fig:free_liquid_surface}
+\label{fig:bottom_side_cooling}
 \end{figureth}
 %-----------------------------------
+The general idea is read the velocity around the interface up to a certain thickness, which may be the same 
+thickness as the diffuse interface defined in \cref{sec:heaviside}, then compute a volumetric average
+from all the elements in the thickness. This average is then given to the transport solver, which will apply
+the same magnitude and direction to transport the interface. However, as we only need the transport velocity
+to be uniform within the "100\% liquid" elements, it should not be the case for the other elements that belong 
+either to the mushy zone or the solid region, where shrinkage is taking place.
+Therefore, depending on the heat extraction configuration, two scenarios are possible. If heat extraction is far from
+the interface, i.e. there is not direct contact as in \cref{fig:bottom_side_cooling}a, the surface area remains unchanged at any time, hence all the elements
+around the interface are "100\% liquid". This happens when a bottom cooling is applied to the ingot. In contrast, if a side cooling 
+is applied as shown in \cref{fig:bottom_side_cooling}b, the surface area of the interface will be reduced over time
+as a consequence of the solid front progression. In this case, the average transport velocity should be computed only
+from the elements belonging to the free surface. The remaining part of the interface which belongs to partial or full 
+solid regions, is transported with Navier-Stokes output, which should be some orders of magnitude less than the velocity
+imposed at the free surface, as a result of a decreasing permeability.
+
 %
 %--------------------------------
 \section{Shrinkage without macrosegregation}

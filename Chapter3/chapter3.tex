@@ -34,8 +34,7 @@ As for the last equation in \cref{tab:conservationeqs}, we follow the assumption
 \end{align}
 
 \section{Computational stability}
-CFL condition \\
-
+\subsection{CFL condition}
 \subsection{Integration order}
 Using P1 linear elements implies a P2 integration ? what are the advantages (time) and limitations ?
 
@@ -53,7 +52,7 @@ thermodynamic tabulations. A multicomponent alloy consists of at least two solut
 therefore the tabulation size increases, hence the number of search operations also increases. 
 To demonstrate the speed-up ability of the temperature-based approach while predicting all phase 
 transformations during macrosegregation, we consider the solidification of a ternary alloy, Fe–2 wt.\%C– 30 wt.\%Cr. 
-As illustrated in \textbf{Figure 5a}, the alloy domain has a cylinder shape close to 3-inch height × 1-inch diameter. 
+As illustrated in \textbf{Figure 5a}, the alloy domain has a cylinder shape close to 3-inch height $\times$ 1-inch diameter. 
 Exact values are reported in \textbf{Table 3} with all material properties, initial and boundary conditions, 
 as well as numerical parameters for the simulations. The melt steel is initially at \SI{1395}{\udegC}. The 
 temperature of the bottom surface is imposed with a constant decreasing rate of \SI{0.1}{\uCR} starting 
@@ -68,17 +67,17 @@ transformation path of the alloy at nominal composition, i.e. assuming no macros
 thermodynamic equilibrium as computed with ThermoCalc and the TCFE6 database %\citep{_tcfe6_2010, andersson_thermocalc_2002}. 
 A total of 5 phases need to be handled, the characteristic temperature for their formation being reported 
 in \textbf{Figure 5b}. %\citep{_tcfe6_2010} and \citep{andersson_thermocalc_2002}
-\comment{Figure 5: Configurations for directional casting of (a) a 1 inch diameter × 3 inches height cylindrical
- domain for which (b) temperature-time conditions are imposed at its bottom surface. The alloy is Fe – 2 wt.\% C–
- 30 wt.\% Cr, its computed transformation path %\citep{_tcfe6_2010, andersson_thermocalc_2002} 
- at nominal composition being displayed in (c)}
+\comment{Figure 5: Configurations for directional casting of (a) a 1 inch diameter $\times$ 3 inches height cylindrical
+domain for which (b) temperature-time conditions are imposed at its bottom surface. The alloy is Fe – 2 wt.\% C–
+30 wt.\% Cr, its computed transformation path %\citep{_tcfe6_2010, andersson_thermocalc_2002} 
+at nominal composition being displayed in (c)}
  
 \subsection{Tabulations}
 Full thermodynamic equilibrium is considered in the present case. Due to macrosegregation, 
 the average composition is expected to continuously vary in time and space during casting. 
 Transformation paths are thus determined a priori for a set of average compositions around 
 the nominal value. Hence, carbon content is arbitrarily varied in the interval [1.8 wt.\%, 2.2 wt.\%] 
-while chromium content variation is in the interval [27 wt.\%, 33 wt.\%]. The offset of ±10\% with 
+while chromium content variation is in the interval [27 wt.\%, 33 wt.\%]. The offset of $\pm 10\%$  with 
 respect to the nominal composition value allows tabulating relatively small composition steps to 
 ensure a good accuracy when compared to the corresponding ternary phase diagram. The average 
 composition step is \bin{}{0.04}{} for carbon and \bin{}{0.6}{} for chromium, thus representing 2\% 
