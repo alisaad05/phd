@@ -96,13 +96,22 @@ transformation paths and values of phase properties that are compatible with the
 \textbf{Figure 6} summarizes the tabulated thermodynamic data for two sets of average composition for the considered 
 ternary system. Note that in the present test case, phase densities are taken constant ($\rhos=\rhol=$ \SI{6725}{\udensity}). 
 Therefore they are not tabulated. With this assumption, no shrinkage occurs upon phase change.
-\begin{table}[h]
-\centering
-\caption{Parameters for solidification of alloy Fe – 2 wt.\% C – 30 wt.\% Cr }
-\begin{tabular}{llll}
-\hline  
-\textbf{Parameter} & \textbf{Symbol} & \textbf{Value} & \textbf{Unit} \\
-\hline 
+%
+%-----------------
+\begin{tabulate}
+%
+% caption 
+{Parameters for solidification of alloy Fe – 2 wt.\% C – 30 wt.\% Cr}
+% label
+{table:data_case_ternary}
+% line separation (e.g. 1.5mm)
+{0.8mm}
+% column justification-number (e.g. |c|ll|)
+{llll}
+% header titles (should use the & sign to switch columns)
+{\textbf{Parameter} & \textbf{Symbol} & \textbf{Value} & \textbf{Unit}}
+% cells content (should use the & and // to switch columns and rows)
+{
 Nominal composition 			& $\wC_0$ 				& 2 					& \si{\ucomposition} 	\\ 
                     			& $\wCR_0$ 				& 30 					& \si{\ucomposition} 	\\ 
 Characteristic temperatures 	& $T_\text{top},T_\text{bottom}$ 	& \textbf{FIGURE} & \si{\udegC} \\ 
@@ -128,14 +137,12 @@ Ingot length 			&   	& \num{75e-3} 	& \si{\metre}  \\
 FE mesh size 		&  		& \num{e-3} 	& \si{\metre}  \\ 
 Time step 			& $\dt$ & \num{0.1} 	& \si{\second}  \\ 
 Convergence criterion (residual) 	& $\varepsilon_R$ & \num{e-6} & $-$ \\ 
-Convergence criterion (temperature) & $\varepsilon_T$ & \num{e-2} & \si{\udegK} \\ 
-\hline 
-\end{tabular} 
-\label{table:data_case_ternary}
-\end{table}
-
-
-
+Convergence criterion (temperature) & $\varepsilon_T$ & \num{e-2} & \si{\udegK} 
+}
+%
+\end{tabulate}
+%-----------------
+%
 \section{Macroscopic freckle prediction}
 
 \subsection{Introduction}

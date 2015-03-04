@@ -439,3 +439,36 @@ or
 		\end{subfigure}
 		}
 %**********	
+\newenvironment{tabulate}[6]{
+\begin{table}[h]
+\caption{#1}
+\label{#2}
+{\tabulinesep=#3
+\begin{tabu}{#4}
+\tabucline[1pt]{-}
+#5 \\ \tabucline[1pt]{-}
+#6 \\ \tabucline[1pt]{-}
+\end{tabu}}
+%\label{table:manual insert label, otherwise it is not detected by IDE}	
+\end{table}
+}
+		
+% USE LIKE THIS	
+%
+%-----------------
+%\begin{tabulate}
+% caption 
+%{•}
+% label
+%{•}
+% line separation (e.g. 1.5mm)
+%{•}
+% column justification-number (e.g. |c|ll|)
+%{•}
+% header titles (should use the & sign to switch columns)
+%{•}
+% cells content (should use the & and // to switch columns and rows)
+%{•}
+%\end{tabulate}
+%-----------------
+%

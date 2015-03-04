@@ -165,6 +165,12 @@ columns (one column for each alloying element).
 %
 %
 %==================
+\section{Numerical method}
+%==================
+%
+
+%
+%==================
 \section{Validation}
 %==================
 %
@@ -185,15 +191,23 @@ absence of macrosegregation. This is done assuming a linear binary phase diagram
 properties listed in \autoref{table:data_case_alsi7}, i.e. the segregation coefficient, $k$, the liquidus slope, $m_L$, the 
 liquidus temperature, $T_L$, and the eutectic temperature, $T_E$. \textbf{Figure REF} shows the comparison with 
 the Hsolver and Tsolver. The results are found superimposed to the front tacking solution, thus giving validation 
-of the implementation as well as the iterative schemes presented above to solve the energy conservation.
+of the implementation as well as the iterative schemes presented above to solve the energy conservation check \cref{table:data_case_alsi7}	
+.
 
-\begin{table}
-\centering
-\begin{tabular}{llll}
-\hline 
-\textbf{Parameter} & \textbf{Symbol} & \textbf{Value} & \textbf{Unit} \\
-\hline 
-Nominal composition 	& $\avg{w}_0$ & \num{7} & \si{\ucomposition} \\ 
+%------------------------
+\begin{tabulate}
+% caption 
+{Parameters for the pure diffusion test case with alloy Al – 7 wt.\% Si presented in \textbf{FIGURE REF}}
+% label
+{table:data_case_alsi7}
+% line separation (e.g. 1.5mm)
+{1.0mm}
+% column justification-number (e.g. |c|ll|)
+{llll}
+% header titles (should use the & sign to switch columns)
+{\textbf{Parameter} & \textbf{Symbol} & \textbf{Value} & \textbf{Unit}}
+% cells content (should use the & and // to switch columns and rows)
+{Nominal composition 	& $\avg{w}_0$ & \num{7} & \si{\ucomposition} \\ 
 Liquidus temperature 	& $T_L$ & \num{618} 	& \si{\udegC} \\ 
 Eutectic temperature 	& $T_E$ & \num{577}	 	& \si{\udegC} \\  
 Segregation coefficient & $k$ & \num{0.13} 		& $-$  \\  
@@ -210,13 +224,11 @@ Ingot length 				&  & \num{0.1} & \si{\metre} \\
 FE mesh size 						&  					& \num{e-3} & \si{\metre} \\ 
 Time step 							& $\dt$ 			& \num{0.1} & \si{\second} \\ 
 Convergence criterion (residual) 	& $\varepsilon_R$	& \num{e-6} & $-$ \\ 
-Convergence criterion (temperature) & $\varepsilon_T$ 	& \num{e-2} & \si{\udegK} \\ 
-\hline 
-\end{tabular} 
-\caption{Parameters for the pure diffusion test case with alloy Al – 7 wt.\% Si presented in \textbf{FIGURE REF}}
-\label{table:data_case_alsi7}
-\end{table}
-
+Convergence criterion (temperature) & $\varepsilon_T$ 	& \num{e-2} & \si{\udegK}}
+%
+\end{tabulate}
+%------------------------
+%
 \subsection{Convection-diffusion with macrosegregation}
 Conservation equations in \textbf{Table 2} are for mass, momentum and chemical species. 
 As for energy, they are presented after the volume averaging technique has been applied 
