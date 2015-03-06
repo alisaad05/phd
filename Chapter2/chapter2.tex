@@ -13,8 +13,6 @@
  motivation and advantages of TvsH without talking about resolution time\\
  use article's introduction to fill this section (or improvise new things)}
 %
-\comment{ TODO: replace wt pct by the macro bin or tern }%
-%
 When speaking about macrosegregation, one needs to know that the problem involves phase change.
 For that, a minimum of four conservation equations are necessary:
 conservation  of  mass, momentum,  chemical  species and  energy. The  phase  change
@@ -168,7 +166,108 @@ columns (one column for each alloying element).
 \section{Numerical method}
 %==================
 %
-
+The finite element method is used to solve the energy conservation as expressed by \cref{eq:averaged_energy_eqn}. 
+A test function $\test$ belonging to the Hilbertian Sobolev space $\hilbert(\Omega)$ of continuous integrable test functions 
+is used to formulate the integral variational form of \cref{eq:averaged_energy_eqn} \citep{suli_lecture_2000}. 
+A Fourier boundary condition is considered on the domain boundary $\partial \Omega$. The domain $\Omega$
+is discretised using first-order linear simplexes defined by their number of local nodes (denoted “NbLoc”): triangles 
+in 2D with NbLoc=3 and tetrahedra in 3D with  NbLoc=4. The outcome is a residual that we aim to minimize so that the 
+conservation principle is satisfied. Therefore, the weak form writes:
+%----------------------
+\begin{multline}
+\label{eq:weak_energy}
+\forall \test \in M=\curly{u \in \hilbert(\Ohm)} \\
+\integral{\Ohm}{\test \tempup{\rhoh}}{V} 
+ + \integral{\Ohm}{\test \vit \cdot \nabvec \brac{\rhol \hl}}{V}
+ - \integral{\Ohm}{\test \diff{\avg{\kappa}}{T} }{V}
+ - \integral{\Ohm}{\test \source }{V}
+ = 0
+\end{multline}
+%------------
+where we assumed a static solid phase and an incompressible liquid phase, which allowed recasting the second term of 
+\cref{eq:averaged_energy_eqn} into $\vit \cdot \nabvec \brac{\rhol \hl}$. 
+The steps for discretizing in time and space the previous equation are well detailed in  some book references like \citet{rappaz_numerical_2003,dantzig_solidification_2009}. As for enthalpy and temperature, they are spatially discretized in each simplex 
+using interpolations functions $\interp$, thus defining the nodal values $H_j$ and $T_j$, respectively: 
+%----------------------
+\begin{align}
+\label{eq:discretise_H}
+\rhoh 	&= \sum_{j=1}^{\text{NbLoc}}  \interp_j   \Hj \\ 
+\label{eq:discretise_T}
+T		&= \sum_{j=1}^{\text{NbLoc}}  \interp_j   \Tj
+\end{align}
+%------------
+Note that $H_j$ is a volumetric enthalpy. The Galerkin formulation gives the following expression for the residual contribution at a mesh node $i$ for time step $t$ in a local element $\element$:
+%----------------------
+\begin{align}
+\begin{split}
+\label{eq:discretise_residual_local}
+& \brac{R_i^E}^t = \Mij^E \brac{\Hjt - \Hjtminus} + \Aij^E \Tjt + \brac{\Kija^E + \Kijb^E}-\Fi^E - \Si^E=0 \\
+& i,j:1 \rightarrow \text{NbLoc}
+\end{split}
+\end{align}
+%------------
+where the numerical contributions can be detailed as follows:
+%----------------------
+\begin{align}
+& \textbf{transient term} \quad  \Mij^E = \integral{\OhmE}{\frac{1}{\dt} \interp_i \interp_j }{V} \\ 
+& \textbf{advection term} \quad  \Aij^E = \integral{\OhmE}{\rhol \cpl \interp_i \vit \cdot \nabvec \interp_j}{V} \\ 
+& \textbf{diffusion term} \quad  \Kija^E = \integral{\OhmE}{\avg{\kappa} \nabvec \interp_i\nabvec \interp_j}{V} \\ 
+& \textbf{boundary condition terms}  \quad  \Kijb^E = \integral{\dOhmE}{\hext \interp_i \interp_j}{S} \\ 
+& \textbf{boundary condition terms}	 \quad	\Fi^E = \integral{\dOhmE}{\hext \Text \interp_i}{S} \\
+& \textbf{source term} \quad  \Si^E = \integral{\OhmE}{\interp_i \source}{V}
+\end{align}
+%------------
+%
+The surface integrals $\Kijb^E$ and $\Fi^E$ are related to a Fourier-type boundary condition, 
+with $\hext$ as a coefficient of heat exchange and $\Text$ as the external temperature far from the 
+boundary. The energy conservation principle is satisfied when the sum of the residual contributions 
+coming from all the mesh elements is zero. In other words, the following global residual defined by 
+the assembly of these contributions, should be minimized: 
+%----------------------
+\begin{align}
+\begin{split}
+\label{eq:discretise_residual_global}
+& \brac{R_i}^t = \Mij \brac{\Hjt - \Hjtminus} + \Aij \Tjt + \brac{\Kija + \Kijb}-\Fi - \Si=0 \\
+& i,j:1 \rightarrow \text{NbGlob}
+\end{split}
+\end{align}
+%------------
+where the global tensors $\Mij$, $\Aij$, $\Kija$ , $\Kijb$ , $\Fi$ and $\Si$ contain respectively, after an assembly step, 
+the contributions of the local matrices $\Mij^E$, $\Aij^E$, $\Kija^E$ , $\Kijb^E$ , $\Fi^E$ and $\Si^E$ from each discretised 
+element in the domain $\Ohm$. Accordingly, the indices $i$ and $j$ refer to global node numbers, where the total number of nodes is 
+denoted by "NbGlob". It is clear that the global residual inherits the dependence between enthalpy and temperature. 
+This is shown in \cref{eq:discretise_residual_global} where the average volume enthalpy is a function of the temperature. It infers that this residual 
+is a non-linear function; therefore minimizing it requires an iterative non-linear algorithm. Our choice settles on the 
+Newton-Raphson method, known for its quadratic convergence speed. A solidification problem can induce severe non-linearities 
+from the release of the latent heat (which itself is temperature-composition dependent) and the variations of the thermophysical 
+properties of the alloy with respect to temperature and average composition. This algorithm could thus treat such variations. 
+Considering the link between enthalpy and temperature, \cref{eq:discretise_residual_global} may be solved either for enthalpy 
+or for temperature as a nodal unknown; hence both formulations are presented hereafter.
+%-----------------
+\begin{align}
+\begin{split}
+\label{eq:discretise_residual_global}
+& \brac{R_i}^t = \Mij \brac{\Hjt - \Hjtminus} + \Aij \Tjt + \brac{\Kija + \Kijb}-\Fi - \Si=0 \\
+& i,j:1 \rightarrow \text{NbGlob}
+\end{split}
+\end{align}
+%------------
+%
+%
+%---------------
+\subsection{Enthalpy-based approach }
+%---------------
+The residual is re-written using a Taylor series expansion to the first order for a nonlinear iteration $\iter$ :
+%-----------------
+\begin{align}
+\label{eq:residual_Hsolver}
+%& \brac{R_i}^\iter = \brac{R_i}^\iterminus + \dRdH^\iterminus_{ij}
+\end{align}
+%------------
+Neglecting the second order terms, the suggested correction at each iteration in view of cancelling 
+the residual and giving the new value 
+%
+%
 %
 %==================
 \section{Validation}
@@ -267,7 +366,7 @@ methods that i used to reach this simplified form }
 \caption{Averaged conservation equations for the conservation of mass (a), momentum (b) and solute mass (c)}
 \label{table:smacs_equations}
 \end{table}
-\comment{ Figure SMACS: Computed unidirectional heat diffusion during solidification of an Al – 7 wt.\% Si 
+\comment{ Figure SMACS: Computed unidirectional heat diffusion during solidification of an \bin{Al}{7}{Si}
 alloy using (orange) the enthalpy method and (black) the temperature method, comparison being made for (left) 
 cooling curves and (right) time history of the liquid fraction. Each curve corresponds to a position along the 
 sample, from \SI{0}{\centi \metre} (cooling side) to \SI{10}{\centi \metre} (insulated side), with \SI{2}{\centi 
@@ -276,7 +375,7 @@ sample, from \SI{0}{\centi \metre} (cooling side) to \SI{10}{\centi \metre} (ins
 The Tsolver’s ability to be coupled with various physical phenomena like macrosegregation and fluid flow 
 in porous medium is displayed in this test case. It consists of a solidification benchmark where a \SI{10}{\centi \metre}
 width $\times$ \SI{6}{\centi \metre} height $\times$ \SI{1}{\centi \metre} thick cavity containing 
-a Sn – 3 wt.\% Pb melt is cooled down from its two 
+a \bin{Sn}{3}{Pb} melt is cooled down from its two 
 narrowest vertical sides using heat exchangers (LHE: left heat exchanger, RHE: right heat exchanger). The 
 experiment, inspired by \citet{hebditch_observations_1974} similar set up, has been 
 revisited by \citet{hachani_experimental_2012} who performed the solidification with better 
