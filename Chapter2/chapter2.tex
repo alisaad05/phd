@@ -262,7 +262,7 @@ The residual is re-written using a Taylor series expansion to the first order fo
 %-----------------
 \begin{align}
 \label{eq:Hsolver_residual}
-& \brac{R_i}^\iter = \brac{R_i}^\iterminus + \brac{\dRdH}^\iterminus_{ij} \Delta \Hj^\iterminus + \order\brac{\Hj^2}
+& \brac{R_i}^\iterplus = \brac{R_i}^\iter + \brac{\dRdH}^{\iter}_{ij} \Delta \Hj^\iter + \order\brac{\Hj^2}
 \end{align}
 %------------
 Neglecting the second order terms, the suggested correction at each iteration in view of cancelling 
@@ -271,22 +271,22 @@ relative to what we call a \emph{Hsolver}:
 %-----------------
 \begin{align}
 \label{eq:Hsolver_residual_linear}
-& \brac{\dRdH}^\iterminus_{ij} \brac{\Hj^\iter - \Hj^\iterminus} = -R_i^\iterminus
+& \brac{\dRdH}^{\iter}_{ij} \brac{\Hj^\iterplus - \Hj^\iter} = -R_i^\iter
 \end{align}
 %------------
 where $\dRdH$ is a global tangent matrix yielding the variations of the residual with respect to the enthalpy 
-in the last iteration, $\Hj^\iterminus$. If \cref{eq:discretise_residual_local} is considered, then the contribution of an element $\OhmE$ writes:
+in the last iteration, $\Hj^\iter$. If \cref{eq:discretise_residual_local} is considered, then the contribution of an element $\OhmE$ writes:
 %-----------------
 \begin{align}
 \label{eq:dRdH}
-& \brac{\dRdH}^{E\iterminus}_{ij} 
+& \brac{\dRdH}^{\iter E}_{ij} 
 = \Mij^E 
-+ \underbrace{\Aij^E \brac{\dTdH}^{\iterminus}_{j}}_{\nosum}
-+ \underbrace{\brac{\Kija^E + \Kijb^E} \brac{\dTdH}^{\iterminus}_{j}}_{\nosum}
++ \underbrace{\Aij^E \brac{\dTdH}^{\iter}_{j}}_{\nosum}
++ \underbrace{\brac{\Kija^E + \Kijb^E} \brac{\dTdH}^{\iter}_{j}}_{\nosum}
 \end{align}
 %------------
 \Cref{eq:dRdH} is the core of the enthalpy-based solver. The resolution of \cref{eq:Hsolver_residual_linear} 
-then yields a new estimate of the vector of nodal enthalpies $H^\iter$, which are the only unknowns to be solved for. 
+then yields a new estimate of the vector of nodal enthalpies $H^\iterplus$, which are the only unknowns to be solved for. 
 Once determined at iteration $\iter$, convergence tests are performed (refer to section %TODO ).
 %
 %
@@ -298,23 +298,23 @@ leading this time to an iterative temperature correction:
 %-----------------
 \begin{align}
 \label{eq:Tsolver_residual_linear}
-& \brac{\dRdT}^\iterminus_{ij} \brac{\Tj^\iter - \Tj^\iterminus} = -R_i^\iterminus
+& \brac{\dRdT}^\iter_{ij} \brac{\Tj^\iterplus - \Tj^\iter} = -R_i^\iter
 \end{align}
 %------------
-where $\dRdT$ is a global tangent matrix yielding the variations of the residual with respect to temperature $\Tj^\iterminus$ at the previous iteration. 
+where $\dRdT$ is a global tangent matrix yielding the variations of the residual with respect to temperature $\Tj^\iter$ at the previous iteration. 
 This solver will be referred to as \emph{Tsolver}.
 The contribution of an element $\OhmE$ to this tangent matrix is evaluated as:
 %-----------------
 \begin{align}
 \label{eq:dRdT}
-& \brac{\dRdT}^{E\iterminus}_{ij} 
+& \crochet{\dRdTijk}^E
 = \Mij^E 
-+ \underbrace{\Aij^E \brac{\dHdT}^{\iterminus}_{j}}_{\nosum}
-+ \underbrace{\brac{\Kija^E + \Kijb^E} \brac{\dHdT}^{\iterminus}_{j}}_{\nosum}
++ \underbrace{\Aij^E \brac{\dHdT}^{\iter}_{j}}_{\nosum}
++ \underbrace{\brac{\Kija^E + \Kijb^E} \brac{\dHdT}^{\iter}_{j}}_{\nosum}
 \end{align}
 %------------
 In contrast to the previous solver, \cref{eq:dRdT} is the core of the temperature-based solver. The resolution of \cref{eq:Tsolver_residual_linear} 
-then yields a new estimate of the vector of nodal temperatures $T^\iter$, which are the only unknowns to be solved for. 
+then yields a new estimate of the vector of nodal temperatures $T^\iterplus$, which are the only unknowns to be solved for. 
 Once updated for iteration $\iter$, convergence tests are performed (refer to section %TODO ).
 %
 %
@@ -327,13 +327,13 @@ term emerges from the tangent matrix evaluation describing the variations betwee
 and enthalpy: $\dHdT$ (or $\dTdH$). This term invokes the previously mentioned temperature-enthalpy 
 tabulations which depend on the alloy composition. Consequently,  $\dHdT$ (or $\dTdH$)
 has a great influence on the convergence of the Tsolver (respectively the Hsolver). 
-At a nonlinear iteration $\iter$, this term is written using a finite difference:
+When \cref{eq:Hsolver_residual_linear} or \cref{eq:Tsolver_residual_linear} is solved at iteration $\iter$, this term is written using a finite difference:
 %-----------------
 \begin{align}
 \label{eq:finite_difference_Tsolver}
-& \textbf{Tsolver} \qquad \brac{\dHdT}^{\iterminus}_{j} = \frac{\rhoh_j^\iter - \rhoh_j^\iterminus}{T_j^\iter - T_j^\iterminus} \\
+& \textbf{Tsolver} \qquad \brac{\dHdT}^{\iterplus}_{j} = \frac{\rhoh_j^\iterplus - \rhoh_j^\iter}{T_j^\iterplus - T_j^\iter} \\
 \label{eq:finite_difference_Hsolver}
-& \textbf{Hsolver} \qquad \brac{\dTdH}^{\iterminus}_{j} = \frac{T_j^\iter - T_j^\iterminus}{\rhoh_j^\iter - \rhoh_j^\iterminus}
+& \textbf{Hsolver} \qquad \brac{\dTdH}^{\iterplus}_{j} = \frac{T_j^\iterplus - T_j^\iter}{\rhoh_j^\iterplus - \rhoh_j^\iter}
 \end{align}
 %------------
 For the Tsolver, the enthalpy $\rhoh_j^\iter$ is needed to evaluate \cref{eq:finite_difference_Tsolver}. 
@@ -362,17 +362,17 @@ Tsolver in terms of computation time providing the same numerical accuracy while
 %
 Convergence tests are necessary at the end of each iteration of the energy solver to determine 
 the convergence status of the algorithm. In the context of the Tsolver for instance, the residual 
-is re-evaluated with the newly determined temperature $\Tj^\iter$ and enthalpy $\Hj^\iter$ so \cref{eq:discretise_residual_global} rewrites:
+is re-evaluated with the newly determined temperature $\Tj^\iterplus$ and enthalpy $\Hj^\iterplus$ so \cref{eq:discretise_residual_global} rewrites:
 %-----------------
 \begin{align}
 \begin{split}
 \label{eq:discretise_residual_global_new}
-& \brac{R_i}^\iter(T) = \Mij \brac{H(\Tj^\iter) - \Hjtminus} + \Aij \Tj^\iter + \brac{\Kija + \Kijb}\Tj^\iter -\Fi - \Si \\
+& \brac{R_i}^\iterplus = \Mij \brac{\Hj^\iterplus) - \Hjtminus} + \Aij \Tj^\iterplus + \brac{\Kija + \Kijb}\Tj^\iterplus -\Fi - \Si \\
 & i,j:1 \rightarrow \text{NbGlob}
 \end{split}
 \end{align}
 %------------
-The norm of the current residual, $\norm{R^\iter}$, is compared to a fixed small 
+The norm of the current residual, $\norm{R^\iterplus}$, is compared to a fixed small 
 value $\varepsilon_R \approx \crochet{\num{d-5};\num{d-4}}$. The resulting temperature variation, 
 $\abval{\Tj^\iter-\Tj^\iterminus}$, should also respond to similar criterion between two consecutive 
 iterations. For that purpose, we compare it to another fixed value $\varepsilon_T \approx \crochet{\num{d-3};\num{d-2}}$.
@@ -391,6 +391,99 @@ Convergence is ultimately achieved when the following criteria are simultaneousl
 A comparison of both solver formulations is done in the hereafter test cases section.
 %
 %
+%
+\begin{figure}[htbp]
+\newlength{\largeur}
+\newlength{\llargeur}
+\newlength{\rlargeur}
+
+\setlength{\largeur}{12.5cm}
+\setlength{\llargeur}{3.8cm}
+\centering
+\begin{tikzpicture}[node distance=0.2cm]
+
+\tikzstyle{rect}=[rectangle,draw,text=black]
+\tikzstyle{whiterect}=[rectangle,text=black]
+\tikzstyle{test}=[diamond,aspect=3,draw,text=black]
+\tikzstyle{fleche}=[->,>=stealth]
+\tikzstyle{trait}=[]
+
+\setlength{\rlargeur}{\largeur}
+\addtolength{\rlargeur}{-2.\tabcolsep}
+\addtolength{\rlargeur}{-1.\llargeur}
+
+
+\node[rect] (init) at (0cm,5cm)
+{
+	\begin{tabular}{@{}p{\llargeur}p{\rlargeur}@{}}
+		\textbf{Initialisation} \\
+		Time stepping 	& $t$, $\Delta t$ \\
+		Nodal values	& $\Hjt$, $\Tjt$, $\dHdTjt$ %, $\avg{w}^t$, $\avg{v^l}^t$
+	\end{tabular}
+};
+
+\node[rect,below=of init] (init_iter)
+{
+	\begin{tabular}{@{}p{\llargeur}p{\rlargeur}@{}}
+		\textbf{Newton-Raphson} \\		
+		Iteration step	& $\iter=0$ \\
+		Nodal values 	& $\Hjk=\Hjt$, \\ 
+						& $\Tjk=\Tjt$, \\
+						& $\dHdTjk=\dHdTjt$ %, $\avg{w}^t$, $\avg{v^l}^t$
+	\end{tabular}
+};
+	
+\node[rect,below=of init_iter] (local_contrib)
+{
+	\begin{tabular}{@{}p{\llargeur}p{\rlargeur}@{}}
+		\textbf{Local contributions}\\
+		$\crochet{A^\iter}^E=\crochet{\dRdTijk}^E$  & (\cref{eq:Tsolver_residual_linear})\\
+		$\crochet{b^\iter}^E=\crochet{\Rjk}^E$		& (\cref{eq:discretise_residual_local})
+	\end{tabular}
+};
+
+\node[rect,below=of local_contrib] (assembly)
+{
+	\begin{tabular}{@{}p{\llargeur}p{\rlargeur}@{}}
+	\textbf{Matrices assembly}\\
+		Global matrices & 	$\crochet{A^\iter} \leftarrow \crochet{A^\iter}^E$, $\crochet{b^\iter} \leftarrow \crochet{b^\iter}^E$, $\forall E \in \Ohm$ \\
+		Residual norm	&	$\norm{R^\iter} =  \norm{A^\iter \Tk - b^\iter}$ \\ 
+	\end{tabular}
+};
+
+\node[rect,below=of assembly] (solve)
+{
+	\begin{tabular}{@{}p{\llargeur}p{\rlargeur}@{}}
+	\textbf{Solve linear system} &	$ \Tkplus= (A^\iter)^{-1} b^\iter$ \\
+	\end{tabular}
+};
+
+
+\node[rect,below=of solve] (microseg)
+{
+	\begin{tabular}{@{}p{\llargeur}p{\rlargeur}@{}}
+	\textbf{Microsegregation} \\
+	Tabulation access &	$ \rhoh^\iterplus=\sum_\phi \crochet{\gphi \rphi \hphi}_{T=\Tkplus}$ \quad (\cref{eq:volume_average_enthalpy})\\
+	\end{tabular}
+};
+
+\setlength{\rlargeur}{\largeur}
+\addtolength{\rlargeur}{-2.\tabcolsep}
+\addtolength{\rlargeur}{-1.\llargeur}
+
+\node[test,below=of microseg] (t_microtime)
+{
+	$t_m+\delta t < t+\Delta t$
+};
+\end{tikzpicture}
+
+\caption{Resolution algorithm of the temperature-based solver.}
+
+\end{figure}
+%
+%
+%
+
 \section{Validation}
 %==================
 %

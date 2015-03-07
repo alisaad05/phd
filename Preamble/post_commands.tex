@@ -55,12 +55,20 @@
 \newcommand\OhmE{\ensuremath{\Ohm_E}}
 \newcommand\dOhmE{\ensuremath{\partial \OhmE}}
 \newcommand\element{\ensuremath{\Ohm_E}}
-\newcommand\iter{\ensuremath{{\brac{\nu}}}}
-\newcommand\iterminus{\ensuremath{{\brac{\nu-1}}}}
+%--------------------------
+\newcommand\itersymbol{\nu}
+%--------------------------
+\newcommand\iter{\ensuremath{{\brac{\itersymbol}}}}
+\newcommand\iterplus{\ensuremath{{\brac{\itersymbol+1}}}}
+\newcommand\iterminus{\ensuremath{{\brac{\itersymbol-1}}}}
 \newcommand\dRdH{\ensuremath{\frac{dR}{dH}}}
 \newcommand\dRdT{\ensuremath{\frac{dR}{dT}}}
 \newcommand\dTdH{\ensuremath{\frac{dT}{dH}}}
-\newcommand\dHdT{\ensuremath{\frac{dH}{dT}}}
+\newcommand\dHdT{\ensuremath{\frac{dH}{dT}}} 
+\newcommand\dHdTjk{\ensuremath{\brac{dH/dT}_j^{\iter}}}
+\newcommand\dHdTjt{\ensuremath{\brac{dH/dT}_j^{t}}}
+\newcommand\dRdTijk{\ensuremath{\brac{\frac{dR}{dT}}_{ij}^{\iter}}}
+\newcommand\Rjk{\ensuremath{R_{j}^{\iter}}}
 
 \newcommand\nabvec{\ensuremath{\vec{\nabla}}}
 \newcommand\nabmat{\ensuremath{\mat{\nabla}}}
@@ -93,16 +101,21 @@
 \newcommand\wiphi{\ensuremath{\wi^\phi}}
 \newcommand\rphi{\ensuremath{\rho^{\phi} }}
 \newcommand\hphi{\ensuremath{h^{\phi} }}
-\newcommand\Tk{\ensuremath{T^{\brac{k}}}}
+\newcommand\Tk{\ensuremath{T^\iter}}
+\newcommand\Tkplus{\ensuremath{T^\iterplus}}
 \newcommand\Tkinit{\ensuremath{T^{\brac{k=0}}}}
 \newcommand\Hk{\ensuremath{\rh^{\brac{k}}}}
 \newcommand\Hkinit{\ensuremath{\rh^{\brac{k=0}}}}
 \newcommand\source{\ensuremath{\avg{\dot{Q}_{{V}}}}}
 \newcommand\Hj{\ensuremath{H_j}}
 \newcommand\Hjt{\ensuremath{H_j^t}}
+\newcommand\Hjk{\ensuremath{H_j^\iter}}
+\newcommand\Hjkminus{\ensuremath{H_j^{\iter-1}}}
 \newcommand\Hjtminus{\ensuremath{H_j^{t-\dt}}}
 \newcommand\Tj{\ensuremath{T_j}}
 \newcommand\Tjt{\ensuremath{T_j^t}}
+\newcommand\Tjk{\ensuremath{T_j^\iter}}
+\newcommand\Tjkminus{\ensuremath{T_j^{\iter-1}}}
 \newcommand\Tjtminus{\ensuremath{T_j^{t-\dt}}} 
 \newcommand\nosum{\text{no sum on }j} 
 
