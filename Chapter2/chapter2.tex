@@ -400,7 +400,7 @@ A comparison of both solver formulations is done in the hereafter test cases sec
 \setlength{\largeur}{13.5cm}
 \setlength{\llargeur}{3.8cm}
 \centering
-\begin{tikzpicture}[node distance=0.4cm]
+\begin{tikzpicture}[node distance=0.3cm]
 
 \tikzstyle{rect}=[rectangle,draw,text=black]
 \tikzstyle{whiterect}=[rectangle,text=black]
@@ -436,9 +436,9 @@ A comparison of both solver formulations is done in the hereafter test cases sec
 \node[rect,below=of init_iter] (local_contrib)
 {
 	\begin{tabular}{@{}p{\llargeur}p{\rlargeur}@{}}
-		\textbf{Local contributions}\\
-		$\crochet{A^\iter}^E=\crochet{\dRdTijk}^E$  & (\cref{eq:dRdT})\\
-		$\crochet{b^\iter}^E=\crochet{\Rjk}^E$		& (\cref{eq:discretise_residual_local})
+		\textbf{Local contributions} \\
+		& $\crochet{A_{ij}^\iter}^E=\crochet{\dRdTijk}^E$  \quad (\cref{eq:dRdT}) \\
+		& $\crochet{b_{j}^\iter}^E=\crochet{\dRdTijk}^E \Tjk - \Rjk$	\quad (\cref{eq:discretise_residual_local})
 	\end{tabular}
 };
 
@@ -447,7 +447,7 @@ A comparison of both solver formulations is done in the hereafter test cases sec
 	\begin{tabular}{@{}p{\llargeur}p{\rlargeur}@{}}
 	\textbf{Matrices assembly}\\
 		Global matrices & 	$\crochet{A^\iter} \leftarrow \crochet{A^\iter}^E$, $\crochet{b^\iter} \leftarrow \crochet{b^\iter}^E$, $\forall E \in \Ohm$ \\
-		Residual norm	&	$\norm{R^\iter} =  \norm{A^\iter \Tk - b^\iter}$ \\ 
+		Residual norm	&	$\norm{R^\iter} = \norm{A^\iter \Tk - b^\iter}$ \\ 
 	\end{tabular}
 };
 
@@ -463,7 +463,7 @@ A comparison of both solver formulations is done in the hereafter test cases sec
 {
 	\begin{tabular}{@{}p{\llargeur}p{\rlargeur}@{}}
 	\textbf{Microsegregation} \\
-	Tabulation access 	&	$ \rhoh^\iterplus=\sum_\phi \crochet{\gphi \rphi \hphi}_{T=\Tkplus}$ \quad (\cref{eq:volume_average_enthalpy})\\
+	Tabulation (\TtoH) 	&	$ \rhoh^\iterplus=\sum_\phi \crochet{\gphi \rphi \hphi}_{T=\Tkplus}$ \quad (\cref{eq:volume_average_enthalpy})\\
 	Update				& 	$\dHdTjkplus=f(\Tjkplus,\rhoh^\iterplus)$ (\cref{eq:finite_difference_Tsolver})\\
 	\end{tabular}
 };
@@ -574,7 +574,7 @@ A comparison of both solver formulations is done in the hereafter test cases sec
 \setlength{\largeur}{13.5cm}
 \setlength{\llargeur}{3.8cm}
 \centering
-\begin{tikzpicture}[node distance=0.2cm]
+\begin{tikzpicture}[node distance=0.3cm]
 
 \tikzstyle{rect}=[rectangle,draw,text=black]
 \tikzstyle{whiterect}=[rectangle,text=black]
@@ -609,9 +609,9 @@ A comparison of both solver formulations is done in the hereafter test cases sec
 \node[rect,below=of init_iter] (local_contrib)
 {
 	\begin{tabular}{@{}p{\llargeur}p{\rlargeur}@{}}
-		\textbf{Local contributions}\\
-		$\crochet{A^\iter}^E=\crochet{\dRdHijk}^E$  & (\cref{eq:dRdH})\\
-		$\crochet{b^\iter}^E=\crochet{\Rjk}^E$		& (\cref{eq:discretise_residual_local})
+		\textbf{Local contributions} \\
+		& $\crochet{A_{ij}^\iter}^E=\crochet{\dRdHijk}^E$  \quad (\cref{eq:dRdH}) \\
+		& $\crochet{b_{j}^\iter}^E= \Rjk$	\quad (\cref{eq:discretise_residual_local})
 	\end{tabular}
 };
 
@@ -620,25 +620,26 @@ A comparison of both solver formulations is done in the hereafter test cases sec
 	\begin{tabular}{@{}p{\llargeur}p{\rlargeur}@{}}
 	\textbf{Matrices assembly}\\
 		Global matrices & 	$\crochet{A^\iter} \leftarrow \crochet{A^\iter}^E$, $\crochet{b^\iter} \leftarrow \crochet{b^\iter}^E$, $\forall E \in \Ohm$ \\
-		Residual norm	&	$\norm{R^\iter} =  \norm{A^\iter \Tk - b^\iter}$ \\ 
+		Residual norm	&	$\norm{R^\iter} =  \norm{A^\iter \deltaHk - b^\iter}$ \\ 
 	\end{tabular}
 };
 
 \node[rect,below=of assembly] (solve)
 {
 	\begin{tabular}{@{}p{\llargeur}p{\rlargeur}@{}}
-	\textbf{Solve linear system} &	$ \Tkplus= (A^\iter)^{-1} b^\iter$ \\
+	\textbf{Solve linear system} &	$ \Delta \Hkplus= (A^\iter)^{-1} b^\iter$ \\
+	\textbf{Update iterate} &	$ \Hjkplus = \Delta \Hjkplus + \Hjk$ \\
 	\end{tabular}
 };
 
 
 \node[rect,below=of solve] (microseg)
 {
-	\begin{tabular}{@{}p{\llargeur}p{\rlargeur}@{}}
+	\begin{tabu}{@{}p{\llargeur}p{\rlargeur}@{}}
 	\textbf{Microsegregation} \\
-	Tabulation access 	&	$ \rhoh^\iterplus=\sum_\phi \crochet{\gphi \rphi \hphi}_{T=\Tkplus}$ \quad (\cref{eq:volume_average_enthalpy})\\
+	Tabulation (\HtoT)	&	$ \rhoh^\iterplus \rightarrow \Tkplus$ \quad (Brent algorithm) \\
 	Update				& 	$\dTdHjkplus=f(\Tjkplus,\rhoh^\iterplus)$ (\cref{eq:finite_difference_Hsolver})\\
-	\end{tabular}
+	\end{tabu}
 };
 
 \node[rect,below=of microseg] (reassembly)
@@ -646,7 +647,7 @@ A comparison of both solver formulations is done in the hereafter test cases sec
 	\begin{tabular}{@{}p{\llargeur}p{\rlargeur}@{}}
 	\textbf{Matrices reassembly}\\
 		Global matrices & 	$\crochet{A^\iterplus} \leftarrow \crochet{A^\iterplus}^E$, $\crochet{b^\iterplus} \leftarrow \crochet{b^\iterplus}^E$, $\forall E \in \Ohm$ \\
-		Residual norm	&	$\norm{R^\iterplus} =  \norm{A^\iterplus \Tkplus - b^\iterplus}$ \\ 
+		Residual norm	&	$\norm{R^\iterplus} =  \norm{A^\iterplus \deltaHkplus - b^\iterplus}$ \\ 
 	\end{tabular}
 };
 
