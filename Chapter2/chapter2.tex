@@ -308,9 +308,9 @@ The contribution of an element $\OhmE$ to this tangent matrix is evaluated as:
 \begin{align}
 \label{eq:dRdT}
 & \crochet{\dRdTijk}^E
-= \Mij^E 
-+ \underbrace{\Aij^E \brac{\dHdT}^{\iter}_{j}}_{\nosum}
-+ \underbrace{\brac{\Kija^E + \Kijb^E} \brac{\dHdT}^{\iter}_{j}}_{\nosum}
+= \underbrace{\Mij^E \brac{\dHdT}^{\iter}_{j}}_{\nosum}
++ \Aij^E
++ \brac{\Kija^E + \Kijb^E}
 \end{align}
 %------------
 In contrast to the previous solver, \cref{eq:dRdT} is the core of the temperature-based solver. The resolution of \cref{eq:Tsolver_residual_linear} 
@@ -393,9 +393,9 @@ A comparison of both solver formulations is done in the hereafter test cases sec
 %
 %
 \begin{figure}[htbp]
-\newlength{\largeur}
-\newlength{\llargeur}
-\newlength{\rlargeur}
+%\newlength{\largeur}	% defined in chapter2
+%\newlength{\llargeur}	% defined in chapter2
+%\newlength{\rlargeur}	% defined in chapter2
 
 \setlength{\largeur}{13.5cm}
 \setlength{\llargeur}{3.8cm}
@@ -752,21 +752,20 @@ Predictions with a 1D front tracking model \citep{gandin_constrained_2000} is us
 solutions for the temperature and solid fraction during directional solidification of a 10 cm long \bin{Al}{7}{Si}
 ingot. The melt, with initial uniform temperature, is cooled with a heat exchange coefficient (assuming a Fourier 
 boundary condition) from one side, the other side being adiabatic. All values for alloy properties, initial and 
-boundary conditions and numerical parameters are listed in \autoref{table:data_case_alsi7}. For this simple test case, 
+boundary conditions and numerical parameters are listed in \cref{table:data_case_alsi7}. For this simple test case, 
 we use linear temperature dependence of the intrinsic phase enthalpies, that is $\rh^s= \rcp T$ and $\rh^l= \rcp T + \rho L$, 
 where $\rcp$ is the heat capacity per unit volume and $\rho L$ is the latent heat per unit volume. Values for $\rcp$ 
 and $\rho L$, as well as for the thermal conductivities, $\kappa = \kl = \ks$, are taken constant. Moreover, a 
 Gulliver Scheil approximation is used to compute a single temperature – fraction of solid relationship in the 
 absence of macrosegregation. This is done assuming a linear binary phase diagram and thus requires using the 
-properties listed in \autoref{table:data_case_alsi7}, i.e. the segregation coefficient, $k$, the liquidus slope, $m_L$, the 
+properties listed in \cref{table:data_case_alsi7}, i.e. the segregation coefficient, $k$, the liquidus slope, $m_L$, the 
 liquidus temperature, $T_L$, and the eutectic temperature, $T_E$. \Cref{fig:diffusion_CC,fig:diffusion_LF} show the comparison with 
 the Hsolver and Tsolver. The results are found superimposed to the front tacking solution, thus giving validation 
 of the implementation as well as the iterative schemes presented above to solve the energy conservation 
-check \cref{table:data_case_alsi7}.
 %------------------------
 \begin{tabulate}
 % caption 
-{Parameters for the pure diffusion test case with alloy\bin{Al}{7}{Si} presented in \cref{fig:diffusion_CC}}
+{Parameters for the pure diffusion test case with an \bin{Al}{7}{Si} alloy presented in \cref{fig:diffusion_CC}}
 % label
 {table:data_case_alsi7}
 % line separation (e.g. 1.5mm)
