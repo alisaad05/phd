@@ -64,10 +64,15 @@
 \newcommand\dRdH{\ensuremath{\frac{dR}{dH}}}
 \newcommand\dRdT{\ensuremath{\frac{dR}{dT}}}
 \newcommand\dTdH{\ensuremath{\frac{dT}{dH}}}
+\newcommand\dTdHjt{\ensuremath{\brac{dT/dH}_j^{t}}}
+\newcommand\dTdHjk{\ensuremath{\brac{dT/dH}_j^{\iter}}}
+\newcommand\dTdHjkplus{\ensuremath{\brac{dT/dH}_j^{\iterplus}}}
 \newcommand\dHdT{\ensuremath{\frac{dH}{dT}}} 
 \newcommand\dHdTjk{\ensuremath{\brac{dH/dT}_j^{\iter}}}
+\newcommand\dHdTjkplus{\ensuremath{\brac{dH/dT}_j^{\iterplus}}}
 \newcommand\dHdTjt{\ensuremath{\brac{dH/dT}_j^{t}}}
 \newcommand\dRdTijk{\ensuremath{\brac{\frac{dR}{dT}}_{ij}^{\iter}}}
+\newcommand\dRdHijk{\ensuremath{\brac{\frac{dR}{dH}}_{ij}^{\iter}}}
 \newcommand\Rjk{\ensuremath{R_{j}^{\iter}}}
 
 \newcommand\nabvec{\ensuremath{\vec{\nabla}}}
@@ -110,13 +115,17 @@
 \newcommand\Hj{\ensuremath{H_j}}
 \newcommand\Hjt{\ensuremath{H_j^t}}
 \newcommand\Hjk{\ensuremath{H_j^\iter}}
-\newcommand\Hjkminus{\ensuremath{H_j^{\iter-1}}}
+\newcommand\Hjkminus{\ensuremath{H_j^{\iterminus}}}
+\newcommand\Hjkplus{\ensuremath{H_j^{\iterplus}}}
 \newcommand\Hjtminus{\ensuremath{H_j^{t-\dt}}}
+\newcommand\Hjtplus{\ensuremath{H_j^{t+\dt}}}
 \newcommand\Tj{\ensuremath{T_j}}
 \newcommand\Tjt{\ensuremath{T_j^t}}
 \newcommand\Tjk{\ensuremath{T_j^\iter}}
-\newcommand\Tjkminus{\ensuremath{T_j^{\iter-1}}}
+\newcommand\Tjkminus{\ensuremath{T_j^{\iterminus}}}
+\newcommand\Tjkplus{\ensuremath{T_j^{\iterplus}}}
 \newcommand\Tjtminus{\ensuremath{T_j^{t-\dt}}} 
+\newcommand\Tjtplus{\ensuremath{T_j^{t+\dt}}} 
 \newcommand\nosum{\text{no sum on }j} 
 
 %TODO :redundant defnitions rhoref and rref
