@@ -186,11 +186,11 @@ conservation principle is satisfied. Therefore, the weak form writes:
 %----------------------
 \begin{multline}
 \label{eq:weak_energy}
-\forall \test \in M=\curly{u \in \hilbert(\Ohm)} \\
-\integral{\Ohm}{\test \tempup{\rhoh}}{V} 
- + \integral{\Ohm}{\test \vit \cdot \nabvec \brac{\rhol \hl}}{V}
- - \integral{\Ohm}{\test \diff{\avg{\kappa}}{T} }{V}
- - \integral{\Ohm}{\test \source }{V}
+\forall \test \in M=\curly{u \in \hilbert(\OhmE)} \\
+\integral{\OhmE}{\test \tempup{\rhoh}}{V} 
+ + \integral{\OhmE}{\test \vit \cdot \nabvec \brac{\rhol \hl}}{V}
+ - \integral{\OhmE}{\test \diff{\avg{\kappa}}{T} }{V}
+ - \integral{\OhmE}{\test \source }{V}
  = 0
 \end{multline}
 %------------
@@ -798,39 +798,36 @@ Convergence criterion (temperature) & $\varepsilon_T$ 	& \num{e-2} & \si{\udegK}
 \end{tabulate}
 %------------------------
 %
-%---------------
-\begin{figureth}
-% textwidth 
-{0.7}
-%path 
-{Chapter2/Graphics/diffusion/diffusion_CC.pdf}
-% caption
-{Computed unidirectional heat diffusion during solidification of an \bin{Al}{7}{Si} alloy 
+%-----------------
+\begin{figure}[htbp]
+\centering
+   %------------
+  \begin{subfigure}[t]{0.7\textwidth}
+    \centering
+	\includegraphics[width=\textwidth]{Chapter2/Graphics/diffusion/diffusion_CC.pdf}
+	\caption{}
+    \label{fig:validation_diffusion_CC}
+  \end{subfigure}
+  %------------------------------
+  \vskip\baselineskip
+  %------------------------------
+  \begin{subfigure}[t]{0.7\textwidth}
+    \centering
+	\includegraphics[width=\textwidth]{Chapter2/Graphics/diffusion/diffusion_LF.pdf}
+	\caption{}
+    \label{fig:validation_diffusion_LF}
+  \end{subfigure}
+   %------------
+\caption{Computed unidirectional heat diffusion during solidification of an \bin{Al}{7}{Si} alloy 
 using (orange) the enthalpy method and (black) the temperature method, comparison being made 
-for cooling curves. Each curve corresponds to a position along the sample, from 0 cm (cooling 
-side) to 10 cm (insulated side), with 2 cm spacing between the positions.}
-% label
-\label{fig:diffusion_CC}
-\end{figureth}
-%---------------
+for (a) cooling curves  and (b) the liquid fraction history. 
+Each curve corresponds to a position along the sample, from 0 cm (cooling 
+side) to 10 cm (insulated side), with 2 cm spacing between the positions.} 
+\label{fig:validation_diffusion}
+\end{figure}
 %
-%---------------
-\begin{figureth}
-% textwidth 
-{0.7}
-%path 
-{Chapter2/Graphics/diffusion/diffusion_LF.pdf}
-% caption
-{Computed unidirectional heat diffusion during solidification of an \bin{Al}{7}{Si} alloy 
-using (orange) the enthalpy method and (black) the temperature method, comparison being made 
-for the liquid fraction history. Each curve corresponds to a position along the sample, from 0 cm (cooling 
-side) to 10 cm (insulated side), with 2 cm spacing between the positions.}
-% label
-\label{fig:diffusion_LF}
-\end{figureth}
-%---------------
-%
-\subsection{Convection-diffusion with macrosegregation}
+%------------------
+\subsection{Convection and diffusion}
 Conservation equations in \textbf{Table 2} are for mass, momentum and chemical species. 
 As for energy, they are presented after the volume averaging technique has been applied 
 \citep{ni_volume-averaged_1991, dantzig_solidification_2009}. Moreover, an assumption 
@@ -850,30 +847,21 @@ composition $\wlref$. Values for the references are taken at the liquidus temper
 composition of the alloy, $\w_0$ \citep{carozzani_direct_2013}. More details about the FE formulation can be found in 
 the Ph.D work of \citet{rivaux_simulation_2011, carozzani_developpement_2012}. It should be noted that the macroscopic 
 solute diffusion coefficient in the solid phase is neglected in \textbf{REF Eq. 15c}. 
-
-\comment{ in this table I use directly the simplified equations, but this was done only for
-the article, now I have to go from the full conservation equations and state the hypothesis and 
-methods that i used to reach this simplified form }
-
-\begin{table}[h]
-\centering
-\begin{subequations}
-\begin{align}
-& \nabla \cdot \brac{\gl \vl}  = 0 \\ 
-& \temp{\gl \rref \vl} + \nabvec \cdot \brac{\gl \rref \vl \times \vl} - \nabvec\cdot\avg{S}^l -\gl
-   \nabla \pl +\mul \gl^2 K^{-1} \vl -\gl\rhol \gravity = 0 \\
-& \temp{\wi} + \brac{\gl \vl} \cdot \nabvec \wil + \nabla \cdot \brac{\gl \Dl \nabvec \wil } = 0
-\end{align}
-\end{subequations}
-\caption{Averaged conservation equations for the conservation of mass (a), momentum (b) and solute mass (c)}
-\label{table:smacs_equations}
-\end{table}
-\comment{ Figure SMACS: Computed unidirectional heat diffusion during solidification of an \bin{Al}{7}{Si}
-alloy using (orange) the enthalpy method and (black) the temperature method, comparison being made for (left) 
-cooling curves and (right) time history of the liquid fraction. Each curve corresponds to a position along the 
-sample, from \SI{0}{\centi \metre} (cooling side) to \SI{10}{\centi \metre} (insulated side), with \SI{2}{\centi 
-\metre} spacing between the positions. }
-
+%
+%----------------------
+\begin{figureth}
+% textwidth 
+{0.9}
+%path 
+{Chapter2/Graphics/convection_diffusion/smacs_CC.pdf}
+% caption
+{Experimental cooling curves overlap with the results of the 3D FE convection-diffusion simulation.
+The left (LHE) and right (RHE) heat exchangers impose the boundary temperature in the experiment.}
+% label
+\label{fig:validation_convectiondiffusion}
+\end{figureth}
+%-----------------------------------
+%
 The Tsolver’s ability to be coupled with various physical phenomena like macrosegregation and fluid flow 
 in porous medium is displayed in this test case. It consists of a solidification benchmark where a \SI{10}{\centi \metre}
 width $\times$ \SI{6}{\centi \metre} height $\times$ \SI{1}{\centi \metre} thick cavity containing 
