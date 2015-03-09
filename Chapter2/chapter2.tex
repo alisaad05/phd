@@ -9,10 +9,6 @@
 %=====================================
 \section{State of the art}
 %=====================================
-\comment{ Use of enthalpy resolution in the majority of works \\
- motivation and advantages of TvsH without talking about resolution time\\
- use article's introduction to fill this section (or improvise new things)}
-%
 When speaking about macrosegregation, one needs to know that the problem involves phase change.
 For that, a minimum of four conservation equations are necessary:
 conservation  of  mass, momentum,  chemical  species and  energy. The  phase  change
@@ -21,19 +17,19 @@ in solidifying alloys. A comprehensive overview of these methods is given by \ci
 The corresponding equation associates the total average enthalpy to the
 temperature  via  intrinsic  alloy  properties, such  as the heat  capacity of  the
 phases and the latent  heat associated with the phase transformations. However, in the course
-of solidification and while macrosegregation is taking place, these  properties may change because the average
+of solidification and while macrosegregation is taking place, these  properties change because the average
 composition may  vary  significantly: the  transformation paths are thus modified, as well as
 the phases' composition and heat capacity. Similarly, the latent heat of phase  transformations
 is  not a mere constant that could be distributed as a function of the phase fractions
 assuming only temperature-dependent phases' properties, as often found in the literature \citep{bellet_call_2009}.
 It is thus impossible to establish a priori the dependence of the enthalpy with respect
-to temperature when macrosegregation takes place, even in the case of full thermodynamic equilibrium
+to temperature when macrosegregation alters the average composition, even in the case of full thermodynamic equilibrium
 between phases. In this chapter, we discuss a suitable numerical scheme based on an enthalpy method,
 already used in the literature  to  alleviate this macrosegregation-related problem \citep{swaminathan._enthalpy_1993,
 carozzani_direct_2013}. Later on, we introduce a modified formulation, using the effective heat capacity method that 
 increases the original scheme's efficiency. 
 
-The current method is thus an enthalpy method that makes use of a temperature-based solver. 
+The method introduced in this chapter is an enthalpy method that makes use of a temperature-based solver. 
 Moreover, it uses tabulated thermodynamic quantities (solidification paths, phases' enthalpy  and composition) 
 in a range of average compositions and temperatures as found in the literature 
 \citep{dore_modelling_2000,thuinet_prediction_2004,du_modeling_2007}, 
@@ -50,13 +46,10 @@ good accuracy.
 %-----------------------------
 \subsection{Volume averaging} 
 %-----------------------------
-\comment{the following paragraph will be deleted once the volume averaging has been introduced in chapter 1}
-\red{A volume averaging technique was suggested to deal with the presence of multiple 
-phases \citep{ni_volume-averaged_1991}. It locally considers a Representative Volume Element 
-(RVE) that contains a single or several phases (these are not necessarily in thermodynamic equilibrium) 
-at a mesoscopic scale. We represent, for each unknown $\psi$, an intrinsic volume average, $\avg{\psi}^{\phi}$ (also denoted $\avg{\psi^{\phi}}^{\phi}$ in the 
-literature), corresponding to a phase $\phi$. 
-The volume average $\avg{\psi}$ for this unknown in the RVE, hence averaged over all the present phases writes:}
+The volume averaging technique, presented in \cref{sec:volumeavg}, is the first thing consider
+when solving the energy equation in the presence of macrosegregation. The reason is that phase
+quantities that vary with the average composition, have a great impact on the thermal properties,
+hence on the overall heat transfer in the system. We recall the basic equation:
 %%-------------
 \begin{align}
 \label{eq:volume_average_psi}
@@ -103,8 +96,8 @@ phases in a given RVE writes:
 %%-------------
 Note that the volume average enthalpy is approximated by the product $\avg{\rho h}^{\phi}=\avg{\rho}^{\phi}\avg{h}^{\phi}$ in the current work. As stated 
 in the introduction, it becomes clear from \cref{eq:volume_average_enthalpy} that phase properties, i.e. average phase density, , \rphi and enthalpy, \hphi, 
-are temperature and composition dependent. This equation is the key to convert the average volume enthalpy to temperature (through a procedure named \HtoT) 
-or vice-versa (\TtoH). The values of the different phase fractions $\gphi$ (solidification path) and phase enthalpies $\rh^{\phi}$ are thus needed 
+are temperature and composition dependent. This equation is the key to convert the average volume enthalpy to temperature (through a procedure named \emph{H2T}) 
+or vice-versa (\emph{T2H}). The values of the different phase fractions $\gphi$ (solidification path) and phase enthalpies $\rh^{\phi}$ are thus needed 
 to close the relation.
 
 \subsection{Tabulation of properties}
@@ -123,7 +116,7 @@ it is a simple solution for coupling with macrosegregation. In this way, phase f
 tabulated as functions of temperature and average composition, while for each phase $\phi$ the mass 
 enthalpy, $\hphi$, and the density, $\rphi$, are tabulated as functions of temperature and phase 
 intrinsic average compositions $\wiphi$, as well as other possible parameters. \Cref{Table:t2h_data} summarizes the 
-steps in order to perform a temperature-to-enthalpy (\TtoH) conversion using the predefined tabulation 
+steps in order to perform a temperature-to-enthalpy (\emph{T2H}) conversion using the predefined tabulation 
 approach. In step 1, the transformation path is acquired for each average composition and temperature 
 to determine the list of phases, their volume fractions $\gphi$ and their intrinsic compositions $\wi^{\phi}$. 
 In step 2, the phase enthalpy $\hphi$  and density $\rphi$ are determined by searching for the temperature and 
@@ -134,7 +127,7 @@ volume fraction, density and mass enthalpy of phases using \cref{eq:volume_avera
 % this table did not work when using custom tabulate env. because of the call to \cref ?
 \begin{table}[htbp]
 \centering
-\caption{Tabulation processing for a \TtoH procedure}
+\caption{Tabulation processing for a \emph{T2H} procedure}
 \label{Table:t2h_data}
 {\tabulinesep=1.0mm
 \begin{tabu}{|c|c|c|c|}
@@ -150,36 +143,180 @@ volume fraction, density and mass enthalpy of phases using \cref{eq:volume_avera
 The methodology to build the tabulations is straightforward. It is based on two main scans. On the one hand, intervals for the variation of the 
 average composition $\wi$ are chosen from the known alloy composition. These variations have to cover the extreme values adopted during the 
 simulation, which are not known a priori. An interval is also selected for the variation of temperature. The latter is easier to determine as it
-usually starts from the initial melt temperature and goes down to the room temperature in a standard casting simulation. For these intervals, a 
-systematic scan is made with chosen steps in each composition and T, during which a thermodynamic equilibrium is computed. The outputs are the 
-number of phases encountered, together with their fraction and intrinsic composition. The minimum and maximum intrinsic composition for each phase 
+usually starts from the initial melt temperature and goes down to the room temperature in a standard casting simulation. For each mapping of
+composition and temperature, a thermodynamic equilibrium state is computed. The outputs are the 
+number of phases encountered, together with their fraction and intrinsic compositions. The minimum and maximum intrinsic composition for each phase 
 could then be determined. On the other hand, for each phase, a scan of the intrinsic composition and temperature is made to compute the intrinsic 
 properties. The same temperature interval and step as defined earlier are used.
-
-\comment{ below paragraph should be re written and maybe stress LESS on the speed effect}
-\comment{ I should change the superscript $k$ which may be confused with partition coefficient }
-Regarding the enthalpy-to-temperature conversion (\HtoT), a backward iterative \TtoH search is performed. 
-For a known composition $\wi$, denoting $k$ the iteration index to convert the enthalpy 
-$\avg{\rho h}_{\text{input}}$, we start with an initial guess for temperature $\Tkinit$ then convert it to an 
-enthalpy  $\Hkinit$ with the \TtoH conversion. Using an appropriate nonlinear algorithm (Brent is the most versatile 
-in our case), we aim at minimizing the following residual: $\text{Residu}_{\rh} = \abval{\rh_{\text{input}} - \Hk }$. 
-Once the algorithm has converged, the temperature $\Tk$ is the result of the \HtoT conversion. It is 
-inferred that the first conversion (\TtoH) is a direct one whereas the latter (\HtoT) is indirect and requires 
-a series of iterative steps; each step being a single \TtoH resolution. In other words, a \HtoT conversion is a 
-backward search for a temperature, hence it’s slower. This conversion’s speed lag is exacerbated when tabulations 
+Regarding the enthalpy-to-temperature conversion (\emph{H2T}), a backward iterative \emph{T2H} search is performed. 
+For a known composition $\wi$, denoting $\brent$ the iteration index to convert the enthalpy 
+$H_{\text{input}}$, we start with an initial guess for temperature $T^{\brentzero}$ then convert it to an 
+enthalpy $H^{\brentzero}$ with the \emph{T2H} conversion. Using an appropriate nonlinear algorithm (Brent is the most versatile 
+in our case), we aim at minimizing the following scalar residual: $R_{H} = \abval{H_{\text{input}} - H^\brent }$. 
+Once the algorithm has converged, the temperature $T^\brent$ is the result of the \emph{H2T} conversion. It is 
+inferred that the first conversion (\emph{T2H}) is a direct one whereas the latter (\emph{H2T}) is indirect and requires 
+a series of iterative steps; each step being a single \emph{T2H} resolution. In other words, a \emph{H2T} conversion is a 
+backward search for a temperature, hence it is slower. This conversion's speed lag is exacerbated when tabulations 
 increase in size (e.g. large number of temperature and composition steps) and complexity (e.g., multicomponent 
 industrial alloys used in casting), since the search gets more complicated with the increasing number of input 
 columns (one column for each alloying element).
 %
 %
+%-------------------------------------------------------------------------------------
+\begin{figure}[htbp]
+\newlength{\rightcol}
+\setlength{\largeur}{9cm}
+\setlength{\llargeur}{4.2cm}
+\setlength{\rightcol}{4cm}
+\centering
+\begin{tikzpicture}[node distance=0.4cm]
+
+\tikzstyle{rect}=[rectangle,draw,text=black]
+\tikzstyle{whiterect}=[rectangle,text=black]
+\tikzstyle{test}=[diamond,aspect=3,draw,text=black]
+\tikzstyle{fleche}=[->,>=stealth]
+\tikzstyle{trait}=[]
+\setlength{\rlargeur}{\largeur}
+\addtolength{\rlargeur}{-2.\tabcolsep}
+\addtolength{\rlargeur}{-1.\llargeur}
+
+
+\node[rect] (init) at (0cm,5cm)
+{
+	\begin{tabular}{@{}p{\llargeur}p{\rightcol}@{}}
+		\textbf{Initialisation} \\
+		Temperature 	& $\Tj$ \\
+		Average composition & $\wi_j$ \\
+	\end{tabular}
+};
+
+\node[rect,below=of init] (microseg)
+{
+	\begin{tabular}{@{}p{\llargeur}p{\rightcol}@{}}
+		\textbf{Microsegregation law} \\		
+		Phase fractions		& $(\Tj,\wi_j) \rightarrow g^\phi_j$ \\
+		Phase compositions 	& $(\Tj,\wi_j) \rightarrow \wiphi_j$ \\
+		Phase enthalpy 		& $(\Tj,\wiphi_j) \rightarrow \hphi_j$ \\
+	\end{tabular}
+};
+\draw[trait] (init) -- (microseg);
+
+\node[rect,below=of microseg] (solve)
+{
+	\begin{tabular}{@{}p{\llargeur}p{\rightcol}@{}}
+		\textbf{Total enthalpy} &	$ \rhoh_j=\sum_\phi \crochet{g^\phi_j \rphi_j \hphi_j}_{\Tj}$ \\
+								&	(\cref{eq:volume_average_enthalpy})
+	\end{tabular}
+};
+\draw[trait] (microseg) -- (solve);
+
+\end{tikzpicture}
+\caption{Algorithm for a single temperature to enthalpy (\emph{T2H}) conversion.}
+\label{fig:algorithm_t2h}
+\end{figure}
+%-------------------------------------------------------------------------------------
+%
+%
+
+%-------------------------------------------------------------------------------------
+\begin{figure}[htbp]
+\setlength{\largeur}{9cm}
+\setlength{\llargeur}{4.2cm}
+\setlength{\rightcol}{5cm}
+\newcommand\Tjbrent{\ensuremath{T_j^\brent}}
+\newcommand\Hjbrent{\ensuremath{\rhoh_j^\brent}}
+\centering
+\begin{tikzpicture}[node distance=0.5cm]
+
+\tikzstyle{rect}=[rectangle,draw,text=black]
+\tikzstyle{whiterect}=[rectangle,text=black]
+\tikzstyle{test}=[diamond,aspect=3,draw,text=black]
+\tikzstyle{fleche}=[->,>=stealth]
+\tikzstyle{trait}=[]
+\setlength{\rlargeur}{\largeur}
+\addtolength{\rlargeur}{-2.\tabcolsep}
+\addtolength{\rlargeur}{-1.\llargeur}
+
+
+\node[rect] (init) at (0cm,5cm)
+{
+	\begin{tabular}{@{}p{\llargeur}p{\rightcol}@{}}
+		\textbf{Initialisation} \\
+		Enthalpy			& $\rhoh_j$ \\
+		Old temperature 	& $\Tjtminus$ \\
+		Average composition & $\wi_j$ \\
+	\end{tabular}
+};
+
+\node[rect, below=of init] (brent_init)
+{
+	\begin{tabular}{@{}p{\llargeur}p{\rightcol}@{}}
+		\textbf{Brent's initialisation} \\
+		Iteration &	$\brentzero$ \\
+		Temperature & $T^\brentzero = \Tjtminus$
+	\end{tabular}
+};
+\draw[trait] (init) -- (brent_init);
+
+\node[rect,below=of brent_init] (microseg)
+{
+	\begin{tabular}{@{}p{\llargeur}p{\rightcol}@{}}
+		\textbf{Microsegregation law} \\		
+		Phase fractions		& $(\Tjbrent,\wi_j) \rightarrow \crochet{g^\phi_j}^\brent$ \\
+		Phase compositions 	& $(\Tjbrent,\wi_j) \rightarrow \crochet{\wiphi_j}^\brent$ \\
+		Phase enthalpy 		& $(\Tjbrent,\wiphi_j) \rightarrow \crochet{\hphi_j}^\brent$ \\
+	\end{tabular}
+};
+\draw[trait] (brent_init) -- (microseg);
+
+\node[rect,below=of microseg] (TtoH)
+{
+	\begin{tabular}{@{}p{\llargeur}p{\rightcol}@{}}
+		\textbf{\emph{T2H} conversion} & $\Tjbrent \rightarrow \Hjbrent $ \quad (\cref{fig:algorithm_t2h})
+	\end{tabular}
+};
+\draw[trait] (microseg) -- (TtoH);
+
+\node[rect,below=of TtoH] (residual)
+{
+	\begin{tabular}{@{}p{\llargeur}p{\rightcol}@{}}
+		\textbf{Enthalpy residual} & $R_\text{Brent}^\brentplus = \abval{\rhoh_j - \Hjbrent }$
+	\end{tabular}
+};
+\draw[trait] (TtoH) -- (residual);
+
+\node[test,below=of residual] (test)
+{
+	$R_\text{Brent}^\brentplus < \varepsilon_\text{Brent}$
+};
+\draw[trait] (residual) -- (test);
+
+\node[rect,below=of test] (update)
+{
+	\begin{tabular}{@{}p{\llargeur}p{\rightcol}@{}}
+		\textbf{Conversion} & $T_j = \Tjbrent$
+	\end{tabular}
+};
+\draw[trait] (test) -- (update);
+%----
+\coordinate[shift={(-3mm,0mm)}] (microsegwest) at (microseg.west);
+\draw[fleche] (test.west) -| (microsegwest) -- (microseg);
+\node[anchor=south east] (No) 	at (test.west) {No};
+\node[anchor=north east] (iterate) at (test.west) {$\brent \leftarrow \brentplus$};
+
+\end{tikzpicture}
+\caption{Algorithm for a single enthalpy to temperature (\emph{H2T}) conversion.}
+\label{fig:algorithm_h2t}
+\end{figure}
+%-------------------------------------------------------------------------------------
 %==================
 \section{Numerical method}
 %==================
 %
 The finite element method is used to solve the energy conservation as expressed by \cref{eq:averaged_energy_eqn}. 
-A test function $\test$ belonging to the Hilbertian Sobolev space $\hilbert(\Omega)$ of continuous integrable test functions 
+A test function $\test$ belonging to the Hilbertian Sobolev space $\hilbert(\OhmE)$ of continuous integrable test functions 
 is used to formulate the integral variational form of \cref{eq:averaged_energy_eqn} \citep{suli_lecture_2000}. 
-A Fourier boundary condition is considered on the domain boundary $\partial \Omega$. The domain $\Omega$
+A Fourier boundary condition is considered on the domain boundary $\partial \OhmE$. The domain $\OhmE$
 is discretised using first-order linear simplexes defined by their number of local nodes (denoted “NbLoc”): triangles 
 in 2D with NbLoc=3 and tetrahedra in 3D with  NbLoc=4. The outcome is a residual that we aim to minimize so that the 
 conservation principle is satisfied. Therefore, the weak form writes:
@@ -196,7 +333,9 @@ conservation principle is satisfied. Therefore, the weak form writes:
 %------------
 where we assumed a static solid phase and an incompressible liquid phase, which allowed recasting the second term of 
 \cref{eq:averaged_energy_eqn} into $\vit \cdot \nabvec \brac{\rhol \hl}$. 
-The steps for discretizing in time and space the previous equation are well detailed in  some book references like \citet{rappaz_numerical_2003,dantzig_solidification_2009}. As for enthalpy and temperature, they are spatially discretized in each simplex 
+The steps for discretizing in time and space the previous equation are well detailed in  
+some book references like \citet{rappaz_numerical_2003,dantzig_solidification_2009}. 
+As for enthalpy and temperature, they are spatially discretised in each simplex 
 using interpolations functions $\interp$, thus defining the nodal values $H_j$ and $T_j$, respectively: 
 %----------------------
 \begin{align}
@@ -206,7 +345,9 @@ using interpolations functions $\interp$, thus defining the nodal values $H_j$ a
 T		&= \sum_{j=1}^{\text{NbLoc}}  \interp_j   \Tj
 \end{align}
 %------------
-Note that $H_j$ is a volumetric enthalpy. The Galerkin formulation gives the following expression for the residual contribution at a mesh node $i$ for time step $t$ in a local element $\element$:
+Note that $H_j$ is a volumetric enthalpy. The Galerkin formulation gives the following 
+expression for the residual contribution at a mesh node $i$ (PS: here $i$ is not the usual solute index)
+for time step $t$ in a local element $\element$:
 %----------------------
 \begin{align}
 \begin{split}
@@ -216,17 +357,22 @@ Note that $H_j$ is a volumetric enthalpy. The Galerkin formulation gives the fol
 \end{split}
 \end{align}
 %------------
-where the numerical contributions can be detailed as follows:
+where the volumetric contributions are detailed as follows:
 %----------------------
 \begin{align}
 & \textit{transient term:} \quad  \Mij^E = \integral{\OhmE}{\frac{1}{\dt} \interp_i \interp_j }{V} \\ 
 & \textit{advection term:} \quad  \Aij^E = \integral{\OhmE}{\rhol \cpl \interp_i \vit \cdot \nabvec \interp_j}{V} \\ 
 & \textit{diffusion term:} \quad  \Kija^E = \integral{\OhmE}{\avg{\kappa} \nabvec \interp_i\nabvec \interp_j}{V} \\ 
-& \textit{boundary condition term 1:}	\quad  \Kijb^E = \integral{\dOhmE}{\hext \interp_i \interp_j}{S} \\ 
-& \textit{boundary condition term 2:}	\quad	\Fi^E = \integral{\dOhmE}{\hext \Text \interp_i}{S} \\
 & \textit{source term:} \quad  \Si^E = \integral{\OhmE}{\interp_i \source}{V}
 \end{align}
 %------------
+while the surface boundary contributions are given by:
+%-------
+\begin{align}
+& \textit{boundary condition term 1:}	\quad  \Kijb^E = \integral{\dOhmE}{\hext \interp_i \interp_j}{S} \\ 
+& \textit{boundary condition term 2:}	\quad	\Fi^E = \integral{\dOhmE}{\hext \Text \interp_i}{S} \\
+\end{align}
+%-------
 %
 The surface integrals $\Kijb^E$ and $\Fi^E$ are related to a Fourier-type boundary condition, 
 with $\hext$ as a coefficient of heat exchange and $\Text$ as the external temperature far from the 
@@ -340,26 +486,13 @@ For the Tsolver, the enthalpy $\rhoh_j^\iter$ is needed to evaluate \cref{eq:fin
 In contrast, the Hsolver requires the value of $T_j^\iter$ to evaluate the corresponding \cref{eq:finite_difference_Hsolver}.
 In both cases, the unknown is determined by the temperature-enthalpy relation. The indices next to the mentioned unknowns
 indicate that this relation is used for each iteration $\iter$ at each mesh node $j$, hence affecting the global resolution time 
-between the two solvers. The Hsolver needs a \HtoT to evaluate $\dTdH$, whereas the Tsolver needs a \TtoH to evaluate $\dHdT$. 
+between the two solvers. The Hsolver needs a \emph{H2T} to evaluate $\dTdH$, whereas the Tsolver needs a \emph{T2H} to evaluate $\dHdT$. 
 The flowchart in \cref{fig:} demonstrates the process.
-It can be seen that Tsolver uses solely \TtoH procedure and the thermodynamic tabulations to determine the enthalpy, 
+It can be seen that Tsolver uses solely \emph{T2H} procedure and the thermodynamic tabulations to determine the enthalpy, 
 hence the term $\dHdT$. On the other hand, Hsolver repeats the same procedure a finite number of times in order to 
-determine a temperature output through \HtoT and use it to compute $\dTdH$. This algorithmic difference leverages the 
+determine a temperature output through \emph{H2T} and use it to compute $\dTdH$. This algorithmic difference leverages the 
 Tsolver in terms of computation time providing the same numerical accuracy while conserving the total system energy. 
-%
-%---------------
-\begin{figureth}
-% textwidth 
-{0.65}
-%path 
-{Misc/dummy.pdf}
-% caption
-{Flowcharts showing the steps to compute the nonlinear terms using tabulations}
-% label
-\label{fig:diagram}
-\end{figureth}
-%==================
-%
+
 Convergence tests are necessary at the end of each iteration of the energy solver to determine 
 the convergence status of the algorithm. In the context of the Tsolver for instance, the residual 
 is re-evaluated with the newly determined temperature $\Tj^\iterplus$ and enthalpy $\Hj^\iterplus$ so \cref{eq:discretise_residual_global} rewrites:
@@ -463,8 +596,8 @@ A comparison of both solver formulations is done in the hereafter test cases sec
 {
 	\begin{tabular}{@{}p{\llargeur}p{\rlargeur}@{}}
 	\textbf{Microsegregation} \\
-	Tabulation (\TtoH) 	&	$ \rhoh^\iterplus=\sum_\phi \crochet{\gphi \rphi \hphi}_{T=\Tkplus}$ \quad (\cref{eq:volume_average_enthalpy})\\
-	Update				& 	$\dHdTjkplus=f(\Tjkplus,\rhoh^\iterplus)$ (\cref{eq:finite_difference_Tsolver})\\
+	Tabulation (\emph{T2H}) 	&	$ \Tkplus \rightarrow \rhoh^\iterplus$ \\
+	Update				& 	$\dHdTjkplus=f(\Tjkplus,\rhoh^\iterplus)$ (\cref{fig:algorithm_t2h})\\
 	\end{tabular}
 };
 
@@ -538,7 +671,7 @@ A comparison of both solver formulations is done in the hereafter test cases sec
 
 \coordinate[shift={(0mm,-2mm)}] (convergence_tempsouth) at (convergence_temp.south);
 \coordinate[shift={(-8mm,0mm)}] (contribwest_bis) at (local_contrib.west);
-\draw[trait] (convergence_temp.south) -- (convergence_tempsouth) -| (contribwest_bis.west) -- (local_contrib);
+\draw[trait] (convergence_temp.south) -- (convergence_tempsouth) -- (convsouth);
 
 \coordinate[shift={(2mm,0mm)}] (convergence_tempeast) at (convergence_temp.east);
 \coordinate[shift={(0mm,2mm)}] (updatenorth) at (update.north);
@@ -637,7 +770,7 @@ A comparison of both solver formulations is done in the hereafter test cases sec
 {
 	\begin{tabu}{@{}p{\llargeur}p{\rlargeur}@{}}
 	\textbf{Microsegregation} \\
-	Tabulation (\HtoT)	&	$ \rhoh^\iterplus \rightarrow \Tkplus$ \quad (Brent algorithm) \\
+	Tabulation (\emph{H2T})	&	$ \rhoh^\iterplus \rightarrow \Tkplus$ \quad \cref{fig:algorithm_h2t} \\
 	Update				& 	$\dTdHjkplus=f(\Tjkplus,\rhoh^\iterplus)$ (\cref{eq:finite_difference_Hsolver})\\
 	\end{tabu}
 };
@@ -712,7 +845,7 @@ A comparison of both solver formulations is done in the hereafter test cases sec
 
 \coordinate[shift={(0mm,-2mm)}] (convergence_tempsouth) at (convergence_temp.south);
 \coordinate[shift={(-8mm,0mm)}] (contribwest_bis) at (local_contrib.west);
-\draw[trait] (convergence_temp.south) -- (convergence_tempsouth) -| (contribwest_bis.west) -- (local_contrib);
+\draw[trait] (convergence_temp.south) -- (convergence_tempsouth) -- (convsouth);
 
 \coordinate[shift={(2mm,0mm)}] (convergence_tempeast) at (convergence_temp.east);
 \coordinate[shift={(0mm,2mm)}] (updatenorth) at (update.north);
@@ -760,13 +893,13 @@ and $\rho L$, as well as for the thermal conductivities, $\kappa = \kl = \ks$, a
 Gulliver Scheil approximation is used to compute a single temperature – fraction of solid relationship in the 
 absence of macrosegregation. This is done assuming a linear binary phase diagram and thus requires using the 
 properties listed in \cref{table:data_case_alsi7}, i.e. the segregation coefficient, $k$, the liquidus slope, $m_L$, the 
-liquidus temperature, $T_L$, and the eutectic temperature, $T_E$. \Cref{fig:diffusion_CC,fig:diffusion_LF} show the comparison with 
-the Hsolver and Tsolver. The results are found superimposed to the front tacking solution, thus giving validation 
-of the implementation as well as the iterative schemes presented above to solve the energy conservation 
+liquidus temperature, $T_L$, and the eutectic temperature, $T_E$. \Cref{fig:validation_diffusion} show the comparison with 
+the Hsolver and Tsolver. The cooling curves and liquid fraction results are found superimposed to the front tacking solution, 
+thus giving validation of the implementation as well as the iterative schemes presented above to solve the energy conservation 
 %------------------------
 \begin{tabulate}
 % caption 
-{Parameters for the pure diffusion test case with an \bin{Al}{7}{Si} alloy presented in \cref{fig:diffusion_CC}}
+{Parameters for the pure diffusion test case with an \bin{Al}{7}{Si} alloy presented in \cref{fig:validation_diffusion}}
 % label
 {table:data_case_alsi7}
 % line separation (e.g. 1.5mm)
@@ -845,13 +978,12 @@ convection forces. For that purpose, the Boussinesq approximation $\rl = \rref \
 and a reference density, $\rref$, defined at a reference temperature $\Tref$ and reference 
 composition $\wlref$. Values for the references are taken at the liquidus temperature and the nominal 
 composition of the alloy, $\w_0$ \citep{carozzani_direct_2013}. More details about the FE formulation can be found in 
-the Ph.D work of \citet{rivaux_simulation_2011, carozzani_developpement_2012}. It should be noted that the macroscopic 
-solute diffusion coefficient in the solid phase is neglected in \textbf{REF Eq. 15c}. 
+the Ph.D work of \citet{rivaux_simulation_2011, carozzani_developpement_2012}.
 %
 %----------------------
 \begin{figureth}
 % textwidth 
-{0.9}
+{0.85}
 %path 
 {Chapter2/Graphics/convection_diffusion/smacs_CC.pdf}
 % caption
@@ -873,12 +1005,11 @@ controlled conditions and using an increased number of samples for composition a
 attempt to simulate the experiment was carried out by \citet{carozzani_direct_2013} relying on an enthalpy resolution. 
 All details regarding geometry, finite element discretization, material properties 
 and boundary conditions can be found in the latter reference. 
-\comment{ I could develop more here giving additional details }
 For this computation, solidification paths, phase compositions and phase enthalpies were determined by a thermodynamic 
-module dedicated to equilibrium calculations for binary alloys. The 3D simulation results in \textbf{REF Figure 4} show 
-a satisfactory agreement with the experimental temperature measurements recorded at mid heights of the cavity and uniformly 
+module dedicated to equilibrium calculations for binary alloys. The 3D simulation results in \cref{fig:validation_convectiondiffusion}
+show a satisfactory agreement with the experimental temperature measurements recorded at mid heights of the cavity and uniformly 
 distributed along its width \citep{carozzani_direct_2013}. In fact, simulation results with the Tsolver and the Hsolver were 
-found to be almost superimposed, as in \textbf{REF Figure 4}. Regarding the computation, the Tsolver resolution proves to be 
+found to be almost superimposed, as shows \cref{fig:validation_convectiondiffusion}. Regarding the computation, the Tsolver resolution proves to be 
 faster than the Hsolver used by \citet{carozzani_direct_2013}: a process time of 7000s required a computation time of 90 hours 
 13 minutes compared to 114 hours 21 minutes spent by the enthalpy resolution with 32 cores on the same cluster. The gain factor 
 is about 20\%.
