@@ -43,47 +43,43 @@ Using P1 linear elements implies a P2 integration ? what are the advantages (tim
 
 \section{Application to multicomponent alloys}
 
-\comment{ This next section shows an application where Tsolver is used with incompressible fluid mechanics and solute
-conservation in a multicomponent configuration (this is the main difference from SMACS actually)
-we see freckles also during the analysis, this is the transition for the section after }
-
-The efficiency of the temperature-based resolution resides in its performance when combined with 
+In chapter 2, we have shown that the efficiency of the temperature-based resolution resides in its performance when combined with 
 thermodynamic tabulations. A multicomponent alloy consists of at least two solute elements, and 
 therefore the tabulation size increases, hence the number of search operations also increases. 
 To demonstrate the speed-up ability of the temperature-based approach while predicting all phase 
-transformations during macrosegregation, we consider the solidification of a ternary alloy, Fe–2 wt.\%C– 30 wt.\%Cr. 
-As illustrated in \textbf{Figure 5a}, the alloy domain has a cylinder shape close to 3-inch height $\times$ 1-inch diameter. 
-Exact values are reported in \textbf{Table 3} with all material properties, initial and boundary conditions, 
+transformations during macrosegregation mainly caused by fluid flow, we consider the solidification of a ternary alloy, \tern{Fe}{2}{C}{30}{Cr}.
+As illustrated in \cref{fig:mutlicomponent_geo}, the alloy domain has a cylinder shape close to 3-inch height $\times$ 1-inch diameter. 
+Exact values are reported in \cref{table:data_case_ternary} with all material properties, initial and boundary conditions, 
 as well as numerical parameters for the simulations. The melt steel is initially at \SI{1395}{\udegC}. The 
 temperature of the bottom surface is imposed with a constant decreasing rate of \SI{0.1}{\uCR} starting 
 with \SI{1380}{\udegC}, i.e. \SI{40}{\udegC} higher than the nominal liquidus temperature, as shown 
-in \textbf{Figure 5b}. The other surfaces are kept adiabatic. The cylinder is held in a vertical position. 
+in \cref{fig:mutlicomponent_bc}. The other surfaces are kept adiabatic. The cylinder is held in a vertical position. 
 In these conditions, and knowing that the carbon and chromium solutes have lightening effects on the liquid 
 at nominal composition, the density inversion resulting from the composition gradient in the interdendritic 
 liquid, may cause flow instability (segregation plumes) at the solidification front. While the selected alloy 
 is a steel, this application is also representative of directional cooling in a single crystal casting, e.g. 
 for nickel-base superalloys \citep{beckermann_development_2000}. \textbf{Figure 5c} also provides the 
 transformation path of the alloy at nominal composition, i.e. assuming no macrosegregation and full 
-thermodynamic equilibrium as computed with ThermoCalc and the TCFE6 database %\citep{_tcfe6_2010, andersson_thermocalc_2002}. 
+thermodynamic equilibrium as computed with ThermoCalc and the TCFE6 database \citep{tcfe6_tcfe6:_2010, andersson_thermo-calc_2002}. 
 A total of 5 phases need to be handled, the characteristic temperature for their formation being reported 
-in \textbf{Figure 5b}. %\citep{_tcfe6_2010} and \citep{andersson_thermocalc_2002}
-\comment{Figure 5: Configurations for directional casting of (a) a 1 inch diameter $\times$ 3 inches height cylindrical
-domain for which (b) temperature-time conditions are imposed at its bottom surface. The alloy is Fe – 2 wt.\% C–
-30 wt.\% Cr, its computed transformation path %\citep{_tcfe6_2010, andersson_thermocalc_2002} 
-at nominal composition being displayed in (c)}
- 
+in \cref{fig:mutlicomponent_bc}.
+%
+\comment{Figure 5c: Computed transformation path \citep{tcfe6_tcfe6:_2010, andersson_thermo-calc_2002} at nominal composition
+for the alloy \tern{Fe}{2}{C}{30}{Cr}.}
+ %
 \subsection{Tabulations}
+\comment{update from last corrected version of the article}
 Full thermodynamic equilibrium is considered in the present case. Due to macrosegregation, 
 the average composition is expected to continuously vary in time and space during casting. 
 Transformation paths are thus determined a priori for a set of average compositions around 
-the nominal value. Hence, carbon content is arbitrarily varied in the interval [1.8 wt.\%, 2.2 wt.\%] 
-while chromium content variation is in the interval [27 wt.\%, 33 wt.\%]. The offset of $\pm$ 10\%  with 
+the nominal value. Hence, carbon content is arbitrarily varied in the interval [\SI{1.8}{\ucomposition}, \SI{2.2}{\ucomposition}] 
+while chromium content variation is in the interval [\SI{27}{\ucomposition}, \SI{33}{\ucomposition}]. The offset of $\pm$ 10\%  with 
 respect to the nominal composition value allows tabulating relatively small composition steps to 
 ensure a good accuracy when compared to the corresponding ternary phase diagram. The average 
-composition step is \bin{}{0.04}{} for carbon and \bin{}{0.6}{} for chromium, thus representing 2\% 
+composition step is \SI{0.04}{\ucomposition} for carbon and \SI{0.6}{\ucomposition} for chromium, thus representing 2\% 
 intervals with respect to the nominal composition. The temperature varies in the interval 
-[\SI{100}{\udegC},\SI{1600}{\udegC}] by \SI{5}{\udegC} steps. For each triplet (carbon content 
-in wt.\% C, \textbf{HERE} , chromium content in wt.\% Cr, \textbf{HERE}, temperature in \si{\udegK}) 
+[\SI{100}{\udegC}, \SI{1600}{\udegC}] by \SI{5}{\udegC} steps. For each triplet (carbon content 
+in \SI{}{\ucomposition} C, \textbf{HERE} , chromium content in \SI{}{\ucomposition} Cr, \textbf{HERE}, temperature in \si{\udegK}) 
 corresponds a phase fraction $g^\phi$ and a pair of intrinsic phase composition (\textbf{HERE}). For the 5 
 phases listed in \textbf{Figure 5c} (LIQ$\equiv$liquid, BCC$\equiv$ferrite, FCC$\equiv$austenite, 
 $\text{M}_7 \text{C}_3 \equiv$carbide, CEM$\equiv$cementite), the enthalpy $h^\phi$ and density $\rho^\phi$, are tabulated 
@@ -98,10 +94,35 @@ ternary system. Note that in the present test case, phase densities are taken co
 Therefore they are not tabulated. With this assumption, no shrinkage occurs upon phase change.
 %
 %-----------------
+\begin{figure}[htbp]
+\centering
+   %------------
+  \begin{subfigure}[t]{0.3\textwidth}
+    \centering
+	\includegraphics[height=6cm]{Chapter3/Graphics/multicomponent/Cylinder_nocolor_annotate.pdf}
+	\caption{}
+    \label{fig:mutlicomponent_geo}
+  \end{subfigure}
+   %------------
+   \hspace{1mm}%\quad
+   \begin{subfigure}[t]{0.5\textwidth}
+    \centering
+	\includegraphics[height=6cm]{Chapter3/Graphics/multicomponent/BC.pdf}
+	\caption{}
+    \label{fig:mutlicomponent_bc}
+  \end{subfigure}
+  %------------------------------
+\caption{Configurations for directional casting of (a) a 1 inch diameter $\times$ 3 inches height cylindrical domain for which
+(b) temperature-time conditions are imposed at its bottom surface.} 
+\label{fig:mutlicomponent_geobc}
+\end{figure}
+%-----------------
+%
+%----------------
 \begin{tabulate}
 %
 % caption 
-{Parameters for solidification of alloy Fe – 2 wt.\% C – 30 wt.\% Cr}
+{Solidification parameters of the alloy \tern{Fe}{2}{C}{30}{Cr}.}
 % label
 {table:data_case_ternary}
 % line separation (e.g. 1.5mm)
@@ -121,21 +142,21 @@ Phase composition 				& $\wC^\phi$ 			& Tabulations 	& \si{\ucomposition}  	\\
                    				& $\wCR^\phi$ 			& Tabulations 	& \si{\ucomposition}  	\\ 
 Diffusion coefficients 			& $\avg{D_\text{C}}^l$ 	& \num{15e-10} 	& \si{\udiffusivity}  	\\ 
                         		& $\avg{D_\text{Cr}}^l$	 & \num{15e-10} 	& \si{\udiffusivity}  	\\ 
-Dynamic viscosity  				& $\mul$ 						& \num{2e-3} 		& \si{\uviscosity}  	\\ 
+Dynamic viscosity  				& $\mul$ 					& \num{2e-3} 		& \si{\uviscosity}  	\\ 
 Thermal expansion coefficient 	& \betaT 					& \num{8.96e-5} 	& \si{\ubetaT}  		\\ 
 Solutal expansion coefficient 	& $\betawlC$ 				& \num{1.54e-3} 	& \si{\ubetawl}  		\\  
-                              	& $\betawlCR$ 			& \num{1.72e-2} 	& \si{\ubetawl}  		\\ 
-Thermal conductivity in the solid & $\ks$ 				& \num{40} 			& \si{\uconductivity}  	\\ 
-Thermal conductivity in the liquid & $\kl$ 				& \num{28} 			& \si{\uconductivity}  	\\ 
-Dendrite arm spacing 			& $\lambda$ 					& \num{60e-6} 	& \si{\metre}  			\\ 
-Density 								& $\rref$ 						& \num{6725} 		& \si{\udensity}  		\\ 
+                              	& $\betawlCR$ 				& \num{1.72e-2} 	& \si{\ubetawl}  		\\ 
+Thermal conductivity in the solid & $\ks$ 					& \num{40} 			& \si{\uconductivity}  	\\ 
+Thermal conductivity in the liquid & $\kl$ 					& \num{28} 			& \si{\uconductivity}  	\\ 
+Dendrite arm spacing 			& $\lambda$ 				& \num{60e-6} 	& \si{\metre}  			\\ 
+Density 								& $\rref$ 			& \num{6725} 		& \si{\udensity}  		\\ 
 \hline 
-Initial temperature & $T_0$ & \num{1395}	& \si{\udegC}  \\ 
-Ingot diameter 		&   	& \num{25e-3} 	& \si{\metre}  \\ 
+Initial temperature 	& $T_0$ & \num{1395}	& \si{\udegC}  \\ 
+Ingot diameter 			&   	& \num{25e-3} 	& \si{\metre}  \\ 
 Ingot length 			&   	& \num{75e-3} 	& \si{\metre}  \\ 
 \hline 
-FE mesh size 		&  		& \num{e-3} 	& \si{\metre}  \\ 
-Time step 			& $\dt$ & \num{0.1} 	& \si{\second}  \\ 
+FE mesh size 			&  		& \num{e-3} 	& \si{\metre}  \\ 
+Time step 				& $\dt$ & \num{0.1} 	& \si{\second}  \\ 
 Convergence criterion (residual) 	& $\varepsilon_R$ & \num{e-6} & $-$ \\ 
 Convergence criterion (temperature) & $\varepsilon_T$ & \num{e-2} & \si{\udegK} 
 }
@@ -166,7 +187,7 @@ be enough to see the exact grain boundaries. (now it is time to do transition to
 
 
 
-\section{Meso-Macro Freckle prediction}
+\section{Meso-Macro freckle prediction}
 
 parachute article :)
 
