@@ -316,8 +316,8 @@ columns (one column for each alloying element).
 The finite element method is used to solve the energy conservation as expressed by \cref{eq:averaged_energy_eqn}. 
 A test function $\test$ belonging to the Hilbertian Sobolev space $\hilbert(\OhmE)$ of continuous integrable test functions 
 is used to formulate the integral variational form of \cref{eq:averaged_energy_eqn} \citep{suli_lecture_2000}. 
-A Fourier boundary condition is considered on the domain boundary $\partial \OhmE$. The domain $\OhmE$
-is discretised using first-order linear simplexes defined by their number of local nodes (denoted “NbLoc”): triangles 
+A Fourier boundary condition is considered on the domain boundary $\partial \OhmE$. The domain $\Ohm$
+is discretised using first-order linear simplexes, $\OhmE$, defined by their number of local nodes (denoted “NbLoc”): triangles 
 in 2D with NbLoc=3 and tetrahedra in 3D with  NbLoc=4. The outcome is a residual that we aim to minimize so that the 
 conservation principle is satisfied. Therefore, the weak form writes:
 %----------------------
@@ -995,7 +995,8 @@ The left (LHE) and right (RHE) heat exchangers impose the boundary temperature i
 %-----------------------------------
 %
 The Tsolver’s ability to be coupled with various physical phenomena like macrosegregation and fluid flow 
-in porous medium is displayed in this test case. It consists of a solidification benchmark where a \SI{10}{\centi \metre}
+in porous medium is displayed in this test case. Details about fluid flow resolution will not be given 
+in this section, but rather in the next chapter. It consists of a solidification benchmark where a \SI{10}{\centi \metre}
 width $\times$ \SI{6}{\centi \metre} height $\times$ \SI{1}{\centi \metre} thick cavity containing 
 a \bin{Sn}{3}{Pb} melt is cooled down from its two 
 narrowest vertical sides using heat exchangers (LHE: left heat exchanger, RHE: right heat exchanger). The 
@@ -1013,3 +1014,151 @@ found to be almost superimposed, as shows \cref{fig:validation_convectiondiffusi
 faster than the Hsolver used by \citet{carozzani_direct_2013}: a process time of 7000s required a computation time of 90 hours 
 13 minutes compared to 114 hours 21 minutes spent by the enthalpy resolution with 32 cores on the same cluster. The gain factor 
 is about 20\%.
+
+
+\section{Application: multicomponent alloy solidification}
+%==================
+%
+We have shown that the efficiency of the temperature-based resolution resides in its performance when combined with 
+thermodynamic tabulations. A multicomponent alloy consists of at least two solute elements, and 
+therefore the tabulation size increases, hence the number of search operations also increases. 
+To demonstrate the speed-up ability of the temperature-based approach while predicting all phase 
+transformations during macrosegregation caused solely by mass diffusion, we consider the solidification of a ternary alloy, \tern{Fe}{2}{C}{30}{Cr}.
+In order to neglect fluid flow resolution, we assume that solidification in this case is so slow that no forces are generated inside the melt, while
+additionally all buoyancy forces are also neglected, so no momentum conservation is solved in this section.
+As illustrated in \cref{fig:mutlicomponent_geo}, the alloy domain has a cylinder shape close to 3-inch height $\times$ 1-inch diameter. 
+Exact values are reported in \cref{table:data_case_ternary} with all material properties, initial and boundary conditions, 
+as well as numerical parameters for the simulations. The melt steel is initially at \SI{1395}{\udegC}. The 
+temperature of the bottom surface is imposed with a constant decreasing rate of \SI{0.1}{\uCR} starting 
+with \SI{1380}{\udegC}, i.e. \SI{40}{\udegC} higher than the nominal liquidus temperature, as shown 
+in \cref{fig:mutlicomponent_bc}. The other surfaces are kept adiabatic. The cylinder is held in a vertical position. 
+\textbf{Figure 5c} also provides the transformation path of the alloy at nominal composition, i.e. assuming no macrosegregation and full 
+thermodynamic equilibrium as computed with ThermoCalc and the TCFE6 database \citep{tcfe6_tcfe6:_2010, andersson_thermo-calc_2002}. 
+A total of 5 phases need to be handled, the characteristic temperature for their formation being reported 
+in \cref{fig:mutlicomponent_bc}.
+%
+\comment{Figure 5c: Computed transformation path \citep{tcfe6_tcfe6:_2010, andersson_thermo-calc_2002} at nominal composition
+for the alloy \tern{Fe}{2}{C}{30}{Cr}.}
+ %
+\subsection{Tabulations}
+\comment{update from last corrected version of the article}
+Full thermodynamic equilibrium is considered in the present case. Due to macrosegregation, 
+the average composition is expected to continuously vary in time and space during casting. 
+Transformation paths are thus determined a priori for a set of average compositions around 
+the nominal value. Hence, carbon content is arbitrarily varied in the interval [\SI{1.8}{\ucomposition}, \SI{2.2}{\ucomposition}] 
+while chromium content variation is in the interval [\SI{27}{\ucomposition}, \SI{33}{\ucomposition}]. The offset of $\pm$ 10\%  with 
+respect to the nominal composition value allows tabulating relatively small composition steps
+to ensure a fairly accurate mapping when compared to the corresponding ternary phase diagram. The average 
+composition step is \SI{0.04}{\ucomposition} for carbon and \SI{0.6}{\ucomposition} for chromium, thus representing 2\% 
+intervals with respect to the nominal composition. The temperature varies in the interval 
+[\SI{100}{\udegC}, \SI{1600}{\udegC}] by \SI{5}{\udegC} steps. For each triplet (carbon content 
+in \SI{}{\ucomposition} C, \textbf{HERE} , chromium content in \SI{}{\ucomposition} Cr, \textbf{HERE}, temperature in \si{\udegK}) 
+corresponds a phase fraction $g^\phi$ and a pair of intrinsic phase composition (\textbf{HERE}). For the 5 
+phases listed in \textbf{Figure 5c} (LIQ$\equiv$liquid, BCC$\equiv$ferrite, FCC$\equiv$austenite, 
+$\text{M}_7 \text{C}_3 \equiv$carbide, CEM$\equiv$cementite), the enthalpy $h^\phi$ and density $\rho^\phi$, are tabulated 
+as functions of temperature and phase intrinsic composition. If this latter input lies between two tabulated 
+values, a linear interpolation is performed to determine the output, i.e. phase enthalpy and density. With 
+the advancement of solidification, the liquid is enriched with solute by macrosegregation, which enables new 
+solidification paths. It means that the primary solidifying phase is not necessarily the same as when considering 
+the nominal composition. For this reason, the tabulation approach is interesting inasmuch as it provides phase 
+transformation paths and values of phase properties that are compatible with the system’s actual composition. 
+\textbf{Figure 6} summarizes the tabulated thermodynamic data for two sets of average composition for the considered 
+ternary system. Note that in the present test case, phase densities are taken constant ($\rhos=\rhol=$ \SI{6725}{\udensity}). 
+Therefore they are not tabulated. With this assumption, no shrinkage occurs upon phase change.
+%
+%-----------------
+\begin{figure}[htbp]
+\centering
+   %------------
+  \begin{subfigure}[t]{0.3\textwidth}
+    \centering
+	\includegraphics[height=6cm]{Chapter2/Graphics/multicomponent/Cylinder_nocolor_annotate.pdf}
+	\caption{}
+    \label{fig:mutlicomponent_geo}
+  \end{subfigure}
+   %------------
+   \hspace{1mm}%\quad
+   \begin{subfigure}[t]{0.5\textwidth}
+    \centering
+	\includegraphics[height=6cm]{Chapter2/Graphics/multicomponent/BC.pdf}
+	\caption{}
+    \label{fig:mutlicomponent_bc}
+  \end{subfigure}
+  %------------------------------
+\caption{Configurations for directional casting of (a) a 1 inch diameter $\times$ 3 inches height cylindrical domain for which
+(b) temperature-time conditions are imposed at its bottom surface.} 
+\label{fig:mutlicomponent_geobc}
+\end{figure}
+%-----------------
+%
+%----------------
+\begin{tabulate}
+%
+% caption 
+{Solidification parameters for the \tern{Fe}{2}{C}{30}{Cr} alloy.}
+% label
+{table:data_case_ternary}
+% line separation (e.g. 1.5mm)
+{0.6mm}
+% column justification-number (e.g. |c|ll|)
+{llll}
+% header titles (should use the & sign to switch columns)
+{\textbf{Parameter} & \textbf{Symbol} & \textbf{Value} & \textbf{Unit}}
+% cells content (should use the & and // to switch columns and rows)
+{
+Nominal composition 			& $\wC_0$ 				& 2 					& \si{\ucomposition} 	\\ 
+                    			& $\wCR_0$ 				& 30 					& \si{\ucomposition} 	\\ 
+Characteristic temperatures 	& $T_\text{bottom}$ 	& \cref{fig:mutlicomponent_bc}	 & \si{\udegC} \\ 
+Phase fraction 					& $g^\phi$ 				& Tabulations \textbf{REF}	& $-$ 					\\ 
+Phase enthalpy 					& $\h^\phi$ 			& Tabulations 	& $-$ 					\\ 
+Phase composition 				& $\wC^\phi$ 			& Tabulations 	& \si{\ucomposition}  	\\ 
+Phase composition               & $\wCR^\phi$ 			& Tabulations 	& \si{\ucomposition}  	\\ 
+Diffusion coefficients 			& $\avg{D_\text{C}}^l$ 	& \num{15e-10} 	& \si{\udiffusivity}  	\\ 
+                        		& $\avg{D_\text{Cr}}^l$	 & \num{15e-10} 	& \si{\udiffusivity}  	\\ 
+Dynamic viscosity  				& $\mul$ 					& \num{2e-3} 		& \si{\uviscosity}  	\\ 
+Thermal expansion coefficient 	& \betaT 					& \num{8.96e-5} 	& \si{\ubetaT}  		\\ 
+Solutal expansion coefficient 	& $\betawlC$ 				& \num{1.54e-3} 	& \si{\ubetawl}  		\\  
+                              	& $\betawlCR$ 				& \num{1.72e-2} 	& \si{\ubetawl}  		\\ 
+Thermal conductivity in the solid & $\ks$ 					& \num{40} 			& \si{\uconductivity}  	\\ 
+Thermal conductivity in the liquid & $\kl$ 					& \num{28} 			& \si{\uconductivity}  	\\ 
+Dendrite arm spacing 			& $\lambda$ 				& \num{60e-6} 		& \si{\metre}  			\\ 
+Density 						& $\rref$ 					& \num{6725} 		& \si{\udensity}  		\\ 
+Reference composition (carbon)			&$\avg{w_\text{C}}_\text{ref}^l$	& \num{2} & \si{\ucomposition}  	\\
+Reference composition (chromium)		&$\avg{w_\text{Cr}}_\text{ref}^l$	& \num{30} & \si{\ucomposition}  	\\
+Reference temperature 			&$\avg{w_\text{C}}_\text{ref}^l$	& \num{1377} & \si{\udegC}  	\\
+\hline 
+Initial temperature 	& $T_0$ & \num{1395}	& \si{\udegC}  \\ 
+Ingot diameter 			&   	& \num{25e-3} 	& \si{\metre}  \\ 
+Ingot length 			&   	& \num{75e-3} 	& \si{\metre}  \\ 
+\hline 
+FE mesh size 			&  		& \num{e-3} 	& \si{\metre}  \\ 
+Time step 				& $\dt$ & \num{0.1} 	& \si{\second}  \\ 
+Convergence criterion (residual) 	& $\varepsilon_R$ & \num{e-6} & $-$ \\ 
+Convergence criterion (temperature) & $\varepsilon_T$ & \num{e-2} & \si{\udegK} 
+}
+%
+\end{tabulate}
+%-----------------
+%
+\subsection{Discussion}
+%-----------------------
+A first case is considered without macrosegregation, that is, all mechanical driving forces are bypassed, leading to a static melt. 
+This is achieved by nullifying the thermal and solutal expansion coefficients, which is equivalent to a constant density in space 
+and time, i.e. no Boussinesq force is considered. This way, the average composition may only vary due to diffusion in the liquid 
+phase according to Eq. 20 where the convection term is neglected. Diffusion is significantly small in the present case and can be 
+neglected too. In such a case, the composition distribution maintains a homogeneous aspect throughout the sample during the entire 
+cooling sequence. The phase transformations then are necessarily expected to follow the unique path shown in \textbf{Figure 5c}. After 407 s 
+of cooling, the liquidus isotherm enters the bottom surface of the geometry and starts its upward propagation, marking the solidification 
+onset. Figure 7 presents the simulation results at 3 successive times for the distribution of the solute species and the temperature, as 
+well as for the fraction of phases listed in \textbf{Figure 5c}. At 600 s, a fully liquid region is still largely present while the mushy zone is 
+made of liquid plus the primary solid phase (ferrite). At 10560 s, the sample is full solid, with fractions of ferrite and cementite that 
+corresponds to the values read in \textbf{Figure 5c} at low temperature. At the selected intermediate time, the presence of 4 phases is found. The 
+solid region at the bottom of the cylinder is made of ferrite, austenite plus carbide, the temperature being still too high to permit the 
+cementite to form. The mushy zone above the solid region is characterized by the presence of 3 phases due to a peritectic reaction taking 
+place that progressively transform ferrite into austenite in the presence of liquid. It can be noticed that the phase fraction isovalues 
+in Figure 7 (at 600 s) are horizontal, owing this to two factors: the first is the temperature field, which varies unidirectionally from 
+bottom to top, controlled by thermal diffusion, while the second is the uniform average composition throughout the sample due to the absence 
+of convection. In fact both factors are consequences of the flow absence, which would transport heat and solute by advection, thus inevitably 
+changing the phase distribution. The succeeding phase change is a solid-state transformation where $\alpha$-ferrite and the carbide M7C3 react to form 
+cementite at \SI{490}{\udegC} at nominal composition, as shown in \cref{fig:mutlicomponent_bc}. The reaction is relatively slow, ending with 28\% 
+of cementite and 72\% of $\alpha$-ferrite.
