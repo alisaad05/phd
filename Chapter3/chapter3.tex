@@ -123,7 +123,8 @@ common in the literature. Among  other criteria, the dimensionless Rayleigh numb
 for  the occurrence of freckles. The dependence of freckling tendency on the Rayleigh number has been studied numerically 
 and compared to experimental observations, as done by \citep{ramirez_evaluation_2003}.
 %--------------------------
-\subsection{Experimental work}
+\subsection{Experimental work} 
+\label{sec:freckle_exp}
 An interesting experimental work on directional solidification of \bin{In}{75}{Ga}
 featuring in-situ X-ray monitoring has been recently carried out by \citet{shevchenko_chimney_2013}. 
 The comparison with numerical modelling is paramount for two main reasons: firstly, the in-situ technique allows to follow solidification in real-time 
@@ -144,7 +145,7 @@ to the experimental hardware, procedure and data analysis can be found in \citep
     \label{fig:experimental_setup}
   \end{subfigure}
    %------------------------------
-  \vskip\baselineskip
+  %\vskip\baselineskip
   %------------------------------
   \begin{subfigure}{0.5\textwidth}
     \centering
@@ -164,12 +165,77 @@ of the microstructure formed during directional solidification of an \bin{In}{75
 \subsection{Macroscopic scale simulations}
 %
 \subsubsection{Configuration}
+The focus of \red{the present paper} is on a qualitative comparison between numerical simulation and experiment. 
+The experimental cell geometry shown in \cref{fig:freckle} is hexagonal. With adiabatic lateral sides, it results in a 
+bending of the isotherm surfaces as shown in the experiment. The metallic cooling plates shown in 
+Figure 1 partly compensate for this effect. However, a residual horizontal component of the temperature gradient 
+remains. To qualitatively replicate this effect while simplifying the cell geometry, a \SI{22 x 22 x 1}{\milli \uvolume}  
+cuboid cell is considered with small cooling fluxes on its lateral vertical side surfaces computed using a constant heat transfer 
+coefficient, $\hext$, and a constant environment temperature, $\Text$. Temperatures at the bottom and top surfaces, 
+respectively $\Ttop$  and $\Tbottom$, are imposed in a way to maintain a constant vertical gradient, G, thus linearly 
+decreasing over time with the same cooling rate R. Both square faces of the geometry, having an area of \SI{22 x 22}{\milli \uarea}, 
+are adiabatic. In spite of taking cell dimensions similar to benchmark experiments presented above, the cell thickness 
+is increased from \SI{150}{\micro \metre} to \SI{1}{\milli \metre}. This facilitates the computation and will later be subject to discussion. 
+%
+%----------------
+\begin{tabulate}
+%
+% caption 
+{Summary of the simulations and and the corresponding parameters for the FE cases, 
+for a purely macroscopic model.
+Parameters are varied from (G1) low to (G2) high gradient, (R1) low to (R2) high cooling 
+rate and (L0) no, (L1) low and (L2) high lateral cooling.}
+% label
+{table:simulation_InGa_fe}
+% line separation (e.g. 1.5mm)
+{0.6mm}
+% column justification-number (e.g. |c|ll|)
+{cccccc}
+% header titles (should use the & sign to switch columns)
+{\textbf{Case} 
+& aaa 
+& sss 
+& aaa 
+& ffff & ffddfd}
+% cells content (should use the & and // to switch columns and rows)
+{
+lll & ccc & sss & aaa & ffff & ffddfd \\ 
+lll & ccc & sss & aaa & ffff & ffddfd}
+%
+\end{tabulate}
+%-----------------
+%
+Materials properties are provided in \cref{table:data_case_InGa} while initial and boundary conditions are given in \cref{table:simulation_InGa_fe}. 
+A series of computations is performed to understand the influence of process parameters on the final macrosegregation pattern. 
+In directional growth, the main parameters are the vertical temperature gradient, G, and the cooling rate, R, since they control the isotherms 
+speed. However, the effect of a higher lateral cooling is also considered below by increasing the heat transfer coefficient,
+$\hext$. Finally, the grain structure is another crucial parameter that drastically changes the analysis inasmuch as growth 
+undercooling is fundamental to determine the onset of solidification. The computation cases used in this study are presented 
+in \cref{table:simulation_InGa_fe}. The label of each case allows direct access to the simulation parameters as explained in the caption. Values for 
+these parameters are inspired from the above experiments (\cref{sec:freckle_exp}). Initial conditions consider a quiescent 
+liquid at uniform composition given by the nominal alloy composition $\avg{\Cnominal}$. The temperature field is also initially uniform 
+at a temperature averaged between the top and bottom initial values provided in \cref{table:simulation_InGa_fe}. It has been checked that a uniform 
+temperature gradient is swiftly reached, and that the unsteady regime to settle a vertical temperature gradient does not affect 
+the phenomena studied. For simulations with grain structures, boundary conditions for nucleation at the bottom horizontal \SI{22 x 1}{\milli \uarea} 
+surface are kept constant as given in \cref{table:simulation_InGa_fe}.
+
+The macroscale approach employs the finite element method to compute the temperature and composition fields at FE nodes. 
+The liquid fraction is then determined directly from the former fields, assuming a linear phase diagram, i.e. linear liquidus 
+with full thermodynamic equilibrium between phases or lever rule approximation. This linear approximation is made available by 
+the dotted line provided in \cref{fig:phasediagram_InGa}. Note that this line defines a phase diagram that seems very different from the correct one. 
+However, this linear fit is only used in a composition region located around the nominal composition of the alloy. It is also worth 
+noticing that the eutectic microstructure is expected to appear at \SI{15.3}{\udegC}. However, experimental observations revealed that large 
+eutectic nucleation undercooling was reached, so the eutectic solidification was not reported in the experiments studied by 
+\citet{shevchenko_chimney_2013}. Consequently, the solidification path is computed without accounting for the eutectic microstructure 
+in the present simulations, thus extending the liquidus and solidus lines below the eutectic temperature as sketched with the linear 
+approximations in \cref{fig:phasediagram_InGa}.
 %
 %-----------------------
 \begin{figureth}
 {0.6}
 {Chapter3/Graphics/freckle_fe/phasediagram/PhaseDiagram.pdf}
-{Binary phase diagram of the In-Ga system \citep{andersson_thermo-calc_2002,tcbin_tcbin:_2006} and its approximation for solidification studies with an \bin{In}{75}{Ga} alloy. 
+{Binary phase diagram of the In-Ga system \citep{andersson_thermo-calc_2002,tcbin_tcbin:_2006} and 
+its approximation for solidification studies with an \bin{In}{75}{Ga} alloy. 
 The dashed and dotted lines are linear liquidus and solidus approximations near the nominal composition.}
 \label{fig:phasediagram_InGa}
 \end{figureth}
@@ -224,7 +290,7 @@ Time step 				& $\dt$ & \num{0.1} 	& \si{\second}
 \subsubsection{Results}
 The first case labeled FE-G1R1L0 is a reference case that features a low gradient (G1), low cooling rate (R1), 
 and without any lateral cooling (L0), ensuring that isotherms retain a planar shape. These simulation parameters 
-defined in \textbf{Table 2}, result in a negligible fluid flow reaching a maximum velocity of \SI{4d-8}{\milli\uvelocity} in the bulk. 
+defined in \cref{table:data_case_InGa}, result in a negligible fluid flow reaching a maximum velocity of \SI{4d-8}{\milli\uvelocity} in the bulk. 
 Accordingly, the solidification front remains stable and follows the planar isotherms; no freckles are observed. 
 The average composition field is thus only little modified in the mushy zone as shown in \textbf{Figure 3 }(mind the values of the scale limits). 
 It is concluded that velocity in the bulk is not high enough to initiate instabilities. In the next case, FE-G1R1L1, 
@@ -285,7 +351,18 @@ orientation and subsequently disappears (not shown here). Thus, the birth and de
 simulation, mainly due to solutal instability, as the temperature field shown in \textbf{Figure 4 }clearly remains stable despite 
 the low lateral heat flux. As shown in \textbf{Figure 3}, instability is yet required to create these chemical plumes and channels. 
 Here, it is created by a very small lateral heat flow but other sources of instability could be involved, as shown with the grain structure in the next section.
-
+%=====================================BIG LANDSCAPE FIGURE =====================================
+\begin{landscape}
+\begin{figureth}
+{1.15}
+{Chapter3/Graphics/freckle_fe/planche_fe.pdf}
+{Simulation results for case FE-G2R1L1 showing maps of the average $Ga$ composition,
+the solid fraction, the superficial velocity field (vertical component) and the temperature, 
+on a cut plane at the center of the cell at 500 s, 1000 s and 1500 s.}
+\label{fig:planche_fe}
+\end{figureth}
+\end{landscape}
+%=====================================BIG LANDSCAPE FIGURE =====================================
 \subsubsection{Discussion}
 In the literature, many successful attempts have been made to predict freckles since (for example CITE fellicelli, poireau) ... 
 until coming to kohler thesis results in 2008. These authors tackled the problem from an qualitative perspective. 
@@ -309,17 +386,73 @@ be enough to see the exact grain boundaries. (now it is time to do transition to
 %-----------------------------------------------
 \section{Meso-Macro freckle prediction}
 %
+\subsection{Numerical method}
+%
+\subsubsection{Microscopic scale}
+The CAFE model introduces a grid of regular and structured cubic cells, with a constant size 
+in all space directions, referred to as the cellular automaton (CA) grid. It is different from 
+the unstructured finite element mesh previously mentioned for the solution of the average conservation 
+equations. A typical CA step dimension is smaller than the smallest FE mesh size. The CA grid serves to 
+represent solidification phenomena including nucleation, growth and remelting of the envelope of the 
+primary dendritic grains. Details about the CAFE model can be found in \citep{carozzani_3d_2012,carozzani_direct_2013,carozzani_optimized_2014}. 
+Cell information, such as the temperature, the average composition or the velocity of the liquid phase, is interpolated from 
+the nodes of the FE mesh. State indices are also defined for each CA cell, providing the presence of liquid or solid phases. 
+%
+\subsubsection{Nucleation}
+Initially, cells are in a fully liquid state. In the present situation, random nucleation sites are 
+chosen based on a nucleation density, $n_\text{max}$ (expressed in surface density inverse \si{\per \uarea}), at the 
+bottom surface of the geometry in contact with the cooler. Nucleation occurs in a cell only if the 
+latter contains a nucleation site, and when the local undercooling of the cell reaches the critical 
+nucleation undercooling given as input by a Gaussian distribution of mean undercooling $\Delta T_N$ with a 
+standard deviation $\Delta T_\sigma$. The crystallographic orientation of each grain newly nucleated is also randomly 
+chosen using values of the Euler angles to fully define the three rotations that transform the reference 
+frame to the $\avg{100}$ directions that define the main growth axes of the dendrite trunks and arms. Grain 
+selection is therefore solely controlled by growth competition.
+%
+\subsubsection{Growth}
+Dendrite growth is driven by the chemical supersaturation $\Omega_\textbf{saturation}$, which is a 
+dimensionless number proportional to the difference between the liquid composition at the dendrite 
+tip and the melt composition far away from the tip. The higher the supersaturation, the faster the 
+dendrite tip velocity. However, in the presence of a convective fluid, the chemical supersaturation 
+is highly influenced by the intensity and the direction of the flow with respect to the growth direction 
+of the dendrites. In the current model, convection is central in studying freckle formation. Therefore, 
+the purely diffusive Ivantsov relation used to determine the Peclet number $Pe$ as function of the supersaturation, 
+is replaced by a modified relation using a boundary layer correlation model that accounts for both the intensity 
+and the misorientation of the liquid velocity with respect to the growth direction of the dendrites \citep{gandin_boundary_2003}. 
+The main parameters for this growth kinetics models are the Gibbs Thomson coefficient, $\Gamma_{\text{GT}}$, and the diffusion 
+coefficient for Ga in In, $\Dl$.
+%
+\subsubsection{Solidification path}
+The CA model gives the presence of the grains in the liquid as well as its growth undercooling. 
+For coupling with macroscopic scale modelling, the fraction of phases needs to be fed back to the 
+FE model. This is now done by accounting for the information provided by the CA model. Thus, the 
+fraction of solid is no longer the consequence of a simple conversion of the temperature and 
+composition assuming thermodynamic equilibrium. It also includes the solidification delay due to 
+the kinetics of the development of the grains as detailed elsewhere in the work of \citet{carozzani_direct_2013}.
+%
+\subsubsection{Numerical method}
+Both the finite element mesh and the cellular automaton grid play a role in predicting freckles inasmuch as 
+this type of defect originate from interplays between hydrodynamic instabilities on the scale of the dendrites 
+and macroscopic flows defined by the geometry of the experimental cell \citep{shevchenko_chimney_2013}. One has to 
+respect a small maximum FE mesh size, comparable to the dendrite arm spacing. With such an element size, composition gradients giving 
+rise to solutal buoyancy forces can be captured. This limits consequently the CA cell size, as a minimum number 
+of cells is required in each finite element. In the array of simulations that will be presented in the next section, 
+the value of $\sdas$ was considered. We have chosen a fixed mesh element size of 2$\sdas$ and a CA cell size of $\sdas/2$. 
+An average of 4 CA cells per unit length of a finite element is enough to accurately compute the development of the 
+grain envelopes together with the solutal, thermal and mechanical interactions.
+%--------------------
+%
 \subsection{Configuration}
 %----------------
 \begin{tabulate}
 %
 % caption 
-{Summary of the simulation cases with the corresponding parameters. 
-The first series (FE-) consider the purely macroscopic model while the second series (CAFE-) 
-makes use of the coupling with the grain structure model. Parameters are varied from (G1) low 
-to (G2) high gradient, (R1) low to (R2) high cooling rate and (L0) no, (L1) low and (L2) high lateral cooling.}
+{Summary of the simulations and and the corresponding parameters for the CAFE cases, 
+coupling macroscopic model with the grain structure model.
+Parameters are varied from (G1) low to (G2) high gradient, (R1) low to (R2) high cooling 
+rate and (L0) no, (L1) low and (L2) high lateral cooling.}
 % label
-{table:data_simulation_InGa}
+{table:simulation_InGa_cafe}
 % line separation (e.g. 1.5mm)
 {0.6mm}
 % column justification-number (e.g. |c|ll|)
@@ -347,7 +480,7 @@ perturbed as shown by the formation of numerous plumes when coupling with grain 
 front displayed on the grain structure at the right most column of \textbf{ Figure 5} dictates the leading position of the 
 mushy zone shown in the third column. Note that each color corresponds to one grain, with 17 grains having nucleated 
 at the cell’s bottom surface. However, comparison of the solid fraction maps between \textbf{Figure 4} and \textbf{Figure 5} at the 
-same times reveals a delay in the growing front position. Values of the nucleation parameters in \textbf{Table 3} are such 
+same times reveals a delay in the growing front position. Values of the nucleation parameters in \cref{table:simulation_InGa_cafe} are such 
 that few grains rapidly form below the nominal liquidus isotherm. The delay is therefore not due to the nucleation 
 undercooling but to the growth undercooling of the dendrite tips. It should be noticed that, the growth front driven 
 by undercooling in \textbf{Figure 5} also forms with a higher initial solid fraction and hence larger solute segregation occurs 
