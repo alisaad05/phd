@@ -12,7 +12,7 @@
 \subsection{Dendritic growth}
 %***********************************************
 In a casting process, the chill surface i.e. the contact between the molten alloy and relatively cold moulds, is the first area to solidify. 
-Thermal gradient, $G$, and cooling rate $R$ are two crucial process parameters that define the interface speed $\vstar$, which in turn,
+Thermal gradient, $G$, and cooling rate $R$ are two crucial process parameters that define the solid-liquid interface velocity $\vstar$, which in turn,
 affects the initial microstructure. Although it may be not easy to control them, it remains important to understand their implication in solidification.
 
 The solid-liquid interface fluctuates when solidifying, thus perturbations may appear on the front, locally destabilizing it. 
@@ -27,7 +27,7 @@ favourable growth in the <100> direction for alloys with cubic lattices, but dif
 If temperature is uniform, which is the case usually far from mould walls, a similar dendritic growth phenomenon occurs, but with an equiaxed morphology.
 
 Columnar dendrites are characterized by a primary spacing, $\pdas$, between the main trunks, and a secondary spacing, $\sdas$, for the arms that are perpendicular
-to the trunks. It should be noted that $\sdas$, together with the grain size, are two important microstructural parameters in the as-cast microstructure \citep{easton_grain_2011}.
+to the trunks. It should be noted that $\pdas$ and $\sdas$, together with the grain size, are three important microstructural parameters in the as-cast microstructure \citep{easton_grain_2011}.
 Further branching may occur but will not be discussed here.
 %----------------------
 \begin{figureth}
@@ -48,13 +48,14 @@ Further branching may occur but will not be discussed here.
 The dendritic geometry is crucial in solidification theory as it exhibits lower solid fraction compared to a microstructure formed by planar growth.
 This fact has consequences on the fluid-structure interaction in the mushy zone, namely the liquid flow through dendrites. At the chill surface,
 the solid  grows gradually from dispersed growing nuclei to a permeable solid skeleton, until finally grains have fully grown at the end of phase change.
-The intermediate state where liquid can flow in and out of the mushy zone through the dendrites is a key phenomenon from a rheological perspective.
+In the intermediate state, the liquid flow in and out of the mushy zone through the dendrites is a key phenomenon from a rheological perspective.
 %By defining a \emph{coherency temperature} $\Tcoh$, one can distinguish two behaviors. 
 %For temperatures below $\Tcoh$ (usually at low solid fractions), the liquid flow is characterized by an intrinsic velocity. 
 %As for temperature above $\Tcoh$,
 %For the rest of this section, we will focus on the first behavior where liquid has a relative freedom to move inside the mushy zone.
 The flow through the solid skeleton is damped by primary and secondary dendrites, resulting in momentum dissipation just like in saturated porous media. 
-The famous \citet{darcy_les_1856} law relates the pressure gradient ($\nabvec p$) to the fluid velocity $\vec{v}$, through the following equation \citep{rappaz_numerical_2003}:
+The famous \citet{darcy_les_1856} law relates the pressure gradient ($\nabvec p$) to the fluid velocity $\vec{v}$ (assuming a the solid phase is fixed), 
+through the following equation \citep{rappaz_numerical_2003}:
 %----------------------
 \begin{align}
 \label{eq:darcy}
@@ -63,8 +64,9 @@ The famous \citet{darcy_les_1856} law relates the pressure gradient ($\nabvec p$
 %----------------------
 where $\mul$ is the liquid dynamic viscosity and $\K$ is the permeability tensor. The latter parameter has been the subject of numerous studies that aimed
 to predict it from various microstructural or morphological parameters.
-Some of these studies has started even before the first attempts to model macrosegregation by \citet{flemings_macrosegregation:_1967, flemings_macrosegregation:_1968-1,flemings_macrosegregation:_1968}. Basically, all models include the solid fraction, $\gs$, as input 
-to predict mush permeability along with empirical data. An instance of such models is the work of \citet{xu_gravity-_1991}.
+Some of these studies have started even before the first attempts to model macrosegregation by \citet{flemings_macrosegregation:_1967, flemings_macrosegregation:_1968-1,flemings_macrosegregation:_1968}. 
+Basically, all models include the solid fraction, $\gs$, as input to predict mush permeability along with empirical data. 
+An instance of such models is the work of \citet{xu_gravity-_1991}.
 Some models rely additionally on the primary dendrite arm spacing $\pdas$ like Blake-Kozeny \citep{ramirez_evaluation_2003}, or the secondary 
 dendrite arm spacing $\sdas$ like Carman-Kozeny, as a meaningful parameter to determine an isotropic permeability. 
 Other models like \citet{poirier_permeability_1987,felicelli_simulation_1991} derive an anisotropic permeability based on both $\pdas$ and $\sdas$.
@@ -122,14 +124,14 @@ of the solvent and the eutectic temperature.}
 %***********************************************
 Solid formation depends greatly on the ability of chemicals species to diffuse within each of 
 the solid and liquid phases, but also across the solid-liquid interface. Furthermore, chemical diffusion like all other 
-diffusional process, is a time-dependent phenomenon. One can thus conclude that two factors
+diffusional processes, is a time-dependent phenomenon. One can thus conclude that two factors
 influence the amount of solid formation: cooling rate and diffusion coefficients. However, 
 convection and other mechanical mixing sources, homogenise the composition much faster than atomic diffusion. 
 As such, \emph{complete mixing} in the liquid is always an acceptable assumption, regardless of the 
 solidification time. We may speak of infinite diffusion in the liquid. Nevertheless, diffusion in the solid, 
 also known as \emph{back diffusion}, is the only transport mechanism with very low diffusion coefficients. 
 Therefore, chemical species require a long time, i.e. low cooling rate, to completely diffuse within the solid.
-The difference in diffusional behaviour at the scale of a secondary dendrite arms, is summarized by two limiting 
+The difference in diffusional behaviour at the scale of a secondary dendrite arm, is summarized by two limiting 
 segregation models of perfect equilibrium  and nonequilibrium, which are the lever rule and Gulliver-Scheil models, respectively. 
 Afterwards, models with finite back diffusion are presented. 
 %------------
@@ -143,8 +145,8 @@ These compositions are given by:
 %----------------------
 \begin{align}
 \label{eq:leverrule}
-& \Cl= \Clstar = \k \Csstar = \k \Cs \\
-& \Cs= \Csstar = \frac{\Cnominal}{\k(1-\fs) + \fs}
+& \Cl= \Clstar = \k^{-1} \Csstar = \k^{-1} \Cs \\
+& \Cs= \Csstar = \frac{\k \Cnominal}{\k\fs + (1-\fs)}
 \end{align}
 %----------------------
 At the end of solidification, the composition of the solid phase is equal to the nominal composition, $\Cs = \Cnominal$
@@ -153,14 +155,15 @@ At the end of solidification, the composition of the solid phase is equal to the
 %***********************************************
 \subsubsection*{Gulliver-Scheil}
 %***********************************************
-The other limiting case is the absence of diffusion in the solid. That includes also the diffusion at the interface, so nothing diffuses in or out. The consequence is a steady increase of the homogeneous liquid composition while the solid composition remains non-uniform.
-Compared to a full equilibrium approach, higher fractions of liquid
-will remain until eutectic composition is reached, triggering a eutectic solidification. The phase compositions are given by:
+The other limiting case is the absence of diffusion in the solid. That includes also the diffusion at the interface, 
+so nothing diffuses in or out. The consequence is a steady increase of the homogeneous liquid composition while the solid composition remains non-uniform.
+Compared to a full equilibrium approach, higher fractions of liquid will remain until eutectic composition is reached, 
+triggering a eutectic solidification. The phase compositions are given by:
 %----------------------
 \begin{align}
 \label{eq:scheil}
-& \Cl= \Clstar = \k \Csstar \\
-& \Cs= \k \Cnominal (1-\fs)^{1-\k}
+& \Cl= \Clstar = \k^{-1} \Csstar \\
+& \Csstar= \k \Cnominal (1-\fs)^{\k-1}
 \end{align}
 %------------
 %
@@ -172,8 +175,8 @@ and the resulting eutectic fraction. Therefore, many models studied the limited 
 %----------------------
 \begin{align}
 \label{eq:brodyflemings}
-& \Cl= \Clstar = \k \Csstar \\
-& \Cs= \k \Cnominal \crochet{ 1 - \brac{ 1 - 2 \Fos \k } \fs }^{\frac{\k-1}{1 - 2 \Fos \k }}
+& \Cl= \Clstar = \k^{-1}  \Csstar \\
+& \Csstar= \k \Cnominal \crochet{ 1 - \brac{ 1 - 2 \Fos \k } \fs }^{\frac{\k-1}{1 - 2 \Fos \k }}
 \end{align}
 %------------
 where $\Fos$ is the dimensionless \emph{Fourier number} for diffusion in the solid \citep{dantzig_solidification_2009}. It depends on the 
@@ -224,7 +227,8 @@ where $\psis$ and $\psil$ are phase averages of $\psi$. Then, for any phase $\ph
 & \avg{\psi^\phi} = \frac{1}{\rev} \integral{\Vphi}{\psi}{\Omega} = \gphi \avg{\psi}^\phi
 \end{align}
 %------------
-where $\gphi$ is the volume fraction of the phase. To finalize, the averaging is applied to temporal and spatial derivation operators \citep{rivaux_simulation_2011}:
+where $\gphi$ is the volume fraction of phase $\phi$ with $\gphi=V_\phi/\rev$. To finalize, the averaging is applied to temporal and spatial derivation operators:
+%\citep{rivaux_simulation_2011}:
 \begin{align}
 \label{eq:volumeaveraging3}
 & \avg{ \frac{\partial \psi}{\partial t} ^\phi } = \frac{\partial \avg{\psi^\phi}}{\partial t} - \integral{\gammastar}{\psi^\phi \vstar \cdot \vec{n^\phi}}{A} \\
@@ -233,9 +237,9 @@ where $\gphi$ is the volume fraction of the phase. To finalize, the averaging is
 \end{align}
 %------------
 where $\vstar$ is the local relative interface velocity and $\gammastar$ is the solid-liquid interface, 
-while $n^\phi$ is the normal to $\gammastar$, directed outwards. The surface integral term in 
-\cref{eq:volumeaveraging3,eq:volumeaveraging4} is an \emph{interfacial average} 
-that expresses exchanges between the phases across the interface. The previous equations will 
+while $n^\phi$ is the normal to $\gammastar$, directed outwards. The surface integral terms in 
+\cref{eq:volumeaveraging3,eq:volumeaveraging4} are \emph{interfacial averages} 
+that express exchanges between the phases across the interface. The previous equations will 
 be used to derive a set macroscopic conservation equations. 
 It is noted that the intrinsic average $\avg{\psi}^\phi$ may be replaced by ${\psi}^\phi$ 
 for notation simplicity, whenever the averaging technique applies.
@@ -245,17 +249,20 @@ for notation simplicity, whenever the averaging technique applies.
 \subsubsection{Macroscopic equations}
 %***********************************************
 A monodomain macroscopic model relies on four main conservation equations to predict 
-macrosegregation in a single alloy domain, i.e. the latter is considered without 
+macrosegregation in a single alloy, i.e. the latter is considered without 
 any interaction with another alloy or ambient air. The general form of a conservation 
 equation of any physical quantity $\psi$ is given by \citep{rappaz_numerical_2003}:
 %-------
 \begin{align}
 \label{eq:conservationequation}
-& \frac{\partial \psi}{\partial t} + \nabla \cdot \brac{\psi \vec{v}} - \nabla \cdot \vec{j_{\psi}} = Q_{\psi}
+& \frac{\partial \psi}{\partial t} + \nabla \cdot \brac{\psi \vec{v}} + \nabla \cdot \vec{j_{\psi}} = Q_{\psi}
 \end{align}
 %-------
-The first LHS term in \cref{eq:conservationequation} represents the time variation of $\psi$, the second term accounts for transport by advection while the third is the diffusive transport and the RHS term represents a volume source.
-The considered equations are mass, energy, liquid momentum and species conservation, all summarized in \cref{tab:conservationeqs}. The solid momentum is not considered as we assume a fixed and rigid solid phase ($\vs=\vec{0}$).
+The first LHS term in \cref{eq:conservationequation} represents the time variation of $\psi$, 
+the second term accounts for transport by advection while the third is the diffusive transport
+and the RHS term represents a volume source. The considered equations are mass, energy, liquid 
+momentum and species conservation, all summarized in \cref{tab:conservationeqs}. The solid momentum 
+is not considered as we assume a fixed and rigid solid phase ($\vs=\vec{0}$).
 %-----
 \begin{tableth}
 \centering
@@ -298,7 +305,7 @@ Next, we define the average diffusive fluxes, $\vec{q}$ for energy and $\vec{j_i
 %------
 \begin{align}
 \label{eq:fourierlaw}
-& \avg{\vec{q}} = - \gl \kl \nabvec T -  \gs \ks \nabvec T 	\\
+& \avg{\vec{q}} = - \gl \kl \nabvec T -  \gs \ks \nabvec T = -\avg{\kappa} \nabvec T \\
 \label{eq:ficklaw}
 & \avg{\vec{j_i}} = - \gl \Dl \nabvec \wil - \cancel{\gs \Ds \nabvec \wis}
 \end{align}
@@ -306,7 +313,7 @@ Next, we define the average diffusive fluxes, $\vec{q}$ for energy and $\vec{j_i
 In \cref{eq:ficklaw}, the solid diffusion coefficient is neglected, 
 by considering that for macroscopic scales, the average composition of the alloy is much more influenced by advective 
 and diffusive transport in the liquid.
-In \cref{eq:fourierlaw}, we assumed that phases are are thermal equilibrium, that is, temperature is uniform in the RVE.
+In \cref{eq:fourierlaw}, we assume that phases are at thermal equilibrium, that is, temperature is uniform in the RVE.
 
 Now that the main conservation equations ingredients are properly defined, we may write each averaged conservation
 equations as the sum of two local conservation equations for each phase in the RVE, hence introducing also interfacial average terms.
