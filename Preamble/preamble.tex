@@ -163,6 +163,7 @@ or
 % Captions: This makes captions of figures use a boldfaced small font. 
 \RequirePackage[small,bf]{caption}
 \RequirePackage[labelsep=endash,tableposition=top]{caption}  % labelsep=endash % space
+%\RequirePackage[justification=centering]{caption} 
 \addto\captionsenglish{\renewcommand{\figurename}{Fig.}}
 
 %%-----------------------  Footnote Header formatting -------------------------------
@@ -444,6 +445,7 @@ or
 %**********	
 \newenvironment{tabulate}[6]{
 \begin{table}[h]
+\centering
 \caption{#1}
 \label{#2}
 {\tabulinesep=#3
