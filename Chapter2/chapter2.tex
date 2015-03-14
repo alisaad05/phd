@@ -20,7 +20,7 @@ phases and the latent  heat associated with the phase transformations. However, 
 of solidification and while macrosegregation is taking place, these  properties change because the average
 composition may  vary  significantly: the  transformation paths are thus modified, as well as
 the phases' composition and heat capacity. Similarly, the latent heat of phase  transformations
-is  not a mere constant that could be distributed as a function of the phase fractions
+is not a mere constant that could be distributed as a function of the phase fractions
 assuming only temperature-dependent phases' properties, as often found in the literature \citep{bellet_call_2009}.
 It is thus impossible to establish a priori the dependence of the enthalpy with respect
 to temperature when macrosegregation alters the average composition, even in the case of full thermodynamic equilibrium
@@ -74,10 +74,10 @@ change problems.
 \comment{ I could elaborate more in this paragraph by showing the possible equations for the explicit formulation and maybe a figure to show the AlSi7
 computation that i did with a v small time step }
  
-Once the variational form has been discretized in space and time, two possible resolution schemes emerge: the first is an 
+Once the variational form has been discretised in space and time, two possible resolution schemes emerge: the first is an 
 explicit forward Euler scheme which gives rise to a linear equation where the temperature is known at time $t$, $T^t$. This requires very small 
-time steps in the current context, which limits the solver’s usability at the scale of industrial applications. The second scheme is the 
-backward Euler or full implicit discretization where terms are function of $T^{t+\Delta t}$. It leads to a nonlinear equation with 2 interdependent 
+time steps in the current context, which limits the solver's usability at the scale of industrial applications. The second scheme is the 
+backward Euler or full implicit discretisation where terms are function of $T^{t+\Delta t}$. It leads to a nonlinear equation with 2 interdependent 
 unknowns, $\rh^{t+\Delta t}$ and  $T^{t+\Delta t}$. It is clear that the nature of the temperature-enthalpy relationship plays a central 
 role when formulating the resolution strategy of this nonlinear equation. Generally, it is admitted that, depending on the resolution strategy, 
 it is necessary to express enthalpy as a function of temperature or vice-versa, together with associated partial derivatives, 
@@ -104,7 +104,7 @@ to close the relation.
 The complexity of performing a thermodynamic conversion is directly linked 
 to the simplicity of determining the alloy properties, namely the phase fractions 
 and phase enthalpies. In the case of binary alloys and with several assumptions 
-with respect to the system (e.g., linear monovariant temperature composition 
+with respect to the system (e.g., linear mono-variant temperature composition 
 relationships, constant heat capacity of phases and constant latent heat of transformations, 
 equilibrium approximations between phases) analytical calculations are often used to determine 
 the properties. Nevertheless, analytical relations are more complex or even impossible to derive 
@@ -1010,12 +1010,31 @@ For this computation, solidification paths, phase compositions and phase enthalp
 module dedicated to equilibrium calculations for binary alloys. The 3D simulation results in \cref{fig:validation_convectiondiffusion}
 show a satisfactory agreement with the experimental temperature measurements recorded at mid heights of the cavity and uniformly 
 distributed along its width \citep{carozzani_direct_2013}. In fact, simulation results with the Tsolver and the Hsolver were 
-found to be almost superimposed, as shows \cref{fig:validation_convectiondiffusion}. Regarding the computation, the Tsolver resolution proves to be 
+found to be almost superimposed, as shows \cref{fig:validation_convectiondiffusion}. 
+Further comparison is made between both solvers, as shows \cref{fig:planche_HvsT}, where the average
+composition, liquid fraction and temperature fields are extracted from a cut plane halfway through the ingot. On the same figure,
+if we compare the composition, we notice that the solidified part (right side) has basically the same segregation pattern, while
+in the convected liquid has a slightly different solute distribution. As for the extent of the mushy zone, we observe that liquid
+fraction contours are very close, indicating that temperature distributions and interdendritic segregation are also close between 
+both solvers predictions.
+Regarding the computation, the Tsolver resolution proves to be 
 faster than the Hsolver used by \citet{carozzani_direct_2013}: a process time of 7000s required a computation time of 90 hours 
 13 minutes compared to 114 hours 21 minutes spent by the enthalpy resolution with 32 cores on the same cluster. The gain factor 
 is about 20\%.
-
-
+%
+%----------------------
+\begin{figureth}
+% textwidth 
+{0.85}
+%path 
+{Chapter2/Graphics/convection_diffusion/planche_HvsT.pdf}
+% caption
+{Comparison of 3D simulation results: average composition, liquid fraction and temperature at $t=3000 s$ for Tsolver and Hsolver.}
+% label
+\label{fig:planche_HvsT}
+\end{figureth}
+%-----------------------------------
+%
 \section{Application: multicomponent alloy solidification}
 %==================
 %
