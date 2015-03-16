@@ -90,12 +90,26 @@ In this section, we consider the same simulation parameters defined in \cref{tab
 previously defined in \cref{fig:mutlicomponent_geobc}. Moreover, we solve the liquid momentum conservation equation, with non-slip boundary conditions
 on all external sides of the cylinder.
 %
+%=====================================BIG LANDSCAPE FIGURE =====================================
+\begin{landscape}
+\begin{figureth}
+{1.15}
+{Chapter3/Graphics/multicomponent/planche_macroseg.pdf}
+{: Upward solidification of a cylinder rod  at 3 stages showing the metallurgical consequences 
+of macrosegregation \tern{Fe}{2}{C}{30}{Cr}. The left columns show the average 
+composition and temperature distribution, while the right columns show the phase fractions.}
+\label{fig:planche_withmacroseg}
+%\thispagestyle{headings}
+\end{figureth}
+\end{landscape}
+%=====================================BIG LANDSCAPE FIGURE =====================================
+%
 \subsection{Results}
 Solidification starts at 407 seconds when the cylinder’s bottom base temperature 
 reaches the liquidus temperature of the alloy. 
 In fact, the solidification onset is the same as in the pure diffusion case in \cref{fig:planche_nomacroseg}, 
 since the average composition remains unchanged for an entirely liquid domain (assuming an initially infinite 
-solute mixing in the melt). As shown in \textbf{Figure} 8 at 600 s, the first solid phase to form 
+solute mixing in the melt). As shown in \cref{fig:planche_withmacroseg} at 600 s, the first solid phase to form 
 remains ferrite. We can also see solute-rich channels forming in the mushy zone and solute 
 plumes rising in the melt above the mushy zone due to a subsequent upward flow. It is actually 
 caused by the thermosolutal buoyancy force created by the carbon and chromium solutes. Such 
@@ -105,12 +119,12 @@ As solidification proceeds, the liquid becomes more enriched with solute and the
 reaction forming the austenite phase is reached. However, for very large enriched melt, it can 
 also be observed that primary solidification proceeds with the austenite phase rather than the 
 ferrite phase. The carbide phase can also form with the austenite phase at some locations. These 
-observations correspond to a simulation time of \num{2000} s in \textbf{Figure} 8. Solidification ends at 
+observations correspond to a simulation time of \num{2000} s in \cref{fig:planche_withmacroseg}. Solidification ends at 
 around \num{2475} s, the last liquid solidifying at the cylinder’s top surface, where the average composition 
 reaches a maximum of \tern{Fe}{2.151}{C}{30.633}{Cr}, i.e. a relative positive macrosegregation, 
 $\brac{\wi-\wi_0}/\wi_0$, of 7.5\% for carbon and 2.1\% for chromium. The fact that the maximum average 
-composition is observed at the top, is verified in \textbf{Figure} 9a which shows the composition map in a 2D 
-vertical slice through the longitudinal axis of the cylinder. We can also see it in \textbf{Figure} 9b where the 
+composition is observed at the top, is verified in \cref{fig:tp_nomacroseg} which shows the composition map in a 2D 
+vertical slice through the longitudinal axis of the cylinder. We can also see it in \cref{fig:tp_withmacroseg} where the 
 relative composition profile are plotted at the end of the cooling process along the longitudinal cylinder 
 axis Z-Z’ and along the axis of the freckle, F-F’. The negative segregation up to 1 cm from the chill corresponds 
 to the solute depletion caused by the first solid formation. The subsequent solidification enriches further the 
@@ -126,8 +140,8 @@ top surface. This temperature value is the local cementite solvus temperature. T
 temperature between the bottom and top surfaces is due macrosegregation. Macrosegregation also explains the 
 variation in the cementite content. The solid state transformation ends shortly before \num{10500} s. The final phase 
 distribution is clearly dependent on the final macrosegregation pattern. They retain the shape of the freckles 
-that were caused by thermosolutal convection, hence demonstrating the heritage of the solidification process on 
-the final distribution of phases. This is better illustrated by drawing the time evolution of the fraction of 
+that were caused by thermosolutal convection, hence demonstrating the influence of the solidification process on 
+the final phase distribution. This is better illustrated by drawing the time evolution of the fraction of 
 phases at the center of the bottom and top surfaces of the cylinder in \textbf{Figure} 10. With no macrosegregation, in 
 \textbf{Figure} 10a, the final distribution of the phases is the same at time \num{12000} s, while with macrosegregation, 
 in \textbf{Figure} 10b, variations of the cementite and ferrite are revealed. 
@@ -138,7 +152,35 @@ thermodynamic tabulations is thus demonstrated. It shows the ability to predict 
 only at equilibrium. As for the computation time, the Tsolver resolution performed better: 500 seconds of solidification 
 required 6 hours 14 minutes compared to 8 hours 6 minutes spent by the enthalpy resolution with 12 cores on the same machine. 
 The gain factor is about 22\%.
-
+%
+%-----------------
+\begin{figure}[htbp]
+\centering
+   %------------
+  \begin{subfigure}[t]{0.6\textwidth}
+    \centering
+	\includegraphics[width=\textwidth]{Chapter3/Graphics/multicomponent/transformationpath/TP_nomacro.pdf}
+	\caption{}
+    \label{fig:tp_nomacroseg}
+  \end{subfigure}
+  %------------------------------
+  \vskip\baselineskip
+  %------------------------------
+  \begin{subfigure}[t]{0.6\textwidth}
+    \centering
+	\includegraphics[width=\textwidth]{Chapter3/Graphics/multicomponent/transformationpath/TP_macro.pdf}
+	\caption{}
+    \label{fig:tp_withmacroseg}
+  \end{subfigure}
+   %------------
+\caption{History of phase fraction (a) without macrosegregation and (b) with 
+macrosegregation at the center of the (plain) bottom and (dashed) top surfaces 
+of the cylinder surfaces, extracted from simulations displayed in (a) \cref{fig:planche_nomacroseg}
+and (b) \cref{fig:planche_withmacroseg}.} 
+\label{fig:tp_macroseg_influence}
+\end{figure}
+%------------------
+%
 \section{Macroscopic freckle prediction}
 \comment{I should maybe mention that a constant gradient in the coming simulation is a one big difference compared to the previous FeCrC simulation}
 %--------------------------
@@ -219,8 +261,8 @@ of the microstructure formed during directional solidification of an \bin{In}{75
 \subsubsection{Configuration}
 The focus of this section is on qualitative comparison between numerical simulation and the previously mentioned experiment. 
 The experimental cell geometry shown in \cref{fig:freckle} is hexagonal. With adiabatic lateral sides, it results in a 
-bending of the isotherm surfaces as shown in the experiment. The metallic cooling plates shown in 
-Figure 1 partly compensate for this effect. However, a residual horizontal component of the temperature gradient 
+bending of the isotherm surfaces as shown in the experiment. The metallic cooling plates shown in \cref{fig:experimental_setup}
+partly compensate for this effect. However, a residual horizontal component of the temperature gradient 
 remains. To qualitatively replicate this effect while simplifying the cell geometry, a \SI{22 x 22 x 1}{\milli \uvolume}  
 cuboid cell is considered with small cooling fluxes on its lateral vertical side surfaces computed using a constant heat transfer 
 coefficient, $\hext$, and a constant environment temperature, $\Text$. Temperatures at the bottom and top surfaces, 
@@ -413,6 +455,7 @@ Here, it is created by a very small lateral heat flow but other sources of insta
 the solid fraction, the superficial velocity field (vertical component) and the temperature, 
 on a cut plane at the center of the cell at 500 s, 1000 s and 1500 s.}
 \label{fig:planche_fe}
+%\thispagestyle{headings}
 \end{figureth}
 \end{landscape}
 %=====================================BIG LANDSCAPE FIGURE =====================================
