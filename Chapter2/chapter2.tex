@@ -115,7 +115,7 @@ solution for two main reasons: first, the conversion is merely a binary search i
 it is a simple solution for coupling with macrosegregation. In this way, phase fractions $\gphi$ are 
 tabulated as functions of temperature and average composition, while for each phase $\phi$ the mass 
 enthalpy, $\hphi$, and the density, $\rphi$, are tabulated as functions of temperature and phase 
-intrinsic average compositions $\wiphi$, as well as other possible parameters. \Cref{Table:t2h_data} summarizes the 
+intrinsic average compositions $\wiphi$, as well as other possible parameters. \Cref{table:t2h_data} summarizes the 
 steps in order to perform a temperature-to-enthalpy (\emph{T2H}) conversion using the predefined tabulation 
 approach. In step 1, the transformation path is acquired for each average composition and temperature 
 to determine the list of phases, their volume fractions $\gphi$ and their intrinsic compositions $\wi^{\phi}$. 
@@ -128,7 +128,7 @@ volume fraction, density and mass enthalpy of phases using \cref{eq:volume_avera
 \begin{table}[htbp]
 \centering
 \caption{Tabulation processing for a \emph{T2H} procedure}
-\label{Table:t2h_data}
+\label{table:t2h_data}
 {\tabulinesep=1.0mm
 \begin{tabu}{|c|c|c|c|}
 \tabucline[1pt]{-}
@@ -908,19 +908,20 @@ thus giving validation of the implementation as well as the iterative schemes pr
 % header titles (should use the & sign to switch columns)
 {\textbf{Parameter} & \textbf{Symbol} & \textbf{Value} & \textbf{Unit}}
 % cells content (should use the & and // to switch columns and rows)
-{Nominal composition 	& $\avg{w}_0$ & \num{7} & \si{\ucomposition} \\ 
-Liquidus temperature 	& $T_L$ & \num{618} 	& \si{\udegC} \\ 
-Eutectic temperature 	& $T_E$ & \num{577}	 	& \si{\udegC} \\  
-Segregation coefficient & $k$ & \num{0.13} 		& $-$  \\  
-Liquidus slope & $m_L$ 	& \num{-6.5} 			& \si{\uslope} \\ 
-Heat capacity (liquid and solid) & $\rho C_p$ & \num{2.6e6} & \si{\uvolumecapacity} \\  
-Enthalpy of fusion 				  & $\rho L$ & \num{9.5e8} 	& \si{\uvolumeenergy} \\ 
-Thermal conductivity (liquid and solid) 	& $\kappa$ & \num{70} & \si{\uconductivity}	\\
+{Nominal composition 	& $\avg{w}_0$ 	& \num{7} 		& \si{\ucomposition} \\ 
+Liquidus temperature 	& $T_l$ 		& \num{618} 	& \si{\udegC} \\ 
+Eutectic temperature 	& $T_E$ 		& \num{577}	 	& \si{\udegC} \\  
+Segregation coefficient & $k$ 			& \num{0.13} 	& $-$  \\  
+Liquidus slope 						& $m_l$ 		& \num{-6.5} 	& \si{\uslope} \\ 
+Heat capacity (liquid and solid) 	& $\rho C_p$ 	& \num{2.6e6} 	& \si{\uvolumecapacity} \\  
+Enthalpy of fusion 				 	& $\rho L$ 		& \num{9.5e8} 	& \si{\uvolumeenergy} \\ 
+Thermal conductivity 
+(liquid and solid) 					& $\kappa$ 		& \num{70} 		& \si{\uconductivity}	\\
 \hline  
-Heat transfer coefficient & $\hext$ & \num{500} & \si{\uhconvec} \\ 
-External temperature 		& $\Text$ & \num{100} & \si{\udegC} \\ 
-Initial temperature 		& $T_0$ & \num{800} & \si{\udegC} \\ 
-Ingot length 				&  & \num{0.1} & \si{\metre} \\ 	
+Heat transfer coefficient 		& $\hext$ 	& \num{500} & \si{\uhconvec} \\ 
+External temperature 			& $\Text$ 	& \num{100} & \si{\udegC} \\ 
+Initial temperature 			& $T_0$ 	& \num{800} & \si{\udegC} \\ 
+Ingot length 					&  			& \num{0.1} & \si{\metre} \\ 	
 \hline 
 FE mesh size 						&  					& \num{e-3} & \si{\metre} \\ 
 Time step 							& $\dt$ 			& \num{0.1} & \si{\second} \\ 
@@ -960,9 +961,8 @@ side) to 10 cm (insulated side), with 2 cm spacing between the positions.}
 %------------------
 %
 \subsection{Convection and diffusion}
-Conservation equations in \textbf{Table 2} are for mass, momentum and chemical species. 
-As for energy, they are presented after the volume averaging technique has been applied 
-\citep{ni_volume-averaged_1991, dantzig_solidification_2009}. Moreover, an assumption 
+To validate the Tsolver with fluid flow, we consider the following set of equations
+already defined in the flowchart of \cref{fig:algo_monodomain}. Moreover, an assumption 
 of a static and non deformable solid phase is made. Consequently, the mechanical model is 
 reduced to the conservation of momentum in the liquid phase. This assumption also yields 
 some other consequences on the mass balance and the liquid momentum conservation. In the 
@@ -972,12 +972,12 @@ It is considered isotropic, hence reducing to a scalar which is given by the Car
 relation, based on the secondary dendrite arm spacing $\lambda_2: K= \frac{g^{l^3}  \lambda_2^{2}
  }{180\brac{1-g^l}^2}$. The liquid density being taken constant, its spatial variations 
 as a function of temperature and average composition are still needed to compute thermosolutal 
-convection forces. For that purpose, the Boussinesq approximation $\rl = \rref \brac{1-\betaT 
+convection forces. For that purpose, the Boussinesq approximation $\rhol = \rholref \brac{1-\betaT 
 \brac{T-\Tref}-\betawl \brac{\wl-\wlref}}$ is used, considering the thermal $\betaT$ and solutal $\betawl$) expansion coefficients 
 and a reference density, $\rref$, defined at a reference temperature $\Tref$ and reference 
 composition $\wlref$. Values for the references are taken at the liquidus temperature and the nominal 
 composition of the alloy, $\w_0$ \citep{carozzani_direct_2013}. More details about the FE formulation can be found in 
-the Ph.D work of \citet{rivaux_simulation_2011, carozzani_developpement_2012}.
+the PhD work of \citet{rivaux_simulation_2011, carozzani_developpement_2012}.
 %
 %----------------------
 \begin{figureth}
@@ -1028,7 +1028,7 @@ is about 20\%.
 %path 
 {Chapter2/Graphics/convection_diffusion/planche_HvsT.pdf}
 % caption
-{Comparison of 3D simulation results: average composition, liquid fraction and temperature at $t=3000 s$ for Tsolver and Hsolver.}
+{Comparison of 3D simulation results: average composition, liquid fraction and temperature at t=3000 s for Tsolver and Hsolver.}
 % label
 \label{fig:planche_HvsT}
 \end{figureth}
@@ -1082,7 +1082,7 @@ intervals with respect to the nominal composition. The temperature varies in the
 in \si{\ucomposition} C, $\wC_0$ , chromium content in \si{\ucomposition} Cr,  $\wCR_0$, temperature in \si{\udegK}) 
 corresponds a phase fraction $g^\phi$ and a pair of intrinsic phase composition ($\wCR^\phi$,$\wCR^\phi$). For the 5 
 phases listed in \cref{fig:ternary_nominalpath} (LIQ$\equiv$liquid, BCC$\equiv$ferrite, FCC$\equiv$austenite, 
-$M_7C_3 \equiv$carbide, CEM$\equiv$cementite), the enthalpy $h^\phi$ and density $\rho^\phi$, are tabulated 
+$\carbide \equiv$carbide, CEM$\equiv$cementite), the enthalpy $h^\phi$ and density $\rho^\phi$, are tabulated 
 as functions of temperature and phase intrinsic composition. If this latter input lies between two tabulated 
 values, a linear interpolation is performed to determine the output, i.e. phase enthalpy and density. With 
 the advancement of solidification, the liquid is enriched with solute by macrosegregation, which enables new 
@@ -1099,7 +1099,7 @@ Therefore they are not tabulated. With this assumption, no shrinkage occurs upon
    %------------
   \begin{subfigure}[t]{0.3\textwidth}
     \centering
-	\includegraphics[height=6cm]{Chapter2/Graphics/multicomponent/Cylinder_nocolor_annotate.pdf}
+	\includegraphics[height=6cm]{Chapter2/Graphics/multicomponent/geo_bc/Cylinder_nocolor_annotate.pdf}
 	\caption{}
     \label{fig:mutlicomponent_geo}
   \end{subfigure}
@@ -1107,7 +1107,7 @@ Therefore they are not tabulated. With this assumption, no shrinkage occurs upon
    \hspace{1mm}%\quad
    \begin{subfigure}[t]{0.5\textwidth}
     \centering
-	\includegraphics[height=6cm]{Chapter2/Graphics/multicomponent/BC.pdf}
+	\includegraphics[height=6cm]{Chapter2/Graphics/multicomponent/geo_bc/BC.pdf}
 	\caption{}
     \label{fig:mutlicomponent_bc}
   \end{subfigure}
@@ -1144,7 +1144,8 @@ The two columns represent two values of nominal average composition, for a) low 
 and b) high carbon and chromium content.
 The effect of their variation on transformation paths, phase compositions and phase enthalpies is shown in the corresponding graphs.}
 % label
-\label{fig:planche_tabulations}
+\label{fig:ternary_tabulations}
+\thisfloatpagestyle{empty}
 \end{figureth}
 %=====================================BIG PORTRAIT FIGURE =====================================
 %
@@ -1166,10 +1167,10 @@ The effect of their variation on transformation paths, phase compositions and ph
 Nominal composition 			& $\wC_0$ 				& 2 					& \si{\ucomposition} 	\\ 
                     			& $\wCR_0$ 				& 30 					& \si{\ucomposition} 	\\ 
 Characteristic temperatures 	& $T_\text{bottom}$ 	& \cref{fig:mutlicomponent_bc}	 & \si{\udegC} \\ 
-Phase fraction 					& $g^\phi$ 				& Tabulations \textbf{REF}	& $-$ 					\\ 
-Phase enthalpy 					& $\h^\phi$ 			& Tabulations 	& $-$ 					\\ 
-Phase composition 				& $\wC^\phi$ 			& Tabulations 	& \si{\ucomposition}  	\\ 
-Phase composition               & $\wCR^\phi$ 			& Tabulations 	& \si{\ucomposition}  	\\ 
+Phase fraction 					& $g^\phi$ 				& Tabulations \cref{fig:ternary_tabulations}	& $-$ 					\\ 
+Phase enthalpy 					& $\h^\phi$ 			& Tabulations \cref{fig:ternary_tabulations}	& $-$ 					\\ 
+Phase composition 				& $\wC^\phi$ 			& Tabulations \cref{fig:ternary_tabulations}	& \si{\ucomposition}  	\\ 
+Phase composition               & $\wCR^\phi$ 			& Tabulations \cref{fig:ternary_tabulations}	& \si{\ucomposition}  	\\ 
 Diffusion coefficients 			& $\avg{D_\text{C}}^l$ 	& \num{15e-10} 	& \si{\udiffusivity}  	\\ 
                         		& $\avg{D_\text{Cr}}^l$	 & \num{15e-10} 	& \si{\udiffusivity}  	\\ 
 Dynamic viscosity  				& $\mul$ 					& \num{2e-3} 		& \si{\uviscosity}  	\\ 
@@ -1179,10 +1180,10 @@ Solutal expansion coefficient 	& $\betawlC$ 				& \num{1.54e-3} 	& \si{\ubetawl}
 Thermal conductivity in the solid & $\ks$ 					& \num{40} 			& \si{\uconductivity}  	\\ 
 Thermal conductivity in the liquid & $\kl$ 					& \num{28} 			& \si{\uconductivity}  	\\ 
 Dendrite arm spacing 			& $\lambda$ 				& \num{60e-6} 		& \si{\metre}  			\\ 
-Density 						& $\rref$ 					& \num{6725} 		& \si{\udensity}  		\\ 
-Reference composition (carbon)			&$\avg{w_\text{C}}_\text{ref}^l$	& \num{2} & \si{\ucomposition}  	\\
-Reference composition (chromium)		&$\avg{w_\text{Cr}}_\text{ref}^l$	& \num{30} & \si{\ucomposition}  	\\
-Reference temperature 			&$\avg{w_\text{C}}_\text{ref}^l$	& \num{1377} & \si{\udegC}  	\\
+Density 						& $\rholref$ 						& \num{6725} 	& \si{\udensity}  		\\ 
+Reference composition (carbon)	&$\avg{w_\text{C}}_\text{ref}^l$	& \num{2} 		& \si{\ucomposition}  	\\
+Reference composition (chromium)&$\avg{w_\text{Cr}}_\text{ref}^l$	& \num{30} 		& \si{\ucomposition}  	\\
+Reference temperature 			&$\avg{w_\text{C}}_\text{ref}^l$	& \num{1377} 	& \si{\udegC}  	\\
 \hline 
 Initial temperature 	& $T_0$ & \num{1395}	& \si{\udegC}  \\ 
 Ingot diameter 			&   	& \num{25e-3} 	& \si{\metre}  \\ 
@@ -1202,20 +1203,34 @@ Convergence criterion (temperature) & $\varepsilon_T$ & \num{e-2} & \si{\udegK}
 A first case is considered without macrosegregation, that is, all mechanical driving forces are bypassed, leading to a static melt. 
 This is achieved by nullifying the thermal and solutal expansion coefficients, which is equivalent to a constant density in space 
 and time, i.e. no Boussinesq force is considered. This way, the average composition may only vary due to diffusion in the liquid 
-phase according to Eq. 20 where the convection term is neglected. Diffusion is significantly small in the present case and can be 
+phase according to \cref{eq:diag_solute} where the convection term is neglected. Diffusion is significantly small in the present case and can be 
 neglected too. In such a case, the composition distribution maintains a homogeneous aspect throughout the sample during the entire 
 cooling sequence. The phase transformations then are necessarily expected to follow the unique path shown in \cref{fig:ternary_nominalpath}. After 407 s 
 of cooling, the liquidus isotherm enters the bottom surface of the geometry and starts its upward propagation, marking the solidification 
-onset. Figure 7 presents the simulation results at 3 successive times for the distribution of the solute species and the temperature, as 
+onset. \Cref{fig:planche_nomacroseg} presents the simulation results at 3 successive times for the distribution of the solute species and the temperature, as 
 well as for the fraction of phases listed in \cref{fig:ternary_nominalpath}. At 600 s, a fully liquid region is still largely present while the mushy zone is 
-made of liquid plus the primary solid phase (ferrite). At 10560 s, the sample is full solid, with fractions of ferrite and cementite that 
+made of liquid plus the primary solid phase (ferrite). At \num{10560} s, the sample is full solid, with fractions of ferrite and cementite that 
 corresponds to the values read in \cref{fig:ternary_nominalpath} at low temperature. At the selected intermediate time, the presence of 4 phases is found. The 
 solid region at the bottom of the cylinder is made of ferrite, austenite plus carbide, the temperature being still too high to permit the 
 cementite to form. The mushy zone above the solid region is characterized by the presence of 3 phases due to a peritectic reaction taking 
 place that progressively transform ferrite into austenite in the presence of liquid. It can be noticed that the phase fraction isovalues 
-in Figure 7 (at 600 s) are horizontal, owing this to two factors: the first is the temperature field, which varies unidirectionally from 
+in \cref{fig:planche_nomacroseg} (at 600 s) are horizontal, owing this to two factors: the first is the temperature field, which varies unidirectionally from 
 bottom to top, controlled by thermal diffusion, while the second is the uniform average composition throughout the sample due to the absence 
 of convection. In fact both factors are consequences of the flow absence, which would transport heat and solute by advection, thus inevitably 
-changing the phase distribution. The succeeding phase change is a solid-state transformation where $\alpha$-ferrite and the carbide $M_7C_3$ react to form 
+changing the phase distribution. The succeeding phase change is a solid-state transformation where $\alpha$-ferrite and the carbide $\carbide$ react to form 
 cementite at \SI{490}{\udegC} at nominal composition, as shown in \cref{fig:mutlicomponent_bc}. The reaction is relatively slow, ending with 28\% 
 of cementite and 72\% of $\alpha$-ferrite.
+%
+%=====================================BIG LANDSCAPE FIGURE =====================================
+\begin{landscape}
+\begin{figureth}
+{1.15}
+{Chapter2/Graphics/multicomponent/planche_nomacroseg.pdf}
+{: Upward solidification of a cylinder rod with a static liquid at 
+3 stages in a \tern{Fe}{2}{C}{30}{Cr}. The left columns show the average 
+composition and temperature distribution, while the right columns show the phase fractions.}
+\label{fig:planche_nomacroseg}
+\end{figureth}
+\end{landscape}
+%=====================================BIG LANDSCAPE FIGURE =====================================
+%

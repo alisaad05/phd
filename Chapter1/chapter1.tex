@@ -524,9 +524,10 @@ we may include them in a graphical summary in \cref{fig:algo_monodomain}
 {
 	\begin{tabular}{p{\llargeur}}
 	\textbf{Conservation of energy (Nonlinear Heat Transfer)} 
-	\begin{equation*}
+	\begin{equation}
+	\label{eq:diag_energy}
 		 \frac{\partial \avg{\rho h}}{\partial t} + \vit \cdot \nabla \brac{\rhol \hl} - \nabla \cdot \brac{\avg{\kappa} \nabvec T} = 0
-	\end{equation*}
+	\end{equation}
 	\end{tabular}
 };
 %==========
@@ -556,9 +557,10 @@ we may include them in a graphical summary in \cref{fig:algo_monodomain}
 {
 	\begin{tabular}{p{\llargeur}}
 	\textbf{Conservation of chemical species (Macrosegregation)} 
-	\begin{equation*}
+	\begin{equation}
+	\label{eq:diag_solute}
 		\frac{\partial \avg{\rho w_i}}{\partial t} + \vit \cdot \nabla \brac{\rhol \wil} - \nabla \cdot \brac{\gl \rhol \Dl \nabvec \wil}= 0
-	\end{equation*}
+	\end{equation}
 	\end{tabular}
 };
 %==========
@@ -566,7 +568,8 @@ we may include them in a graphical summary in \cref{fig:algo_monodomain}
 {
 	\begin{tabular}{p{\llargeur}}
 	\textbf{Conservation of liquid momentum (Navier Stokes)}
-	\begin{equation*}
+	\begin{equation}
+	\label{eq:diag_navierstokes}
    \left\{
    \begin{aligned}
       & \rholref \brac{\tempup{ \vit } + \frac{1}{\gl} \nabvec \cdot \brac{\vit \times \vit}} = \\
@@ -575,7 +578,7 @@ we may include them in a graphical summary in \cref{fig:algo_monodomain}
       & \nabla \cdot \vit =0
     \end{aligned}
     \right.
-\end{equation*}
+\end{equation}
 	\end{tabular}
 };
 %%%%%% OUTPUT NODES %%%%%%%%%%%%%%%%

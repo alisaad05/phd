@@ -1,4 +1,4 @@
-\chapter{Macrosegregation with incompressible fluid motion}
+\chapter{Macrosegregation with liquid metal motion}
 \begin{nolinkcolors} 
 \minitoc
 \end{nolinkcolors}
@@ -37,7 +37,7 @@ and solid mechanics for some years in CEMEF.
 {0.75}
 {Chapter3/Graphics/minielement/minielement.pdf}
 {Schematic of 2D and 3D stable P1+/P1 finite elements, respectively triangle and tetrahedron, with velocity and pressure fields interpolation order.
-The dots represent the nodal values while the square is the bubble.}
+The dots represent the nodal values while the square represents the bubble.}
 \label{fig:minielement}
 \end{figureth}
 %--------------------------------------------------------
@@ -77,21 +77,73 @@ Using P1 linear elements implies a P2 integration ? what are the advantages (tim
 
 %-------------------------------------------------------------
 \section{Application to multicomponent alloys}
-In the previous chapter, we have considered a static melt upon solidification of multicomponent alloy. However, in the real conditions the melt is in constant motion 
-and knowing that the carbon and chromium solutes have lightening effects on the liquid 
+In the previous chapter, we have considered a static melt upon solidification of multicomponent alloy. 
+The artificial consideration of a still flow is dropped in this chapter, hence taking into account macrosegregation 
+caused by fluid motion, using realistic values of the expansion coefficients given in \cref{table:ternary_data_case}.
+In the real conditions, the melt is in constant motion and knowing that the carbon and chromium solutes have lightening effects on the liquid 
 at nominal composition, the density inversion resulting from the composition gradient in the interdendritic 
 liquid, may cause flow instability (segregation plumes) at the solidification front. While the selected alloy 
 is a steel, this application is also representative of directional cooling in a single crystal casting, e.g. 
 for nickel-base superalloys \citep{beckermann_development_2000}. Solidification of this class of alloys is carefully
 controlled so as to prevent any freckle-type defect to exist in the as-cast state.
-In this section, we consider the same simulation parameters defined in \cref{table:data_case_ternary} as well the geometry and thermal boundary conditions
+In this section, we consider the same simulation parameters defined in \cref{table:ternary_data_case} as well the geometry and thermal boundary conditions
 previously defined in \cref{fig:mutlicomponent_geobc}. Moreover, we solve the liquid momentum conservation equation, with non-slip boundary conditions
 on all external sides of the cylinder.
+%
+\subsection{Results}
+Solidification starts at 407 seconds when the cylinder’s bottom base temperature 
+reaches the liquidus temperature of the alloy. 
+In fact, the solidification onset is the same as in the pure diffusion case in \cref{fig:planche_nomacroseg}, 
+since the average composition remains unchanged for an entirely liquid domain (assuming an initially infinite 
+solute mixing in the melt). As shown in \textbf{Figure} 8 at 600 s, the first solid phase to form 
+remains ferrite. We can also see solute-rich channels forming in the mushy zone and solute 
+plumes rising in the melt above the mushy zone due to a subsequent upward flow. It is actually 
+caused by the thermosolutal buoyancy force created by the carbon and chromium solutes. Such 
+phenomenon could delay solidification inside liquid-rich channels and results in a freckling 
+defect \citep{felicelli_simulation_1991} on the surface of the cylinder as well as inside, as shown later in this section. 
+As solidification proceeds, the liquid becomes more enriched with solute and the peritectic 
+reaction forming the austenite phase is reached. However, for very large enriched melt, it can 
+also be observed that primary solidification proceeds with the austenite phase rather than the 
+ferrite phase. The carbide phase can also form with the austenite phase at some locations. These 
+observations correspond to a simulation time of \num{2000} s in \textbf{Figure} 8. Solidification ends at 
+around \num{2475} s, the last liquid solidifying at the cylinder’s top surface, where the average composition 
+reaches a maximum of \tern{Fe}{2.151}{C}{30.633}{Cr}, i.e. a relative positive macrosegregation, 
+$\brac{\wi-\wi_0}/\wi_0$, of 7.5\% for carbon and 2.1\% for chromium. The fact that the maximum average 
+composition is observed at the top, is verified in \textbf{Figure} 9a which shows the composition map in a 2D 
+vertical slice through the longitudinal axis of the cylinder. We can also see it in \textbf{Figure} 9b where the 
+relative composition profile are plotted at the end of the cooling process along the longitudinal cylinder 
+axis Z-Z’ and along the axis of the freckle, F-F’. The negative segregation up to 1 cm from the chill corresponds 
+to the solute depletion caused by the first solid formation. The subsequent solidification enriches further the 
+liquid; hence the solid composition also increases. The composition evolution trend for both solutes is similar: 
+an overall rise until positive segregation is achieved above \SI{5}{\centi\metre} from the chill. The positive macrosegregation 
+intensifies when the profile is chosen at the center of the freckle, negative segregation then becoming less pronounced.
+%
+Beyond \num{2475} seconds, no variations of the average composition maps are observed since solute diffusion 
+in the solid phases is neglected. Nonetheless, as temperature decreases, solid-state transformations are 
+still possible as for the case with no macrosegregation. The formation of a cementite phase begins at the 
+cylinder base at \num{8843} s with a temperature of \SI{496.9}{\udegC}. At about \num{9293} s, the isotherm \SI{488.5}{\udegC} reaches the 
+top surface. This temperature value is the local cementite solvus temperature. The difference in the solvus 
+temperature between the bottom and top surfaces is due macrosegregation. Macrosegregation also explains the 
+variation in the cementite content. The solid state transformation ends shortly before \num{10500} s. The final phase 
+distribution is clearly dependent on the final macrosegregation pattern. They retain the shape of the freckles 
+that were caused by thermosolutal convection, hence demonstrating the heritage of the solidification process on 
+the final distribution of phases. This is better illustrated by drawing the time evolution of the fraction of 
+phases at the center of the bottom and top surfaces of the cylinder in \textbf{Figure} 10. With no macrosegregation, in 
+\textbf{Figure} 10a, the final distribution of the phases is the same at time \num{12000} s, while with macrosegregation, 
+in \textbf{Figure} 10b, variations of the cementite and ferrite are revealed. 
+The previously mentioned segregation plumes have transformed to freckles, inside the cylinder and on the boundary. 
+This defect is marked by a noticeable gradient of composition and phase fractions, possibly changing the mechanical 
+properties in the channels, hence the overall mechanical behavior of the alloy \citep{copley_origin_1970}. The coupling of the Tsolver with 
+thermodynamic tabulations is thus demonstrated. It shows the ability to predict complex solidification paths, even if 
+only at equilibrium. As for the computation time, the Tsolver resolution performed better: 500 seconds of solidification 
+required 6 hours 14 minutes compared to 8 hours 6 minutes spent by the enthalpy resolution with 12 cores on the same machine. 
+The gain factor is about 22\%.
 
 \section{Macroscopic freckle prediction}
 \comment{I should maybe mention that a constant gradient in the coming simulation is a one big difference compared to the previous FeCrC simulation}
 %--------------------------
 \subsection{Introduction}
+\label{sec:intro_freckle}
 We have seen in the previous multicomponent solidification test case, another form of segregation, the so-called freckle. 
 This defect manifests itself as a composition inhomogeneity that is highly non-isotropic. A typical description of its 
 morphology would consider a channel with a diameter proportional to few primary dendrite arm spacing and a length that 
@@ -165,7 +217,7 @@ of the microstructure formed during directional solidification of an \bin{In}{75
 \subsection{Macroscopic scale simulations}
 %
 \subsubsection{Configuration}
-The focus of \red{the present paper} is on a qualitative comparison between numerical simulation and experiment. 
+The focus of this section is on qualitative comparison between numerical simulation and the previously mentioned experiment. 
 The experimental cell geometry shown in \cref{fig:freckle} is hexagonal. With adiabatic lateral sides, it results in a 
 bending of the isotherm surfaces as shown in the experiment. The metallic cooling plates shown in 
 Figure 1 partly compensate for this effect. However, a residual horizontal component of the temperature gradient 
@@ -271,7 +323,7 @@ Solutal expansion coefficient 	& $\betawl$ 				& \num{1.44e-3} 	& \si{\ubetawl} 
 Thermal conductivity in the solid & $\ks$ 					& \num{40} 			& \si{\uconductivity}  	\\ 
 Thermal conductivity in the liquid & $\kl$ 					& \num{28} 			& \si{\uconductivity}  	\\ 
 Dendrite arm spacing 			& $\lambda$ 				& \num{60e-6} 		& \si{\metre}  			\\ 
-Density 						& $\rhoref$ 				& \num{6725} 		& \si{\udensity}  		\\ 
+Density 						& $\rholref$ 				& \num{6725} 		& \si{\udensity}  		\\ 
 Reference composition			&$\wlref$					& \num{75} 			& \si{\ucomposition}  	\\
 Reference temperature 			&$\Tref$					& \num{25.25} 		& \si{\udegC}  			\\
 \hline 
@@ -366,24 +418,22 @@ on a cut plane at the center of the cell at 500 s, 1000 s and 1500 s.}
 %=====================================BIG LANDSCAPE FIGURE =====================================
 %
 \subsubsection{Discussion}
-In the literature, many successful attempts have been made to predict freckles since (for example CITE fellicelli, poireau) ... 
-until coming to kohler thesis results in 2008. These authors tackled the problem from an qualitative perspective. 
-To our knowledge, the only close-to-quantitative work in solidification literature was done by \citet{ramirez_evaluation_2003}, 
-who attempted to draw a correlation (freckling criterion) between the process parameters and the occurence of freckles, 
+In \cref{sec:intro_freckle}, we have introduced some successful attempts of freckle predictions. 
+The authors tackled the problem from an qualitative perspective. 
+To our knowledge, the closest work to quantitative freckling analysis in solidification literature was done by \citet{ramirez_evaluation_2003}.
+They attempted to draw a correlation (freckling criterion) between the process parameters and the occurrence of freckles, 
 (without any size or shape constraints, i.e. any flow instability that may appear and form the smallest freckle is considered). 
 To accomplish this, they took a number of experiments done independently by \citet{pollock_breakdown_1996} and \citet{auburtin_freckle_2000} 
 where the casting parameters vary one at a time: casting speed (R), thermal gradient (G), angle ($\theta$) with respect to vertical 
 orientation and nominal composition ($\avg{w_0}$), giving a database for 6 different superalloys. The experimental results were 
 compared to a modified Rayleigh number that accounts for the various parameters. It allowed them to define a threshold for freckle 
 formation in Nickel-base superalloys, as well as Pb-Sn alloys.
-\comment{ They have also investigated Pb-Sn alloys, check }
 Other contributions by \citet{yuan_new_2012} and  \citet{karagadde_3-d_2014} used a medium scale model to compare the simulated 
 formation of freckles with the results obtained by \citet{shevchenko_chimney_2013} (explain at bit more)
 However, all simulations show common traits in their predictions: (some words about the freckle dimensions, 
 shape, intensity). These properties do not exactly meet with the experimental observations, just like in the 
 In-Ga experiment. We think that the hydrodynamics scale at which freckles are born, is much smaller than the 
-FEM scale. Since the relevant physics are not solved, even the finest FE mesh will not
-be enough to see the exact grain boundaries. (now it is time to do transition to CAFE)
+FEM scale. Since the relevant physics are not solved, even the finest FE mesh will not be enough to see the exact grain boundaries.
 %
 %-----------------------------------------------
 \section{Meso-Macro freckle prediction}
