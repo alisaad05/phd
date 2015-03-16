@@ -486,11 +486,10 @@ For the Tsolver, the enthalpy $\rhoh_j^\iter$ is needed to evaluate \cref{eq:fin
 In contrast, the Hsolver requires the value of $T_j^\iter$ to evaluate the corresponding \cref{eq:finite_difference_Hsolver}.
 In both cases, the unknown is determined by the temperature-enthalpy relation. The indices next to the mentioned unknowns
 indicate that this relation is used for each iteration $\iter$ at each mesh node $j$, hence affecting the global resolution time 
-between the two solvers. The Hsolver needs a \emph{H2T} to evaluate $\dTdH$, whereas the Tsolver needs a \emph{T2H} to evaluate $\dHdT$. 
-The flowchart in \cref{fig:} demonstrates the process.
-It can be seen that Tsolver uses solely \emph{T2H} procedure and the thermodynamic tabulations to determine the enthalpy, 
+between the two solvers. The Hsolver needs a \emph{H2T} to evaluate $\dTdH$, whereas the Tsolver needs a \emph{T2H} to evaluate $\dHdT$.
+It can be seen that Tsolver uses solely \emph{T2H} procedure (flowchart in \cref{fig:algorithm_t2h}) and the thermodynamic tabulations to determine the enthalpy, 
 hence the term $\dHdT$. On the other hand, Hsolver repeats the same procedure a finite number of times in order to 
-determine a temperature output through \emph{H2T} and use it to compute $\dTdH$. This algorithmic difference leverages the 
+determine a temperature output through \emph{H2T} (flowchart in \cref{fig:algorithm_h2t}) and use it to compute $\dTdH$. This algorithmic difference leverages the 
 Tsolver in terms of computation time providing the same numerical accuracy while conserving the total system energy. 
 
 Convergence tests are necessary at the end of each iteration of the energy solver to determine 
@@ -1046,42 +1045,51 @@ transformations during macrosegregation caused solely by mass diffusion, we cons
 In order to neglect fluid flow resolution, we assume that solidification in this case is so slow that no forces are generated inside the melt, while
 additionally all buoyancy forces are also neglected, so no momentum conservation is solved in this section.
 As illustrated in \cref{fig:mutlicomponent_geo}, the alloy domain has a cylinder shape close to 3-inch height $\times$ 1-inch diameter. 
-Exact values are reported in \cref{table:data_case_ternary} with all material properties, initial and boundary conditions, 
+Exact values are reported in \cref{table:ternary_data_case} with all material properties, initial and boundary conditions, 
 as well as numerical parameters for the simulations. The melt steel is initially at \SI{1395}{\udegC}. The 
 temperature of the bottom surface is imposed with a constant decreasing rate of \SI{0.1}{\uCR} starting 
 with \SI{1380}{\udegC}, i.e. \SI{40}{\udegC} higher than the nominal liquidus temperature, as shown 
 in \cref{fig:mutlicomponent_bc}. The other surfaces are kept adiabatic. The cylinder is held in a vertical position. 
-\textbf{Figure 5c} also provides the transformation path of the alloy at nominal composition, i.e. assuming no macrosegregation and full 
+\cref{fig:ternary_nominalpath} also provides the transformation path of the alloy at nominal composition, i.e. assuming no macrosegregation and full 
 thermodynamic equilibrium as computed with ThermoCalc and the TCFE6 database \citep{tcfe6_tcfe6:_2010, andersson_thermo-calc_2002}. 
 A total of 5 phases need to be handled, the characteristic temperature for their formation being reported 
 in \cref{fig:mutlicomponent_bc}.
 %
-\comment{Figure 5c: Computed transformation path \citep{tcfe6_tcfe6:_2010, andersson_thermo-calc_2002} at nominal composition
-for the alloy \tern{Fe}{2}{C}{30}{Cr}.}
- %
+%----------------------
+\begin{figureth}
+% textwidth 
+{0.8}
+%path 
+{Chapter2/Graphics/multicomponent/SP_nominal.pdf}
+% caption
+{Thermodynamic mapping \citep{tcfe6_tcfe6:_2010, andersson_thermo-calc_2002} of the transformation path for the \tern{Fe}{2}{C}{30}{Cr} at nominal composition.}
+% label
+\label{fig:ternary_nominalpath}
+\end{figureth}
+%-----------------------------------
+%
 \subsection{Tabulations}
-\comment{update from last corrected version of the article}
 Full thermodynamic equilibrium is considered in the present case. Due to macrosegregation, 
 the average composition is expected to continuously vary in time and space during casting. 
 Transformation paths are thus determined a priori for a set of average compositions around 
-the nominal value. Hence, carbon content is arbitrarily varied in the interval [\SI{1.8}{\ucomposition}, \SI{2.2}{\ucomposition}] 
+the nominal value. Hence, carbon content varies in the interval [\SI{1.8}{\ucomposition}, \SI{2.2}{\ucomposition}] 
 while chromium content variation is in the interval [\SI{27}{\ucomposition}, \SI{33}{\ucomposition}]. The offset of $\pm$ 10\%  with 
 respect to the nominal composition value allows tabulating relatively small composition steps
 to ensure a fairly accurate mapping when compared to the corresponding ternary phase diagram. The average 
 composition step is \SI{0.04}{\ucomposition} for carbon and \SI{0.6}{\ucomposition} for chromium, thus representing 2\% 
 intervals with respect to the nominal composition. The temperature varies in the interval 
 [\SI{100}{\udegC}, \SI{1600}{\udegC}] by \SI{5}{\udegC} steps. For each triplet (carbon content 
-in \SI{}{\ucomposition} C, \textbf{HERE} , chromium content in \SI{}{\ucomposition} Cr, \textbf{HERE}, temperature in \si{\udegK}) 
-corresponds a phase fraction $g^\phi$ and a pair of intrinsic phase composition (\textbf{HERE}). For the 5 
-phases listed in \textbf{Figure 5c} (LIQ$\equiv$liquid, BCC$\equiv$ferrite, FCC$\equiv$austenite, 
-$\text{M}_7 \text{C}_3 \equiv$carbide, CEM$\equiv$cementite), the enthalpy $h^\phi$ and density $\rho^\phi$, are tabulated 
+in \si{\ucomposition} C, $\wC_0$ , chromium content in \si{\ucomposition} Cr,  $\wCR_0$, temperature in \si{\udegK}) 
+corresponds a phase fraction $g^\phi$ and a pair of intrinsic phase composition ($\wCR^\phi$,$\wCR^\phi$). For the 5 
+phases listed in \cref{fig:ternary_nominalpath} (LIQ$\equiv$liquid, BCC$\equiv$ferrite, FCC$\equiv$austenite, 
+$M_7C_3 \equiv$carbide, CEM$\equiv$cementite), the enthalpy $h^\phi$ and density $\rho^\phi$, are tabulated 
 as functions of temperature and phase intrinsic composition. If this latter input lies between two tabulated 
 values, a linear interpolation is performed to determine the output, i.e. phase enthalpy and density. With 
 the advancement of solidification, the liquid is enriched with solute by macrosegregation, which enables new 
 solidification paths. It means that the primary solidifying phase is not necessarily the same as when considering 
 the nominal composition. For this reason, the tabulation approach is interesting inasmuch as it provides phase 
 transformation paths and values of phase properties that are compatible with the system’s actual composition. 
-\textbf{Figure 6} summarizes the tabulated thermodynamic data for two sets of average composition for the considered 
+\Cref{fig:ternary_tabulations} summarizes the tabulated thermodynamic data for two sets of average composition for the considered 
 ternary system. Note that in the present test case, phase densities are taken constant ($\rhos=\rhol=$ \SI{6725}{\udensity}). 
 Therefore they are not tabulated. With this assumption, no shrinkage occurs upon phase change.
 %
@@ -1110,13 +1118,43 @@ Therefore they are not tabulated. With this assumption, no shrinkage occurs upon
 \end{figure}
 %-----------------
 %
+%
+%=====================================BIG LANDSCAPE FIGURE =====================================
+%\begin{landscape}
+%\begin{figure}[htbp]
+%\centering
+%	\includegraphics[width=1.5\textwidth]{Chapter2/Graphics/multicomponent/tabulations/planche_tabulations.pdf}
+%\caption{Tabulated thermodynamic data for the ternary system Fe-C-Cr alloy with software Thermo-Calc \citep{andersson_thermo-calc_2002}  with database TCFE6 %\citep{tcfe6_tcfe6:_2010}.}
+%\label{fig:planche_tabulations}
+%\end{figure}
+%\end{landscape}
+%=====================================BIG LANDSCAPE FIGURE =====================================
+%
+%
+%=====================================BIG PORTRAIT FIGURE =====================================
+\begin{figureth}
+% textwidth 
+{0.75}
+%path 
+{Chapter2/Graphics/multicomponent/tabulations/planche_tabulations_portrait.pdf}
+% caption
+{Tabulated thermodynamic data for the ternary system Fe-C-Cr alloy with software 
+Thermo-Calc \citep{andersson_thermo-calc_2002}  with database TCFE6 \citep{tcfe6_tcfe6:_2010}.
+The two columns represent two values of nominal average composition, for a) low carbon and chromium content
+and b) high carbon and chromium content.
+The effect of their variation on transformation paths, phase compositions and phase enthalpies is shown in the corresponding graphs.}
+% label
+\label{fig:planche_tabulations}
+\end{figureth}
+%=====================================BIG PORTRAIT FIGURE =====================================
+%
 %----------------
 \begin{tabulate}
 %
 % caption 
 {Solidification parameters for the \tern{Fe}{2}{C}{30}{Cr} alloy.}
 % label
-{table:data_case_ternary}
+{table:ternary_data_case}
 % line separation (e.g. 1.5mm)
 {0.6mm}
 % column justification-number (e.g. |c|ll|)
@@ -1166,18 +1204,18 @@ This is achieved by nullifying the thermal and solutal expansion coefficients, w
 and time, i.e. no Boussinesq force is considered. This way, the average composition may only vary due to diffusion in the liquid 
 phase according to Eq. 20 where the convection term is neglected. Diffusion is significantly small in the present case and can be 
 neglected too. In such a case, the composition distribution maintains a homogeneous aspect throughout the sample during the entire 
-cooling sequence. The phase transformations then are necessarily expected to follow the unique path shown in \textbf{Figure 5c}. After 407 s 
+cooling sequence. The phase transformations then are necessarily expected to follow the unique path shown in \cref{fig:ternary_nominalpath}. After 407 s 
 of cooling, the liquidus isotherm enters the bottom surface of the geometry and starts its upward propagation, marking the solidification 
 onset. Figure 7 presents the simulation results at 3 successive times for the distribution of the solute species and the temperature, as 
-well as for the fraction of phases listed in \textbf{Figure 5c}. At 600 s, a fully liquid region is still largely present while the mushy zone is 
+well as for the fraction of phases listed in \cref{fig:ternary_nominalpath}. At 600 s, a fully liquid region is still largely present while the mushy zone is 
 made of liquid plus the primary solid phase (ferrite). At 10560 s, the sample is full solid, with fractions of ferrite and cementite that 
-corresponds to the values read in \textbf{Figure 5c} at low temperature. At the selected intermediate time, the presence of 4 phases is found. The 
+corresponds to the values read in \cref{fig:ternary_nominalpath} at low temperature. At the selected intermediate time, the presence of 4 phases is found. The 
 solid region at the bottom of the cylinder is made of ferrite, austenite plus carbide, the temperature being still too high to permit the 
 cementite to form. The mushy zone above the solid region is characterized by the presence of 3 phases due to a peritectic reaction taking 
 place that progressively transform ferrite into austenite in the presence of liquid. It can be noticed that the phase fraction isovalues 
 in Figure 7 (at 600 s) are horizontal, owing this to two factors: the first is the temperature field, which varies unidirectionally from 
 bottom to top, controlled by thermal diffusion, while the second is the uniform average composition throughout the sample due to the absence 
 of convection. In fact both factors are consequences of the flow absence, which would transport heat and solute by advection, thus inevitably 
-changing the phase distribution. The succeeding phase change is a solid-state transformation where $\alpha$-ferrite and the carbide M7C3 react to form 
+changing the phase distribution. The succeeding phase change is a solid-state transformation where $\alpha$-ferrite and the carbide $M_7C_3$ react to form 
 cementite at \SI{490}{\udegC} at nominal composition, as shown in \cref{fig:mutlicomponent_bc}. The reaction is relatively slow, ending with 28\% 
 of cementite and 72\% of $\alpha$-ferrite.

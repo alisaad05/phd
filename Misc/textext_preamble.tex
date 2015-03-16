@@ -1,7 +1,11 @@
 %%------------------------ FONTS -------------------------------
-\usepackage{fourier} % Utopia font-typesetting including mathematical formula compatible with newer TeX-Distributions (>2010)
+\usepackage{Utopia} % Utopia font-typesetting including mathematical formula compatible with newer TeX-Distributions (>2010)
 % \usepackage{mathpazo}
 %% ------------------------ MATHs commands--------------------------
+
+\newcommand\bin[3]{#1-\SI{#2}{\ucomposition} #3}	% used in text
+\newcommand\tern[5]{#1-\SI{#2}{\ucomposition} #3-\SI{#4}{\ucomposition} #5} % used in text
+
 %\renewcommand{matrix}[1]{#1 \rangle} 
 \newcommand{\avg}[1]{\ensuremath{\langle  #1 \rangle}}
 \newcommand{\brac}[1]{\ensuremath{\left(  #1 \right)}} 
