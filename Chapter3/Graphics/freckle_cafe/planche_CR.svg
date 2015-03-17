@@ -11,7 +11,7 @@
    xmlns:xlink="http://www.w3.org/1999/xlink"
    xmlns:sodipodi="http://sodipodi.sourceforge.net/DTD/sodipodi-0.dtd"
    xmlns:inkscape="http://www.inkscape.org/namespaces/inkscape"
-   width="1778.5847"
+   width="1829.58"
    height="819.01263"
    id="svg2"
    version="1.1"
@@ -529,7 +529,7 @@
 </g>    </g>
     <g
        id="g4690"
-       transform="matrix(6.3837105,0,0,-6.3837105,-5613.8886,3585.5741)"
+       transform="matrix(6.3837105,0,0,-6.3837105,-5554.5136,3585.5741)"
        xml:space="preserve"
        stroke-miterlimit="10.433"
        font-style="normal"
@@ -620,7 +620,7 @@
        font-style="normal"
        stroke-miterlimit="10.433"
        xml:space="preserve"
-       transform="matrix(6.300831,0,0,-6.300831,-4733.0084,3607.5669)"
+       transform="matrix(6.300831,0,0,-6.300831,-4717.6334,3607.5669)"
        id="g7660">
 <path
    style="fill:#000000;stroke-width:0"
@@ -640,7 +640,7 @@
 <polygon
    style="fill:#000000;stroke-width:0"
    id="polygon7668"
-   points="239.51,712.91 239.51,712.51 243.34,712.51 243.34,712.91 " />
+   points="243.34,712.91 239.51,712.91 239.51,712.51 243.34,712.51 " />
 <path
    style="fill:#000000;stroke-width:0"
    inkscape:connector-curvature="0"
@@ -664,7 +664,7 @@
        font-style="normal"
        stroke-miterlimit="10.433"
        xml:space="preserve"
-       transform="matrix(6.300831,0,0,-6.300831,-5546.8319,3601.6442)"
+       transform="matrix(6.300831,0,0,-6.300831,-5487.4569,3601.6442)"
        id="g4012">
 <path
    style="fill:#000000;stroke-width:0"
@@ -731,7 +731,7 @@
        font-style="normal"
        stroke-miterlimit="10.433"
        xml:space="preserve"
-       transform="matrix(6.3837105,0,0,-6.3837105,-4983.8609,3583.659)"
+       transform="matrix(6.3837105,0,0,-6.3837105,-4968.4859,3583.659)"
        id="g3660">
 <path
    id="path3662"
@@ -849,7 +849,7 @@
    inkscape:connector-curvature="0"
    style="fill:#000000;stroke-width:0" />
 </g>    <image
-       transform="translate(-20.848664,-1069.1991)"
+       transform="translate(38.526336,-1069.1991)"
        clip-path="url(#clipPath6148)"
        width="773"
        height="670"
@@ -858,7 +858,7 @@
        x="-4430.0928"
        y="239.86694" />
     <image
-       transform="translate(-234.22912,-1077.3363)"
+       transform="translate(-218.85412,-1077.3363)"
        clip-path="url(#clipPath6169)"
        width="889"
        height="674"
@@ -879,7 +879,7 @@
        font-style="normal"
        stroke-miterlimit="10.433"
        xml:space="preserve"
-       transform="matrix(5.8825022,0,0,-5.8825022,-4207.4912,3378.8334)"
+       transform="matrix(5.8825022,0,0,-5.8825022,-4158.1162,3378.8334)"
        id="g3974">
 <path
    id="path3976"
@@ -913,7 +913,7 @@
    style="fill:#000000;stroke-width:0" />
 </g>    <g
        id="g4284"
-       transform="matrix(5.8825022,0,0,-5.8825022,-4225.4791,3999.1214)"
+       transform="matrix(5.8825022,0,0,-5.8825022,-4176.1041,3999.1214)"
        xml:space="preserve"
        stroke-miterlimit="10.433"
        font-style="normal"
@@ -969,10 +969,10 @@
        height="92"
        width="590"
        clip-path="url(#clipPath3589)"
-       transform="matrix(0,-0.90185136,1,0,-3905.7953,-5755.5628)" />
+       transform="matrix(0,-0.90185136,1,0,-3862.4203,-5755.5628)" />
     <g
        id="content-7"
-       transform="matrix(5.8825022,0,0,-5.8825022,-5772.4182,3999.1214)"
+       transform="matrix(5.8825022,0,0,-5.8825022,-5729.0432,3999.1214)"
        xml:space="preserve"
        stroke-miterlimit="10.433"
        font-style="normal"
@@ -1008,7 +1008,7 @@
        font-style="normal"
        stroke-miterlimit="10.433"
        xml:space="preserve"
-       transform="matrix(5.8825022,0,0,-5.8825022,-5772.6241,3369.9509)"
+       transform="matrix(5.8825022,0,0,-5.8825022,-5729.2491,3369.9509)"
        id="g7056">
 <path
    style="fill:#000000;stroke-width:0"
@@ -1023,7 +1023,7 @@
 </g>    <g
        inkscape:label="Layer 1"
        id="g3544"
-       transform="translate(-3210.926,-907.18298)">
+       transform="translate(-3161.551,-907.18298)">
       <image
          y="146.69521"
          x="361.53314"

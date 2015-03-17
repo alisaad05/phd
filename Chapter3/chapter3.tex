@@ -623,7 +623,7 @@ Knowing that the configuration in FE-G2R1L1 produces freckles, the same set of p
 for case CAFE-G2R1L1 by adding the effect of the grain structure using the CAFE model. Results are accessible 
 in \cref{fig:planche_cafe} for comparison with \cref{fig:planche_fe}. A striking difference is seen: the composition maps become more 
 perturbed as shown by the formation of numerous plumes when coupling with grain structure is active. The growing 
-front displayed on the grain structure at the right most column of \textbf{ Figure 5} dictates the leading position of the 
+front displayed on the grain structure at the right most column of \cref{fig:planche_cafe} dictates the leading position of the 
 mushy zone shown in the third column. Note that each color corresponds to one grain, with 17 grains having nucleated 
 at the cell’s bottom surface. However, comparison of the solid fraction maps between \cref{fig:planche_fe} and \cref{fig:planche_cafe} at the 
 same times reveals a delay in the growing front position. Values of the nucleation parameters in \cref{table:simulation_InGa_cafe} are such 
@@ -788,7 +788,7 @@ R=\SI{-0.01}{\uCR} and a temperature gradient =\SI{1}{\ugradT}: (a) “pulsing�
 %
 \subsection{Effect of cooling rate}
 The next parameter studied is the cooling rate, corresponding to case CAFE-G1R2L1. A snapshot of the composition map 
-and the corresponding vertical component of the velocity field are given in \textbf{Figure 9}. We see a similarity 
+and the corresponding vertical component of the velocity field are given in \cref{fig:cafe_R1R2}. We see a similarity 
 with case CAFE-G1R1L1 in \cref{fig:cafe_VG1} with respect to the buckled interface between the liquid and the mushy 
 zone as well a plume pulsing effect when a low temperature gradient is applied. On the other hand, segregation inside 
 the mush is more irregular with more pronounced patterns reaching a larger depth. One could distinguish alternating V  
@@ -803,7 +803,7 @@ V shape, i.e. the outmost advanced position of the growth front. It also means t
 and intensity of the convection loops above the front. When the steps are formed on the growth front, the plumes exiting 
 the mushy zone follow a direction normal to the front. They are inclined towards each other above the V shape. As a result, 
 they may join and form a larger plume as seen in CAFE-G1R1L1 (\cref{fig:cafe_VG1}), thus forming larger and more stable freckles. 
-The other observation in \textbf{Figure 9} is the existence of stable regions of the growth front. For instance, this is seen 
+The other observation in \cref{fig:cafe_R1R2} is the existence of stable regions of the growth front. For instance, this is seen 
 in between the two V shape forming or on the right hand side of the cell. 
 %
 %-----------------------
@@ -819,8 +819,8 @@ The white contour identifies the zero velocity limit for the vertical component 
 The reason for this stability is the inversion of 
 the composition gradient located ahead. Animation shows that solute coming from the top of the cell is responsible for this 
 accumulation, creating a layering that provides a stabilization effect above the mushy zone. This is verified by the vertical 
-component of the average velocity also made available in \textbf{Figure 9}. It is negative outside the path of the plumes. A resulting 
-concurrent effect is the formation of the A shape segregates in between the V shape patterns seen in Figure 9. Finally, it can 
+component of the average velocity also made available in \cref{fig:cafe_R1R2}. It is negative outside the path of the plumes. A resulting 
+concurrent effect is the formation of the A shape segregates in between the V shape patterns seen in \cref{fig:cafe_R1R2}. Finally, it can 
 be observed that these patterns are sustained longer compared to \cref{fig:cafe_G1G2} CAFE-G1R1L1 because, at high cooling rate, 
 the flow in the mushy zone is decreased due to a faster solidification. This is the same effect as described for the large gradient 
 configuration in CAFE-G2R1L1 (\cref{fig:cafe_VG2}).
@@ -838,19 +838,41 @@ vertical side boundaries. This is achieved in case CAFE-G1R1L2 where the heat tr
 As a consequence of the large cooling from the sides, the temperature gradient is no longer vertical. A distinct flow due to 
 thermal buoyancy is created, driving a cold liquid downwards near the sides of the cell. Under the influence of these 2 main 
 convection loops, all segregation plumes tend to regroup in the middle of the domain, forming a larger central plume, as seen in 
-the composition map at 450 s in \textbf{Figure} 10. However, this regime occurs at times earlier than 500 s, where the effect of thermally 
+the composition map at 450 s in \cref{fig:planche_LG}. However, this regime occurs at times earlier than 500 s, where the effect of thermally 
 induced buoyancy forces is prevailing, feeding the convection loops. Approximately 500 s later, the mushy zone has extended, favoring 
 the segregation mechanical forces i.e.  $\rhoref \brac{1-\betawl \Delta \wl} \gravity$, rather than the thermal mechanical forces, $\rhoref \brac{1-\betaT \Delta T} \gravity$. 
-\textbf{Figure 10} shows the corresponding composition maps with stable freckles at about 1000 s that also remain at 1500 s. The solidification 
+%
+%-----------------------
+\begin{figureth}
+{1.0}
+{Chapter3/Graphics/freckle_cafe/planche_LG.pdf}
+{2D cut plane of the average composition inside the cell for case CAFE-G1R1L2 at the 
+following time increments: 450 s, 1000 s and 1500 s.}
+\label{fig:planche_LG}
+\end{figureth}
+%-----------------------
+%
+\Cref{fig:planche_LG} shows the corresponding composition maps with stable freckles at about 1000 s that also remain at 1500 s. The solidification 
 front then tends to form a concave shape at the center of the cell, thus partially revealing the form of the isotherms toward the cell 
-center. The stable pattern in the center is similar to the plateau seen at the center of the A shapes in \textbf{Figure} 7 and \textbf{Figure} 9. As stated 
-before, it is an inactive region with respect to plume initiation due to the inversion of the solute composition gradient. The composition 
+center. The stable pattern in the center is similar to the plateau seen at the center of the A shapes in \cref{fig:cafe_G1G2} and \cref{fig:cafe_R1R2}. 
+As stated before, it is an inactive region with respect to plume initiation due to the inversion of the solute composition gradient. The composition 
 field indeed shows accumulation of solute on top of the plateau in an established cuvette where no flow comes to destabilize the layering 
 of solute. Outside of the plateau, 2 plumes are observed from the prominent instabilities of the growth front, adopting diverging directions. 
-This is also observed at the center of the cell in \textbf{Figure} 9 on each side of the A shape segregate. These plumes in \textbf{Figure} 10 lead to the 
-formation of two stable freckles. Liquid channels then form below the growth front.
-The corresponding situation in the experiment is shown in \textbf{Figure} 11. The two freckles on both side and the plateau in between are clearly 
+This is also observed at the center of the cell in \cref{fig:cafe_R1R2} on each side of the A shape segregate. 
+These plumes in \cref{fig:planche_LG} lead to the formation of two stable freckles. 
+Liquid channels then form below the growth front.
+The corresponding situation in the experiment is shown in \cref{fig:exp_G1R1}. The two freckles on both side and the plateau in between are clearly 
 recognizable. The additional cooling at the side walls produces two flow vortices between the side wall and the strong plumes above the 
 freckles. The central part of the sample remains almost unaffected by the additionally driven thermal convection. This area is characterized by 
 the occurrence of a number of smaller plumes.  
-
+%
+%-----------------------
+\begin{figureth}
+{0.6}
+{Chapter3/Graphics/freckle_exp/exp_G1R1.png}
+{Snapshot of dendritic structure and composition field from a 
+solidification experiment recorded at 1000 s for a cooling rate R=\SI{-0.01}{\uCR} and a temperature gradient G=\SI{-1}{\ugradT}.}
+\label{fig:exp_G1R1}
+\end{figureth}
+%-----------------------
+%
