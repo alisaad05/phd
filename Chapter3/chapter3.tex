@@ -613,9 +613,9 @@ on a cut plane at the center of the cell at 500 s, 1000 s and 1500 s.}
 %-----------------------
 \begin{figureth}
 {0.6}
-{Chapter3/Graphics/freckle_cafe/CompositionGrain.pdf}
+{Chapter3/Graphics/freckle_cafe/planche_composition_grain.pdf}
 {Simulation results the predicted of mushy grain structure with the corresponding composition maps.}
-\label{fig:composition_grains}
+\label{fig:planche_composition_grain}
 \end{figureth}
 %-----------------------
 %
@@ -634,14 +634,14 @@ at the front. This effect, together with instabilities of the composition field,
 and more plumes as observed in CAFE-G2R1L1 compared to FE-G2R1L1. Such observations fit to the complicated fluid and solute 
 flow patterns typically occurring in the experiments as shown in \cref{fig:experimental_freckles_gradients}. It becomes obvious that the consideration of grain 
 structure and growth undercooling are vital to accurately simulate freckle formation in these experiments. The reasons for the 
-instabilities are discussed hereinafter. In the present 3D CAFE simulation, each grain shown in \cref{fig:composition_grains} 
+instabilities are discussed hereinafter. In the present 3D CAFE simulation, each grain shown in \cref{fig:planche_composition_grain} 
 is associated with a crystallographic orientation. 
 The growth kinetics is only given for the $\avg{100}$ crystallographic directions at the grain boundaries with the liquid. The CA growth model 
 is based on the hypothesis that, in a quiescent liquid of uniform temperature distribution and composition, the grain envelop should 
 reproduce an octahedral grain shape with main directions given by the six $\avg{100}$ directions. In the present situation where complicated 
 fields are present for temperature, composition and liquid velocity, each grain envelope with different crystallographic orientation 
 adapts differently to its local environment. Thus, the local undercooling of the front varies everywhere. Such variations are within 
-few degrees here, but this is sufficient to create irregularities on the growth front, as seen on the grain structure in \cref{fig:composition_grains}. 
+few degrees here, but this is sufficient to create irregularities on the growth front, as seen on the grain structure in \cref{fig:planche_composition_grain}. 
 Apart from that, these variations are linked to the position of the instabilities for the chemical and liquid velocity fields, thus 
 demonstrating the full coupling between the CA and FE models.
 %
@@ -680,7 +680,7 @@ The effect of the vertical temperature gradient is shown by comparing the previo
 with case CAFE-G1R1L1. The temperature gradient is decreased about 7 times here, from G2=\SI{1.5}{\ugradT}
 to G1=\SI{0.2}{\ugradT}. In fact, both cases share almost all traits with respect to flow patterns and velocity
 magnitude in the bulk. Main differences are yet seen regarding the dynamics of the plumes shown in 
-\textbf{Figure 7}. In the case of a low temperature gradient (G1), the solidification front cannot maintain a 
+\cref{fig:cafe_G1G2}. In the case of a low temperature gradient (G1), the solidification front cannot maintain a 
 shape as smooth as for the case of a large temperature gradient (G2): the solute gradient in the 
 liquid of the mushy zone (basically following the lever rule approximation for a given temperature) 
 decreases, leading to a lower gradient of the solutal buoyancy force. In turn, more solute accumulates 
@@ -693,21 +693,63 @@ increasing function with the undercooling \citep{gandin_boundary_2003}, the latt
 than for CAFE-G2R1L1. Height differences of the growth front are proportional to the variations of the 
 undercooling by the temperature gradient. Therefore, this forms larger steps on the growth front for case 
 G1 compared to G2. The freckle extends deeper in the mushy zone when the temperature gradient increases. 
-This is confirmed by both the simulation results shown in \textbf{Figure 7} as well as the experimental observations. 
+This is confirmed by both the simulation results shown in \cref{fig:cafe_G1G2} as well as the experimental observations. 
 Another remarkable phenomenon is also observed in the low gradient case: a “pulsing” mechanism in CAFE-G1R1L1 
 where a series of solute rich liquid pockets are observed one above the other. This corresponds to a repeated
 and localized strong spatial variation of the liquid velocity field outside the mushy zone, regularly thrusting 
 away small plumes. These pulses are roughly similar to each other in size and exit speed, creating thus a very 
-regular pattern during some time. In case of a high temperature gradient (case CAFE-G2R1L1) this phenomenon is 
-barely seen. In fact, the pattern shown in Figure 7 is more typical, with continuous plume rising from the mushy 
+regular pattern during some time. 
+%
+%-----------------
+\begin{figure}[htbp]
+\centering
+  %------------
+  \begin{subfigure}{0.4\textwidth}
+    \centering
+	\includegraphics[height=5cm]{Chapter3/Graphics/freckle_cafe/cafe_VG1_composition.png}
+	\caption{}
+    \label{fig:cafe_VG1}
+  \end{subfigure}
+  %\hfill
+  \begin{subfigure}{0.01\textwidth}
+    \centering
+	\includegraphics[height=5cm]{Chapter3/Graphics/freckle_cafe/cafe_VG_colorbar_annot.png}
+	%\caption{}
+    \label{} % Do not delete or comment this line to preserve alignment
+  \end{subfigure}
+  \hspace{2mm}
+   \begin{subfigure}{0.4\textwidth}
+    \centering
+	\includegraphics[height=5cm]{Chapter3/Graphics/freckle_cafe/cafe_VG2_composition.png}
+	\caption{}
+    \label{fig:cafe_VG2}
+  \end{subfigure}
+   %------------
+\caption{Average composition maps for CAFE-G1R1L1 at time 1060 s and CAFE-G2R1L1 at time 1845 s.} 
+\label{fig:cafe_G1G2}
+\end{figure}
+%-----------------
+%
+%=====================================ANIMATION FIGURE =====================================
+\begin{figure}[htbp]
+\centering
+%\animategraphics[controls]{fps}{filename_without_number}{1}{N}
+ \animategraphics[controls]{10}{Chapter3/Graphics/freckle_cafe/anim/img}{1}{11}
+\caption{Animation of the pusling mechanism coming from a groove shape in the mushy.} 
+\label{fig:animate_cafeVG1}
+\end{figure}
+%=====================================ANIMATION FIGURE =====================================
+%
+In the case of a high temperature gradient (case CAFE-G2R1L1) this phenomenon is 
+barely seen. In fact, the pattern shown in \cref{fig:cafe_G1G2} is more typical, with continuous plume rising from the mushy 
 zone and reaching the top of the domain. However, such regular plume is the initial and final pattern seen for low 
-gradient before the pulsing regime. Similar observations have been made in the experiments too. \textbf{Figure 8(a)} displays 
+gradient before the pulsing regime. Similar observations have been made in the experiments too. \Cref{fig:exp_pulsing} displays 
 the phenomenon of the “pulsing” plumes, which could be explained by the following mechanisms. The permeability of the 
 mushy zone and the narrow gap of the solidification cell obstruct the feeding of the plumes by solute. A critical solute 
 concentration has to be accumulated at a specific location in order to trigger the formation of a rising plume. An interim 
 drop of the solute concentration below such a threshold would interrupt the plume. Flow instabilities can be another reason 
-for the peculiar shape of the plumes. \textbf{Figure 8(b)} shows a pronounced continuous plume. The same plume can be seen a few seconds 
-later in \textbf{Figure 8(c)}. The plume structure becomes unstable; one can observe an indentation of streamlines followed by a mixing of 
+for the peculiar shape of the plumes. \Cref{fig:exp_continuous} shows a pronounced continuous plume. The same plume can be seen a few seconds 
+later in \cref{fig:exp_instability}. The plume structure becomes unstable; one can observe an indentation of streamlines followed by a mixing of 
 rising solute-rich liquid with descending In-rich fluid. This mechanism also causes a non-continuous structure of the plumes.
 %
 %-----------------
@@ -738,7 +780,7 @@ rising solute-rich liquid with descending In-rich fluid. This mechanism also cau
 \caption{Snapshots of dendrite structure and composition field from two 
 solidification experiments conducted at a cooling rate 
 R=\SI{-0.01}{\uCR} and a temperature gradient =\SI{1}{\ugradT}: (a) “pulsing” plumes, 
-(b) continuous plume, (c) upcoming instability of the plume.} 
+(b) continuous plume, (c) upcoming plume instability.} 
 \label{fig:experimental_freckles_regimes}
 \end{figure}
 %-----------------
@@ -747,7 +789,7 @@ R=\SI{-0.01}{\uCR} and a temperature gradient =\SI{1}{\ugradT}: (a) “pulsing�
 \subsection{Effect of cooling rate}
 The next parameter studied is the cooling rate, corresponding to case CAFE-G1R2L1. A snapshot of the composition map 
 and the corresponding vertical component of the velocity field are given in \textbf{Figure 9}. We see a similarity 
-with case CAFE-G1R1L1 in \textbf{Figure 7} with respect to the buckled interface between the liquid and the mushy 
+with case CAFE-G1R1L1 in \cref{fig:cafe_VG1} with respect to the buckled interface between the liquid and the mushy 
 zone as well a plume pulsing effect when a low temperature gradient is applied. On the other hand, segregation inside 
 the mush is more irregular with more pronounced patterns reaching a larger depth. One could distinguish alternating V  
 and A shapes patterns in the mushy zone. As for case CAFE-G1R1L1, these patterns are created by a network of pulsing 
@@ -760,16 +802,28 @@ front thus adjusts its position to catch up with the corresponding isotherm, the
 V shape, i.e. the outmost advanced position of the growth front. It also means that the V shape angle depends on the size 
 and intensity of the convection loops above the front. When the steps are formed on the growth front, the plumes exiting 
 the mushy zone follow a direction normal to the front. They are inclined towards each other above the V shape. As a result, 
-they may join and form a larger plume as seen in \textbf{Figure 7} CAFE-G1R1L1, thus forming larger and more stable freckles. 
+they may join and form a larger plume as seen in CAFE-G1R1L1 (\cref{fig:cafe_VG1}), thus forming larger and more stable freckles. 
 The other observation in \textbf{Figure 9} is the existence of stable regions of the growth front. For instance, this is seen 
-in between the two V shape forming or on the right hand side of the cell. The reason for this stability is the inversion of 
+in between the two V shape forming or on the right hand side of the cell. 
+%
+%-----------------------
+\begin{figureth}
+{0.8}
+{Chapter3/Graphics/freckle_cafe/planche_CR.pdf}
+{Average fields inside the cell for case CAFE-G1R2L1 at 350 s. 
+The white contour identifies the zero velocity limit for the vertical component of the velocity field}
+\label{fig:cafe_R1R2}
+\end{figureth}
+%-----------------------
+%
+The reason for this stability is the inversion of 
 the composition gradient located ahead. Animation shows that solute coming from the top of the cell is responsible for this 
 accumulation, creating a layering that provides a stabilization effect above the mushy zone. This is verified by the vertical 
 component of the average velocity also made available in \textbf{Figure 9}. It is negative outside the path of the plumes. A resulting 
 concurrent effect is the formation of the A shape segregates in between the V shape patterns seen in Figure 9. Finally, it can 
-be observed that these patterns are sustained longer compared to \textbf{Figure 7} CAFE-G1R1L1 because, at high cooling rate, 
+be observed that these patterns are sustained longer compared to \cref{fig:cafe_G1G2} CAFE-G1R1L1 because, at high cooling rate, 
 the flow in the mushy zone is decreased due to a faster solidification. This is the same effect as described for the large gradient 
-configuration in \textbf{Figure 7} CAFE-G2R1L1.
+configuration in CAFE-G2R1L1 (\cref{fig:cafe_VG2}).
 It is not clear how these observations could be compared with the A  and V  shapes segregates reported for steel ingots 
 \citep{pickering_macrosegregation_2013}. Despite the fact that macrosegregation is the main phenomenon leading to these 
 patterns, there has not been a clear explanation yet in the literature for their formation. However, for steel casting, 
@@ -799,7 +853,4 @@ The corresponding situation in the experiment is shown in \textbf{Figure} 11. Th
 recognizable. The additional cooling at the side walls produces two flow vortices between the side wall and the strong plumes above the 
 freckles. The central part of the sample remains almost unaffected by the additionally driven thermal convection. This area is characterized by 
 the occurrence of a number of smaller plumes.  
-
-
-
 

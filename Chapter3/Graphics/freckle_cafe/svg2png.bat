@@ -2,6 +2,7 @@
 :: inkscape
 :: -z without gui
 :: -D export area drawing
+:: -C or --export-area-page
 
 REM for %%i in (*.svg) do echo %%~ni
 for %%i in (*.svg) do  (

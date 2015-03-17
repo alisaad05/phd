@@ -267,8 +267,10 @@ or
 	% --------------
     % PDF Information
 	% --------------  
+	%baseurl=
     pdftitle={\myTitle},%
-    pdfauthor={\myName, \myUni, \myFaculty},%
+    pdfauthor={\myName},% \myFaculty, \myUni
+    pdfsubject={Ph.D. Thesis},%
     pdfkeywords={Macrosegregation, solidification, level set, numerical simulation}%
 }
 
@@ -395,6 +397,9 @@ or
 \usepackage{mathtools}
 \usepackage{tikz}
 \usetikzlibrary{mindmap,positioning,shapes,snakes,backgrounds,fit,calc,shadows,matrix}
+
+% Animations  (gif, png ...)
+\usepackage{animate}
 
 %%------------------------ ENVIRONMENTS  -------------------------------
 % Change hyperlink color to black in miniTOC, TOC, TOF ...
