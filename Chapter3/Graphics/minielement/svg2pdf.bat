@@ -5,7 +5,7 @@
 
 REM for %%i in (*.svg) do echo %%~ni
 for %%i in (*.svg) do  (
-							inkscape.exe -D -z --file=%%~ni.svg --export-pdf=%%~ni.pdf 
+							inkscape.exe -D -z --file=%%~ni.svg --export-pdf=%%~ni.pdf --export-area-page
 							::--export-latex
 							:: inkscape.exe -D -z --file=%%~ni.svg --export-png=%%~ni.png --export-dpi=300
 							echo Converted %%~ni

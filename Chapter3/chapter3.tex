@@ -123,14 +123,40 @@ observations correspond to a simulation time of \num{2000} s in \cref{fig:planch
 around \num{2475} s, the last liquid solidifying at the cylinder’s top surface, where the average composition 
 reaches a maximum of \tern{Fe}{2.151}{C}{30.633}{Cr}, i.e. a relative positive macrosegregation, 
 $\brac{\wi-\wi_0}/\wi_0$, of 7.5\% for carbon and 2.1\% for chromium. The fact that the maximum average 
-composition is observed at the top, is verified in \cref{fig:tp_nomacroseg} which shows the composition map in a 2D 
-vertical slice through the longitudinal axis of the cylinder. We can also see it in \cref{fig:tp_withmacroseg} where the 
+composition is observed at the top, is verified in \cref{fig:final_interior_ZZ_FF} which shows the composition map in a 2D 
+vertical slice through the longitudinal axis of the cylinder. We can also see it in \cref{fig:final_segregation_ZZ_FF} where the 
 relative composition profile are plotted at the end of the cooling process along the longitudinal cylinder 
 axis Z-Z’ and along the axis of the freckle, F-F’. The negative segregation up to 1 cm from the chill corresponds 
 to the solute depletion caused by the first solid formation. The subsequent solidification enriches further the 
 liquid; hence the solid composition also increases. The composition evolution trend for both solutes is similar: 
 an overall rise until positive segregation is achieved above \SI{5}{\centi\metre} from the chill. The positive macrosegregation 
 intensifies when the profile is chosen at the center of the freckle, negative segregation then becoming less pronounced.
+%
+%-----------------
+\begin{figure}[htbp]
+\centering
+   %------------
+  \begin{subfigure}[t]{0.4\textwidth}
+    \centering
+	\includegraphics[width=1.0\textwidth]{Chapter3/Graphics/multicomponent/interior/final_interior_ZZ_FF.pdf}
+	\caption{}
+    \label{fig:final_interior_ZZ_FF}
+  \end{subfigure}
+  %------------------------------
+	\hfill  
+   %------------------------------
+  \begin{subfigure}[t]{0.55\textwidth}
+    \centering
+	\includegraphics[width=1.0\textwidth]{Chapter3/Graphics/multicomponent/interior/final_segregation_ZZ_FF.pdf}
+	\caption{}
+    \label{fig:final_segregation_ZZ_FF}
+  \end{subfigure}
+   %------------
+\caption{(a) average composition map on a vertical section inside the sample, with
+ (b) relative macrosegregation profiles on the vertical revolution axis.} 
+\label{fig:final_ZZ_FF}
+\end{figure}
+%------------------
 %
 Beyond \num{2475} seconds, no variations of the average composition maps are observed since solute diffusion 
 in the solid phases is neglected. Nonetheless, as temperature decreases, solid-state transformations are 
@@ -141,10 +167,10 @@ temperature between the bottom and top surfaces is due macrosegregation. Macrose
 variation in the cementite content. The solid state transformation ends shortly before \num{10500} s. The final phase 
 distribution is clearly dependent on the final macrosegregation pattern. They retain the shape of the freckles 
 that were caused by thermosolutal convection, hence demonstrating the influence of the solidification process on 
-the final phase distribution. This is better illustrated by drawing the time evolution of the fraction of 
-phases at the center of the bottom and top surfaces of the cylinder in \textbf{Figure} 10. With no macrosegregation, in 
-\textbf{Figure} 10a, the final distribution of the phases is the same at time \num{12000} s, while with macrosegregation, 
-in \textbf{Figure} 10b, variations of the cementite and ferrite are revealed. 
+the final phase distribution. This is better illustrated by drawing the time evolution of phase fractions at the 
+center of the bottom and top surfaces of the cylinder in \cref{fig:tp_macroseg_influence}. With no macrosegregation, in 
+\cref{fig:tp_nomacroseg}, the final distribution of the phases is the same at time \num{12000} s, while with macrosegregation, 
+in \cref{fig:tp_withmacroseg}, variations of the cementite and ferrite are revealed. 
 The previously mentioned segregation plumes have transformed to freckles, inside the cylinder and on the boundary. 
 This defect is marked by a noticeable gradient of composition and phase fractions, possibly changing the mechanical 
 properties in the channels, hence the overall mechanical behavior of the alloy \citep{copley_origin_1970}. The coupling of the Tsolver with 
@@ -386,12 +412,12 @@ The first case labeled FE-G1R1L0 is a reference case that features a low gradien
 and without any lateral cooling (L0), ensuring that isotherms retain a planar shape. These simulation parameters 
 defined in \cref{table:data_case_InGa}, result in a negligible fluid flow reaching a maximum velocity of \SI{4d-8}{\milli\uvelocity} in the bulk. 
 Accordingly, the solidification front remains stable and follows the planar isotherms; no freckles are observed. 
-The average composition field is thus only little modified in the mushy zone as shown in \textbf{Figure 3 }(mind the values of the scale limits). 
+The average composition field is thus only little modified in the mushy zone as shown in \cref{fig:freckles_fe} (mind the values of the scale limits). 
 It is concluded that velocity in the bulk is not high enough to initiate instabilities. In the next case, FE-G1R1L1, 
 a cooling flux with a constant and very low value of the heat transfer coefficient is imposed on both vertical lateral 
 surfaces to initiate a downward fluid flow by thermal buoyancy. Once solidification starts, solute-rich regions start 
 to appear on the sides of the domain. Despite the visible concentration difference between these lateral regions and 
-the central mush seen in \textbf{Figure 3}, their diffuse and uniform aspect indicates no resemblance to freckles. We keep the 
+the central mush seen in \cref{fig:freckles_fe}, their diffuse and uniform aspect indicates no resemblance to freckles. We keep the 
 same configuration but increase the vertical gradient from \SI{0.2}{\ugradT} (G1) to \SI{1.5}{\ugradT} (G2) in the case FE-G2R1L1. 
 The isotherms become closer to each over hence reducing the depth of the mushy zone for the same time increment compared 
 to the preceding case. The rejected gallium solute locally accumulates at several different positions in the mushy zone, 
@@ -435,15 +461,16 @@ process parameters on the freckling tendency. The black line represents the liqu
 \end{figure}
 %-----------------
 %
-\textbf{Figure 4} gives a series of snapshots for case FE-G2R1L1 at three different times. Among the two clear distinct 
-plumes that are visible at \SI{250}{\utime} in \textbf{Figure 3}, only one has led to the formation of a freckle that remains in \textbf{Figure 4} at 
-\SI{500}{\utime}. In fact, an animation between \SI{250}{\utime} and \SI{500}{\utime} (not shown here) reveals that one plume vanishes, 
+\Cref{fig:planche_fe} gives a series of snapshots for case FE-G2R1L1 at three different times. Among the two clear distinct 
+plumes that are visible at \SI{250}{\utime} in \cref{fig:freckles_fe}, only one has led to the formation 
+of a freckle that remains in \cref{fig:planche_fe} at \SI{500}{\utime}. 
+In fact, an animation between \SI{250}{\utime} and \SI{500}{\utime} (not shown here) reveals that one plume vanishes, 
 thus permitting the first one to further develop. A second freckle is also seen on the left hand side of the cell. 
 These two freckles are stable for a long time since they remain at time \SI{1000}{\utime}. However, the left side freckle 
 develops further to become the main one at \SI{1500}{\utime}, while the mid-width freckle decreases in intensity, changes 
 orientation and subsequently disappears (not shown here). Thus, the birth and death of very few freckles is observed in this 
-simulation, mainly due to solutal instability, as the temperature field shown in \textbf{Figure 4 }clearly remains stable despite 
-the low lateral heat flux. As shown in \textbf{Figure 3}, instability is yet required to create these chemical plumes and channels. 
+simulation, mainly due to solutal instability, as the temperature field shown in \cref{fig:planche_fe} clearly remains stable despite 
+the low lateral heat flux. As shown in \cref{fig:freckles_fe}, instability is yet required to create these chemical plumes and channels. 
 Here, it is created by a very small lateral heat flow but other sources of instability could be involved, as shown with the grain structure in the next section.
 %
 %=====================================BIG LANDSCAPE FIGURE =====================================
@@ -451,7 +478,7 @@ Here, it is created by a very small lateral heat flow but other sources of insta
 \begin{figureth}
 {1.15}
 {Chapter3/Graphics/freckle_fe/planche_fe.pdf}
-{Simulation results for case FE-G2R1L1 showing maps of the average $Ga$ composition,
+{Simulation results for case FE-G2R1L1 showing maps of the average composition in gallium,
 the solid fraction, the superficial velocity field (vertical component) and the temperature, 
 on a cut plane at the center of the cell at 500 s, 1000 s and 1500 s.}
 \label{fig:planche_fe}
@@ -568,30 +595,83 @@ lll & ccc & sss & aaa & ffff & ffddfd}
 \end{tabulate}
 %-----------------
 %
+%
+%=====================================BIG LANDSCAPE FIGURE =====================================
+\begin{landscape}
+\begin{figureth}
+{1.15}
+{Chapter3/Graphics/freckle_cafe/planche_cafe.pdf}
+{Simulation results for case CAFE-G2R1L1 showing maps of the average composition in gallium,
+the solid fraction, the superficial velocity field (vertical component) and the temperature, 
+on a cut plane at the center of the cell at 500 s, 1000 s and 1500 s.}
+\label{fig:planche_cafe}
+%\thispagestyle{headings}
+\end{figureth}
+\end{landscape}
+%=====================================BIG LANDSCAPE FIGURE =====================================
+%
+%-----------------------
+\begin{figureth}
+{0.6}
+{Chapter3/Graphics/freckle_cafe/CompositionGrain.pdf}
+{Simulation results the predicted of mushy grain structure with the corresponding composition maps.}
+\label{fig:composition_grains}
+\end{figureth}
+%-----------------------
+%
 Knowing that the configuration in FE-G2R1L1 produces freckles, the same set of parameters is first used 
 for case CAFE-G2R1L1 by adding the effect of the grain structure using the CAFE model. Results are accessible 
-in \textbf{Figure 5} for comparison with \textbf{Figure 4}. A striking difference is seen: the composition maps become more 
+in \cref{fig:planche_cafe} for comparison with \cref{fig:planche_fe}. A striking difference is seen: the composition maps become more 
 perturbed as shown by the formation of numerous plumes when coupling with grain structure is active. The growing 
 front displayed on the grain structure at the right most column of \textbf{ Figure 5} dictates the leading position of the 
 mushy zone shown in the third column. Note that each color corresponds to one grain, with 17 grains having nucleated 
-at the cell’s bottom surface. However, comparison of the solid fraction maps between \textbf{Figure 4} and \textbf{Figure 5} at the 
+at the cell’s bottom surface. However, comparison of the solid fraction maps between \cref{fig:planche_fe} and \cref{fig:planche_cafe} at the 
 same times reveals a delay in the growing front position. Values of the nucleation parameters in \cref{table:simulation_InGa_cafe} are such 
 that few grains rapidly form below the nominal liquidus isotherm. The delay is therefore not due to the nucleation 
 undercooling but to the growth undercooling of the dendrite tips. It should be noticed that, the growth front driven 
-by undercooling in \textbf{Figure 5} also forms with a higher initial solid fraction and hence larger solute segregation occurs 
+by undercooling in \cref{fig:planche_cafe} also forms with a higher initial solid fraction and hence larger solute segregation occurs 
 at the front. This effect, together with instabilities of the composition field, is caused by a more perturbed fluid flow 
 and more plumes as observed in CAFE-G2R1L1 compared to FE-G2R1L1. Such observations fit to the complicated fluid and solute 
-flow patterns typically occurring in the experiments as shown in \textbf{Figure 6}. It becomes obvious that the consideration of grain 
+flow patterns typically occurring in the experiments as shown in \cref{fig:experimental_freckles_gradients}. It becomes obvious that the consideration of grain 
 structure and growth undercooling are vital to accurately simulate freckle formation in these experiments. The reasons for the 
-instabilities are discussed hereinafter. In the present 3D CAFE simulation, each grain is associated with a crystallographic orientation. 
+instabilities are discussed hereinafter. In the present 3D CAFE simulation, each grain shown in \cref{fig:composition_grains} 
+is associated with a crystallographic orientation. 
 The growth kinetics is only given for the $\avg{100}$ crystallographic directions at the grain boundaries with the liquid. The CA growth model 
 is based on the hypothesis that, in a quiescent liquid of uniform temperature distribution and composition, the grain envelop should 
 reproduce an octahedral grain shape with main directions given by the six $\avg{100}$ directions. In the present situation where complicated 
 fields are present for temperature, composition and liquid velocity, each grain envelope with different crystallographic orientation 
 adapts differently to its local environment. Thus, the local undercooling of the front varies everywhere. Such variations are within 
-few degrees here, but this is sufficient to create irregularities on the growth front, as seen on the grain structure in \textbf{Figure 5}. 
+few degrees here, but this is sufficient to create irregularities on the growth front, as seen on the grain structure in \cref{fig:composition_grains}. 
 Apart from that, these variations are linked to the position of the instabilities for the chemical and liquid velocity fields, thus 
 demonstrating the full coupling between the CA and FE models.
+%
+%
+%-----------------
+\begin{figure}[htbp]
+\centering
+  %------------
+  \begin{subfigure}{0.4\textwidth}
+    \centering
+	\includegraphics[width=\textwidth]{Chapter3/Graphics/freckle_exp/lowgrad.png}
+	\caption{}
+    \label{fig:exp_lowgrad}
+  \end{subfigure}
+   %------------------------------
+  %\vskip\baselineskip
+  %------------------------------
+  \begin{subfigure}{0.4\textwidth}
+    \centering
+	\includegraphics[width=\textwidth]{Chapter3/Graphics/freckle_exp/highgrad.png}
+	\caption{}
+    \label{fig:exp_highgrad}
+  \end{subfigure}
+   %------------
+\caption{Snapshots of dendritic structure and composition field 
+obtained from two solidification experiments at a cooling rate 
+R=\SI{-0.01}{\uCR} and temperature gradients of (a) G=\SI{1.1}{\ugradT} and (b) G=\SI{1.3}{\ugradT}} 
+\label{fig:experimental_freckles_gradients}
+\end{figure}
+%-----------------
 %
 %
 \subsection{Effect of vertical temperature gradient}
@@ -629,6 +709,40 @@ drop of the solute concentration below such a threshold would interrupt the plum
 for the peculiar shape of the plumes. \textbf{Figure 8(b)} shows a pronounced continuous plume. The same plume can be seen a few seconds 
 later in \textbf{Figure 8(c)}. The plume structure becomes unstable; one can observe an indentation of streamlines followed by a mixing of 
 rising solute-rich liquid with descending In-rich fluid. This mechanism also causes a non-continuous structure of the plumes.
+%
+%-----------------
+\begin{figure}[htbp]
+\centering
+  %------------
+  \begin{subfigure}{0.3\textwidth}
+    \centering
+	\includegraphics[width=\textwidth]{Chapter3/Graphics/freckle_exp/exp_pulsing.png}
+	\caption{}
+    \label{fig:exp_pulsing}
+  \end{subfigure}
+   %----------------
+  \begin{subfigure}{0.3\textwidth}
+    \centering
+	\includegraphics[width=\textwidth]{Chapter3/Graphics/freckle_exp/exp_continuous.png}
+	\caption{}
+    \label{fig:exp_continuous}
+  \end{subfigure}
+   %------------
+   \begin{subfigure}{0.3\textwidth}
+    \centering
+	\includegraphics[width=\textwidth]{Chapter3/Graphics/freckle_exp/exp_instability.png}
+	\caption{}
+    \label{fig:exp_instability}
+  \end{subfigure}
+   %------------
+\caption{Snapshots of dendrite structure and composition field from two 
+solidification experiments conducted at a cooling rate 
+R=\SI{-0.01}{\uCR} and a temperature gradient =\SI{1}{\ugradT}: (a) “pulsing” plumes, 
+(b) continuous plume, (c) upcoming instability of the plume.} 
+\label{fig:experimental_freckles_regimes}
+\end{figure}
+%-----------------
+%
 %
 \subsection{Effect of cooling rate}
 The next parameter studied is the cooling rate, corresponding to case CAFE-G1R2L1. A snapshot of the composition map 
