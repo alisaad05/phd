@@ -733,8 +733,10 @@ regular pattern during some time.
 %=====================================ANIMATION FIGURE =====================================
 \begin{figure}[htbp]
 \centering
-%\animategraphics[controls]{fps}{filename_without_number}{1}{N}
- \animategraphics[controls]{10}{Chapter3/Graphics/freckle_cafe/anim/img}{1}{11}
+%\animategraphics[options]{fps}{filename_without_number}{1}{N}
+%-------
+ \animategraphics{10}{Chapter3/Graphics/freckle_cafe/anim_pulsing/img}{1}{11}
+%-------
 \caption{Animation of the pusling mechanism coming from a groove shape in the mushy.} 
 \label{fig:animate_cafeVG1}
 \end{figure}
@@ -876,3 +878,56 @@ solidification experiment recorded at 1000 s for a cooling rate R=\SI{-0.01}{\uC
 \end{figureth}
 %-----------------------
 %
+\subsection{Mono-grain freckles}
+All CAFE simulations were performed considering a normal classic heterogeneous nucleation at 
+the surface of the mould where the metal is cooled down. However, as the number of grains is
+not negligible, the subsequent fluid-structure interaction between dendrites, simply represented by an isotropic permeability 
+and the interdendritic flow cannot be easily interpreted. Therefore, one may consider simpler solidification cases 
+like a mono-grain growth. This ideal situation is not always experimentally viable: either the mould surface is not 
+perfectly smooth, and therefore nucleation can be triggered by a wetting mechanism, or the metal contains a certain level of impurity
+which can trigger nucleation heterogeneously in the liquid bulk. 
+Regardless of this experimental limitation, this type of simulations allows simpler understanding as the grain growth is not 
+disturbed by another neighbouring grain, it grows while exclusively interacting with the liquid phase.
+%
+%=====================================ANIMATION FIGURE =====================================
+\begin{figure}[htbp]
+\centering
+  %------------
+  \begin{subfigure}{0.45\textwidth}
+    \centering
+	 \animategraphics[height=6cm]{8}{Chapter3/Graphics/freckle_cafe/anim_monograin_upright/img.0}{000}{139}
+	\caption{}
+    \label{fig:mono_upright}
+  \end{subfigure}  
+  %------------
+	\hfill %\hspace{1mm}  
+	 \begin{subfigure}{0.05\textwidth}
+    \centering
+	\includegraphics[height=6cm]{Chapter3/Graphics/freckle_cafe/cafe_VG_colorbar_annot.png}
+	%\caption{}
+    \label{} % Do not delete or comment this line to preserve alignment
+  \end{subfigure}
+	\hfill %\hspace{1mm}  
+  %------------
+  \begin{subfigure}{0.45\textwidth}
+    \centering
+	 \animategraphics[height=6cm]{8}{Chapter3/Graphics/freckle_cafe/anim_monograin_tilted/img.0}{000}{133}
+	\caption{}
+    \label{fig:mono_tilted}
+  \end{subfigure}
+%-------
+\caption{Animations of mono-grain solidification showing the average composition in gallium predicted by the CAFE approach. 
+Two orientation scenarios are considered where a) the grain is upright with a Euler angle of \orient{90}{0}{0} 
+or b) the grain is tilted with a Euler angle of \orient{90}{30}{0}.}
+\label{fig:animate_monograin}
+\end{figure}
+%=====================================ANIMATION FIGURE =====================================
+%
+%=====================================ANIMATION FIGURE shared control buttons ===================================
+%\begin{animateinline}[autoplay,loop,controls]{5}
+%  \multiframe{10}{i=000+1}{%
+%      \includegraphics[height=.45\textheight]{Chapter3/Graphics/freckle_cafe/anim_monograin_upright/img.0\i.png}%
+%      \includegraphics[height=.45\textheight]{Chapter3/Graphics/freckle_cafe/anim_monograin_tilted/img.0\i.png}%
+%  }
+%\end{animateinline}
+%=====================================ANIMATION FIGURE =====================================
