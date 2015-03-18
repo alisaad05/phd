@@ -6,6 +6,13 @@ debug:
 	@echo ---------
 	
 	pdflatex main.tex
+	
+shell:
+	@echo ------------
+	@echo SHELL ESCAPE
+	@echo ------------
+	
+	pdflatex --shell-escape main.tex
 
 pdf:
 	@echo ---------

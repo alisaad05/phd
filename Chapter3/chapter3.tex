@@ -890,44 +890,58 @@ Regardless of this experimental limitation, this type of simulations allows simp
 disturbed by another neighbouring grain, it grows while exclusively interacting with the liquid phase.
 %
 %===================================== ANIMATION FIGURE =====================================
-\begin{figure}[htbp]
-\centering
-  %------------
-  \begin{subfigure}{0.45\textwidth}
-	\centering
-	\animage{height=6cm}{8}{Chapter3/Graphics/freckle_cafe/anim_monograin_upright/img.0}{000}{133}{.png} % 0000 to 0139
-	\caption{}
-    \label{fig:mono_upright}
-  \end{subfigure}  
-  %------------
-	\hfill %\hspace{1mm}  
-	 \begin{subfigure}{0.05\textwidth}
-	\centering
-	\includegraphics[height=6cm]{Chapter3/Graphics/freckle_cafe/cafe_VG_colorbar_annot.png}
-	%\caption{}
-    \label{} % Do not delete or comment this line to preserve alignment
-  \end{subfigure}
-	\hfill %\hspace{1mm}  
-  %------------
-  \begin{subfigure}{0.45\textwidth}
-    \centering
-    \animage{height=6cm}{8}{Chapter3/Graphics/freckle_cafe/anim_monograin_tilted/img.0}{000}{133}{.png} % 0000 to 0133
-	\caption{}
-    \label{fig:mono_tilted}
-  \end{subfigure}
-%-------
-\caption{Animations of mono-grain solidification showing the average composition in gallium predicted by the CAFE approach. 
-Two orientation scenarios are considered where a) the grain is upright with a Euler angle of \orient{90}{0}{0} 
-or b) the grain is tilted with a Euler angle of \orient{90}{30}{0}.}
-\label{fig:animate_monograin}
-\end{figure}
+% \begin{figure}[htbp]
+% \centering
+  ------------
+  % \begin{subfigure}{0.45\textwidth}
+	% \centering
+	% \animage{height=6cm}{6}{Chapter3/Graphics/freckle_cafe/anim_monograin_upright/img0}{030}{133}{.png} % 0000 to 0139
+	% \caption{}
+    % \label{fig:mono_upright}
+  % \end{subfigure}  
+  ------------
+	% \hfill %\hspace{1mm}  
+	 % \begin{subfigure}{0.05\textwidth}
+	% \centering
+	% \includegraphics[height=6cm]{Chapter3/Graphics/freckle_cafe/cafe_VG_colorbar_annot.png}
+	% \caption{}
+    % \label{} % Do not delete or comment this line to preserve alignment
+  % \end{subfigure}
+	% \hfill %\hspace{1mm}  
+  ------------
+  % \begin{subfigure}{0.45\textwidth}
+    % \centering
+    % \animage{height=6cm}{6}{Chapter3/Graphics/freckle_cafe/anim_monograin_tilted/img0}{030}{133}{.png} % 0000 to 0133
+	% \caption{}
+    % \label{fig:mono_tilted}
+  % \end{subfigure}
+-------
+% \caption{Animations of mono-grain solidification showing the average composition in gallium predicted by the CAFE approach. 
+% Two orientation scenarios are considered where a) the grain is upright with a Euler angle of \orient{90}{0}{0} 
+% or b) the grain is tilted with a Euler angle of \orient{90}{30}{0}.}
+% \label{fig:animate_monograin}
+% \end{figure}
 %===================================== ANIMATION FIGURE =====================================
 %
 %=====================================ANIMATION FIGURE shared control buttons ===================================
-%\begin{animateinline}[autoplay,loop,controls]{5}
-%  \multiframe{10}{i=000+1}{%
-%      \includegraphics[height=.45\textheight]{Chapter3/Graphics/freckle_cafe/anim_monograin_upright/img.0\i.png}%
-%      \includegraphics[height=.45\textheight]{Chapter3/Graphics/freckle_cafe/anim_monograin_tilted/img.0\i.png}%
-%  }
-%\end{animateinline}
+%
+%-----------------------
+\newcommand{\pad}[2]{\padzeroes[#1]{\decimal{#2}}}
+\begin{figure}[htbp]
+\centering %
+\begin{animateinline}{6}%
+  \multiframe{30}{i=60+1}{%
+  		
+      \includegraphics[height=6cm]{Chapter3/Graphics/freckle_cafe/anim_monograin_upright/img00\i.png}%
+	  \hspace{1mm}%
+      \includegraphics[height=6cm]{Chapter3/Graphics/freckle_cafe/cafe_VG_colorbar_annot.png}%
+	  \hspace{1mm}%      
+      \includegraphics[height=6cm]{Chapter3/Graphics/freckle_cafe/anim_monograin_tilted/img00\i.png}%
+  }%
+\end{animateinline}%
+\caption{Animations of mono-grain solidification showing the average composition in gallium predicted by the CAFE approach. 
+ 		Two orientation scenarios are considered where a) the grain is upright with a Euler angle of \orient{90}{0}{0} 
+ 		or b) the grain is tilted with a Euler angle of \orient{90}{30}{0}.}
+\label{fig:animate_monograin}
+\end{figure}
 %=====================================ANIMATION FIGURE =====================================

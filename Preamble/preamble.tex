@@ -409,7 +409,7 @@ or
  			buttonbg=0.97,
  			buttonfg=0:0:1,
  			poster=last,  % first, last, <num> ,none
- 			draft
+ 			%draft
  			]{animate}
 
 %%------------------------ ENVIRONMENTS  -------------------------------
@@ -500,12 +500,16 @@ or
 %\end{tabulate}
 %-----------------
 %
+
+\newcommand{\concat}[3]{#1#2#3}
 \ifthenelse{\boolean{enable_animations}}%
 {% then
-   \newcommand{\animage}[5]{\animategraphics[#1]{#2}{#3}{#4}{#5}}
+   \newcommand{\animage}[6]{\animategraphics[#1]{#2}{#3}{#4}{#5}}
 }
 {% else 
-  \newcommand{\animage}[6]{\includegraphics[#1]{ \expandafter\def\expandafter #2 \expandafter{ #2 { } #4 }}}
+  \newcommand{\animage}[6]{\includegraphics[#1]{\concat{#3}{#5}{#6}}}
 }
-% \animage{int fps}{string filepath+leading_img_number}{int start_nb}{int end_nb}{kwargs scaling options}{sting .extension (for non-animation mode}
+% \animage{1:kwargs scaling options}{2:int fps}{3:string filepath+leading_img_number}{4:int start_nb}{5:int end_nb}{5:}{6:string .extension (for non-animation mode}
 %**********	
+
+\usepackage{fmtcount}%
