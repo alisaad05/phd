@@ -500,3 +500,12 @@ or
 %\end{tabulate}
 %-----------------
 %
+\ifthenelse{\boolean{enable_animations}}%
+{% then
+   \newcommand{\animage}[5]{\animategraphics[#1]{#2}{#3}{#4}{#5}}
+}
+{% else 
+  \newcommand{\animage}[6]{\includegraphics[#1]{ \expandafter\def\expandafter #2 \expandafter{ #2 { } #4 }}}
+}
+% \animage{int fps}{string filepath+leading_img_number}{int start_nb}{int end_nb}{kwargs scaling options}{sting .extension (for non-animation mode}
+%**********	

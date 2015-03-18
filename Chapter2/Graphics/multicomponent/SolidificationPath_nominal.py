@@ -20,11 +20,11 @@ def get_test_AvgCompositions(phase_array):
 import numpy as np
 import matplotlib.pyplot as plt
 
-CEM = np.genfromtxt('tabs/PhaseFractions-CEM.txt', delimiter=None, skip_header=0, skip_footer=0, names=True , usecols=("avg_carbon","avg_chromium","Temperature","PhaseFraction"))
-M7C3 = np.genfromtxt('tabs/PhaseFractions-M7C3.txt', delimiter=None, skip_header=0, skip_footer=0, names=True , usecols=("avg_carbon","avg_chromium","Temperature","PhaseFraction"))
-FCC = np.genfromtxt('tabs/PhaseFractions-FCC.txt', delimiter=None, skip_header=0, skip_footer=0, names=True ,  usecols=("avg_carbon","avg_chromium","Temperature","PhaseFraction"))
-BCC = np.genfromtxt('tabs/PhaseFractions-BCC.txt', delimiter=None, skip_header=0, skip_footer=0, names=True ,  usecols=("avg_carbon","avg_chromium","Temperature","PhaseFraction"))
-LIQ = np.genfromtxt('tabs/PhaseFractions-LIQ.txt', delimiter=None, skip_header=0, skip_footer=0, names=True ,  usecols=("avg_carbon","avg_chromium","Temperature","PhaseFraction"))
+CEM = np.genfromtxt('tabulations/PhaseFractions-CEM.txt', delimiter=None, skip_header=0, skip_footer=0, names=True , usecols=("avg_carbon","avg_chromium","Temperature","PhaseFraction"))
+M7C3 = np.genfromtxt('tabulations/PhaseFractions-M7C3.txt', delimiter=None, skip_header=0, skip_footer=0, names=True , usecols=("avg_carbon","avg_chromium","Temperature","PhaseFraction"))
+FCC = np.genfromtxt('tabulations/PhaseFractions-FCC.txt', delimiter=None, skip_header=0, skip_footer=0, names=True ,  usecols=("avg_carbon","avg_chromium","Temperature","PhaseFraction"))
+BCC = np.genfromtxt('tabulations/PhaseFractions-BCC.txt', delimiter=None, skip_header=0, skip_footer=0, names=True ,  usecols=("avg_carbon","avg_chromium","Temperature","PhaseFraction"))
+LIQ = np.genfromtxt('tabulations/PhaseFractions-LIQ.txt', delimiter=None, skip_header=0, skip_footer=0, names=True ,  usecols=("avg_carbon","avg_chromium","Temperature","PhaseFraction"))
 
 liq_w1= get_test_AvgCompositions(LIQ)
 bcc_w1= get_test_AvgCompositions(BCC)
@@ -52,7 +52,7 @@ ax1.set_ylim(-0.05,1.05)
 ax1.plot( liq_w1['Temperature'], liq_w1['PhaseFraction'] , color= colorLIQ, linestyle= lstyle1, marker= markerLIQ, markersize=ms, linewidth=width1,   markevery=NbMarker, alpha=alphaT,label= "Liquid" )
 ax1.plot( bcc_w1['Temperature'], bcc_w1['PhaseFraction'] , color= colorBCC, linestyle= lstyle1, marker= markerBCC, markersize=ms, linewidth=width1,   markevery=NbMarker, alpha=alphaT, label= "BCC")
 ax1.plot( fcc_w1['Temperature'], fcc_w1['PhaseFraction'] , color= colorFCC, linestyle= lstyle1, marker= markerFCC, markersize=ms, linewidth=width1,   markevery=NbMarker, alpha=alphaT, label= "FCC")
-ax1.plot( m7c3_w1['Temperature'], m7c3_w1['PhaseFraction'] , color= colorM7C3, linestyle= lstyle1, marker= markerM7C3, markersize=ms, linewidth=width1,   markevery=NbMarker, alpha=alphaT, label= "$M_7C_3$")
+ax1.plot( m7c3_w1['Temperature'], m7c3_w1['PhaseFraction'] , color= colorM7C3, linestyle= lstyle1, marker= markerM7C3, markersize=ms, linewidth=width1,   markevery=NbMarker, alpha=alphaT, label= "M$_7$C$_3$")
 ax1.plot( cem_w1['Temperature'], cem_w1['PhaseFraction'] , color= colorCEM, linestyle= lstyle1, marker= markerCEM, markersize=ms, linewidth=width1,   markevery=NbMarker, alpha=alphaT, label= "CEM")
 legend = ax1.legend(loc='best', fancybox=True, shadow=True)
 ax1.grid(True)
