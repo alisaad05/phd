@@ -512,4 +512,8 @@ or
 % \animage{1:kwargs scaling options}{2:int fps}{3:string filepath+leading_img_number}{4:int start_nb}{5:int end_nb}{5:}{6:string .extension (for non-animation mode}
 %**********	
 
-\usepackage{fmtcount}%
+% Padd leading zeros in animateinline
+% http://tex.stackexchange.com/questions/86632/how-to-deal-with-zero-padding-using-multiframe-in-the-animate-package?rq=1
+\makeatletter
+\let\zeropad\@anim@pad
+\makeatother

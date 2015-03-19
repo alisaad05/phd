@@ -926,17 +926,17 @@ disturbed by another neighbouring grain, it grows while exclusively interacting 
 %=====================================ANIMATION FIGURE shared control buttons ===================================
 %
 %-----------------------
-\newcommand{\pad}[2]{\padzeroes[#1]{\decimal{#2}}}
 \begin{figure}[htbp]
 \centering %
 \begin{animateinline}{6}%
-  \multiframe{30}{i=60+1}{%
+ %\multiframe{nb_frames}{i=start_nb+inc_nb}{%
+  \multiframe{108}{i=25+1}{%
   		
-      \includegraphics[height=6cm]{Chapter3/Graphics/freckle_cafe/anim_monograin_upright/img00\i.png}%
+      \includegraphics[height=6cm]{Chapter3/Graphics/freckle_cafe/anim_monograin_upright/img\zeropad{1234}{\i}.png}%
 	  \hspace{1mm}%
       \includegraphics[height=6cm]{Chapter3/Graphics/freckle_cafe/cafe_VG_colorbar_annot.png}%
 	  \hspace{1mm}%      
-      \includegraphics[height=6cm]{Chapter3/Graphics/freckle_cafe/anim_monograin_tilted/img00\i.png}%
+      \includegraphics[height=6cm]{Chapter3/Graphics/freckle_cafe/anim_monograin_tilted/img\zeropad{1234}{\i}.png}%
   }%
 \end{animateinline}%
 \caption{Animations of mono-grain solidification showing the average composition in gallium predicted by the CAFE approach. 
