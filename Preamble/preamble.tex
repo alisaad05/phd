@@ -395,6 +395,10 @@ or
 
 % Diagrams and Charts
 \usepackage{mathtools}
+\makeatletter
+\patchcmd{\@Aboxed}{\boxed{#1#2}}{\colorbox{black!15}{$#1#2$}}{}{}%
+\makeatother
+
 \usepackage{tikz}
 \usetikzlibrary{mindmap,positioning,shapes,snakes,backgrounds,fit,calc,shadows,matrix}
 

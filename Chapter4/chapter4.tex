@@ -126,6 +126,7 @@ The mass balance equation averaged over the two phases, is expanded taking into 
 & \brac{ \rhol - \rhos } \frac{\partial  \gl }{\partial t} + \rhol \nabla \cdot \brac{ \gl \vec{v}^l}  = 0
 \end{align}
 \end{subequations}
+%
 \begin{align}
 \label{eq:mass_balance_metal}
  \boxed{\nabla \cdot \brac{ \gl \vl} 
@@ -308,56 +309,124 @@ However, the conservation equation should be reformulated in the case of a melt 
 \subsubsection{Assumptions}
 % ======================
 \begin{itemize}
+\itemsep0em
 \item The alloy is binary, i.e. it is composed from one solute, and hence the notation of the average composition
 		without a solute index: $\wavg$ for the mass composition and $\avg{\rho w}$ for the volume composition
-\item The solid fration is determined assuming complete mixing in both phases, hence the lever rule is applicable. It
-		should be mentionned that the solidification path in the current approach is tabulated using thermodynamic data at 
-		equilibrium
-\item The macroscopic solutal diffusion coefficient $D^s$ in the solid phase is neglected in the mass diffusive flux term. The
-		remaining term, $D^l$, is a mass diffusion coefficient in the liquid phase, of unit $m^2 s^{-1}$
-\item Consequence of the static solid phase: $\avg{\rho w \vec{v}} = \gl \rhol \wl \vl +  \cancel{\gs \rhos \ws \vs} = \gl \rhol \wl \vl$ 
+\item The solid fration is determined assuming complete mixing in both phases, hence the lever rule is applied. 
+	  The solidification path in the current approach is tabulated using thermodynamic data at equilibrium
+\item The macroscopic solute diffusion coefficient $D^s$ in the solid phase is neglected in the mass diffusive flux term.
+\item The solid phase is fixed and rigid, therefore $\avg{\rho w \vec{v}} = \gl \rhol \wl \vl +  \cancel{\gs \rhos \ws \vs} = \gl \rhol \wl \vl$ 
 \end{itemize}
 % ======================
 \subsubsection{Formulation}
 % ======================
-The species conservation is pretty similar the energy conservation formulated in the previous section. For a binary alloy, we can write:
+The species conservation is pretty similar the energy conservation formulated in the previous section. For a binary alloy, we write:
 %
 %--------------------------
+%
 \begin{subequations}
 \begin{align}
-	& \frac{\partial \avg{\rho w}}{\partial t} + \nabla \cdot \avg{\rho w \vec{v}} 
-	= \nabla  \cdot \brac{\rhol \avg{D^l} \nabvec \wl } \\
-	& \frac{\partial \avg{\rho w}}{\partial t} + \nabla \cdot \brac{\gl \rhol \wl \vl}
-	= \nabla  \cdot \brac{\gl\rhol D^l \nabla \wl } \\ 
-	& \frac{\partial \avg{\rho w}}{\partial t} 
-		+ \rhol \wl  \nabla \cdot \vit
-		+ \vit \cdot \nabvec \brac{\rhol \wl}
-		= \nabla  \cdot \brac{\gl \rhol D^l \nabvec \wl } \\   
-	& \frac{\partial \avg{\rho w}}{\partial t} 
-		+ \cancel{\rhol} \wl  \frac{\rhol-\rhos}{\cancel{\rhol}} \frac{\partial  \gs }{\partial t}
-		+ \vit \cdot \nabvec \brac{\rhol \wl}
-		= \nabla  \cdot \brac{\gl \rhol D^l \nabvec \wl } \\ 
-	& \frac{\partial \avg{\rho w}}{\partial t} 
-		+ \brac{\rhol-\rhos} \wl \frac{\partial  \gs }{\partial t}
-		+ \vit \cdot \nabvec \brac{\rhol \wl}
-		= \nabla  \cdot \brac{\gl \rhol D^l \nabvec \wl }        
+ & \tempup{\avg{\rho w}} + \nabla \cdot \avg{\rho w \vec{v}} - \nabla  \cdot \brac{\avg{\Dl} \nabvec \brac{\rhol \wl} } = 0 \\
+ %
+ & \avg{\rho} \tempup{\avg{w}} + \avg{w} \tempup{\avg{\rho}} 
+	+ \nabla \cdot \brac{\gl \rhol \wl \vl} 
+	- \nabla \cdot \brac{\gl \Dl \nabvec \brac{\rhol \wl} } = 0 \\
+ %
+ \label{eq:species_1}
+  \begin{split}
+	& \avg{\rho} \tempup{\avg{w}}  + \avg{w} \tempup{\avg{\rho}} 
+	+ \brac{\rhol \wl} \nabla \cdot \vit + \vit \cdot \nabvec \brac{\rhol \wl} \\
+	& - \nabla \cdot \brac{\gl \Dl \nabvec \brac{\rhol \wl} } = 0 
+  \end{split}
+%
 \end{align}
 \end{subequations}
+%--------------------------
+The mass balance gives the following relations:
+%--------------------------
+\begin{subequations}
+%\label{eq:shrinkage}
+\begin{align}
+& \tempup{\avg{\rho}} + \nabla \cdot \avg{\rho \vec{v}}  = 0 \\ 
+& \tempup{\avg{\rho}} + \nabla \cdot \brac{\gl \rhol \vl} = 0 \qquad (\rhol \text{ is constant})\\ 
+\label{eq:species_divV}
+& \nabla \cdot \vit = - \frac{1}{\rhol}\tempup{\avg{\rho}}
+\end{align}
+\end{subequations}
+%----------------
+If we use the result of \cref{eq:species_divV} in \cref{eq:species_1}, then we get the following equation:
+\begin{align}
+\avg{\rho} \tempup{\avg{w}}  + \avg{w} \tempup{\avg{\rho}} =
+\wl \tempup{\avg{\rho}}  - \vit \cdot \nabvec \brac{\rhol \wl} + \nabla \cdot \brac{\gl \Dl \nabvec \brac{\rhol \wl} }
+\end{align}
+%
+Applying Voller-Prakash \citep{voller_modelling_1989} variable splitting, the system ends up with only one variable, which is the 
+average composition $\avg{w}$. The splitting is done as follows:
+\begin{align}
+\wl = \brac{\wl}^t + \avg{w} - \avg{w}^t
+\end{align}
+%
+where the superscript $t$ refers to the previous time step. The chemical species conservation writes:
+%
+\begin{subequations}
+\begin{align}
+  \begin{split}
+	& \avg{\rho} \tempup{\avg{w}}  + \cancel{\avg{w} \tempup{\avg{\rho}}} = \\
+	& \cancel{\avg{w} \tempup{\avg{\rho}}}  - \rhol \vit \cdot \nabvec \avg{w} + \nabla \cdot \brac{\gl \rhol \Dl \nabla \avg{w} } \\
+	& + \tempup{\avg{\rho}} \crochet{\brac{\wl}^t -  \avg{w}^t} - \rhol \vit \cdot \nabvec \brac{\avg{w}^t -\brac{\wl}^t} \\
+	& + \nabla \cdot \crochet{\gl \rhol \Dl  \nabvec \brac{ \brac{\wl}^t - \avg{w}^t } }
+  \end{split} \\ 
+    \begin{split}
+	& \avg{\rho} \tempup{\avg{w}}  + \rhol \vit \cdot \nabvec \avg{w} - \nabla \cdot \brac{\gl \rhol \Dl \nabla \avg{w}}=\\
+	& - \tempup{\avg{\rho}} \crochet{\avg{w}^t - \brac{\wl}^t} + \rhol \vit \cdot \nabvec \brac{\avg{w}^t -\brac{\wl}^t} \\
+	& - \nabla \cdot \crochet{\gl \rhol \Dl  \nabvec \brac{\avg{w}^t -\brac{\wl}^t} }
+  \end{split}
+\end{align}
+\end{subequations}
+%
+%\begin{subequations}
+%\begin{align}
+%	& \frac{\partial \avg{\rho w}}{\partial t} 
+%		+ \rhol \wl  \nabla \cdot \vit
+%		+ \vit \cdot \nabvec \brac{\rhol \wl}
+%		= \nabla  \cdot \brac{\gl \rhol D^l \nabvec \wl } \\   
+%	& \frac{\partial \avg{\rho w}}{\partial t} 
+%		+ \cancel{\rhol} \wl  \frac{\rhol-\rhos}{\cancel{\rhol}} \frac{\partial  \gs }{\partial t}
+%		+ \vit \cdot \nabvec \brac{\rhol \wl}
+%		= \nabla  \cdot \brac{\gl \rhol D^l \nabvec \wl } \\ 
+%	& \frac{\partial \avg{\rho w}}{\partial t} 
+%		+ \brac{\rhol-\rhos} \wl \frac{\partial  \gs }{\partial t}
+%		+ \vit \cdot \nabvec \brac{\rhol \wl}
+%		= \nabla  \cdot \brac{\gl \rhol D^l \nabvec \wl }        
+%\end{align}
+%\end{subequations}
+%------------------------------
 \begin{align}
 \label{eq:solute_balance_metal}
- \boxed{ \frac{\partial \avg{\rho w}}{\partial t} 
-		+ \rhol \vit \cdot \nabvec \wl
-		= \nabla  \cdot \brac{\rhol D^l \nabvec \wl }
-		+ \brac{\rhos-\rhol} \wl \frac{\partial  \gs}{\partial t}}
+\begin{split}
+ & \avg{\rho} \tempup{\avg{w}}  + \rhol  \vit \cdot \nabvec \avg{w} - \nabla \cdot \brac{\gl \rhol \Dl \nabla \avg{w}}=\\
+ &	 - \tempup{\avg{\rho}} \crochet{\avg{w}^t - \brac{\wl}^t} \\ 
+ &	 + \rhol \vit \cdot \nabvec \brac{\avg{w}^t -\brac{\wl}^t}
+ 	 - \nabla \cdot \crochet{\gl \rhol \Dl  \nabvec \brac{\avg{w}^t -\brac{\wl}^t} }
+  \end{split}
+  \end{align}
+%--------------
+It is noted that \cref{eq:solute_balance_metal} is valid only if both densities $\rhol$ and $\rhos$
+are constant but have different values. Since density changes are incorporated in this equation, 
+inverse segregation following solidification shrinkage is predicted.
+For the case where macrosegregation is solely due to fluid flow generated by natural or forced convection, i.e. no shrinkage occurs whether due to thermal-solutal contraction or phase change, 
+the overall volume remains constant, hence density is constant. In this situation, $\rhos=\rhol=\avg{\rho}$ and the term $\partial \avg{\rho}/\partial t$ therefore vanishes.
+After dividing both sides by $\avg{\rho}=\rhol$, \cref{eq:solute_balance_metal} reduces to:
+%------------------------------
+\begin{align}
+\label{eq:solute_balance_metal_incompressible}
+ \begin{split}
+      & \tempup{\avg{w}}  + \vit \cdot \nabvec \avg{w} - \nabla \cdot \brac{\gl \Dl \nabla \avg{w}} \\
+	  & = \vit \cdot \nabvec \brac{\avg{w}^t -\brac{\wl}^t}
+	 - \nabla \cdot \crochet{\gl \Dl \nabvec \brac{\avg{w}^t -\brac{\wl}^t} } 
+  \end{split}
 \end{align}
 %--------------
-%
-The species transport equation is usually derived with the volumetric average composition $\avg{\rho w}$, then
-divided by the density, which is constant if no solidification shrinkage occurs. In the case where macrosegregation
-is solely due to fluid flow generated by natural or forced convection, the overall
-volume remains constant. It is thus convenient to compute composition variations using the mass variable $\wavg$.
-However, in the current context, the volume is subject to changes, hence the formulation of equation 
-\cref{eq:solute_balance_metal} with $\avg{\rho w}$.
 %
 %====================================================================
 \section{FE model: Air}
