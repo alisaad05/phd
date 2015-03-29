@@ -45,22 +45,6 @@ In a continuous casting process (\cref{fig:continuous_casting}), the partially s
 As the mushy part of a slab enters through these rolls, interdendritic liquid is expelled backwards, i.e. in regions with lower solid fraction.
 Since the slab edges solidify earlier than the centre, the enriched liquid accumulates halfway in thickness, forming a centreline macrosegregation
 as shown in \cref{fig:macroseg_centreline}. Other types of segregates (channels, A-segregates ...) can also be found but remain more specific to ingot casting. 
-%--------------
-\begin{figureth}
-% macrosegregation_centreline_zoom: http://goo.gl/iKPNfz
-% textwidth 
-{1.0}
-%path 
-{Chapter0/Graphics/macrosegregation_centreline_zoom.pdf}
-% caption
-{Centreline segregation in a steel slab \citep{beckermann_modelling_2002}}
-% label
-\label{fig:macroseg_centreline}
-\end{figureth}
-%--------------
-%--------------------------------------------------------
-%
-
 A variety of segregation patterns can be encountered while casting heavy ingots, as in \cref{fig:ingot_casting}: 
 \begin{itemize}
 \itemsep0em 
@@ -72,24 +56,81 @@ A variety of segregation patterns can be encountered while casting heavy ingots,
 \end{itemize}
 \citet{combeau_prediction_2009} state that A-segregates and V-segregates formation is mainly attributed to local flow phenomena.
 As such, their scale is finer than macrosegregation, hence called "mesosegregates".
+%--------------
+\begin{figureth}
+% macrosegregation_centreline_zoom: http://goo.gl/iKPNfz
+% textwidth 
+{1.0}
+%path 
+{Chapter0/Graphics/macrosegregation_centreline_zoom.pdf}
+% caption
+{Zoom on a sulphur print of a continuously cast high carbon steel billet at a longitudinal section, showing high positive centreline segregation \citep{choudhary_morphology_1994}.}
+% label
+\label{fig:macroseg_centreline}
+\end{figureth}
+%--------------
+%--------------------------------------------------------
+%
 %-----------------------
 \begin{figureth}
-{0.6}
+{1.0}
 {Chapter0/Graphics/macrosegregation_ingot.png}
 {Sulphur print (left) of a 65-ton steel ingot \citep{lesoult_macrosegregation_2005} showing various patterns (right) of macrosegregation \citep{flemings_solidification_1974}}
 \label{macrosegregation_ingot}
 \end{figureth}
 %--------------------------------------------------------
 %
+%***********************************************
 \section{Solidification notions}
+%***********************************************
 %
+%***********************************************
+\subsection{Solute partitioning}
+%***********************************************
+The simplest definition is of this phenomenon is an uneven distribution of solute between the liquid and the growing solid, at the microscopic scale
+of the interface separating these phases. If we consider a binary alloy, then the solubility limit is 
+the key factor that dictates the composition at which a primary solid phase exists at equilibrium. 
+The segregation (or partition) coefficient $\k$ determines the extent of solute rejection into the liquid during solidification:
+%----------------------
+\begin{align}
+\label{eq:partition}
+& \k = \frac{\Csstar}{\Clstar}
+\end{align}
+%----------------------
+where $\Csstar$ and $\Clstar$ are the compositions of the solid and liquid respectively, at the interface. When the 
+segregation coefficient is less than unity (such is the case for most alloys during dendritic solidification), 
+the first solid forms at the liquidus temperature, $T$, with a composition $\Csstar=\k \Clstar=\k \Cnominal$ less than the liquid's 
+composition $\Cnominal$, the latter being initially at the nominal composition, $\Cnominal$. \Cref{fig:binary_diag} illustrates a typical binary 
+phase diagram where the real solidus and liquidus are represented by solid lines, while the possible linear approximations are in grey dashed lines.
+For most binary alloys, this linearisation simplifies derivation of microsegregation models, as $\k$ becomes independent of temperature.
+
+For each phase, the relationship between the composition at the interface and that in the bulk depends on the chemical homogenisation (i.e. solute diffusivity) of the phase.
+The more homogeneous a phase, the closer the concentrations between the interface and the bulk, hence closer to equilibrium.
+%The higher the diffusion coefficient of the phase, $\Dphi$, the closer the concentrations between the interface and the bulk. 
+It is thus essential to study the effect of homogenisation on the segregation behaviour and the subsequent effect on solidification, 
+which is seen by a non-uniform composition through the cast product on a microscopic scale, better known as microsegregation.
+This phenomenon is essential in a casting process inasmuch as it affects the microstructure and grain morphology, hence the final
+mechanical properties of the alloy.
+%----------------------
+\begin{figureth}
+% textwidth 
+{0.5}
+%path 
+{Chapter0/Graphics/PhaseDiagram.pdf}
+% caption
+{Typical eutectic phase diagram of a binary alloy showing the real solidus and liquidus at full equilibrium,
+with the corresponding linear approximations (grey dashed lines). $T_m$ and $T_E$ are respectively the melting point
+of the solvent and the eutectic temperature.}
+% label
+\label{fig:binary_diag}
+\end{figureth}
 %
 %***********************************************
 \subsection{Dendritic growth}
 %***********************************************
 In a casting process, the chill surface i.e. the contact between the molten alloy and relatively cold moulds, is the first area to solidify. 
-Thermal gradient, $G$, and cooling rate $R$ are two crucial process parameters that define the solid-liquid interface velocity $\vstar$, which in turn,
-affects the initial microstructure. Although it may be not easy to control them, it remains important to understand their implication in solidification.
+Thermal gradient, $G$, and cooling rate, $R$, are two crucial process parameters that define the solid-liquid interface velocity, $\vstar$, which in turn
+affects the initial microstructure. Although it may be not easy to control them, their crucial role in solidification is well established.
 
 The solid-liquid interface fluctuates when solidifying, thus perturbations may appear on the front, locally destabilizing it. 
 Two outcome scenarios are possible.
@@ -109,12 +150,12 @@ The liquid far from the interface and having a blue color is at nominal composit
 %
 The first scenario is characterized by low values of $\vstar$ where the interface maintains a planar shape, hence we speak of \emph{planar growth}. 
 With this kind of growth, a random protuberance appearing at the interface, has a low tip velocity (low driving force of solidification). As such,
-the rest of the interface catches up, keeping the planar geometry.
-In another scenario, where a real casting is considered, the interface speed is greater in general, due to high solidification rate.
+the rest of the interface catches up, maintaining the planar geometry.
+In another scenario more representative of a real casting, the interface speed is greater in general, due to high solidification rate.
 The protuberance tip will be pulled into a liquid less rich in solute than the interface, as shown in the time frames of \cref{fig:dendrite_evolution}.
 The zone ahead of the solid-liquid interface is constitutionally undercooled \citep{tiller_redistribution_1953}, 
 giving a greater driving force for the protuberance to grow in the direction
-of the thermal gradient. As it has a tree-like shape, we speak of \emph{dendritic growth}. Near the chill surface, dendrites are columnar, with a 
+of the thermal gradient. As the solid-liquid interface adopts a tree-like shape, we speak of \emph{dendritic growth}. Near the chill surface, dendrites are columnar, with a 
 favourable growth in the <100> direction for alloys with cubic lattices, but different orientations are also reported in the literature \citep[see][289]{dantzig_solidification_2009}.
 Far from mould walls, a similar dendritic growth phenomenon occurs where temperature is uniform, but with an equiaxed morphology.
 \Cref{fig:dendritic_growth} shows both columnar and equiaxed morphologies. Columnar dendrites are characterized by a primary spacing, 
@@ -169,7 +210,8 @@ through the following equation \citep{rappaz_numerical_2003}:
 %----------------------
 where $\mul$ is the liquid dynamic viscosity and $\K$ is the permeability tensor. The latter parameter has been the subject of numerous studies that aimed
 to predict it from various microstructural or morphological parameters.
-Some of these studies have started even before the first attempts to model macrosegregation by \citet{flemings_macrosegregation:_1967, flemings_macrosegregation:_1968-1,flemings_macrosegregation:_1968}. 
+Some of these studies have started even before the first attempts to model macrosegregation by 
+\citet{flemings_macrosegregation:_1967, flemings_macrosegregation:_1968-1,flemings_macrosegregation:_1968}. 
 Basically, all models include the solid fraction, $\gs$, as input to predict mush permeability along with empirical data. 
 An instance of such models is the work of \citet{xu_gravity-_1991}.
 Some models rely additionally on the primary dendrite arm spacing $\pdas$ like Blake-Kozeny \citep{ramirez_evaluation_2003}, or the secondary 
@@ -185,44 +227,6 @@ The present work uses Carman-Kozeny as a constitutive model for the isotropic pe
 %-----------------------------------
 %
 %***********************************************
-\subsection{Microsegregation}
-%***********************************************
-Microsegregation is a fundamental phenomenon in solidification. The simplest definition is 
-an uneven distribution of solute between the liquid and the herein growing solid, at the microscopic scale
-of the interface separating these phases. If we consider a binary alloy, then the solubility limit is 
-the key factor that dictates the composition at which a primary solid phase exists in equilibrium. 
-The segregation (or partition) coefficient $\k$ determines the extent of solute rejection into the liquid during solidification:
-%----------------------
-\begin{align}
-\label{eq:partition}
-& \k = \frac{\Csstar}{\Clstar}
-\end{align}
-%----------------------
-where $\Csstar$ and $\Clstar$ are the compositions of the solid and liquid respectively, at the interface. When the 
-segregation coefficient is less than unity (such is the case for most alloys during dendritic solidification), 
-the first solid forms with a composition $\Csstar=\k \Clstar=\k \Cnominal$ less than the liquid's 
-composition $\Cnominal$, the latter being initially at the nominal composition, $\Cnominal$. \Cref{fig:binary_diag} illustrates a typical binary 
-phase diagram where the real solidus and liquidus are represented by solid lines, while the corresponding linear approximations are in grey dashed lines.
-For most binary alloys, this linearisation simplifies derivation of microsegregation models, as $\k$ becomes independent of temperature.
-
-For each phase, the relationship between the composition at the interface and that in the bulk depends on the chemical homogenisation ability of the phase.
-The more homogeneous a phase, the closer the concentrations between the interface and the bulk, hence closer to equilibrium.
-%The higher the diffusion coefficient of the phase, $\Dphi$, the closer the concentrations between the interface and the bulk. 
-It is thus essential to study the effect of homogenisation on the segregation behaviour and the subsequent effect on solidification, which leads the formalism of microsegregation models.
-%----------------------
-\begin{figureth}
-% textwidth 
-{0.5}
-%path 
-{Chapter1/Graphics/phasediagram.pdf}
-% caption
-{Typical eutectic phase diagram of a binary alloy showing the real solidus and liquidus at full equilibrium,
-with the corresponding linear approximations (grey dashed lines). $T_m$ and $T_E$ are respectively the melting point
-of the solvent and the eutectic temperature.}
-% label
-\label{fig:binary_diag}
-\end{figureth}
-%-----------------------------------
 %
 \section{Macrosegregation}
 %
@@ -231,9 +235,9 @@ a relative velocity between these phases. While the former is responsible for lo
 will propagate the composition heterogeneity on a scale much larger than just a few dendrites.
 % http://dictionary.cambridge.org/grammar/british-grammar/little-a-little-few-a-few
 This is why macrosegregation could be observed on the scale of a casting, up to several meters in length. 
-While microsegreation can be healed by annealing the alloy to speed up the diffusion process and allow homogenization, heterogneities 
+While microsegregation can be healed by annealing the alloy to speed up the diffusion process and allow homogenization, heterogeneities 
 spanning on larger distances cannot be treated after solidification. It is obvious that macrosegregation is irreversible defect. 
-Failure to prevent it, may lead to a substantial decline in the alloy's mechanical behavior, hence its serviceability.
+Failure to prevent it, may lead to a substantial decline in the alloy's mechanical behaviour, hence its serviceability.
 %--------------------------------------------------------
 %
 %
@@ -271,7 +275,7 @@ thermal expansion coefficient $\betaT$ and the solutal expansion coefficients $\
 %
 The linear fit assumes also that the density takes a reference value, $\rholref$, when temperature 
 and liquid composition reach reference values, respectively $\Tref$ and $\wilref$, while the
-coefficients $betawil$ remain constant. However, in some 
+coefficients $\betawil$ remain constant. However, in some 
 situations, a suitable thermodynamic database providing accurate density values is far better than a 
 linear fit, especially in the current context of macrosegregation. 
 % Such possibility will be discussed later in the manuscript. %(cf. SECTION \red{TODO})\\ %TODO ) 
@@ -313,7 +317,37 @@ This leads to a systematic product recycling, i.e. the product is ditched to be 
 and then cast again. From an economic point view, the operation is very expensive. Understanding and preventing defects when possible is thus crucial in 
 the casting industry. We briefly list hereafter the main encountered defects.
 %
-%-------------------------------------------------------------------------------------------
+%-----------------
+\begin{figure}[htbp]
+\centering
+   %------------
+  \begin{subfigure}[t]{0.3\textwidth}
+    \centering
+	\includegraphics[height=3cm]{Misc/dummy.pdf}
+	\caption{}
+    \label{fig:hot tearing}
+  \end{subfigure}
+   %------------
+   %\hspace{1cm}
+   \begin{subfigure}[t]{0.3\textwidth}
+    \centering
+	\includegraphics[height=3cm]{Misc/dummy.pdf}
+	\caption{}
+    \label{fig:porosity}
+  \end{subfigure}
+     %------------
+   %\hspace{1cm}
+   \begin{subfigure}[t]{0.3\textwidth}
+    \centering
+	\includegraphics[height=3cm]{Misc/dummy.pdf}
+	\caption{}
+    \label{fig:freckle}
+  \end{subfigure}
+\caption{Three instances of solidification-related defects found in cast products: (a) asdads (b) dfsdf and (c) fdsfsf. }
+\label{fig:casting}
+\end{figure}
+%
+%-----------------------------
 %
 \subsection*{Hot tearing} 
 %
