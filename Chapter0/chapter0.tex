@@ -141,7 +141,7 @@ Two outcome scenarios are possible.
 %path 
 {Chapter0/Graphics/dendrite_evolution.pdf}
 % caption
-{Time evolution of a solidifying \bin{Al}{4}{Cu} sample, showing interface destabilisation and subsequent dendritic solidification \citep{buffet_measurement_2010}.
+{Time evolution of a solidifying \bin{Al}{4}{Cu} sample, showing interface destabilisation and subsequent dendritic solidification \citep{buffet_analysis_2011}.
 The liquid far from the interface and having a blue color is at nominal composition, while the one near the dendritic structure with the yellow and red colors, is richer in solute.}
 % label
 \label{fig:dendrite_evolution}
@@ -230,14 +230,23 @@ The present work uses Carman-Kozeny as a constitutive model for the isotropic pe
 %
 \section{Macrosegregation}
 %
-Macrosegreation generally stems from a solubility difference between a liquid phase and one or more solid phases, along with
+Macrosegregation generally stems from a solubility difference between a liquid phase and one or more solid phases, along with
 a relative velocity between these phases. While the former is responsible for local solute enrichment or depletion, the latter
 will propagate the composition heterogeneity on a scale much larger than just a few dendrites.
 % http://dictionary.cambridge.org/grammar/british-grammar/little-a-little-few-a-few
 This is why macrosegregation could be observed on the scale of a casting, up to several meters in length. 
-While microsegregation can be healed by annealing the alloy to speed up the diffusion process and allow homogenization, heterogeneities 
+While microsegregation can be healed by heat treatments, the alloy to speed up the diffusion process and allow homogenization, heterogeneities 
 spanning on larger distances cannot be treated after solidification. It is obvious that macrosegregation is irreversible defect. 
 Failure to prevent it, may lead to a substantial decline in the alloy's mechanical behaviour, hence its serviceability.
+Experimental investigations of macrosegregation in steels was the subject of numerous studies in the past, 
+like the work of \citet{lesoult_macrosegregation_2005} \red{for other references check 1996BeckermannSchneider}. They were mainly motivated
+by industrial research that aimed at reducing defective production caused by macrosegregation.
+However, steel was not the only alloy that was investigated, probably because of its high melting point. 
+Instead, many studies in the past relied on other metallic alloys as a replacement recourse, for their low
+melting points, also for their well-known thermophysical and mechanical properties, such as aluminium-based alloys 
+(aluminium-copper or aluminium-silicon) \citep{lesoult_equi-axed_2001,ferreira_macrosegregation_2004,ferreira_2009} and lead-tin/tin-lead alloys\citep{hebditch_observations_1974,prescott_convective_1994,hachani_experimental_2012}. Investigating macrosegregation 
+was not only limited to metallic alloys, but also to organic compounds like the well-known 
+sodium chloride \citep{wanqi_formation_1989}.
 %--------------------------------------------------------
 %
 %
@@ -245,42 +254,51 @@ Failure to prevent it, may lead to a substantial decline in the alloy's mechanic
 Four main factors can (simultaneously) cause fluid flow leading to macrosegregation:
 %
 \subsection{Liquid dynamics}
-During solidification, thermal and solutal gradients result in density gradients in the liquid phase: 
+During solidification, the liquid density undergoes changes due to temperature gradients.
+In general, an increasing temperature results in a lighter liquid phase and vice-versa.
+These variations create a driving force of thermal convection in the melt, during which 
+chemical species are redistributed by convective transport. While a uniform composition
+is usually maintained throughout the liquid phase, solute gradients may appear in zones where
+thermal convection currents are not sufficient to homogenise the liquid solution. 
+Similarly to thermal gradients, a solute gradient is behind liquid density variations.
+Nevertheless, the relationship between the liquid's composition and its density is a characteristic
+of the alloy. While for some alloys, a positive solute gradient creates a positive density gradient,
+for others the opposite phenomenon is promoted due to a heavier solute.
 %--------------
-\begin{subequations}
-\begin{align}
-\label{eq:rholiq}
-& \rhol = \rholref ( 1 - \betaT (T - \Tref) - \sum_{i} \betawil (\wil - \wilref) )  \\ 
-\label{eq:gradrholiq}
-& \nabvec\rhol = -\rholref (  \betaT \nabvec T + \sum_{i} \betawil \nabvec\wil  )
-\end{align}
-\end{subequations}
+%\begin{subequations}
+%\begin{align}
+%\label{eq:rholiq}
+%& \rhol = \rholref ( 1 - \betaT (T - \Tref) - \sum_{i} \betawil (\wil - \wilref) )  \\ 
+%\label{eq:gradrholiq}
+%& \nabvec\rhol = -\rholref (  \betaT \nabvec T + \sum_{i} \betawil \nabvec\wil  )
+%\end{align}
+%\end{subequations}
 %--------------
 %
-In \cref{eq:rholiq}, density is assumed to vary linearly with temperature and phase composition 
-for each chemical species (index $i$). The slopes defining such variations are respectively the 
-thermal expansion coefficient $\betaT$ and the solutal expansion coefficients $\betawil$, given by:
+%In \cref{eq:rholiq}, density is assumed to vary linearly with temperature and phase composition 
+f%or each chemical species (index $i$). The slopes defining such variations are respectively the 
+%thermal expansion coefficient $\betaT$ and the solutal expansion coefficients $\betawil$, given by:
 % \citep{kohler_peritectic_2008}
 %
 %--------------
-\begin{subequations}
-\begin{align}
-\label{eq:betaT}
-& \betaT =  -\frac{1}{\rholref} \brac{\frac{\partial\rhol}{\partial T}}  \\ 
-\label{eq:betawil}
-& \betawil = -\frac{1}{\rholref} \brac{\frac{\partial \rhol}{\partial \wil}}  
-\end{align}
-\end{subequations}
+%\begin{subequations}
+%\begin{align}
+%\label{eq:betaT}
+%& \betaT =  -\frac{1}{\rholref} \brac{\frac{\partial\rhol}{\partial T}}  \\ 
+%\label{eq:betawil}
+%& \betawil = -\frac{1}{\rholref} \brac{\frac{\partial \rhol}{\partial \wil}}  
+%\end{align}
+%\end{subequations}
 %--------------
 %
-The linear fit assumes also that the density takes a reference value, $\rholref$, when temperature 
-and liquid composition reach reference values, respectively $\Tref$ and $\wilref$, while the
-coefficients $\betawil$ remain constant. However, in some 
-situations, a suitable thermodynamic database providing accurate density values is far better than a 
-linear fit, especially in the current context of macrosegregation. 
+%The linear fit assumes also that the density takes a reference value, $\rholref$, when temperature 
+%and liquid composition reach reference values, respectively $\Tref$ and $\wilref$, while the
+%coefficients $\betawil$ remain constant. However, in some 
+%situations, a suitable thermodynamic database providing accurate density values is far better than a 
+%linear fit, especially in the current context of macrosegregation. 
 % Such possibility will be discussed later in the manuscript. %(cf. SECTION \red{TODO})\\ %TODO ) 
-In the presence of gravity, the density gradient in \cref{eq:gradrholiq}, causes thermosolutal convection 
-in the liquid bulk and a subsequent macrosegregation.
+%In the presence of gravity, the density gradient in \cref{eq:gradrholiq}, causes thermosolutal convection 
+%in the liquid bulk and a subsequent macrosegregation.
 %
 % 
 \subsection{Solidification shrinkage}
