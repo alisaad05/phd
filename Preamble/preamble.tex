@@ -232,6 +232,9 @@ or
 \sisetup{detect-all} % detects the local font settings when using the SI macro
 % \num{.3e45}   ,  \num{3.45d-4}   , \numlist{10;30;50;70} ,  \numrange{10}{30} , 
 
+% Manage the vector + superscript notation
+\usepackage{esvect} % provides macro "vv"
+\let\vec\vv
 %%------------------------ Cross References  -------------------------------
 % --- Hyperref and Options
 \usepackage{hyperref}

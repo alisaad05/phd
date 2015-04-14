@@ -6,17 +6,16 @@
 \newpage
 
 % ======================
-\section{Introduction}
+\section{Solidification shrinkage}
 % ======================
 
 Solidification shrinkage is, by definition, the effect of relative density change between the liquid and solid phases.
 In general, it results in a progressive volume change during solidification, until the phase change has finished. 
 The four stages in \cref{fig:real_ingot_stage_a,fig:real_ingot_stage_c,fig:real_ingot_stage_b,fig:real_ingot_stage_d} depict the volume change with 
 respect to solidification time.
-First, at the level of the first solid crust, near the local solidus temperature, the solid forms with a density smaller than 
-the liquid's. This does not necessarily apply for all materials, but at least for steels it does. The subsequent volume difference 
-tends to create voids with a big negative pressure, that needs to be compensated by a surrounding fluid. It thus drains 
-the liquid metal in its direction (cf. \autoref{fig:real_ingot_stage_b}). As a direct result of the inward feeding flow, the ingot surface
+First, at the level of the first solid crust, near the local solidus temperature, the solid forms with a density greater than 
+the liquid's. The subsequent volume decrease creates voids with a negative pressure, forcing the fluid to be sucked in the direction of the volume change 
+(cf. \cref{fig:real_ingot_stage_b}). As a direct result of the inward feeding flow, the ingot surface
 tends to gradually deform in the feeding direction, forming the so-called \emph{shrinkage pipe}. Since the mass of the alloy and its 
 chemical species is conserved, a density difference between the phases ($\rhol < \rhos \implies \frac{\rhol}{\rhos}<1$) eventually leads 
 to a different overall volume ($V^s<V^l$) once solidification is complete, as confirm the following equations:
@@ -29,7 +28,17 @@ to a different overall volume ($V^s<V^l$) once solidification is complete, as co
 \end{subequations}
 %------------
 Solidification shrinkage is not the only factor responsible for volume decrease. Thermal shrinkage in both solid and liquid phases, as well 
-as solutal shrinkage in the liquid phase are also common causes in a casting process. Henceforth, we will focus on shrinkage due to phase change.
+as solutal shrinkage in the liquid phase are also common causes in a casting process. However, thermal shrinkage is very important to apprehend
+as temperature decrease in steel casting usually exceeds a \SI{1000}{\udegC}, causing substantial density variations. 
+%Henceforth, we will focus on shrinkage due to phase change.
+%
+%Talk and explain models in the literature that predict shrinkage (without or with macrosegregation): Beckermann, Wu ? \\
+%Show and comment the experiments that have been done: Hebditch and Hunt, Smacs Hachani  ...
+%
+%\comment{ \textbf{Sutaria2012} talk about feeding paths, but more importantly they computed thermal shrinkage WITHOUT solving
+%NavierStokes equations. To predict the interface shape, they solve a LS transport with an imposed velocity given by Gada et Sharma 2009}
+%
+%
 %----------------
 %
 \begin{figure}[htbp]
@@ -75,16 +84,100 @@ as solutal shrinkage in the liquid phase are also common causes in a casting pro
 \end{figure}
 %
 %---------------------
-\subsection*{Literature review}
 %
-Talk and explain models in the literature that predict shrinkage (without or with macrosegregation): Beckermann, Wu ? \\
-Show and comment the experiments that have been done: Hebditch and Hunt, Smacs Hachani  ...
+%============================================
+\section{Multidomain formalism}
+%============================================
+In the previous chapters, we considered in our simulations the metal as a saturated mixture of solid and liquid during solidification.
+It means that no gas phase may appear during the process, and this  this chapter.
+The reason is we chose to describe our model in Eulerian description, for which we have considered a fixed grid to discretise the averaged conservation 
+equations governing the phase change between the liquid and solid phases.
+Furthermore, with the introduction of shrinkage, an increase in global density means 
+that a gas phase should enter the domain to replace the shrunk volume.
+At this point, several interfaces may be distinguished: liquid-solid ($l$-$s$), liquid-air ($l$-$a$) and solid-air ($s$-$a$), where 
+we defined 2 phases ($l$ and $s$) belonging to the "Metal" domain denoted $M$, while the "Air" domain, denoted $A$, 
+is made up of a unique phase, ($a$), with the same name. As a standard for this formalism, we consider that uppercase letters
+are used for domains, while lowercase letters are used for phases.
+
+The main idea behind the multidomain formalism, is to go from the classic 
+conservations equations introduced by  volume averaging in chapter 2,
+in the context of a solidifying two-phase system to generalise it and 
+take into account a third gas phase that belongs to a new domain, 
+while keeping a physical integrity with the former monodomain model. 
+Then, one is free to choose a suitable numerical method to track the 
+interfaces between the several phases. In our applications, we are particularly 
+interested in keeping an indirect representation of the $l$-$s$ interface 
+using the volume averaging theory, while employing a different
+method to track the $l$-$a$ and $s$-$a$ interfaces with the level set method. 
+This allows switching to the latter method in a justified and physically representative manner.
+
+In this context, each domain can be seen as a material having a physical
+interface with the other domains. As a consequence of our interpretation, 
+the gas phase should not exist in the metal, which may naturally
+occur if the thermodynamic conditions are in favour of nucleating and growing 
+a new phase, or in the case of a gas that was trapped inside mould grooves.
 %
-\comment{ \textbf{Sutaria2012} talk about feeding paths, but more importantly they computed thermal shrinkage WITHOUT solving
-NavierStokes equations. To predict the interface shape, they solve a LS transport with an imposed velocity given by Gada et Sharma 2009}
+%------------
+\subsection{Assumptions}
+%------------
+Each phase in the system has its own velocity, $\vl$, $\vs$ and $\va$, while the respective
+interfaces $\liqsol$, $\liqair$ and $\solair$ have different and independent velocities, 
+represented by $\vliqsol$, $\vliqair$ and $\vsolair$. Note that the solid-liquid interface
+velocity was denoted $\vstar$ in the previous chapters as no more than two phases were considered.
+The first major assumption is that the solid phase, once formed from the liquid, is fixed and rigid.
+It means that no subsequent deformation may occur and therefore $\vsolair$ reduces to vector zero.
+Moreover, we use the already introduced volume averaging principles to write locally for any quantity $\psi$:
+%------------
+\begin{subequations}
+\begin{align}
+\label{eq:}
+\avg{\psi} &= \avg{\psi^l} + \avg{\psi^s} + \avg{\psi^a} \\
+			&= \gl \psi^l + \gs \psi^s  + \ga \psi^a
+\end{align}
+\end{subequations}
+%------------
+where volume fractions, $\gphi$, for each phase $\phi$ were used. \citet{rappaz_numerical_2003} define
+the volume fraction by writing a general expression inside the representative volume $\rev$:
+%------------
+%\begin{subequations}
+\begin{align}
+\label{eq:}
+\gphi = \frac{1}{\rev} \integral{\rev}{\chi^\phi(x,t)}{\Ohm}
+\end{align}
+%\end{subequations}
+%------------
+where the integrated quantity is an indicator (or presence) function relative to phase $\phi$, which
+defines the volume of this phase in the system, $\Ohm^\phi$, as follows:
+%------------
+%\begin{subequations}
+\begin{align}
+\label{eq:}
+\chi^\phi(x,t)=
+\begin{cases}
+  1 	& \text{ if } x \in \Ohm^\phi \\ 
+  0 	& \text{otherwise}
+\end{cases}
+\end{align}
+%\end{subequations}
+%------------
+Any phenomenon that may displace an interface, whether by phase change or a phase motion, is 
+mathematically translated by variations of the presence function, i.e. spatial and temporal derivatives of the phase fraction.
+For a system consisting of two phases, solid and liquid, these variations are given for instance for the liquid by:
+%------------
+%\begin{subequations}
+\begin{align}
+\label{eq:}
+& \tempup{\chi^l(x,t)}= \vec{v}^{\liqsol} \cdot \vec{n}^{\liqsol} \delta\brac{x-x^{\liqsol}} = \vec{v}^{\liqsol}_n  \delta\brac{x-x^{\liqsol}} \\
+& \nabvec \chi^l(x,t) = -\vec{n}^{\liqsol} \delta\brac{x-x^{\liqsol}}
+\end{align}
+%\end{subequations}
+%------------
+%--------------------------------------------
+\subsection{Mass balance}
+%------------
+In a real multiphase system containing 3, each phase has its own velocity, $\vphi$, which is independent of the interface velocity.
 %
-%
-%--------------------------------------------------
+%======================
 \section{FE model: Metal}
 %--------------------------------------------------
 %
