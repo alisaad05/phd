@@ -18,6 +18,8 @@
 \newcommand\integral[3]{\ensuremath{\int_{#1} #2\: \mathrm{d}#3}}
 \newcommand{\deriv}[1]{\frac{\partial #1 }{\partial t}}
 \newcommand{\diff}[2]{ \ensuremath{\nabla \cdot \brac{ #1 \nabvec #2}}}
+\newcommand\temp[1]{\ensuremath{\frac{\partial}{\partial t} \brac{#1} }} 
+\newcommand\tempup[1]{\ensuremath{\frac{\partial #1}{\partial t} }} 
 
 %\newcommand{\mtrx}[1]{{\underline{\underline{#1}}} }
 \newcommand{\mtrx}[1]{{\overline{\overline{#1}}} }
@@ -39,18 +41,32 @@
 \newcommand\OhmE{\ensuremath{\Ohm_E}}
 \newcommand\dOhmE{\ensuremath{\partial \OhmE}}
 \newcommand\element{\ensuremath{\Ohm_E}}
-\newcommand\iter{\ensuremath{{\brac{\nu}}}}
-\newcommand\iterminus{\ensuremath{{\brac{\nu-1}}}}
+\newcommand\brent{\ensuremath{{\brac{\tau}}}}
+\newcommand\brentplus{\ensuremath{{\brac{\tau+1}}}}
+\newcommand\brentzero{\ensuremath{{\brac{\tau=0}}}}
+%--------------------------
+\newcommand\itersymbol{\nu}
+%--------------------------
+\newcommand\iter{\ensuremath{{\brac{\itersymbol}}}}
+\newcommand\iterplus{\ensuremath{{\brac{\itersymbol+1}}}}
+\newcommand\iterminus{\ensuremath{{\brac{\itersymbol-1}}}}
 \newcommand\dRdH{\ensuremath{\frac{dR}{dH}}}
 \newcommand\dRdT{\ensuremath{\frac{dR}{dT}}}
 \newcommand\dTdH{\ensuremath{\frac{dT}{dH}}}
-\newcommand\dHdT{\ensuremath{\frac{dH}{dT}}}
+\newcommand\dTdHjt{\ensuremath{\brac{dT/dH}_j^{t}}}
+\newcommand\dTdHjk{\ensuremath{\brac{dT/dH}_j^{\iter}}}
+\newcommand\dTdHjkplus{\ensuremath{\brac{dT/dH}_j^{\iterplus}}}
+\newcommand\dHdT{\ensuremath{\frac{dH}{dT}}} 
+\newcommand\dHdTjk{\ensuremath{\brac{dH/dT}_j^{\iter}}}
+\newcommand\dHdTjkplus{\ensuremath{\brac{dH/dT}_j^{\iterplus}}}
+\newcommand\dHdTjt{\ensuremath{\brac{dH/dT}_j^{t}}}
+\newcommand\dRdTijk{\ensuremath{\brac{\frac{dR}{dT}}_{ij}^{\iter}}}
+\newcommand\dRdHijk{\ensuremath{\brac{\frac{dR}{dH}}_{ij}^{\iter}}}
+\newcommand\Rjk{\ensuremath{R_{j}^{\iter}}}
 
 \newcommand\nabvec{\ensuremath{\vec{\nabla}}}
 \newcommand\nabmat{\ensuremath{\mat{\nabla}}}
 \newcommand\nabmattransp{\ensuremath{\mat{\nabla^\text{t}}}}
-\newcommand\temp[1]{\ensuremath{\frac{\partial}{\partial t} \brac{#1} }} 
-\newcommand\tempup[1]{\ensuremath{\frac{\partial #1}{\partial t} }} 
 \newcommand\vit{\ensuremath{\avg{\vec{v^l}}}}  
 \newcommand\vitf{\ensuremath{\avg{\vf}}}
 \newcommand\vita{\ensuremath{\avg{\va}}}
@@ -77,17 +93,29 @@
 \newcommand\wiphi{\ensuremath{\wi^\phi}}
 \newcommand\rphi{\ensuremath{\rho^{\phi} }}
 \newcommand\hphi{\ensuremath{h^{\phi} }}
-\newcommand\Tk{\ensuremath{T^{\brac{k}}}}
+\newcommand\Tk{\ensuremath{T^\iter}}
+\newcommand\Tkplus{\ensuremath{T^\iterplus}}
 \newcommand\Tkinit{\ensuremath{T^{\brac{k=0}}}}
 \newcommand\Hk{\ensuremath{\rh^{\brac{k}}}}
 \newcommand\Hkinit{\ensuremath{\rh^{\brac{k=0}}}}
 \newcommand\source{\ensuremath{\avg{\dot{Q}_{{V}}}}}
 \newcommand\Hj{\ensuremath{H_j}}
 \newcommand\Hjt{\ensuremath{H_j^t}}
+\newcommand\Hjk{\ensuremath{H_j^\iter}}
+\newcommand\Hjkminus{\ensuremath{H_j^{\iterminus}}}
+\newcommand\Hjkplus{\ensuremath{H_j^{\iterplus}}}
+\newcommand\Hkplus{\ensuremath{H^{\iterplus}}}
 \newcommand\Hjtminus{\ensuremath{H_j^{t-\dt}}}
+\newcommand\Hjtplus{\ensuremath{H_j^{t+\dt}}}
+\newcommand\deltaHk{\ensuremath{\Delta H^\iter}}
+\newcommand\deltaHkplus{\ensuremath{\Delta H^\iterplus}}
 \newcommand\Tj{\ensuremath{T_j}}
 \newcommand\Tjt{\ensuremath{T_j^t}}
+\newcommand\Tjk{\ensuremath{T_j^\iter}}
+\newcommand\Tjkminus{\ensuremath{T_j^{\iterminus}}}
+\newcommand\Tjkplus{\ensuremath{T_j^{\iterplus}}}
 \newcommand\Tjtminus{\ensuremath{T_j^{t-\dt}}} 
+\newcommand\Tjtplus{\ensuremath{T_j^{t+\dt}}} 
 \newcommand\nosum{\text{no sum on }j} 
 
 %TODO :redundant defnitions rhoref and rref
@@ -138,6 +166,7 @@
 \newcommand\rhov{\ensuremath{\avg{\rho \vec{v}}}}
 \newcommand\rholvl{\ensuremath{\rho^l \vl}}
 \newcommand\rhosvs{\ensuremath{\rho^s \vs}}
+\newcommand\cp{\ensuremath{C_p}}
 \newcommand\cpl{\ensuremath{C_p^l}}
 \newcommand\cps{\ensuremath{C_p^s}}
 \newcommand\cpa{\ensuremath{C_p^A}}
@@ -148,7 +177,7 @@
 \newcommand\hl{\ensuremath{h^l}}
 \newcommand\hs{\ensuremath{h^s}}
 \newcommand\gf{\ensuremath{{g^F}}} % double braces useful for additional superscripts
-\newcommand\ga{\ensuremath{{g^A}}} % double braces useful for additional superscripts
+\newcommand\ga{\ensuremath{{g^a}}} % double braces useful for additional superscripts
 \newcommand\gl{\ensuremath{{g^l}}} % double braces useful for additional superscripts
 \newcommand\gs{\ensuremath{{g^s}}} % double braces useful for additional superscripts
 \newcommand\fl{\ensuremath{{f^l}}} % double braces useful for additional superscripts
@@ -166,11 +195,20 @@
 \newcommand\sigmal{\ensuremath{\mat{\sigma^l}}}
 \newcommand\sigmas{\ensuremath{\mat{\sigma^s}}}
 
-\newcommand\vf{\ensuremath{\vec{v^F}}}
-\newcommand\va{\ensuremath{\vec{v^A}}}
-\newcommand\vl{\ensuremath{\vec{v^l}}}
-\newcommand\vs{\ensuremath{\vec{v^s}}}
+%interfaces (extra spaces are on purpose)
+\newcommand\liqsol{\ensuremath{l\textup{-}s}}
+\newcommand\liqair{\ensuremath{l\textup{-}a}}
+\newcommand\solair{\ensuremath{s\textup{-}a}}
+\newcommand\vliqsol{\ensuremath{\vec{v}^{\liqsol}}}
+\newcommand\vliqair{\ensuremath{\vec{v}^{\liqair}}}
+\newcommand\vsolair{\ensuremath{\vec{v}^{\solair}}}
+
+\newcommand\vf{\ensuremath{\vec{v}^F}}
+\newcommand\va{\ensuremath{\vec{v}^a}}
+\newcommand\vl{\ensuremath{\vec{v}^l}}
+\newcommand\vs{\ensuremath{\vec{v}^s}}
 \newcommand\vphi{\ensuremath{\vec{v}^\phi}}
+\newcommand\vphistar{\ensuremath{\vec{v}^{\phi_1/\phi_2}}}
 \newcommand\vstar{\ensuremath{\vec{v}^\text{*}}}
 \newcommand\vlstar{\ensuremath{\vec{v}^{l \text{*}}}}
 \newcommand\vsstar{\ensuremath{\vec{v}^{s \text{*}}}}
@@ -180,6 +218,8 @@
 \newcommand\dt{\ensuremath{\Delta t}}
 \newcommand\hext{\ensuremath{h_{\text{ext}}}}
 \newcommand\Text{\ensuremath{T_{\text{ext}}}}
+\newcommand\Ttop{\ensuremath{T_{\text{Top}}}}
+\newcommand\Tbottom{\ensuremath{T_{\text{Bottom}}}}
 
 \newcommand*\widefbox[1]{\fbox{\hspace{2em}#1\hspace{2em}}}
 
@@ -194,6 +234,7 @@
 \newcommand\dirac{\ensuremath{\delta \brac{\levelset}}}
 \newcommand\levelset{\ensuremath{\alpha}}
 \newcommand\levelsettest{\ensuremath{\alpha^\text{*}}}
+\newcommand\levelsetSUPG{\ensuremath{\alpha_{SUPG}^\text{*}}}
 \newcommand\levelsetx{\ensuremath{\levelset \brac{\vec{x}}}}
 \newcommand{\mix}[1]{\ensuremath{\widehat{#1}}} % \widehat % \overbrace % \widetilde
 
@@ -203,9 +244,9 @@
 \newcommand{\thercast}{\emph{Thercast\registered }}
 \newcommand{\ccemlcc}{\emph{CCEMLCC }} 
 \newcommand{\doitpoms}{\emph{© DoITPoMS, University of Cambridge}} 
-\newcommand\HtoT{\emph{H2T }}
-\newcommand\TtoH{\emph{T2H }}
-
+\newcommand\HtoT{$\text{H2T}$}
+\newcommand\TtoH{$\text{T2H}$}
+\newcommand\carbide{\ensuremath{\text{M}_7 \text{C}_3}}
 
 % Colors
 \newcommand{\red}[1]{{\color{Red} #1}}
