@@ -1,0 +1,6 @@
+<ColorMap name="Traffic Lights For Deuteranopes 2" space="HSV" indexedLookup="true">
+  <Point x="0" o="1" r="0.419608" g="0" b="0.0705882"/>
+  <Point x="0.5" o="1" r="0.901961" g="0.941176" b="0.0196078"/>
+  <Point x="1" o="1" r="0.0156863" g="0.619608" b="0.00784314"/>
+  <NaN r="0.803922" g="0" b="0.803922"/>
+</ColorMap>

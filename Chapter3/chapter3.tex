@@ -48,7 +48,7 @@ formulation, these fields are decomposed according to these scales as follows:
 %----------------
 \begin{align}
 \label{eq:vms_multiscale_v}
- &\vit = \vit_h + \tilde{\vec{v^l}} \\ 
+ &\vit = \vit_h + \tilde{\vl} \\ 
 \label{eq:vms_multiscale_p}
  &p = p_h + \tilde{p}
 \end{align}
@@ -105,7 +105,7 @@ composition and temperature distribution, while the right columns show the phase
 %=====================================BIG LANDSCAPE FIGURE =====================================
 %
 \subsection{Results}
-Solidification starts at 407 seconds when the cylinder’s bottom base temperature 
+Solidification starts at 407 s when the cylinder’s bottom base temperature 
 reaches the liquidus temperature of the alloy. 
 In fact, the solidification onset is the same as in the pure diffusion case in \cref{fig:planche_nomacroseg}, 
 since the average composition remains unchanged for an entirely liquid domain (assuming an initially infinite 
@@ -126,11 +126,11 @@ $\brac{\wi-\wi_0}/\wi_0$, of 7.5\% for carbon and 2.1\% for chromium. The fact t
 composition is observed at the top, is verified in \cref{fig:final_interior_ZZ_FF} which shows the composition map in a 2D 
 vertical slice through the longitudinal axis of the cylinder. We can also see it in \cref{fig:final_segregation_ZZ_FF} where the 
 relative composition profile are plotted at the end of the cooling process along the longitudinal cylinder 
-axis Z-Z’ and along the axis of the freckle, F-F’. The negative segregation up to 1 cm from the chill corresponds 
+axis Z-Z’ and along the axis of the segregated channel, F-F’. The negative segregation up to 1 cm from the chill corresponds 
 to the solute depletion caused by the first solid formation. The subsequent solidification enriches further the 
 liquid; hence the solid composition also increases. The composition evolution trend for both solutes is similar: 
 an overall rise until positive segregation is achieved above \SI{5}{\centi\metre} from the chill. The positive macrosegregation 
-intensifies when the profile is chosen at the center of the freckle, negative segregation then becoming less pronounced.
+intensifies when the profile is chosen at the center of the segregated channel, negative segregation then becoming less pronounced.
 %
 %-----------------
 \begin{figure}[htbp]
@@ -164,16 +164,14 @@ still possible as for the case with no macrosegregation. The formation of a ceme
 cylinder base at \num{8843} s with a temperature of \SI{496.9}{\udegC}. At about \num{9293} s, the isotherm \SI{488.5}{\udegC} reaches the 
 top surface. This temperature value is the local cementite solvus temperature. The difference in the solvus 
 temperature between the bottom and top surfaces is due macrosegregation. Macrosegregation also explains the 
-variation in the cementite content. The solid state transformation ends shortly before \num{10500} s. The final phase 
-distribution is clearly dependent on the final macrosegregation pattern. They retain the shape of the freckles 
-that were caused by thermosolutal convection, hence demonstrating the influence of the solidification process on 
-the final phase distribution. This is better illustrated by drawing the time evolution of phase fractions at the 
+variation in the cementite content. The solid state transformation ends shortly before \num{10500} s. The influence of the solidification process is clear on 
+the final macrosegregation pattern, hence the final phase distribution. This is better illustrated by drawing the time evolution of phase fractions at the 
 center of the bottom and top surfaces of the cylinder in \cref{fig:tp_macroseg_influence}. With no macrosegregation, in 
 \cref{fig:tp_nomacroseg}, the final distribution of the phases is the same at time \num{12000} s, while with macrosegregation, 
 in \cref{fig:tp_withmacroseg}, variations of the cementite and ferrite are revealed. 
-The previously mentioned segregation plumes have transformed to freckles, inside the cylinder and on the boundary. 
+The segregated channels inside the cylinder and on the boundary, are often termed "freckles" when they consist of visible equiaxed grains \citep{copley_origin_1970}.
 This defect is marked by a noticeable gradient of composition and phase fractions, possibly changing the mechanical 
-properties in the channels, hence the overall mechanical behavior of the alloy \citep{copley_origin_1970}. The coupling of the Tsolver with 
+properties in the channels, hence the overall mechanical behaviour of the alloy . The coupling of the Tsolver with 
 thermodynamic tabulations is thus demonstrated. It shows the ability to predict complex solidification paths, even if 
 only at equilibrium. As for the computation time, the Tsolver resolution performed better: 500 seconds of solidification 
 required 6 hours 14 minutes compared to 8 hours 6 minutes spent by the enthalpy resolution with 12 cores on the same machine. 
@@ -207,26 +205,28 @@ and (b) \cref{fig:planche_withmacroseg}.}
 \end{figure}
 %------------------
 %
-\section{Macroscopic freckle prediction}
+\section{Macroscopic prediction of channel segregates}
 \comment{I should maybe mention that a constant gradient in the coming simulation is a one big difference compared to the previous FeCrC simulation}
 %--------------------------
 \subsection{Introduction}
 \label{sec:intro_freckle}
-We have seen in the previous multicomponent solidification test case, another form of segregation, the so-called freckle. 
+We have seen in the previous multicomponent solidification test case, a formation of segregated channels in the cylinder. 
 This defect manifests itself as a composition inhomogeneity that is highly non-isotropic. A typical description of its 
 morphology would consider a channel with a diameter proportional to few primary dendrite arm spacing and a length that 
 could vary from millimeters to centimeters. These “worm”-like shapes could form during directional solidification of cast 
 parts designed for engine applications, particularly in Nickel-base superalloys \citep{giamei_nature_1970,beckermann_development_2000,
-genereux_characterization_2000,schneider_modeling_1997}. They are also related to A-segregates defects in large steel ingots 
+genereux_characterization_2000,schneider_modeling_1997}. In the latter situation, the channels are filled with a chain of small equiaxed 
+crystals, thus referring to the term “freckle”. In large steel ingots, these channel defects are also related to A- and V-segregates   
 \citep{pickering_macrosegregation_2013}. 
 
 Considering a binary alloy with a partition coefficient less than unity and having a negative liquidus slope, 
 freckles may form by the following mechanisms: i) solute partitioning occurs at the scale of dendrite arms and 
 solute is rejected in the melt, ii) local composition gradients are intensified resulting in an increase of the 
-solutal buoyancy force in the mushy zone, iii) solute-rich pools are formed, causing segregation chimneys, iv) 
-which lead to partial remelting of dendrites, continuous solute feeding and locally delayed solidification.
+solutal buoyancy force in the mushy zone, iii) solute-rich pools are formed, causing segregation chimneys and convective plumes in the melt, 
+iv) which lead to partial remelting and transport of dendrites, continuous solute feeding and locally delayed solidification,
+and finally v) accumulation of fragments and/or equiaxed crystals in the chimneys before the end of solidification.
 
-Because it is of prime importance to control the occurrence of freckles, several attempts have been made 
+Because it is of prime importance to control the occurrence of channel segregation, several attempts have been made 
 from the late 1960’s \citep{flemings_macrosegregation:_1967, flemings_macrosegregation:_1968-1,flemings_macrosegregation:_1968} 
 to the early 2000’s \citep{ramirez_evaluation_2003} to understand it and characterize it by deriving freckling criteria. 
 These studies are summarized in \citep{auburtin_determination_1998}. One of the reasons for only considering freckling criteria 
@@ -239,8 +239,10 @@ except when considering small volume casting \citep{desbiolles_micro-macrosegreg
 They are usually limited to unstable thermosolutal convection without or with 
 little regard to the microstructural features. Considering the spatial resolution of the defect, being for example of the 
 order of the primary dendrite arm spacing, a fluid flow computation in the 3D casting part is also very demanding and not 
-common in the literature. Among  other criteria, the dimensionless Rayleigh number has been identified as a good indicator 
-for  the occurrence of freckles. The dependence of freckling tendency on the Rayleigh number has been studied numerically 
+common in the literature. 
+Among  other criteria, the dimensionless Rayleigh number has been identified as a good indicator 
+for  the occurrence of segregation channels or a subsequent freckle defect. The dependence of freckling tendency on the 
+Rayleigh number has been studied numerically 
 and compared to experimental observations, as done by \citep{ramirez_evaluation_2003}.
 %--------------------------
 \subsection{Experimental work} 
@@ -274,7 +276,7 @@ to the experimental hardware, procedure and data analysis can be found in \citep
     \label{fig:experimental_img}
   \end{subfigure}
    %------------
-\caption{Illustration of the benchmark experiments for in-situ observation of freckle 
+\caption{Illustration of the benchmark experiments for in-situ observation of segregated channels
 formation using X-Ray radiography with (a) a schematic of the cell and (b) a typical image 
 of the microstructure formed during directional solidification of an \bin{In}{75}{Ga} alloy. Reproduced from \citep{shevchenko_chimney_2013}.} 
 \label{fig:experimental_freckles}
@@ -394,10 +396,10 @@ Dendrite arm spacing 			& $\lambda$ 				& \num{60e-6} 		& \si{\metre}  			\\
 Density 						& $\rholref$ 				& \num{6725} 		& \si{\udensity}  		\\ 
 Reference composition			&$\wlref$					& \num{75} 			& \si{\ucomposition}  	\\
 Reference temperature 			&$\Tref$					& \num{25.25} 		& \si{\udegC}  			\\
-\hline 
-Initial temperature 	& $T_{\text{init}}$ & \num{1395}	& \si{\udegC}  \\ 
-Ingot diameter 			&   	& \num{25e-3} 	& \si{\metre}  \\ 
-Ingot length 			&   	& \num{75e-3} 	& \si{\metre}  \\ 
+%\hline 
+%Initial temperature 	& $T_{\text{init}}$ & \num{1395}	& \si{\udegC}  \\ 
+%Ingot diameter 			&   	& \num{25e-3} 	& \si{\metre}  \\ 
+%Ingot length 			&   	& \num{75e-3} 	& \si{\metre}  \\ 
 \hline 
 CA cell size			&		& \num{30e-6}		& \si{\metre}  \\ 
 FE mesh size 			&  		& \num{140e-6} 	& \si{\metre}  \\ 
@@ -411,13 +413,13 @@ Time step 				& $\dt$ & \num{0.1} 	& \si{\second}
 The first case labeled FE-G1R1L0 is a reference case that features a low gradient (G1), low cooling rate (R1), 
 and without any lateral cooling (L0), ensuring that isotherms retain a planar shape. These simulation parameters 
 defined in \cref{table:data_case_InGa}, result in a negligible fluid flow reaching a maximum velocity of \SI{4d-8}{\milli\uvelocity} in the bulk. 
-Accordingly, the solidification front remains stable and follows the planar isotherms; no freckles are observed. 
+Accordingly, the solidification front remains stable and follows the planar isotherms; no chimneys are observed. 
 The average composition field is thus only little modified in the mushy zone as shown in \cref{fig:freckles_fe} (mind the values of the scale limits). 
 It is concluded that velocity in the bulk is not high enough to initiate instabilities. In the next case, FE-G1R1L1, 
 a cooling flux with a constant and very low value of the heat transfer coefficient is imposed on both vertical lateral 
 surfaces to initiate a downward fluid flow by thermal buoyancy. Once solidification starts, solute-rich regions start 
 to appear on the sides of the domain. Despite the visible concentration difference between these lateral regions and 
-the central mush seen in \cref{fig:freckles_fe}, their diffuse and uniform aspect indicates no resemblance to freckles. We keep the 
+the central mush seen in \cref{fig:freckles_fe}, their diffuse and uniform aspect indicates no resemblance to segregated channels. We keep the 
 same configuration but increase the vertical gradient from \SI{0.2}{\ugradT} (G1) to \SI{1.5}{\ugradT} (G2) in the case FE-G2R1L1. 
 The isotherms become closer to each over hence reducing the depth of the mushy zone for the same time increment compared 
 to the preceding case. The rejected gallium solute locally accumulates at several different positions in the mushy zone, 
@@ -430,27 +432,27 @@ component slightly greater than \SI{1}{\milli\uvelocity}.
 \begin{figure}[htbp]
 \centering
   %------------
-  \begin{subfigure}{0.5\textwidth}
+  \begin{subfigure}{0.4\textwidth}
     \centering
-	\includegraphics[width=\textwidth]{Chapter3/Graphics/freckle_fe/refA.png}
+	\includegraphics[width=\textwidth]{Chapter3/Graphics/freckle_fe/refA_new_annotate.png}
 	\caption{FE-G1R1L0}
     \label{fig:refA}
   \end{subfigure}
    %------------------------------
   \vskip\baselineskip
   %------------------------------
-  \begin{subfigure}{0.5\textwidth}
+  \begin{subfigure}{0.4\textwidth}
     \centering
-	\includegraphics[width=\textwidth]{Chapter3/Graphics/freckle_fe/refB.png}
+	\includegraphics[width=\textwidth]{Chapter3/Graphics/freckle_fe/refB_new.png}
 	\caption{FE-G1R1L1}
     \label{fig:refB}
   \end{subfigure}
    %-----------
   \vskip\baselineskip
   %------------------------------
-  \begin{subfigure}{0.5\textwidth}
+  \begin{subfigure}{0.4\textwidth}
     \centering
-	\includegraphics[width=\textwidth]{Chapter3/Graphics/freckle_fe/refC.png}
+	\includegraphics[width=\textwidth]{Chapter3/Graphics/freckle_fe/refC_new.png}
 	\caption{FE-G2R1L1}
     \label{fig:refC}
   \end{subfigure}
@@ -462,8 +464,8 @@ process parameters on the freckling tendency. The black line represents the liqu
 %-----------------
 %
 \Cref{fig:planche_fe} gives a series of snapshots for case FE-G2R1L1 at three different times. Among the two clear distinct 
-plumes that are visible at \SI{250}{\utime} in \cref{fig:freckles_fe}, only one has led to the formation 
-of a freckle that remains in \cref{fig:planche_fe} at \SI{500}{\utime}. 
+plumes that are visible at \SI{250}{\utime} in \cref{fig:freckles_fe}, only one has led to a channel formation,
+that remains in \cref{fig:planche_fe} at \SI{500}{\utime}. 
 In fact, an animation between \SI{250}{\utime} and \SI{500}{\utime} (not shown here) reveals that one plume vanishes, 
 thus permitting the first one to further develop. A second freckle is also seen on the left hand side of the cell. 
 These two freckles are stable for a long time since they remain at time \SI{1000}{\utime}. However, the left side freckle 
@@ -498,15 +500,21 @@ where the casting parameters vary one at a time: casting speed (R), thermal grad
 orientation and nominal composition ($\avg{w_0}$), giving a database for 6 different superalloys. The experimental results were 
 compared to a modified Rayleigh number that accounts for the various parameters. It allowed them to define a threshold for freckle 
 formation in Nickel-base superalloys, as well as Pb-Sn alloys.
-Other contributions by \citet{yuan_new_2012} and  \citet{karagadde_3-d_2014} used a medium scale model to compare the simulated 
-formation of freckles with the results obtained by \citet{shevchenko_chimney_2013} (explain at bit more)
-However, all simulations show common traits in their predictions: (some words about the freckle dimensions, 
-shape, intensity). These properties do not exactly meet with the experimental observations, just like in the 
-In-Ga experiment. We think that the hydrodynamics scale at which freckles are born, is much smaller than the 
-FEM scale. Since the relevant physics are not solved, even the finest FE mesh will not be enough to see the exact grain boundaries.
+Other contributions by \citet{yuan_new_2012} (Pb-Sn alloy) and  \citet{karagadde_3-d_2014} (In-Ga alloy) relied on a Cellular Automata Finite Difference
+(CAFD) model developed by \citet{lee_modeling_2002}, which  solves the dendrite tip growth kinetics at 
+the solid-liquid interface together with macroscopic conservation equations. 
+The authors compared the simulated formation of freckles with the results obtained by \citet{shevchenko_chimney_2013}.
+However, these simulations follow solidification in a small volume that contains a few dendrites with interdendritic liquid, 
+therefore limited as far as to predict the liquid behaviour outside the mushy zone.
+On another hand, experimental observations reveal a great deal of information 
+regarding solute redistribution, first in the chimneys that wash the dendrites in their 
+way and then convective plumes that expel chemical species outside the mush, resulting in a global complex phenomenon.
+In order to capture simultaneously the interaction between the mushy zone and the free liquid, we use 
+the Cellular Automata Finite Element (CAFE) method to combine the macroscopic and mesoscopic length scales
+and predict more realistic channel segregation.
 %
 %-----------------------------------------------
-\section{Meso-Macro freckle prediction}
+\section{Meso-Macro prediction of channel segregates}
 %
 \subsection{Numerical method}
 %
@@ -619,7 +627,7 @@ on a cut plane at the center of the cell at 500 s, 1000 s and 1500 s.}
 \end{figureth}
 %-----------------------
 %
-Knowing that the configuration in FE-G2R1L1 produces freckles, the same set of parameters is first used 
+Knowing that the configuration in FE-G2R1L1 produces segregated channels, the same set of parameters is first used 
 for case CAFE-G2R1L1 by adding the effect of the grain structure using the CAFE model. Results are accessible 
 in \cref{fig:planche_cafe} for comparison with \cref{fig:planche_fe}. A striking difference is seen: the composition maps become more 
 perturbed as shown by the formation of numerous plumes when coupling with grain structure is active. The growing 
@@ -633,7 +641,7 @@ by undercooling in \cref{fig:planche_cafe} also forms with a higher initial soli
 at the front. This effect, together with instabilities of the composition field, is caused by a more perturbed fluid flow 
 and more plumes as observed in CAFE-G2R1L1 compared to FE-G2R1L1. Such observations fit to the complicated fluid and solute 
 flow patterns typically occurring in the experiments as shown in \cref{fig:experimental_freckles_gradients}. It becomes obvious that the consideration of grain 
-structure and growth undercooling are vital to accurately simulate freckle formation in these experiments. The reasons for the 
+structure and growth undercooling are vital to accurately simulate segregated channels formation in these experiments. The reasons for the 
 instabilities are discussed hereinafter. In the present 3D CAFE simulation, each grain shown in \cref{fig:planche_composition_grain} 
 is associated with a crystallographic orientation. 
 The growth kinetics is only given for the $\avg{100}$ crystallographic directions at the grain boundaries with the liquid. The CA growth model 
@@ -692,7 +700,7 @@ cooling rate, R1, is the same in both cases. Moreover, because the dendrite tip 
 increasing function with the undercooling \citep{gandin_boundary_2003}, the latter for CAFE-G1R1L1 is larger 
 than for CAFE-G2R1L1. Height differences of the growth front are proportional to the variations of the 
 undercooling by the temperature gradient. Therefore, this forms larger steps on the growth front for case 
-G1 compared to G2. The freckle extends deeper in the mushy zone when the temperature gradient increases. 
+G1 compared to G2. The chimney extends deeper in the mushy zone when the temperature gradient increases. 
 This is confirmed by both the simulation results shown in \cref{fig:cafe_G1G2} as well as the experimental observations. 
 Another remarkable phenomenon is also observed in the low gradient case: a “pulsing” mechanism in CAFE-G1R1L1 
 where a series of solute rich liquid pockets are observed one above the other. This corresponds to a repeated
@@ -804,7 +812,7 @@ front thus adjusts its position to catch up with the corresponding isotherm, the
 V shape, i.e. the outmost advanced position of the growth front. It also means that the V shape angle depends on the size 
 and intensity of the convection loops above the front. When the steps are formed on the growth front, the plumes exiting 
 the mushy zone follow a direction normal to the front. They are inclined towards each other above the V shape. As a result, 
-they may join and form a larger plume as seen in CAFE-G1R1L1 (\cref{fig:cafe_VG1}), thus forming larger and more stable freckles. 
+they may join and form a larger plume as seen in CAFE-G1R1L1 (\cref{fig:cafe_VG1}), thus forming larger and more stable segregated channels. 
 The other observation in \cref{fig:cafe_R1R2} is the existence of stable regions of the growth front. For instance, this is seen 
 in between the two V shape forming or on the right hand side of the cell. 
 %
@@ -854,19 +862,19 @@ following time increments: 450 s, 1000 s and 1500 s.}
 \end{figureth}
 %-----------------------
 %
-\Cref{fig:planche_LG} shows the corresponding composition maps with stable freckles at about 1000 s that also remain at 1500 s. The solidification 
+\Cref{fig:planche_LG} shows the corresponding composition maps with stable chimneys at about 1000 s that also remain at 1500 s. The solidification 
 front then tends to form a concave shape at the center of the cell, thus partially revealing the form of the isotherms toward the cell 
-center. The stable pattern in the center is similar to the plateau seen at the center of the A shapes in \cref{fig:cafe_G1G2} and \cref{fig:cafe_R1R2}. 
-As stated before, it is an inactive region with respect to plume initiation due to the inversion of the solute composition gradient. The composition 
-field indeed shows accumulation of solute on top of the plateau in an established cuvette where no flow comes to destabilize the layering 
-of solute. Outside of the plateau, 2 plumes are observed from the prominent instabilities of the growth front, adopting diverging directions. 
-This is also observed at the center of the cell in \cref{fig:cafe_R1R2} on each side of the A shape segregate. 
-These plumes in \cref{fig:planche_LG} lead to the formation of two stable freckles. 
-Liquid channels then form below the growth front.
-The corresponding situation in the experiment is shown in \cref{fig:exp_G1R1}. The two freckles on both side and the plateau in between are clearly 
-recognizable. The additional cooling at the side walls produces two flow vortices between the side wall and the strong plumes above the 
-freckles. The central part of the sample remains almost unaffected by the additionally driven thermal convection. This area is characterized by 
-the occurrence of a number of smaller plumes.  
+center. The stable pattern in the center is similar to the plateau seen at the center, between the A-shapes in \cref{fig:cafe_G1G2} and \cref{fig:cafe_R1R2}. 
+As stated before, it is an inactive region with respect to plume initiation due to the inversion of the solute composition gradient.
+In other words, the high gallium concentration at the top of cell causes indium, which is the heavier species, to accumulate and be partially 
+trapped between the mushy walls, thus creating a stable flow configuration.
+Outside of the plateau, 2 plumes are observed from the prominent instabilities of the growth front, adopting diverging directions. 
+This is also observed at the center of the cell in \cref{fig:cafe_R1R2} on each side of the A-shape segregate. 
+These plumes in \cref{fig:planche_LG} lead to the formation of two stable channels. 
+The corresponding situation in the experiment is shown in \cref{fig:exp_G1R1}. The chimneys on both sides and the plateau in between can be clearly 
+recognised. The additional cooling at the side walls produces two flow vortices between the side wall and the strong convective plumes above the 
+chimneys. The central part of the sample remains almost unaffected by the additionally driven thermal convection. This area is characterized by 
+the occurrence of a number of smaller convective plumes.  
 %
 %-----------------------
 \begin{figureth}
