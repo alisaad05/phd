@@ -17,27 +17,37 @@ the conditions that impose minimum and maximum bounds on both time step and mesh
 %
 %%-----------------
 %
-\section{Numerical treatment}
-As for any computational domain, we have a wide array of numerical methods that help solving systems of equations 
-like \cref{eq:Navier-Stokes2}. When speaking about Navier-Stokes equations the choice can be narrowed to two basic
-approaches with some similarities: Stabilised finite element method and \textbf{V}ariational \textbf{M}utli\textbf{S}cale (VMS).
-These approaches are different from a classical finite element approach by introducing additional degrees freedom then 
-eliminating them in a way to satisfy a crucial set of conditions which guarantee the famous \emph{Inf-Sup} condition stemming
-from the Lax-Milgram theorem.
+\section{Formulation stability}
+A wide array of numerical methods can be used to solve systems like \cref{eq:Navier-Stokes2}. 
+When speaking about Navier-Stokes equations, the choice can be narrowed to two famous
+approaches with some similarities: stable mixed finite element method and \textbf{V}ariational \textbf{M}utli\textbf{S}cale (VMS) method.
+When two finite element spaces are introduced (e.g. one for velocity and another for pressure), 
+the essential \emph{inf-sup} condition (also known as stability condition) determined by \citet{babuska_error-bounds_1971} and \citet{brezzi_existence_1974} 
+should be fulfilled. It states that the formulation is not well-posed if the both spaces have the same interpolation 
+order. For instance, a P1/P1 element (i.e. P1 for velocity / P1 for pressure) cannot guarantee the stability of the Navier-Stokes solution since
+velocity and pressure are both linearly interpolated at the simplex vertices.
+However, the major difference between the previously mentioned formulations is the way by which the inf-sup condition is accounted for.
+Stable mixed finite elements are indeed stable because they directly respond to the stability condition by enriching the velocity space, 
+hence they fall under the category of Satisfying Babuška-Brezzi (SBB) methods. In contrast, methods like VMS belong to the
+Circumventing Babuška-Brezzi (CBB) category \citep{barbosa_finite_1991}.
+CBB methods rely on equal-order interpolations with additional stabilisation that circumvents the need to satisfy the stability condition.
+Further details about both formulation types are given in the next subsections.
 %
 \subsection{Stable mixed finite elements}
-First introduced by \citet{arnold_stable_1984}, the MINI element is the key ingredient in this approach.
-For equal order velocity and pressure P1-approximation, the Inf-Sup condition is not satisfied unless the velocity
-has an additional degree of freedom, the bubble, which vanishes on the element's boundary. We may thus speak of a
-P1+/P1 element in velocity-pressure formulation. The P1+/P1 approach has been the de facto standard for solving fluid 
-and solid mechanics for some years in CEMEF.
+First introduced by \citet{arnold_stable_1984}, the MINI element is the key ingredient of this approach.
+This type of element introduces an additional degree of freedom for the velocity field while keeping a linear
+interpolation for the pressure field, thus satisfying the Babuška-Brezzi condition with a richer velocity space.
+The additional degree, known as the \emph{bubble} function, vanishes on the element's boundary.
+We may therefore speak of a P1+/P1 finite element in a velocity-pressure formulation. 
+This stable formulation has been the de facto standard for solving fluid 
+and solid mechanics for many years at CEMEF.
 %
 %-----------------------
 \begin{figureth}
 {0.75}
 {Chapter3/Graphics/minielement/minielement.pdf}
 {Schematic of 2D and 3D stable P1+/P1 finite elements, respectively triangle and tetrahedron, with velocity and pressure fields interpolation order.
-The dots represent the nodal values while the square represents the bubble.}
+The dots represent the nodes while the squares represent the bubbles.}
 \label{fig:minielement}
 \end{figureth}
 %--------------------------------------------------------
@@ -68,11 +78,12 @@ by \citet{hachem_stabilized_2010} is a convenience choice to solve Navier-Stokes
 have convection stablisation terms, such as the well known Streamline Upwind Petrov-Galerkin (SUPG) and Shock Capturing Petrov-Galerkin (SCPG)
 stabilisation techniques for convection-dominated problems.
 %\subsection{Variational form}
-
-
-\section{Computational stability}
+\subsection{Variational formulation}
+%
 \subsection{CFL condition}
+%
 \subsection{Integration order}
+%
 Using P1 linear elements implies a P2 integration ? what are the advantages (time) and limitations ?
 
 %-------------------------------------------------------------
