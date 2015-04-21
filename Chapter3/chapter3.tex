@@ -26,8 +26,8 @@ the essential \emph{inf-sup} condition (also known as stability condition) deter
 should be fulfilled. It states that the formulation is not well-posed if the both spaces have the same interpolation 
 order. For instance, a P1/P1 element (i.e. P1 for velocity / P1 for pressure) cannot guarantee the stability of the Navier-Stokes solution since
 velocity and pressure are both linearly interpolated at the simplex vertices.
-However, the major difference between the previously mentioned formulations is the way by which the inf-sup condition is accounted for.
-Stable mixed finite elements are indeed stable because they directly respond to the stability condition by enriching the velocity space, 
+However, the major difference between the previously mentioned formulations is the way in which the inf-sup condition is accounted for.
+Stable mixed finite elements are stable because they directly respond to the stability condition by enriching the velocity space, 
 hence they fall under the category of Satisfying Babuška-Brezzi (SBB) methods. In contrast, methods like VMS belong to the
 Circumventing Babuška-Brezzi (CBB) category \citep{barbosa_finite_1991}.
 CBB methods rely on equal-order interpolations with additional stabilisation that circumvents the need to satisfy the stability condition.
