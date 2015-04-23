@@ -310,34 +310,29 @@ decreasing over time with the same cooling rate R. Both square faces of the geom
 are adiabatic. In spite of taking cell dimensions similar to benchmark experiments presented above, the cell thickness 
 is increased from \SI{150}{\micro \metre} to \SI{1}{\milli \metre}. This facilitates the computation and will later be subject to discussion. 
 %
-%----------------
-\begin{tabulate}
+%--------------------------------
+\begin{table}[htbp]
+\centering
+\caption{Summary of the simulations and and the corresponding parameters for the FE cases, where a purely macroscopic model is used.
+Parameters are varied from (G1) low to (G2) high gradient and (L0) no, to (L1) low lateral cooling.}
+\label{table:simulation_InGa_fe}
+\resizebox{\columnwidth}{!}{%
+{\tabulinesep=1.1mm \begin{tabu}{C{2cm} C{3cm} C{2.5cm} C{3cm} C{4.5cm}}
+\tabucline[1pt]{-}
+\textbf{Case} & Vertical gradient & Cooling rate & Lateral cooling & Initial temperature \\
+			  &     G 			  & 	R		 & 			L \quad ($\hext$, $\Text$)	& ($T_{top}$, $T_{bottom}$) \\
+ 			  & [\si{\ugradT}] & [\si{\uCR}] &  [\si{\uhconvec}, \si{\udegC}] &  [\si{\udegC}]\\\tabucline[1pt]{-}
+%-----------------------------
+FE-G1R1L0 & G1:0.2 & R1:-0.01 & L0:(0,0) & (29.75, 25.25)  \\ 
+FE-G1R1L1  & G1:0.2 & R1:-0.01 & L1:(20,0) & (29.75, 25.25)  \\ 
+FE-G2R1L1  & G2:1.5 & R1:-0.01 & L1:(20,0) & (58.25, 25.25)  \\\tabucline[1pt]{-}
+%-----------------------------
+\end{tabu}}
+}
+\end{table}
+%--------------------------------
 %
-% caption 
-{Summary of the simulations and and the corresponding parameters for the FE cases, 
-for a purely macroscopic model.
-Parameters are varied from (G1) low to (G2) high gradient, (R1) low to (R2) high cooling 
-rate and (L0) no, (L1) low and (L2) high lateral cooling.}
-% label
-{table:simulation_InGa_fe}
-% line separation (e.g. 1.5mm)
-{0.6mm}
-% column justification-number (e.g. |c|ll|)
-{cccccc}
-% header titles (should use the & sign to switch columns)
-{\textbf{Case} 
-& aaa 
-& sss 
-& aaa 
-& ffff & ffddfd}
-% cells content (should use the & and // to switch columns and rows)
-{
-lll & ccc & sss & aaa & ffff & ffddfd \\ 
-lll & ccc & sss & aaa & ffff & ffddfd}
-%
-\end{tabulate}
-%-----------------
-%
+
 Materials properties are provided in \cref{table:data_case_InGa} while initial and boundary conditions are given in \cref{table:simulation_InGa_fe}. 
 A series of computations is performed to understand the influence of process parameters on the final macrosegregation pattern. 
 In directional growth, the main parameters are the vertical temperature gradient, G, and the cooling rate, R, since they control the isotherms 
@@ -585,35 +580,30 @@ grain envelopes together with the solutal, thermal and mechanical interactions.
 %
 \subsection{Configuration}
 %----------------
-\begin{tabulate}
 %
-% caption 
-{Summary of the simulations and and the corresponding parameters for the CAFE cases, 
-coupling macroscopic model with the grain structure model.
+%--------------------------------
+\begin{table}
+\centering
+\caption{Summary of the simulations and and the corresponding parameters for the CAFE cases, coupling macroscopic model with the grain structure model.
 Parameters are varied from (G1) low to (G2) high gradient, (R1) low to (R2) high cooling 
 rate and (L0) no, (L1) low and (L2) high lateral cooling.}
-% label
-{table:simulation_InGa_cafe}
-% line separation (e.g. 1.5mm)
-{0.6mm}
-% column justification-number (e.g. |c|ll|)
-{cccccc}
-% header titles (should use the & sign to switch columns)
-%{\textbf{Case} & \textbf{Vertical gradient (G) \\ [\si{\ugradT}]} & \textbf{Cooling rate (R) \\ [\si{\uCR}]} & \textbf{Lateral cooling (L) \\ [\si{\uhconv}]}& \textbf{Nucleation \\ $(n_\text{max},\DeltaT_N,\DeltaT_\sigma)$ \\ [\si{\per\metre\square},\si{\udegK},\si{\udegK}]} & \textbf{Initial temperature} \\ (Top,Bottom) \\ [\si{\udegC}]
-%}
-{\textbf{Case} 
-& \parbox{4cm}{\textbf{Vertical gradient}\\(G) \\ $K$} 
-& sss 
-& aaa 
-& ffff & ffddfd}
-% cells content (should use the & and // to switch columns and rows)
-{
-lll & ccc & sss & aaa & ffff & ffddfd \\ 
-lll & ccc & sss & aaa & ffff & ffddfd}
-%
-\end{tabulate}
-%-----------------
-%
+\label{table:simulation_InGa_cafe}
+\resizebox{\columnwidth}{!}{%
+{\tabulinesep=1.1mm \begin{tabu}{C{3cm} C{3cm} C{3cm} C{3.0cm} C{3.5cm} C{3.2cm}}
+\tabucline[1pt]{-}
+\textbf{Case}  & Vertical gradient & Cooling rate & Lateral cooling & Initial temperature  & Nucleation  \\
+			  &     G 			  & 	R		 & 			L \quad ($\hext$, $\Text$)	& ($T_{top}$, $T_{bottom}$) & ($n_\text{max}$, $\Delta T_N$, $\Delta T_\sigma$) \\
+ 			  & [\si{\ugradT}] & [\si{\uCR}] & [\si{\uhconvec}, \si{\udegC}] & [\si{\udegC}] & [\si{\per \uarea}, \si{\udegC}, \si{\udegC}] \\\tabucline[1pt]{-}
+%-----------------------------
+CAFE-G2R1L1  & G2:1.5 & R1:-0.01 & L1:(20,0) & (58.25, 25.25)  & (\num{e6}, 1, \num{0.2}) \\ 
+CAFE-G1R1L1  & G1:0.2 & R1:-0.01 & L1:(20,0) & (29.75, 25.25)  & (\num{e6}, 1, \num{0.2}) \\ 
+CAFE-G1R1L2  & G1:0.2 & R1:-0.01 & L2:(500,0) & (29.75, 25.25) & (\num{e6}, 1, \num{0.2}) \\ 
+CAFE-G2R2L1  & G1:0.2 & R2:-0.05 & L1:(20,0) & (29.75, 25.25)  & (\num{e6}, 1, \num{0.2}) \\\tabucline[1pt]{-}
+%-----------------------------
+\end{tabu}}
+}
+\end{table}
+%--------------------------------
 %
 %=====================================BIG LANDSCAPE FIGURE =====================================
 \begin{landscape}
