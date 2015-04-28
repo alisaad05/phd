@@ -71,8 +71,8 @@ where $\rho$ stands for the density, $h$ the mass enthalpy, $\vec{v}$ the veloci
 and $\dot{Q}_V$ a possible volume heat source. 
 \Cref{eq:averaged_energy_eqn} is the standard averaged form of the energy conservation equation used in non-stationary phase 
 change problems. 
-\comment{ I could elaborate more in this paragraph by showing the possible equations for the explicit formulation and maybe a figure to show the AlSi7
-computation that i did with a v small time step }
+%\comment{ I could elaborate more in this paragraph by showing the possible equations for the explicit formulation and maybe a figure to show the AlSi7
+%computation that i did with a v small time step }
  
 Once the variational form has been discretised in space and time, two possible resolution schemes emerge: the first is an 
 explicit forward Euler scheme which gives rise to a linear equation where the temperature is known at time $t$, $T^t$. This requires very small 
@@ -769,7 +769,7 @@ A comparison of both solver formulations is done in the hereafter test cases sec
 {
 	\begin{tabu}{@{}p{\llargeur}p{\rlargeur}@{}}
 	\textbf{Microsegregation} \\
-	Tabulation (\emph{H2T})	&	$ \rhoh^\iterplus \rightarrow \Tkplus$ \quad \cref{fig:algorithm_h2t} \\
+	Tabulation (\emph{H2T})	&	$ \rhoh^\iterplus \rightarrow \Tkplus$ \quad (\cref{fig:algorithm_h2t}) \\
 	Update				& 	$\dTdHjkplus=f(\Tjkplus,\rhoh^\iterplus)$ (\cref{eq:finite_difference_Hsolver})\\
 	\end{tabu}
 };
