@@ -351,7 +351,7 @@ From an economic point view, these operations are very expensive.
   \end{subfigure}
    %------------
    %\hspace{1cm}
-   \begin{subfigure}[t]{0.3\textwidth}
+   \begin{subfigure}[t]{0.35\textwidth}
     \centering
 	\includegraphics[height=3.5cm]{Chapter0/Graphics/porosity5.jpg}
 	\caption{}
@@ -366,7 +366,7 @@ From an economic point view, these operations are very expensive.
     \label{fig:freckle}
   \end{subfigure}
 \caption{Three instances of solidification-related defects found in cast products: 
-(a) internal cracking (b) surface cavities \citep{carlson_modeling_2002}  
+(a) internal cracking [Arcelormittal] (b) surface cavities \citep{carlson_modeling_2002}  
 and (c) freckle in the form of a chain of equiaxed crystals \citep{giamei_nature_1970}. }
 \label{fig:casting}
 \end{figure}
@@ -631,23 +631,38 @@ i) the energy conservation in a temperature formulation based on a thermodynamic
 ii) the liquid momentum conservation with thermosolutal convection and solidification shrinkage as driving forces, 
 iii) solute mass conservation with solidification shrinkage (to predict inverse segregation) and 
 iv) solidification paths at full equilibrium for multicomponent alloys. 
-Moreover, all equations are formulated in a pure Eulerian description while using the Level Set method to keep 
-implicitly track of the interface between the alloy and the surrounding gas. To the author's knowledge, this work 
+Moreover, all equations are formulated in a pure Eulerian description while using the level set method to keep 
+implicitly track of the interface between the alloy and the surrounding gas. 
+
+To the author's knowledge, this work 
 combining macrosegregation prediction using the level set methodology to track the metal-air interface during 
 shrinkage has no precedent in casting and solidification literature. The model couples in a weak fashion, all four
 conservation equations presented in \cref{fig:mindmap}, showing on the one hand, that microsegregation is an essential 
 common link between these equations, while on the other hand, the level set interacts with conservations equations by
 giving the interface position. 
+%
+\subsubsection{Numerical tools}
+The current thesis developments are done using C++ language as a part of the
+in-house code, known as \cimlib \citep{mesri_advanced_2009}. It's a finite element library with an object-oriented hierarchy
+consisting of global finite element solvers for physical differential equations, also point-wise and element-wise solvers for 
+preprocessing and postprocessing the finite element solution. It is also highly parallelised with MPICH2, which makes it possible
+to handle large meshes with heavy operations like mesh partitioning and adaptation. Side utilities for plotting and analysis
+are also developed, using python language.
 
-%Aside from the main modelling task regarding macrosegregation, several goals 
-\comment{Numerical tools: Cimlib relying on PETSc, parallelised with MPICH2, paraview and python as tools for postprocess and analysis. \\
-The previously mentionned simulation requirements are not met in a single casting software package. 
-Nevertheless, \thercast is a promising tool that already 
-handles a part of the above points. The current thesis developments are done using C++ language as a part of the
-in-house code, known as \cimlib \citep{digonnet_cimlib:_2007, mesri_advanced_2009}. 
-This fully parallel library is the main academic research support for \thercast}
-
-\comment{Outline: each chapter content ...}
+\subsubsection{Content outline}
+This manuscript consists of 5 chapters. In \textbf{chapter 2}, a short review introduces the state-of-art in the literature of 
+macroscopic modelling of solidification with transport of energy, species, mass and momentum. \textbf{Chapter 3} provides details
+of the energy conservation equation then introduces a new temperature-based solver compatible with thermodynamic databases
+% to predict, at equilibrium, variable solidification paths during macrosegregation.
+\textbf{Chapter 4} focuses on the mass and momentum conservation equations 
+and their derivation in the context of a single metallic domain (i.e. without 
+the level set method) where the solid is assumed a fixed and rigid body. As an 
+application, this chapter shows a breakthrough comparison between purely macroscopic 
+and mesoscopic-macroscopic approaches in predicting the hydrodynamic instabilities 
+that lead to channel segregation.
+The derived energy, mass and momentum equations for the monodomain model are revisited 
+in \textbf{chapter 5} in the context of the level set method to predict solidification shrinkage.
+The influence of shrinkage on macrosegregation is then studied in two applications.
 
 \begin{figureth}
 % textwidth 
@@ -655,7 +670,7 @@ This fully parallel library is the main academic research support for \thercast}
 %path 
 {Chapter0/Graphics/mindmap.pdf}
 % caption
-{A graphical representation of the main ingredients of the numerical approach, 
+{A graphical representation of the main elements of the numerical approach, 
 for a macrosegregation model with the level set methodology, when no solid deformation or movement are considered. 
 The dashed lines represent the possible interaction between the components.}
 % label
