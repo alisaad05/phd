@@ -10,7 +10,7 @@ element atoms (also known as solute) with other atoms, often lead to \emph{segre
 word from Latin, \emph{segregatus}, has a social meaning of "separating a group from the dominant majority", while 
 in metallurgy it means a non uniform distribution of chemical species. Depending on the scale, we may speak of \emph{microsegregation}
 when the heterogeneity spans some few hundred microns, whereas the term \emph{macrosegregation} refers to a much coarser length scale, ranging
-from some millimetres to some meters ! The final solid structure is has intrinsic thermophysical and thermomechanical properties directly influenced by the segregation pattern. 
+from some millimetres to some meters! The final solid structure is has intrinsic thermophysical and thermomechanical properties directly influenced by the segregation pattern. 
 In casting processes, such as continuous casting (\cref{fig:casting}) and ingot casting, it is crucial to apprehend 
 these intricate phenomena leading to macrosegregation as well as the influence on the final product, at each step of the process. 
 
@@ -347,7 +347,7 @@ From an economic point view, these operations are very expensive.
     \centering
 	\includegraphics[height=3.5cm]{Chapter0/Graphics/cracks.png}
 	\caption{}
-    \label{fig:hot tearing}
+    \label{fig:crack}
   \end{subfigure}
    %------------
    %\hspace{1cm}
@@ -366,8 +366,8 @@ From an economic point view, these operations are very expensive.
     \label{fig:freckle}
   \end{subfigure}
 \caption{Three instances of solidification-related defects found in cast products: 
-(a) internal cracking [Arcelormittal] (b) surface cavities \citep{carlson_modeling_2002}  
-and (c) freckle in the form of a chain of equiaxed crystals \citep{giamei_nature_1970}. }
+(a) internal crack in continuous casting [Arcelormittal] (b) surface cavities in ingot casting \citep{carlson_modeling_2002}  
+and (c) freckle in the form of a chain of equiaxed crystals in Ni-base superalloy investment casting \citep{giamei_nature_1970}.}
 \label{fig:casting}
 \end{figure}
 %
@@ -375,13 +375,15 @@ and (c) freckle in the form of a chain of equiaxed crystals \citep{giamei_nature
 %
 \subsection*{Hot tearing} 
 %
-This defect, also denoted solidification cracking or hot cracking, occurs in the mushy zone 
-at high solid fractions when a failure or crack appears at specific locations, the hot spots. 
+Hot tearing, also denoted solidification cracking or hot cracking, occurs in the mushy zone 
+at high solid fractions when a failure or crack appears at vulnerable locations known as the \emph{hot spots}. 
+They refer to liquid regions enclosed in the solid, where feeding stops, 
+thus creating preferential sites for crack initiation and propagation, as in \cref{fig:crack}. 
 The temperature range in which the steel is vulnerable to hot tearing is known as the brittleness 
-temperature range (BTR). It corresponds to solid fractions greater than \num{90}\%, where the liquid 
-phase starts to form a discontinuous film. Many factors can initiate the failure, but the main origin is a 
-lack of liquid feeding required to compensate for the solidification shrinkage, in the presence of 
-thermal stresses in the mushy region. Therefore, a crack initiates and then propagates in the casting. 
+temperature range (BTR). It corresponds to solid fractions greater than \num{90}\%.
+Many factors can initiate the failure, but the main origin is a 
+lack of liquid feeding required to compensate for the solidification shrinkage, while the mushy region
+is exposed to tensile stresses arising from thermal gradients or due to an applied mechanical force.
 %\begin{figureth}
 % hottearing1: JM drezet, GDR 2013 Lausanne, contraintes residuelles.
 % textwidth 
@@ -401,7 +403,7 @@ thermal stresses in the mushy region. Therefore, a crack initiates and then prop
 Porosity is a void defect formed inside the casting or at the outer surface. It may be attributed to two different factors.
 Firstly, we speak of \emph{shrinkage porosity}, when a void forms as a result of density 
 differences between the liquid and its surrounding dendritic solid network, the latter being generally denser 
-than the former.
+than the former. After solidification is complete, the casting surface may look like \cref{fig:porosity}.
 The second factor is the presence of dissolved gaseous phases in the melt. 
 According to \citet{dantzig_solidification_2009}, these gases may be initially in the melt, or created by the 
 reaction between the metal and water found in the air or trapped in grooves at the moulds surface. Providing sufficient cooling
@@ -456,13 +458,13 @@ The nucleation of a gaseous phase is then triggered.
 %
 \subsection*{Freckles or segregated channels} 
 %
-The origin of this defect is a combined effet of microsegregation and buoyancy forces. 
+The origin of this defect, shown in \cref{fig:freckle}, is a combined effet of microsegregation and buoyancy forces. 
 Upon solidification, solid forms while exchanging solutes with the liquid due to partitioning.
 %(steels have a partition coefficient less than unity).
 For a solute species that preferentially segregates into the liquid (partition coefficient less than unity)
 and locally reduce the liquid density, a solutal driving force is created inside the mushy zone, generating convection currents, 
 with "plume" shapes as often reported in the literature \citep{sarazin_studies_1992, schneider_modeling_1997,
-shevchenko_chimney_2013}. Temperature gradient is often an additional force of convection as the liquid densoty depends also temperature-dependent, 
+shevchenko_chimney_2013}. Temperature gradient is often an additional force of convection as the liquid density depends also temperature-dependent, 
 the resulting driving force is then qualified as "thermosolutal".
 %-------------------------------------------------------------------------------------------------------------------------------------------------
 %
@@ -545,10 +547,15 @@ in research, with the aim of understanding better the phenomena leading to casti
 \label{fig:steel_production}
 \end{figure}
 
-\textbf{Simulation software} dedicated to alloy casting is one of the main research investments undertaken by steelmakers. These tools coming from academic research
-are actively used to optimize the process. However, few are the tools that take into account the casting environment. For instance, the continuous casting process, in
-\cref{fig:casting}, is a chain process where the last steps involve rolls, water sprays and other components. A dedicated software is one that can provide the
-geometric requirements with suitable meshing capabilities, as well as respond to metallurgical and mechanical requirements, mainly by handling:
+Simulation software dedicated to alloy casting is one of the main research investments undertaken by steelmakers. 
+These tools coming from academic research
+are actively used to optimize the process. 
+However, few are the tools that take into account the casting environment. 
+For instance, the continuous casting process, in
+\cref{fig:casting}, is a chain process where the last steps involve rolls, water sprays and other components. 
+A dedicated software is one that can provide the geometric requirements with suitable meshing capabilities, 
+as well as respond to metallurgical and mechanical requirements, mainly by handling:
+%
 \begin{itemize}
 \itemsep0em
 \item moulds and their interaction with the alloy (thermal resistances ...)
@@ -662,7 +669,7 @@ and mesoscopic-macroscopic approaches in predicting the hydrodynamic instabiliti
 that lead to channel segregation.
 The derived energy, mass and momentum equations for the monodomain model are revisited 
 in \textbf{chapter 5} in the context of the level set method to predict solidification shrinkage.
-The influence of shrinkage on macrosegregation is then studied in two applications.
+The influence of shrinkage on macrosegregation is then studied in two different applications.
 
 \begin{figureth}
 % textwidth 
