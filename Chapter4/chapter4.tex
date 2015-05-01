@@ -85,6 +85,20 @@ as temperature decrease in steel casting usually exceeds a \SI{1000}{\udegC}, ca
 %
 %---------------------
 %
+%----------------------
+\begin{figureth}
+% textwidth 
+{0.5}
+%path 
+{Chapter4/Graphics/shrinkage_exp.png}
+% caption
+{Sulphur prints of three ingots showing pipe formation at the top as a result 
+of solidification shrinkage with various ingot inclination during casting \citep{onodera_effect_1959}.}
+% label
+\label{fig:shrinkage}
+\end{figureth}
+%-----------------------------------
+%
 %
 %============================================
 \section{Choice of interface tracking}
@@ -107,9 +121,11 @@ and accurate position compared to volume-based methods like VOF.
 %============================================
 \section{Multidomain formalism}
 %============================================
-In the previous chapters, we considered in our simulations the metal as a saturated mixture of solid and liquid during solidification.
+In the previous chapters, we considered in our simulations the metal as a 
+saturated mixture of solid and liquid during solidification.
 It means that no gas phase may appear during the process, and this  this chapter.
-The reason is we chose to describe our model in Eulerian description, for which we have considered a fixed grid to discretise the averaged conservation 
+The reason is we chose to describe our model in Eulerian description, 
+for which we have considered a fixed grid to discretise the averaged conservation 
 equations governing the phase change between the liquid and solid phases.
 Furthermore, with the introduction of shrinkage, an increase in global density means 
 that a gas phase should enter the domain to replace the shrunk volume.
@@ -120,21 +136,43 @@ are used for domains, while lowercase letters are used for phases.
 
 The main idea behind the multidomain formalism, is to go from the classic 
 conservations equations introduced by  volume averaging in chapter 2,
-in the context of a solidifying two-phase system to generalise it and 
-take into account a third gas phase that belongs to a new domain, 
+in the context of a solidifying two-phase system to generalise it by taking
+into account a third gas phase, such as:
+%-------------
+\begin{align}
+\label{eq:}
+V^l + V^s + V^a = \rev \\
+\gl + \gs + \ga = 1
+\end{align} 
+%-------------
 while keeping a physical integrity with the former monodomain model. 
 Then, one is free to choose a suitable numerical method to track the 
 interfaces between the several phases. In our applications, we are particularly 
-interested in keeping an indirect representation of the $l$-$s$ interface 
+interested in keeping an indirect representation of the $l$-$s$ interface (dotted line in \cref{fig:rev_triphase})
 using the volume averaging theory, while employing a different
-method to track the $l$-$a$ and $s$-$a$ interfaces with the level set method. 
-This allows switching to the latter method in a justified and physically representative manner.
+method to track the $l$-$a$ and $s$-$a$ interfaces (dashed lines in \cref{fig:rev_triphase}) with the level set method. 
+This allows switching to the latter method in a physically representative manner.
 
 In this context, each domain can be seen as a material having a physical
 interface with the other domains. As a consequence of our interpretation, 
 the gas phase should not exist in the metal, which may naturally
 occur if the thermodynamic conditions are in favour of nucleating and growing 
 a new phase, or in the case of a gas that was trapped inside mould grooves.
+%----------------------
+\begin{figureth}
+% textwidth 
+{0.5}
+%path 
+{Chapter4/Graphics/REV_triphase.pdf}
+% caption
+{Schematic of a representative volume element containing 3 phases with distinct velocities, separated by 3 interfaces.
+The dotted line is the indirectly tracked solid-liquid interface while the other dashed lines, air-liquid and air-solid
+interfaces, are directly tracked.}
+% label
+\label{fig:rev_triphase}
+\end{figureth}
+%-----------------------------------
+%
 %
 %------------
 \subsection{Assumptions}
@@ -181,45 +219,36 @@ defines the volume of this phase in the system, $\Ohm^\phi$, as follows:
 %------------
 Any phenomenon that may displace an interface, whether by phase change or a phase motion, is 
 mathematically translated by variations of the presence function, i.e. spatial and temporal derivatives of the phase fraction.
-For a system consisting of two phases, solid and liquid, these variations are given for instance for the liquid by:
+If we consider the liquid phase, these variations are given by:
 %------------
 %\begin{subequations}
 \begin{align}
 \label{eq:}
-& \tempup{\chi^l(x,t)}= \vec{v}^{\liqsol} \cdot \vec{n}^{\liqsol} \delta\brac{x-x^{\liqsol}} = \vec{v}^{\liqsol}_n  \delta\brac{x-x^{\liqsol}} \\
-& \nabvec \chi^l(x,t) = -\vec{n}^{\liqsol} \delta\brac{x-x^{\liqsol}}
+& \tempup{\avg{\psi^l}} = \avg{{\tempup{\psi^l}}} + \frac{1}{\rev} \integral{l-a}{\psi^l \vliqair_n}{\Gamma}
++ \frac{1}{\rev} \integral{l-s}{\psi^l \vliqsol_n}{\Gamma} \\
+& \nabvec{\avg{\psi^l}} = \avg{\nabvec \psi^l} -\vec{n}^{\liqsol} \delta\brac{x-x^{\liqsol}}
 \end{align}
 %\end{subequations}
 %------------
-%--------------------------------------------
-\subsection{Mass balance}
-%------------
-In a real multiphase system containing 3, each phase has its own velocity, $\vphi$, which is independent of the interface velocity.
+%
+\comment{link with LS transport equation by looking into \citep{rappaz_numerical_2003} p. 113
+where the heaviside is the same as the indicator function.}
 %
 %======================
-\section{FE model: Metal}
+\section{Metal FE model}
 %--------------------------------------------------
 %
 In this section, we start from a the monodomain finite element model presented in \cref{sec:monodomain} relevant to metal only, 
 then present the essential assumptions and formulations that allow predicting solidification shrinkage in a Eulerian context.
-
+%
 \subsection{Mass and momentum conservation}
-% ======================
-\subsubsection{Assumptions}
-% ======================
-\begin{itemize}
-\itemsep0em
-\item Two phases are considered, liquid $l$ and solid $s: \gl+\gs =1 $ % \implies \frac{dg^l}{dt} =- \frac{dg^s}{dt}$ 
-\item The phase densities are constant but not equal: $ \rhol=cst_1 $ and $ \rhos=cst_2 $. Thermal and solutal expansion/contraction
-is neglected
-\item The solid phase is assumed static: $\vec{v^s}=\vec{0}$, which yields the following consequences:
-\begin{enumerate} % \cancelto{0}{blablabla}
-\itemsep0em
-\item $ \avg{\vec{v}}= \gl \vec{v^l} + \cancel{\gs \vec{v}^s} = \gl \vec{v}^l $
-\item $ \avg{\rho \vec{v}} = \gl \rhol \vec{v}^l + \cancel{\gs \rhol \vec{v}^s} = \gl \rhol \vec{v}^l $
-\item $\nabvec \rhol = \nabvec \rhos = \vec{0}$
-\end{enumerate}
-\end{itemize}
+The metal domain consists of two phases, solid and liquid, which have unequal densities that vary with temperature.
+However, as we consider in the current project that the solid is static, then $\vec{v^s}=\vec{0}$, hence only the liquid's
+density may vary while the solid has a constant density. With these assumptions, one may write:
+%
+\begin{align}
+& \tempup{\avg{\rho}}^M + \nabla \cdot \avg{\rho \vec{v}}^M  = 0 \\ 
+\end{align}
 % ======================
 \subsubsection{Formulation}
 % ======================
