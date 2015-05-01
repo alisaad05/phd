@@ -85,6 +85,25 @@ as temperature decrease in steel casting usually exceeds a \SI{1000}{\udegC}, ca
 %
 %---------------------
 %
+%
+%============================================
+\section{Choice of interface tracking}
+%============================================
+In chapter 2, several methods of interface tracking/capturing methods were presented 
+along with their similarities and differences. In the case of solidification shrinkage,
+the metal-air interface can be tracked with any method from the previously mentioned.
+However, several reasons motivate us to settle on the level set method. 
+First, the easiest solution is testing a method which already exists in \cimlib library.
+The level set method was implemented by HERE as a framework for monolithic resolution. Since this work,
+the method has been extensively used and improved in several projects mainly for multiphase flows, which is the 
+main competence of the Computational Fluids LXXXX group at CEMEF. Another motivation is the compatibility
+between \cimlib and \thercast, where the latter is the final destination of the code developed during for the Ph.D. thesis.
+In its recent versions, \thercast handles laminar and turbulent ingot filling where the level set method is used 
+to capture the free surface of the molten metal. Aside from the practical motivations, some technical aspects of the level
+set method make it very attractive to apply it macroscopic surface tracking (in contrast to microscopic interface tracking, 
+for instance the solid-liquid interface), such as topological properties that are readily available (e.g. curvature)
+and accurate position compared to volume-based methods like VOF.
+%
 %============================================
 \section{Multidomain formalism}
 %============================================
