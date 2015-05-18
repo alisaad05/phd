@@ -23,9 +23,9 @@
      borderopacity="1.0"
      inkscape:pageopacity="0.0"
      inkscape:pageshadow="2"
-     inkscape:zoom="1.5600306"
-     inkscape:cx="256.29495"
-     inkscape:cy="243.80365"
+     inkscape:zoom="2.2062164"
+     inkscape:cx="203.50868"
+     inkscape:cy="211.78408"
      inkscape:document-units="px"
      inkscape:current-layer="layer1"
      showgrid="false"
@@ -161,11 +161,11 @@
        sodipodi:nodetypes="cc"
        inkscape:connector-curvature="0"
        id="path3780"
-       d="m 481.67402,530.83933 -2.48346,-26.66777"
+       d="m 477.13197,531.08205 8.85444,-25.27719"
        style="fill:none;stroke:#000000;stroke-width:1px;stroke-linecap:butt;stroke-linejoin:miter;stroke-opacity:1;marker-start:none;marker-end:url(#Arrow1Lend)" />
     <path
        style="fill:none;stroke:#000000;stroke-width:1px;stroke-linecap:butt;stroke-linejoin:miter;stroke-opacity:1;marker-start:none;marker-end:url(#Arrow1Lend)"
-       d="m 317.9848,415.5951 -29.28861,7.49298"
+       d="m 312.37137,393.35557 -18.54168,23.8783"
        id="path4406"
        inkscape:connector-curvature="0"
        sodipodi:nodetypes="cc" />
@@ -173,7 +173,7 @@
        sodipodi:nodetypes="cc"
        inkscape:connector-curvature="0"
        id="path4408"
-       d="M 239.15686,585.52451 225.47741,557.64939"
+       d="m 281.63979,564.70655 -23.00575,-20.8539"
        style="fill:none;stroke:#000000;stroke-width:1px;stroke-linecap:butt;stroke-linejoin:miter;stroke-opacity:1;marker-start:none;marker-end:url(#Arrow1Lend)" />
     <g
        ns0:preamble="C:\\Users\\RASPI\\Desktop\\THESIS DOCUMENTS\\Thesis Writing\\phd\\Misc\\textext_preamble.tex"
@@ -444,7 +444,7 @@
    style="fill:#000000;stroke-width:0" />
 </g>    <g
        id="g3641"
-       transform="matrix(2.3607356,0,0,-2.3607356,-292.21038,2279.15)"
+       transform="matrix(2.3607356,0,0,-2.3607356,-253.10858,2259.5991)"
        xml:space="preserve"
        stroke-miterlimit="10.433"
        font-style="normal"
@@ -474,7 +474,7 @@
    id="path3647" />
 <polygon
    style="fill:#000000;stroke-width:0"
-   points="231.92,712.89 234.36,712.89 234.36,713.59 231.92,713.59 "
+   points="234.36,713.59 231.92,713.59 231.92,712.89 234.36,712.89 "
    id="polygon3649" />
 <path
    style="fill:#000000;stroke-width:0"
@@ -522,7 +522,7 @@
    style="fill:#000000;stroke-width:0" />
 </g>    <g
        id="g3953"
-       transform="matrix(2.3607356,0,0,-2.3607356,-204.81589,2090.2478)"
+       transform="matrix(2.3607356,0,0,-2.3607356,-212.50805,2063.3253)"
        xml:space="preserve"
        stroke-miterlimit="10.433"
        font-style="normal"
@@ -552,7 +552,7 @@
    id="path3959" />
 <polygon
    style="fill:#000000;stroke-width:0"
-   points="233.12,712.89 235.56,712.89 235.56,713.59 233.12,713.59 "
+   points="235.56,712.89 235.56,713.59 233.12,713.59 233.12,712.89 "
    id="polygon3961" />
 <path
    style="fill:#000000;stroke-width:0"
