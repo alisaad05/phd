@@ -89,12 +89,14 @@ However, thermal shrinkage is very important to apprehend, as temperature decrea
 %----------------------
 \begin{figureth}
 % textwidth 
-{0.5}
+{0.45}
 %path 
 {Chapter4/Graphics/shrinkage_exp.png}
 % caption
 {Sulphur prints of three ingots showing pipe formation at the top as a result 
-of solidification shrinkage with various ingot inclination during casting \citep{onodera_effect_1959}.}
+of solidification shrinkage with various ingot inclination during casting \citep{onodera_effect_1959}.
+Positive macrosegregation is clearly seen in this area, while A-shape and V-shape positive mesosegregates are detected
+at the ingot's tips and center respectively.}
 % label
 \label{fig:shrinkage_exp}
 \end{figureth}
@@ -277,13 +279,13 @@ With \cref{eq:vitmetal}, the mass balance in the metal writes:
 %------------
 \begin{subequations}
 \begin{align}
-& \tempup{\avg{\rho}}^M + \nabla \cdot \avg{\rho \vec{v}}^M  = 0 \\ 
-& \tempup{\avg{\rho}}^M + \nabla \cdot \brac{ \gl \rhol \vl} = 0 \\ 
-& \tempup{\avg{\rho}}^M + \rhol \nabla \cdot \brac{ \gl \vl} 
+& \tempup{\avg{\rho}^M} + \nabla \cdot \avg{\rho \vec{v}}^M  = 0 \\ 
+& \tempup{\avg{\rho}^M} + \nabla \cdot \brac{ \gl \rhol \vl} = 0 \\ 
+& \tempup{\avg{\rho}^M} + \rhol \nabla \cdot \brac{ \gl \vl} 
 	+ \gl \vl \cdot  \nabvec \rhol = 0 \\	
 \label{eq:mass_balance_metal}
 & \nabla \cdot \vit 
-= -\frac{1}{\rhol} \brac{\tempup{\avg{\rho}}^M + \vit \cdot  \nabvec \rhol}
+= -\frac{1}{\rhol} \brac{\tempup{\avg{\rho}^M }+ \vit \cdot  \nabvec \rhol}
 \end{align}
 \end{subequations}
 %------------
@@ -312,7 +314,7 @@ any reference value for density:
       & \rhol \brac{\tempup{ \vit } + \frac{1}{\gl} \nabvec \cdot \brac{\vit \times \vit}} = \\
 	  &- \gl\nabvec \pl - 2 \mul \nabvec \cdot \brac{\nabmat \vit + \nabmattransp \vit}
 	  - \gl \mul \K^{-1} \vit + \gl \rhol \gravity\\ \\
-      & \nabla \cdot \vit = -\frac{1}{\rhol} \brac{\tempup{\avg{\rho}}^M + \vit \cdot  \nabvec \rhol}
+      & \nabla \cdot \vit = -\frac{1}{\rhol} \brac{\tempup{\avg{\rho}^M} + \vit \cdot  \nabvec \rhol}
     \end{aligned}
     \right.
 \end{equation}
@@ -349,19 +351,19 @@ The unknowns in the energy conservation are the average volumetric enthalpy $\av
 The energy conservation equation writes:
 \begin{subequations}
 \begin{align}
-	& \tempup{\avg{\rho h}}^M + \nabla \cdot \avg{\rho h \vec{v}}^M 
+	& \tempup{\avg{\rho h}^M} + \nabla \cdot \avg{\rho h \vec{v}}^M 
 	= \nabla  \cdot \brac{\avg{\kappa}^M \nabvec T } \\
-	& \tempup{\avg{\rho h}}^M + \nabla \cdot \brac{ \gl \rhol \hl \vl} 
+	& \tempup{\avg{\rho h}^M} + \nabla \cdot \brac{ \gl \rhol \hl \vl} 
 	= \nabla  \cdot \brac{\avg{\kappa}^M \nabvec T } \\
-	& \tempup{\avg{\rho h}}^M
+	& \tempup{\avg{\rho h}^M}
 		+ \vit \cdot \nabvec \brac{\rhol \hl}
 		= \nabla  \cdot \brac{\avg{\kappa}^M \nabvec T }
 		  - \rhol \hl  \nabla \cdot \vit \\   
-	\label{eq:energy_balance}
-	& \tempup{\avg{\rho h}}^M
+	\label{eq:energy_balance_metal}
+	& \tempup{\avg{\rho h}^M}
 		+ \vit \cdot \nabvec \brac{\rhol \hl}
 		= \nabla  \cdot \brac{\avg{\kappa}^M \nabvec T }
-		+ \hl \brac{\tempup{\avg{\rho}}^M + \vit \cdot  \nabvec \rhol} 
+		+ \hl \brac{\tempup{\avg{\rho}^M} + \vit \cdot  \nabvec \rhol} 
 \end{align}
 \end{subequations}
 %\begin{align}
@@ -434,9 +436,9 @@ The energy conservation equation writes:
 %We see that the second LHS term in equation \eqref{eq:energy_balance} acts as 
 %a heat source at the interface between the the phases, in this particular solidification
 %scenario. 
-The second term in the RHS of \cref{eq:energy_balance} is a heat power (of unit $Wm^{-3}$) that adds 
+The second term in the RHS of \cref{eq:energy_balance_metal} is a heat power (of unit $Wm^{-3}$) that adds 
 to the system in the mushy zone. This term is proportional to the solidification rate and expresses 
-the heat generated in regions where the average density is changing and/or a gradient of liquid density is advected.
+the heat generated in regions where the average density is changing and/or a gradient of liquid density is being advected.
 % ======================
 \subsubsection{Species conservation}
 % ======================
@@ -458,7 +460,9 @@ Assumptions
 % ======================
 %Formulation
 % ======================
-The species conservation is pretty similar the energy conservation formulated in the previous section. For a binary alloy, we write:
+The species conservation is pretty similar the energy conservation formulated in the previous section. 
+The main difference is the breakup of the volumetric variable $\avg{\rho w}^M$ into a product of density  $\avg{\rho}^M$ and the mass concentration $\avg{w}^M$.
+For a binary alloy, we write:
 %
 %--------------------------
 %
@@ -493,8 +497,8 @@ If we use the result of \cref{eq:species_divV} in \cref{eq:species_1}, then we g
 \wl \tempup{\avg{\rho}^M}  - \vit \cdot \nabvec \brac{\rhol \wl} + \nabla \cdot \brac{\gl \Dl \nabvec \brac{\rhol \wl} }
 \end{align}
 %
-Applying Voller-Prakash \citep{voller_modelling_1989} variable splitting, the system ends up with only one variable, which is the 
-average composition $\avg{w}^M$ for the metal. The splitting is done as follows:
+Applying Voller-Prakash \citep{voller_modelling_1989} variable splitting, the system ends up with only one variable, $\avg{w}^M$. 
+The splitting is done as follows:
 \begin{align}
 \wl = \brac{\wl}^t + \avg{w}^M - \brac{\avg{w}^M}^t
 \end{align}
@@ -547,7 +551,8 @@ where the superscript $t$ refers to the previous time step. The chemical species
 It is noted that \cref{eq:solute_balance_metal} is valid only if both densities $\rhol$ and $\rhos$
 are constant but have different values. Since density changes are incorporated in this equation, 
 inverse segregation following solidification shrinkage is predicted.
-For the case where macrosegregation is solely due to fluid flow generated by natural or forced convection, i.e. no shrinkage occurs whether due to thermal-solutal contraction or phase change, 
+For the case where macrosegregation is solely due to fluid flow generated by natural or forced convection, 
+i.e. no shrinkage occurs whether due to thermal-solutal contraction or phase change, 
 the overall volume remains constant, hence density is constant. 
 In this situation, $\rhos=\rhol=\avg{\rho}$ and the term $\partial \avg{\rho}/\partial t$ therefore vanishes.
 After dividing both sides by $\avg{\rho}=\rhol$, \cref{eq:solute_balance_metal} reduces to:
@@ -564,33 +569,64 @@ After dividing both sides by $\avg{\rho}=\rhol$, \cref{eq:solute_balance_metal} 
 %
 %====================================================================
 \subsection{In the air}
+The presence of an air domain in our approach is important to follow the free surface of the solidifying metal.
+For this particular reason, some assumptions are introduced and explained in this section in order to limit unnecessary treatment within
+the air, since it does not undergo phase change. It should be reminded that we consider air as a single-phase system, hence superscripts $A$ and $a$
+are interchangeably used. 
+%
 \subsubsection{Mass and momentum conservation}
-The air,  
+%-----------------
+To simplify fluid flow resolution in the air, we consider it as incompressible. This assumption is acceptable in the context
+of casting processes where air velocity has an insignificant order of magnitude. Therefore, the free metal surface is not 
+disturbed by air flow in its vicinity. With the incompressibility of air, we are saying that any deformation of the free surface 
+is solely due to an air mass increase, coming from the system boundaries. The mass balance hence writes:
 %------------
 \begin{align}
-\label{eq:vitmetal}
-& \vM = \vit = \gl \vl 
+\label{eq:mass_balance_air}
+& \nabla \cdot \vA = \nabla \cdot \va = 0
 \end{align}
 %------------
-\subsubsection{other}
-Conservation equations for the air are close to those derived for the metal as a fluid, with the exception
-of some points:
-\begin{itemize}
-\itemsep0em
-\item air is a fluid that will not undergo any phase change, hence constant heat diffusivity;
-\item species conservation is irrelevant in the air as it is considered a pure material;
-\item unlike metal, air is considered incompressible at any time.
-\end{itemize}
-
+The air flow is governed by time-dependent incompressible Navier-Stokes equations, as previously done for the metal:
+%------
+\begin{equation}
+\label{eq:momentum_balance_air}
+   \left\{
+   \begin{aligned}
+      & \rhoa \brac{\tempup{ \va } + \nabvec \cdot \brac{\va \times \va}} = \\
+	  &- \nabvec \pa - 2 \mua \nabvec \cdot \brac{\nabmat \va + \nabmattransp \va}
+	   + \rhoa \gravity\\ \\
+      & \nabla \cdot \va = 0
+    \end{aligned}
+    \right.
+\end{equation}
 %------------
-\subsubsection{Mass and momentum conservation}
-
+The air density $\rhoa$ is considered constant along the casting process, 
+therefore thermal gradients in the air that arise due to the low
+thermal conductivity, do not generate any flow, i.e. no Boussinesq approximation 
+is made on the term $\rhoa \gravity$ in \cref{eq:momentum_balance_air}.
 %-----------
 \subsubsection{Energy conservation}
-
+%-----------------
+It was mentioned in the introduction of the current section that air is a single-phase system
+that cannot undergo any phase change. Therefore, heat transfer in this domain simplifies to pure 
+thermal conduction with a low thermal conductivity coefficient, $\ka$.
+The energy balance in the governs the air enthalpy $\avg{\rho h}^A$ (which is equal to $\rhoa \ha$ 
+in the current context) as follows:
+\begin{subequations}
+\begin{align}
+	& \tempup{\avg{\rho h}^A} + \nabla \cdot \avg{\rho h \vec{v}}^A 
+	= \nabla  \cdot \brac{\avg{\kappa}^A \nabvec T } \\
+	& \tempup{\avg{\rho h}^A} + \nabla \cdot \brac{ \rhoa \ha \va} 
+	= \nabla  \cdot \brac{\ka\nabvec T } \\
+	\label{eq:energy_balance_air}
+	& \tempup{\avg{\rho h}^A}
+		+ \va \cdot \nabvec \brac{\rhoa \ha}
+		= \nabla  \cdot \brac{\ka\nabvec T }
+\end{align}
+\end{subequations}
 %------------
 \subsubsection{Species conservation}
-%
+%-----------------
 The composition of alloying elements is crucial quantity to predict in this work. Nevertheless, such prediction is only relevant
 in the metallic alloy, even if the air is also made up of other chemical species (nitrogen, oxygen ...). For this obvious reason,
 the species conservation equation should not be solved in the air, but that of course is contradictory to the monolithic resolution.
@@ -600,7 +636,7 @@ will not be used here for advection, but rather use a zero-velocity vector inste
 As diffusion is also another transport mechanism that may alter the conservation principle, a very low macroscopic solute diffusion 
 coefficient can be used, as long as its order of magnitude is at most a thousand times less than that in the melt, $\Da \lll \Dl$.
 The low artificial diffusion in the air may slightly violate the wanted no-exchange condition at the air-liquid interface, but it is 
-known that suppressing the diffusion term in the air would result in a stiff partial differential equation that may be difficult to solve.
+known that suppressing the diffusion term in the air would result in a numerically stiff partial differential equation.
 %--------------
 \begin{align}
 & \temp{\rhoa \wa} + \cancel{\nabla \cdot \brac{\rhoa \wa \vita} } - \diff{\rhoa \Da}{\wa} = 0 \\
