@@ -257,7 +257,7 @@ the solid-air interface does not move, leading to the following equation:
 \end{align}
 %------------
 %======================
-\section{FE model}
+\section{FE partitioned model}
 %--------------------------------------------------
 %
 In this section, we start from a the monodomain finite element model presented in \cref{sec:monodomain} that was relevant to the metal only, 
@@ -500,6 +500,7 @@ If we use the result of \cref{eq:species_divV} in \cref{eq:species_1}, then we g
 Applying Voller-Prakash \citep{voller_modelling_1989} variable splitting, the system ends up with only one variable, $\avg{w}^M$. 
 The splitting is done as follows:
 \begin{align}
+\label{eq:voller_prakash}
 \wl = \brac{\wl}^t + \avg{w}^M - \brac{\avg{w}^M}^t
 \end{align}
 %
@@ -629,38 +630,43 @@ in the current context) as follows:
 %-----------------
 The composition of alloying elements is crucial quantity to predict in this work. Nevertheless, such prediction is only relevant
 in the metallic alloy, even if the air is also made up of other chemical species (nitrogen, oxygen ...). For this obvious reason,
-the species conservation equation should not be solved in the air, but that of course is contradictory to the monolithic resolution.
-The consequence is that we should compute the conservation of chemical species in the air and the metal, but limit as much as possible
-the influence of the former, in a way to prevent a "numerical" solute exchange between these domains. To do so, the computed air velocity
-will not be used here for advection, but rather use a zero-velocity vector instead. 
-As diffusion is also another transport mechanism that may alter the conservation principle, a very low macroscopic solute diffusion 
-coefficient can be used, as long as its order of magnitude is at most a thousand times less than that in the melt, $\Da \lll \Dl$.
-The low artificial diffusion in the air may slightly violate the wanted no-exchange condition at the air-liquid interface, but it is 
-known that suppressing the diffusion term in the air would result in a numerically stiff partial differential equation.
+the species conservation equation should not be solved in the air, but that of course is contradictory to the principle of a monolithic approach.
+Consequently, we should compute the conservation of chemical species in the air and the metal, but limit as much as possible
+the influence of the former, in a way to prevent any solute transport between these domains. To do so, we consider that
+both domains have the same solute content: $\avg{\Cnominal}^M=\avg{\Cnominal}^A$.
+Moreover, the computed air velocity, $\va$, will not be used but rather a zero-velocity vector instead, thus suppressing the solute advection term.
+As for solute diffusion, a very low macroscopic solute diffusion 
+coefficient is used, ensuring that its order of magnitude is at most a thousand times less than that in the melt, $\Da \lll \Dl$.
+The low artificial diffusion in the air may slightly violate the wanted no-exchange condition at the air-liquid interface, 
+but it is acceptable since suppressing the diffusion term in the air would result in a numerically stiff partial differential equation.
 %--------------
 \begin{align}
-& \temp{\rhoa \wa} + \cancel{\nabla \cdot \brac{\rhoa \wa \vita} } - \diff{\rhoa \Da}{\wa} = 0 \\
-\label{eq:solute_balance_air}
-& \boxed{\temp{\rhoa \wa} - \diff{\rhoa \Da}{\wa} = 0}
+  \label{eq:solute_balance_air}
+	& \avg{\rho}^A \tempup{\avg{w}^A}
+	%+ \va \cdot \nabvec \brac{\rhoa \wa}
+	- \nabla \cdot \brac{\Da \nabvec \brac{\rhoa \wa} } = 0
 \end{align}
-%
 %--------------
+%
+In contrast to \cref{eq:solute_balance_metal} for the metal, solute balance in the air, given by \cref{eq:solute_balance_air}, provides
+a linear equation as we consider a special case where the domain is monophase, therefore:  $\avg{w}^A = \avg{w}^a$ for all $(x,t)$.
+Otherwise, we would have applied the variable decomposition done earlier in \cref{eq:voller_prakash} to linearise the equation.
 %
 \section{FE monolithic model}
 %---------------------------------------
-The monolithic model combines all conservations equations in metal and air in a unique set of equations to be solved on a fixed mesh. 
-This can be accomplished by using the Heaviside function (defined in \cref{sec:heaviside}) relative to each domain.
+The monolithic model combines all conservation equations derived for metal and air in a unique set of equations, to be solved on a fixed mesh. 
+This can be accomplished by using the Heaviside function (defined in \cref{sec:heaviside}) relative to each domain, creating a mixture of properties that
+vary across the interface according to a specified mixing law. However, one of the main technical difficulties of the monolithic resolution is that the
+obtained equation should be consistent with each domain's original equation regarding its shape and terms, making its resolution easier. 
+While for energy and solute balances the procedure is straightforward, for fluid mechanics it is not with the presence of the Darcy 
+dissipative term in the metal's Navier-Stokes system.
 %
 %---------------------------------------
-\subsection{Permeability mixing}
+\subsection{Darcy term in the air}
 %------
 How to mix liquid fraction, best using harmonic or arithmetic, in order to replicate the effect the of non slip condition at top for example \\
 Put the python plots from the presentations in "TEXUS monolithic" \\
 Put video animations of PSEUDO SMACS 2D without and with LS ???
-%---------------------------------------
-\subsection{Model equations}
-%-------
-Rewrite air-metal monolithic conservation equations using mixture laws.
 %------------------
 \subsection{Interface treatment}
 %
