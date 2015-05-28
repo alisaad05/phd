@@ -649,7 +649,7 @@ but it is acceptable since suppressing the diffusion term in the air would resul
 %--------------
 %
 In contrast to \cref{eq:solute_balance_metal} for the metal, solute balance in the air, given by \cref{eq:solute_balance_air}, provides
-a linear equation as we consider a special case where the domain is monophase, therefore:  $\avg{w}^A = \avg{w}^a$ for all $(x,t)$.
+a linear equation as we consider a special case where the domain is monophase, therefore:  $\avg{w}^A = \avg{w}^a$ at all times.
 Otherwise, we would have applied the variable decomposition done earlier in \cref{eq:voller_prakash} to linearise the equation.
 %
 \section{FE monolithic model}
@@ -658,23 +658,116 @@ The monolithic model combines all conservation equations derived for metal and a
 This can be accomplished by using the Heaviside function (defined in \cref{sec:heaviside}) relative to each domain, creating a mixture of properties that
 vary across the interface according to a specified mixing law. However, one of the main technical difficulties of the monolithic resolution is that the
 obtained equation should be consistent with each domain's original equation regarding its shape and terms, making its resolution easier. 
-While for energy and solute balances the procedure is straightforward, for fluid mechanics it is not with the presence of the Darcy 
-dissipative term in the metal's Navier-Stokes system.
+While for energy and solute balances the procedure is straightforward, the presence of the 
+Darcy dissipative term in the metal's Navier-Stokes system makes it more difficult to formulate a single monolithic equation, which is discussed
+after writing the equations of the monolithic model.
+%
+\subsubsection{Mass and momentum conservation}
+%
+Considering that the system's velocity, $\vec{v}$, is given by an arithmetic mixing between each domain's average velocity, we write:
+%---
+\begin{align}
+\label{eq:monolithic_mass_1}
+& \nabla \cdot \vec{v} = \nabla \cdot \brac{\heavisideM \vM + \heavisideA \vA} \\
+\label{eq:monolithic_mass_2}
+& \nabla \cdot \vec{v} = \heavisideM \nabla \cdot \vM + \heavisideA \nabla \cdot \vA + \nabvec \heavisideM \cdot \brac{\vM - \vA}\\
+\label{eq:monolithic_mass_3}
+& \nabla \cdot \vec{v} = \heavisideM \nabla \cdot \vit
+\end{align}
+%---
+where we used the relation \cref{eq:vitmetal} in the case of a fixed rigid solid to obtain \cref{eq:monolithic_mass_3}.
+As for the second term in \cref{eq:monolithic_mass_2}, we have made the assumption that air is incompressible. Therefore
+any volume variation of the metal domain, will be followed by an air inflow any volume loss. The third and last term in the same equation 
+expresses a velocity jump at the interface. In our case, we neglect this contribution by assuming that both velocities tend to be equal
+when the interface thickness tends to zero. Finally, the monotlithic mass balance writes:
+%---
+\begin{align}
+\label{eq:monolithic_mass}
+& \nabla \cdot \vec{v} = \heavisideM \brac{-\frac{1}{\rhol} \brac{\tempup{\avg{\rho}^M }+ \vit \cdot  \nabvec \rhol}}
+\end{align}
+%---
+The momentum balance looks like the one derived for the metal, but using level set mixed properties and bearing in mind 
+that the Darcy term has a special treatment explained in the next section:
+%------
+\begin{equation}
+\label{eq:monolithic_momentum}
+   \left\{
+   \begin{aligned}
+      & \mix{\rho} \brac{\tempup{ \vec{v} } + \frac{1}{\gf} \nabvec \cdot \brac{\vec{v} \times \vec{v}}} = \\
+	  &- \gf\nabvec p - 2 \mix{\mu} \nabvec \cdot \brac{\nabmat \vec{v}+ \nabmattransp \vec{v}}
+	  - \gf \mix{\mu} \Kmodif^{-1} \vec{v} + \mix{\rho g} \gravity\\ \\
+      & \nabla \cdot \vec{v} = \heavisideM \brac{-\frac{1}{\rhol} \brac{\tempup{\avg{\rho}^M }+ \vit \cdot  \nabvec \rhol}}
+    \end{aligned}
+    \right.
+\end{equation}
+%------------
+EXPLAIN $\mix{\rho g} \gravity$ 
+%---
+\subsubsection{Energy conservation}
+%
+\subsubsection{Mass and momentum conservation}
 %
 %---------------------------------------
 \subsection{Darcy term in the air}
 %------
-How to mix liquid fraction, best using harmonic or arithmetic, in order to replicate the effect the of non slip condition at top for example \\
-Put the python plots from the presentations in "TEXUS monolithic" \\
-Put video animations of PSEUDO SMACS 2D without and with LS ???
-%------------------
-\subsection{Interface treatment}
+We have seen in the previous chapter that adding the Darcy term into Navier-Stokes system modifies the shape of the 
+equation, dividing all terms by the liquid fraction, $\gl$ (REF VMS SOLVER CHAPTER 4). The presence of this dissipation term 
+in one domain, obliges us to keep it in both domains but "deactivate" it where it is useless, i.e. in the air.
+This is done by computing a fictitious permeability in the air as function of the air fraction using the Carman-Kozeny model,
+as used previously for the metal in \cref{eq:permeability}. We may speak of level set mixing for the Darcy term.
+It has a double advantage:
+\begin{enumerate}
+\item the consistency in shape is kept between both domains equations, thus easily deriving the monolithic system;
+\item since the monolithic system retains the shape of the monodomain equation, the VMS solver does not require further implementation updates
+and subsequent validation.
+\end{enumerate}
 %
-The level set method, like any other interface tracking/capturing method, needs defining a convenient way of coupling
-the velocity field on the one hand, which is the solution provided by solving momentum conservation equations, with the 
-interface position on the other hand. The question is "how does the velocity field transport the interface?". The answer
-is potentially one of two possibilities: classical coupling or modified coupling. In the next subsections, we discuss
-the technical details of each approach and the hurdles that come with it.
+We define a fluid fraction, $\gf$, as an arithmetic mixing between liquid and air fractions across the interface:
+%
+\begin{align}
+\label{eq:darcy_modif}
+&\gf = \heavisideM \gl + \heavisideA \ga = \heavisideM \gl + \heavisideA \\
+&\Kmodif = \frac{\sdas^2 \gf^3}{180\brac{1-\gf}^2}	
+\end{align}
+%---------------
+then from the fluid fraction, we deduce a modified permeability, $\Kmodif$. 
+Depending on the values of this quantity, the extent to which the Darcy becomes imposing in Navier-Stokes varies as follows:
+\begin{itemize}
+\itemsep0em
+\item $\Kmodif^{-1} \rightarrow 0$ (completely permeable), then Darcy's term is negligible in Navier-Stokes resolution,
+\item $\Kmodif^{-1} > 0$ (slightly permeable), then fluid flow is greatly dissipated due to a decreasing permeability,
+\item $\Kmodif^{-1} \rightarrow \infty$ (non permeable), then no fluid flow may exist.
+\end{itemize}
+These 3 cases are graphically represented in \cref{fig:darcy_modif}, showing the different values along with the transitions 
+with respect to phases and domains distribution. 
+It is clear that neither in liquid nor air, the flow is dissipated by the presence of the Darcy
+term in the monolithic system, which is confirmed in REF FIGURE DRAW DARCY/PERMEABILITY FROM LIQUID FRACTION RESULT.
+%---------------
+\begin{figure}[htbp]
+\centering
+%\begin{minipage}{.5\textwidth}
+  \begin{subfigure}{1.0\textwidth}
+    \centering
+    \def\svgwidth{250pt}
+	\import{Chapter4/Graphics/}{darcy2.pdf_tex}
+	%\caption{Initial state}
+    %\label{fig:real_ingot_stage_a}
+  \end{subfigure}
+  %
+\caption{Schematic representation of an ingot undergoing solidification while shrinking. 
+The inverse of the modified permeability, $\Kmodif^{-1}$, falls to zero in the air and liquid phases,
+indicating that the Darcy term is only activated in the solid and liquid+solid regions.
+The arrows indicate three different transitions of the Darcy term between the air and metal domains.}
+\label{fig:darcy_modif}
+\end{figure}
+%---------------
+%------------------
+\subsection{Interface motion and stability}
+%-----------------------------
+In chapter 2, we have presented the transport equation of the distance function using the velocity solution 
+provided by solving momentum conservation equations. In this section, we discuss some important points regarding the stability
+of the interface while being transported.
+In the first tests, we noticed 
 %---------
 \subsubsection{Classical coupling}
 %
