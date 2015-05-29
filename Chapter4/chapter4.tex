@@ -28,7 +28,8 @@ to a different overall volume ($V^s<V^l$) once solidification is complete, as co
 \end{align}
 \end{subequations}
 %------------
-Solidification shrinkage is not the only factor responsible for volume decrease. Thermal shrinkage in both solid and liquid phases, as well 
+Solidification shrinkage is not the only factor responsible for volume decrease. 
+Thermal shrinkage in both solid and liquid phases, as well 
 as solutal shrinkage in the liquid phase are also common causes in a casting process. 
 However, thermal shrinkage is very important to apprehend, as temperature decreases in steel casting, usually exceeding a \SI{1000}{\udegC}, thus causing substantial density variations. 
 %Henceforth, we will focus on shrinkage due to phase change.
@@ -654,6 +655,8 @@ Otherwise, we would have applied the variable decomposition done earlier in \cre
 %
 \section{FE monolithic model}
 %---------------------------------------
+\subsection{Monolithic equations}
+%
 The monolithic model combines all conservation equations derived for metal and air in a unique set of equations, to be solved on a fixed mesh. 
 This can be accomplished by using the Heaviside function (defined in \cref{sec:heaviside}) relative to each domain, creating a mixture of properties that
 vary across the interface according to a specified mixing law. However, one of the main technical difficulties of the monolithic resolution is that the
@@ -686,8 +689,7 @@ when the interface thickness tends to zero. Finally, the monotlithic mass balanc
 & \nabla \cdot \vec{v} = \heavisideM \brac{-\frac{1}{\rhol} \brac{\tempup{\avg{\rho}^M }+ \vit \cdot  \nabvec \rhol}}
 \end{align}
 %---
-The momentum balance looks like the one derived for the metal, but using level set mixed properties and bearing in mind 
-that the Darcy term has a special treatment explained in the next section:
+The momentum balance looks like the one derived for the metal, but using level set mixed properties, we get the following:
 %------
 \begin{equation}
 \label{eq:monolithic_momentum}
@@ -701,6 +703,26 @@ that the Darcy term has a special treatment explained in the next section:
     \right.
 \end{equation}
 %------------
+Note that the Darcy term has a special treatment explained in the next section.
+The mechanical properties are mixed as follows:
+%------------
+\begin{align}
+\label{eq:monolithic_density}
+\text{Density}&: \mix{\rho} = \heavisideM \rhol + \heavisideA \rhoa \\
+							%= \heavisideM \brac{\gl \rhol + \gs \rhos} + \heavisideA \rhoa \\
+%
+\label{eq:monolithic_viscosity}
+\text{Dynamic viscosity}&: \mix{\mu} = \heavisideM \mul + \heavisideA \mua \\
+%
+\label{eq:monolithic_boussinesq}
+\text{Buoyancy force}&: A^\Gamma = \integral{\Omega}{\dirac \norm{\nabvec \levelset}}{\Omega} \\
+%
+\label{eq:levelset_volume}
+\text{metal volume}&: V^M = \integral{\Omega}{\heaviside^M}{\Omega}
+%
+\end{align}
+%-----------
+
 EXPLAIN $\mix{\rho g} \gravity$ 
 %---
 \subsubsection{Energy conservation}
