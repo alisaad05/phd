@@ -261,7 +261,8 @@ the solid-air interface does not move, leading to the following equation:
 \section{FE partitioned model}
 %--------------------------------------------------
 %
-In this section, we start from a the monodomain finite element model presented in \cref{sec:monodomain} that was relevant to the metal only, 
+In this section, we start from a the monodomain finite element model 
+presented in \cref{sec:monodomain} that was relevant to the metal only, 
 referred to by the superscript $M$, then present the essential assumptions and formulations 
 that allow predicting solidification shrinkage in a Eulerian context that introduces
 another domain, the air, referred to by the superscript $A$.
@@ -350,6 +351,7 @@ caused by the shrinking metal volume. Before writing the new equation, we make t
 % ======================
 The unknowns in the energy conservation are the average volumetric enthalpy $\avg{\rho h}^M$ and temperature $T$.
 The energy conservation equation writes:
+%--------------
 \begin{subequations}
 \begin{align}
 	& \tempup{\avg{\rho h}^M} + \nabla \cdot \avg{\rho h \vec{v}}^M 
@@ -667,26 +669,32 @@ after writing the equations of the monolithic model.
 %
 \subsubsection{Mass and momentum conservation}
 %
-Considering that the system's velocity, $\vec{v}$, is given by an arithmetic mixing between each domain's average velocity, we write:
+For the system's velocity, $\vitf$, is given by an arithmetic mixing between each domain's relative average fluid velocity, 
+i.e. we need the relative fluid velocity with respect to other fixed/rigid phases in each domain.
+In the present context, the metal domain consists of a single fluid phase (liquid) and solid phases in fixed and rigid structures 
+(assuming that solidification results in a rigid columnar dendritic and eutectic structures, without any free equiaxed dendritic structure),
+while the the latter domain entirely consists of a fluid phase (air).
+With this notation, we express the monolithic mass balance as:
 %---
 \begin{align}
 \label{eq:monolithic_mass_1}
-& \nabla \cdot \vec{v} = \nabla \cdot \brac{\heavisideM \vM + \heavisideA \vA} \\
+& \nabla \cdot \vitf = \nabla \cdot \brac{\heavisideM \vM + \heavisideA \vA} \\
 \label{eq:monolithic_mass_2}
-& \nabla \cdot \vec{v} = \heavisideM \nabla \cdot \vM + \heavisideA \nabla \cdot \vA + \nabvec \heavisideM \cdot \brac{\vM - \vA}\\
+& \nabla \cdot \vitf = \heavisideM \nabla \cdot \vM + \heavisideA \nabla \cdot \vA + \nabvec \heavisideM \cdot \brac{\vM - \vA}\\
 \label{eq:monolithic_mass_3}
-& \nabla \cdot \vec{v} = \heavisideM \nabla \cdot \vit
+& \nabla \cdot \vitf = \heavisideM \nabla \cdot \vit
 \end{align}
 %---
 where we used the relation \cref{eq:vitmetal} in the case of a fixed rigid solid to obtain \cref{eq:monolithic_mass_3}.
 As for the second term in \cref{eq:monolithic_mass_2}, we have made the assumption that air is incompressible. Therefore
-any volume variation of the metal domain, will be followed by an air inflow any volume loss. The third and last term in the same equation 
+any volume variation of the metal domain, will trigger an air inflow or suction effect through the surface boundaries of
+the air domain. The third and last term in the same equation 
 expresses a velocity jump at the interface. In our case, we neglect this contribution by assuming that both velocities tend to be equal
 when the interface thickness tends to zero. Finally, the monotlithic mass balance writes:
 %---
 \begin{align}
 \label{eq:monolithic_mass}
-& \nabla \cdot \vec{v} = \heavisideM \brac{-\frac{1}{\rhol} \brac{\tempup{\avg{\rho}^M }+ \vit \cdot  \nabvec \rhol}}
+& \nabla \cdot \vitf = \heavisideM \brac{-\frac{1}{\rhol} \brac{\tempup{\avg{\rho}^M }+ \vit \cdot  \nabvec \rhol}}
 \end{align}
 %---
 The momentum balance looks like the one derived for the metal, but using level set mixed properties, we get the following:
@@ -695,10 +703,10 @@ The momentum balance looks like the one derived for the metal, but using level s
 \label{eq:monolithic_momentum}
    \left\{
    \begin{aligned}
-      & \mix{\rho} \brac{\tempup{ \vec{v} } + \frac{1}{\gf} \nabvec \cdot \brac{\vec{v} \times \vec{v}}} = \\
-	  &- \gf\nabvec p - 2 \mix{\mu} \nabvec \cdot \brac{\nabmat \vec{v}+ \nabmattransp \vec{v}}
-	  - \gf \mix{\mu} \Kmodif^{-1} \vec{v} + \mix{\rho g} \gravity\\ \\
-      & \nabla \cdot \vec{v} = \heavisideM \brac{-\frac{1}{\rhol} \brac{\tempup{\avg{\rho}^M }+ \vit \cdot  \nabvec \rhol}}
+      & \mix{\rho} \brac{\tempup{ \vitf } + \frac{1}{\gf} \nabvec \cdot \brac{\vitf \times \vitf}} = \\
+	  &- \gf\nabvec p - 2 \mix{\mu} \nabvec \cdot \brac{\nabmat \vitf+ \nabmattransp \vitf}
+	  - \gf \mix{\mu} \Kmodif^{-1} \vitf + \mix{\rho g} \gravity\\ \\
+      & \nabla \cdot \vitf = \heavisideM \brac{-\frac{1}{\rhol} \brac{\tempup{\avg{\rho}^M }+ \vit \cdot  \nabvec \rhol}}
     \end{aligned}
     \right.
 \end{equation}
@@ -707,6 +715,10 @@ Note that the Darcy term has a special treatment explained in the next section.
 The mechanical properties are mixed as follows:
 %------------
 \begin{align}
+%
+\label{eq:fluidfraction}
+\text{Fluid fraction}&: \gf = \heavisideM \gl + \heavisideA \ga = \heavisideM \gl + \heavisideA \\
+%
 \label{eq:monolithic_density}
 \text{Density}&: \mix{\rho} = \heavisideM \rhol + \heavisideA \rhoa \\
 							%= \heavisideM \brac{\gl \rhol + \gs \rhos} + \heavisideA \rhoa \\
@@ -715,19 +727,31 @@ The mechanical properties are mixed as follows:
 \text{Dynamic viscosity}&: \mix{\mu} = \heavisideM \mul + \heavisideA \mua \\
 %
 \label{eq:monolithic_boussinesq}
-\text{Buoyancy force}&: A^\Gamma = \integral{\Omega}{\dirac \norm{\nabvec \levelset}}{\Omega} \\
-%
-\label{eq:levelset_volume}
-\text{metal volume}&: V^M = \integral{\Omega}{\heaviside^M}{\Omega}
+\text{Weight force}&: \mix{\rho g} \gravity 	=  \heavisideM \gl \rhol \gravity + \heavisideA \ga \rhoa \gravity
+												=  \heavisideM \gl \rhol \gravity + \heavisideA \rhoa \gravity
 %
 \end{align}
 %-----------
-
-EXPLAIN $\mix{\rho g} \gravity$ 
+We defined a fluid fraction, $\gf$, as an arithmetic mixing between liquid and air fractions across the interface.
+This quantity will be essential for the monolithic Darcy term. As for the weight force in both domains, it is taken 
+into account via \cref{eq:monolithic_boussinesq}. The phase densities may vary as functions of other parameters such
+as temperature or phase composition ($\rhol$ depends on both), creating buoyancy forces of convection inside the fluid.
+In our approach, since we are only interested in liquid's flow, we keep the air phase density $\rhoa$ constant,
+so as to prevent a mixture of forces around the level set, which helps stabilise the fluid flow resolution.
 %---
 \subsubsection{Energy conservation}
 %
-\subsubsection{Mass and momentum conservation}
+Deriving the monolithic energy conservation equation is straightforward. The monolithic system writes:
+%-------
+\begin{align}
+\tempup{\avg{\rho h}}
+		+ \vitf \cdot \nabvec \brac{\mix{\brac{\rho h}^F}}
+		= \nabla  \cdot \brac{\mix{\kappa} \nabvec T }
+		+ \mix{\text{ES}} 
+\end{align}
+%-------
+%
+\subsubsection{Species conservation}
 %
 %---------------------------------------
 \subsection{Darcy term in the air}
@@ -744,15 +768,13 @@ It has a double advantage:
 and subsequent validation.
 \end{enumerate}
 %
-We define a fluid fraction, $\gf$, as an arithmetic mixing between liquid and air fractions across the interface:
 %
 \begin{align}
 \label{eq:darcy_modif}
-&\gf = \heavisideM \gl + \heavisideA \ga = \heavisideM \gl + \heavisideA \\
 &\Kmodif = \frac{\sdas^2 \gf^3}{180\brac{1-\gf}^2}	
 \end{align}
 %---------------
-then from the fluid fraction, we deduce a modified permeability, $\Kmodif$. 
+then from the fluid fraction (\cref{eq:fluidfraction}), we deduce a modified permeability, $\Kmodif$. 
 Depending on the values of this quantity, the extent to which the Darcy becomes imposing in Navier-Stokes varies as follows:
 \begin{itemize}
 \itemsep0em
@@ -788,8 +810,16 @@ The arrows indicate three different transitions of the Darcy term between the ai
 %-----------------------------
 In chapter 2, we have presented the transport equation of the distance function using the velocity solution 
 provided by solving momentum conservation equations. In this section, we discuss some important points regarding the stability
-of the interface while being transported.
-In the first tests, we noticed 
+of the interface while being transported. When real values are assigned for the mechanical properties, especially density,
+a ratio of three orders of magnitude exists in the diffuse interface. This high ratio may badly influence the stability
+of the interface, unless we pay attention to the order of the integration method as well as the time step used in Navier-Stokes
+resolution.
+\subsubsection{Integration order influence}
+%---------------------------------
+\subsubsection{Time step influence}
+%---------------------------------
+In the first tests, we noticed \\
+TRY TIME STEP 0.01 sec (stable) and 0.02 sec (unstable): is CFL the cause ?
 %---------
 \subsubsection{Classical coupling}
 %
@@ -874,37 +904,26 @@ the same magnitude and direction to transport the interface. However, as we only
 to be uniform within the "100\% liquid" elements, it should not be the case for the other elements that belong 
 either to the mushy zone or the solid region, where shrinkage is taking place.
 Therefore, depending on the heat extraction configuration, two scenarios are possible. If heat extraction is far from
-the interface, i.e. there is not direct contact as in \cref{fig:bottom_side_cooling}a, the surface area remains unchanged at any time, hence all the elements
+the interface, i.e. there is not direct contact as in \cref{fig:bottom_side_cooling}a, 
+the surface area remains unchanged at any time, hence all the elements
 around the interface are "100\% liquid". This happens when a bottom cooling is applied to the ingot. In contrast, if a side cooling 
 is applied as shown in \cref{fig:bottom_side_cooling}b, the surface area of the interface will be reduced over time
 as a consequence of the solid front progression. In this case, the average transport velocity should be computed only
 from the elements belonging to the free surface. The remaining part of the interface which belongs to partial or full 
 solid regions, is transported with Navier-Stokes output, which should be some orders of magnitude less than the velocity
 imposed at the free surface, as a result of a decreasing permeability.
-
 %
 %--------------------------------
-\section{Shrinkage without macrosegregation}
+\section{Applications}
+%--
+\subsection{1D application: \bin{Al}{7}{Si}}
+Present pseudo 1D case with results + discussion \\
 Explain how the flow and heat transfer in the air are not important \\ 
 Give the strong form equations to be solved OR simply refer the previous section where the model was defined \\
 Initial and boundary conditions for energy and momentum:  Initially we have liquid and air at rest. 
+\subsection{2D application: \bin{Sn}{3}{Pb}}
+Present 2D case with results + discussion
 %--
-\subsection{Al-7wt\% Si}
-Present pseudo 1D case with results + discussion
-%--
-\subsection{Pb-3wt\% Sn}
+\subsection{TEXUS application}
 Present 2D and 3D case with results + discussion
 %--
-%--------------------------------
-\section{Shrinkage with macrosegregation}
-Explain how the flow and heat transfer in the air are not important \\ 
-Give the strong form equations to be solved OR simply refer the previous section where the model was defined \\
-Initial and boundary conditions for energy and momentum:  Initially we have liquid and air at rest. 
-%--
-\subsection{Al-7wt\% Si}
-Present pseudo 1D case with results + discussion
-%--
-\subsection{Pb-3wt\% Sn}
-Present 2D and 3D case with results + discussion
-%--
-
