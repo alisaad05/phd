@@ -545,7 +545,7 @@ where the superscript $t$ refers to the previous time step. The chemical species
 \begin{align}
 \label{eq:solute_balance_metal}
 \begin{split}
- & \avg{\rho} \tempup{\avg{w}^M}  + \rhol  \vit \cdot \nabvec \avg{w}^M - \nabla \cdot \brac{\gl \rhol \Dl \nabvec \avg{w}^M}=\\
+ & \avg{\rho}^M \tempup{\avg{w}^M}  + \rhol  \vit \cdot \nabvec \avg{w}^M - \nabla \cdot \brac{\gl \rhol \Dl \nabvec \avg{w}^M}=\\
  &	 - \tempup{\avg{\rho}^M} \crochet{\brac{\avg{w}^M}^t - \brac{\wl}^t} \\ 
  &	 + \rhol \vit \cdot \nabvec \brac{\brac{\avg{w}^M}^t -\brac{\wl}^t}
  	 - \nabla \cdot \crochet{\gl \rhol \Dl  \nabvec \brac{\brac{\avg{w}^M}^t -\brac{\wl}^t} }
@@ -629,19 +629,22 @@ in the current context) as follows:
 \end{align}
 \end{subequations}
 %------------
-\subsubsection{Species conservation}
+\subsubsection{Species conservation} \label{sec:solute_air}
 %-----------------
 The composition of alloying elements is crucial quantity to predict in this work. Nevertheless, such prediction is only relevant
 in the metallic alloy, even if the air is also made up of other chemical species (nitrogen, oxygen ...). For this obvious reason,
 the species conservation equation should not be solved in the air, but that of course is contradictory to the principle of a monolithic approach.
-Consequently, we should compute the conservation of chemical species in the air and the metal, but limit as much as possible
-the influence of the former, in a way to prevent any solute transport between these domains. To do so, we consider that
-both domains have the same solute content: $\avg{\Cnominal}^M=\avg{\Cnominal}^A$.
-Moreover, the computed air velocity, $\va$, will not be used but rather a zero-velocity vector instead, thus suppressing the solute advection term.
+Consequently, we should compute the conservation of chemical species in both the metal and the air, considering the latter as
+a \emph{fictitious metal}, thus having initially the same solute mass composition, $\avg{\Cnominal}^M=\avg{\Cnominal}^A$. 
+Then, we limit as much as possible solute transport between these domains by limiting solute advection and diffusion.
+The computed air velocity, $\va$, will not be used but rather a zero-velocity vector instead, thus suppressing the solute advection term influence.
 As for solute diffusion, a very low macroscopic solute diffusion 
-coefficient is used, ensuring that its order of magnitude is at most a thousand times less than that in the melt, $\Da \lll \Dl$.
-The low artificial diffusion in the air may slightly violate the wanted no-exchange condition at the air-liquid interface, 
-but it is acceptable since suppressing the diffusion term in the air would result in a numerically stiff partial differential equation.
+coefficient is used, ensuring that its order of magnitude is at most 
+a thousand times less than that in the melt, $\Da \lll \Dl$.
+The low artificial diffusion in the air may slightly violate the wanted 
+no-exchange condition at the air-liquid interface, 
+but it is acceptable since suppressing the diffusion term in the air would 
+result in a numerically stiff partial differential equation.
 %--------------
 \begin{align}
   \label{eq:solute_balance_air}
@@ -753,7 +756,7 @@ Deriving the monolithic energy conservation equation is straightforward. The mon
 %-------
 The solution of \cref{eq:monolithic_energy} is $\mix{\avg{\rho h}}$, a mixed field between both domains average volumetric
 enthalpies. The other parameters are $\mix{\brac{\rho h}^F}$ and $\mix{\avg{\kappa}}$ which denote respectively
-the mixture of fluid phase volume enthalpy and the mixture of average thermal conductivities.
+the fluids' mixture volume enthalpy and the mixture of average thermal conductivities.
 The last term, $\mix{\Phi}$, is an average heat source accounting for energy change caused by the 
 alloy's shrinking volume. As no volume change was considered for the air, $\mix{\Phi}$ is present only 
 in the metal's energy balance.
@@ -777,7 +780,24 @@ These quantities are defined in the following equations:
 %
 \subsubsection{Species conservation}
 %
-%---------------------------------------
+As previously explained in \cref{sec:solute_air}, we consider that species conservation is solved over both domains, as follows:
+%-------
+\begin{align}
+\label{eq:monolithic_solute}
+\begin{split}
+ & \avg{\rho}^M \tempup{\mix{\avg{w}}}  + \rhol  \vit \cdot \nabvec \mix{\avg{w}} - \nabla \cdot \brac{\gl \rhol \Dl \nabvec \mix{\avg{w}}}=\\
+ &	 - \tempup{\avg{\rho}^M} \crochet{\brac{\avg{w}^M}^t - \brac{\wl}^t} \\ 
+ &	 + \rhol \vit \cdot \nabvec \brac{\brac{\avg{w}^M}^t -\brac{\wl}^t}
+ 	 - \nabla \cdot \crochet{\gl \rhol \Dl  \nabvec \brac{\brac{\avg{w}^M}^t -\brac{\wl}^t} }
+  \end{split}
+\end{align}
+%-------
+then we deduce the metal's solute composition by postprocessing the obtained solution.
+%---------------------------------------*
+\comment{i should multiply solid fraction by HeavisideM before Sortie to correct the visu. no problem for resolution as
+in Tsolver HeavisideA is taken into account then next time step's T2H will determine a raw solid fraction in the air and the metal}
+\comment{i should create a new FeC tabulation with concentration variation. Once done, revert to 5 times the Concentration parameter
+in the ChampParametre of Tsolver and T2H}
 \subsection{Darcy term in the air}
 %------
 We have seen in the previous chapter that adding the Darcy term into Navier-Stokes system modifies the shape of the 
