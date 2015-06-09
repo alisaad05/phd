@@ -66,9 +66,11 @@ formulation, these fields are decomposed according to these scales as follows:
 where $\vit_h$ and $p_h$ are the coarse scale velocity and pressure discretised on the finite element mesh (hence the subscript $h$), 
 while the remaining terms represent the fine scale velocity and pressure that cannot be captured at the scale of the FE grid. Instead 
 of defining a finer grid to model the effect of these terms, one can solve the fine scale equations obtained once \cref{eq:vms_multiscale_v,eq:vms_multiscale_p}
-are injected in \cref{eq:Navier-Stokes2} then use the output in the coarse scale equations. Further technical details about the method and the equations are
-found in the PhD work of \citet{hachem_stabilized_2009}. The added value of the VMS method is the time gain that we get by incorporating the effect of the fine scale into the 
-coarse scale physics without discretising on a finer grid, while maintaining the ability to predict localised fluid motion such as small vortices.
+are injected in \cref{eq:Navier-Stokes2} then use the output in the coarse scale equations. Further technical details about the method and the equations are found in the PhD work of \citet{hachem_stabilized_2009}. 
+The added value of the VMS method is the time gain that we get 
+by incorporating the effect of the fine scale into the 
+coarse scale physics without discretising on a finer grid, 
+while maintaining the ability to predict localised fluid motion such as small vortices.
 %
 %%-----------------
 %
@@ -78,7 +80,9 @@ by \citet{hachem_stabilized_2010} is a convenience choice to solve Navier-Stokes
 have convection stablisation terms, such as the well known Streamline Upwind Petrov-Galerkin (SUPG) and Shock Capturing Petrov-Galerkin (SCPG)
 stabilisation techniques for convection-dominated problems.
 %\subsection{Variational form}
-\subsection{Variational formulation}
+\subsection{Strong and weak formulations}
+%
+The strong form of the Navier-Stokes equations treated by the VMS solver
 %
 \subsection{CFL condition}
 %
@@ -742,11 +746,21 @@ regular pattern during some time.
 %=====================================ANIMATION FIGURE =====================================
 \begin{figure}[htbp]
 \centering
-%\animategraphics[options]{fps}{filename_without_number}{1}{N}
-%-------
- \animategraphics{10}{Chapter3/Graphics/freckle_cafe/anim_pulsing/img}{1}{11}
-%-------
-\caption{Animation of the pusling mechanism coming from a groove shape in the mushy.} 
+%
+\ifthenelse{\boolean{enable_animations}}%
+	{% then
+		%\animategraphics[options]{fps}{filename_without_number}{1}{N}
+		%-------
+		\animategraphics{10}{Chapter3/Graphics/freckle_cafe/anim_pulsing/img}{1}{11}
+		\caption{Animation of the pusling mechanism coming from a groove shape in the mushy.}
+		%-------
+	}
+	{% else 
+		%-------
+		\includegraphics[height=5cm]{Chapter3/Graphics/freckle_cafe/anim_pulsing/img2.png}
+		\caption{Snapshot of the pusling mechanism coming from a groove shape in the mushy (check animation in the PDF file).} 
+		%-------
+	}
 \label{fig:animate_cafeVG1}
 \end{figure}
 %=====================================ANIMATION FIGURE =====================================
@@ -897,18 +911,72 @@ perfectly smooth, and therefore nucleation can be triggered by a wetting mechani
 which can trigger nucleation heterogeneously in the liquid bulk. 
 Regardless of this experimental limitation, this type of simulations allows simpler understanding as the grain growth is not 
 disturbed by another neighbouring grain, it grows while exclusively interacting with the liquid phase.
-%
-%===================================== ANIMATION FIGURE =====================================
+%----------------------------
+\ifthenelse{\boolean{enable_animations}}%
+	{% then
+		%-------
+		\begin{figure}[htbp]
+		\centering %
+		\begin{animateinline}{6}%
+ 			%\multiframe{nb_frames}{i=start_nb+inc_nb}{%
+ 			 \multiframe{108}{i=25+1}{%  		
+     		\includegraphics[height=6cm]{Chapter3/Graphics/freckle_cafe/anim_monograin_upright/img\zeropad{1234}{\i}.png}%
+	  		\hspace{1mm}%
+      		\includegraphics[height=6cm]{Chapter3/Graphics/freckle_cafe/cafe_VG_colorbar_annot.png}%
+	  		\hspace{1mm}%      
+      		\includegraphics[height=6cm]{Chapter3/Graphics/freckle_cafe/anim_monograin_tilted/img\zeropad{1234}{\i}.png}%
+  		}%
+		\end{animateinline}%
+		\caption{Animations of mono-grain solidification showing the average composition in gallium predicted by the CAFE approach. 
+ 		Two orientation scenarios are considered where a) the grain is upright with a Euler angle of \orient{90}{0}{0} 
+ 		or b) the grain is tilted with a Euler angle of \orient{90}{30}{0}.}
+		%-------		
+		\label{fig:animate_monograin}
+		\end{figure}
+	}
+	{% else 
+	\begin{figure}[htbp]
+	%\centering
+ 	 %------------
+ 			\begin{subfigure}[t]{0.35\textwidth}
+    		%\centering
+			\includegraphics[height=6cm]{Chapter3/Graphics/freckle_cafe/anim_monograin_upright/img0133.png}%
+			\caption{}
+  			\end{subfigure}
+   			%-----
+   			\hspace{10mm}
+   			\begin{subfigure}[t]{0.15\textwidth}
+    		\centering
+			\includegraphics[height=6cm]{Chapter3/Graphics/freckle_cafe/cafe_VG_colorbar_annot.png}%
+			%\caption{}
+  			\end{subfigure}
+   			%-----
+   			%\hspace{1mm}
+   			\begin{subfigure}[t]{0.35\textwidth}
+    		\centering
+			\includegraphics[height=6cm]{Chapter3/Graphics/freckle_cafe/anim_monograin_tilted/img0133.png}%
+			\caption{}
+  			\end{subfigure}
+   			%-----
+      		\caption{Snapshots of mono-grain solidification showing the average composition in gallium predicted by the CAFE approach. 
+ 			Two orientation scenarios are considered where a) the grain is upright with a Euler angle of \orient{90}{0}{0} 
+ 			or b) the grain is tilted with a Euler angle of \orient{90}{30}{0} (check animation in the PDF file).}
+			%-------
+			\label{fig:animate_monograin}
+			\end{figure}
+	}
+%--------------
+%===================================== ANIMATION FIGURE with \animage =====================================
 % \begin{figure}[htbp]
 % \centering
-  ------------
+  %------------
   % \begin{subfigure}{0.45\textwidth}
 	% \centering
 	% \animage{height=6cm}{6}{Chapter3/Graphics/freckle_cafe/anim_monograin_upright/img0}{030}{133}{.png} % 0000 to 0139
 	% \caption{}
     % \label{fig:mono_upright}
   % \end{subfigure}  
-  ------------
+  %------------
 	% \hfill %\hspace{1mm}  
 	 % \begin{subfigure}{0.05\textwidth}
 	% \centering
@@ -917,40 +985,17 @@ disturbed by another neighbouring grain, it grows while exclusively interacting 
     % \label{} % Do not delete or comment this line to preserve alignment
   % \end{subfigure}
 	% \hfill %\hspace{1mm}  
-  ------------
+  %------------
   % \begin{subfigure}{0.45\textwidth}
     % \centering
     % \animage{height=6cm}{6}{Chapter3/Graphics/freckle_cafe/anim_monograin_tilted/img0}{030}{133}{.png} % 0000 to 0133
 	% \caption{}
     % \label{fig:mono_tilted}
   % \end{subfigure}
--------
+%-------
 % \caption{Animations of mono-grain solidification showing the average composition in gallium predicted by the CAFE approach. 
 % Two orientation scenarios are considered where a) the grain is upright with a Euler angle of \orient{90}{0}{0} 
 % or b) the grain is tilted with a Euler angle of \orient{90}{30}{0}.}
 % \label{fig:animate_monograin}
 % \end{figure}
 %===================================== ANIMATION FIGURE =====================================
-%
-%=====================================ANIMATION FIGURE shared control buttons ===================================
-%
-%-----------------------
-\begin{figure}[htbp]
-\centering %
-\begin{animateinline}{6}%
- %\multiframe{nb_frames}{i=start_nb+inc_nb}{%
-  \multiframe{108}{i=25+1}{%
-  		
-      \includegraphics[height=6cm]{Chapter3/Graphics/freckle_cafe/anim_monograin_upright/img\zeropad{1234}{\i}.png}%
-	  \hspace{1mm}%
-      \includegraphics[height=6cm]{Chapter3/Graphics/freckle_cafe/cafe_VG_colorbar_annot.png}%
-	  \hspace{1mm}%      
-      \includegraphics[height=6cm]{Chapter3/Graphics/freckle_cafe/anim_monograin_tilted/img\zeropad{1234}{\i}.png}%
-  }%
-\end{animateinline}%
-\caption{Animations of mono-grain solidification showing the average composition in gallium predicted by the CAFE approach. 
- 		Two orientation scenarios are considered where a) the grain is upright with a Euler angle of \orient{90}{0}{0} 
- 		or b) the grain is tilted with a Euler angle of \orient{90}{30}{0}.}
-\label{fig:animate_monograin}
-\end{figure}
-%=====================================ANIMATION FIGURE =====================================
