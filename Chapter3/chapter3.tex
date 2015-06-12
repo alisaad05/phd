@@ -82,7 +82,20 @@ stabilisation techniques for convection-dominated problems.
 %\subsection{Variational form}
 \subsection{Strong and weak formulations}
 %
-The strong form of the Navier-Stokes equations treated by the VMS solver
+The strong form of the fluid mechanics problem has been previously established in chapter 2 (\cref{fig:algo_monodomain},
+where we obtained the following system of mass and liquid momentum conservation equations:
+%
+\begin{equation}
+	\label{eq:vms_strong}
+   \left\{
+   \begin{aligned}
+      & \rholref \brac{\tempup{ \vit } + \frac{1}{\gl} \nabvec \cdot \brac{\vit \times \vit}} = \\
+	  &- \gl\nabvec \pl - 2 \mul \nabvec \cdot \brac{\nabmat \vit + \nabmattransp \vit}
+	  - \gl \mul \K^{-1} \vit + \gl \rhol \gravity\\ \\
+      & \nabla \cdot \vit =0
+    \end{aligned}
+    \right.
+\end{equation}
 %
 \subsection{CFL condition}
 %
