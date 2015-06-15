@@ -329,17 +329,17 @@ term vanishes, thus rewriting \cref{eq:stress_liq} as follows:
 \label{eq:stress_liq_incompressible1}
 & \avg{\sigmal} = - \avg{\pl} \I + \avg{\mat{\mathbb{S}}^{l}} \\
 \label{eq:stress_liq_incompressible2}
-& \avg{\sigmal} = - \avg{\pl} \I + 2 \mul \strainrate 
+& \avg{\sigmal} = - \avg{\pl} \I + 2 \mul \strainrateliq 
 \end{align}
 \end{subequations}
 %------------
 where the transition from \cref{eq:stress_liq_incompressible1} to \cref{eq:stress_liq_incompressible2} is made
-possible by assuming a Newtonian behaviour for the liquid phase. The strain rate tensor, $\strainrate$, depends on 
+possible by assuming a Newtonian behaviour for the liquid phase. The strain rate tensor, $\strainrateliq$, depends on 
 the average liquid velocity:
 %------------
 \begin{align}
 \label{eq:tensor_strainrate}
-\strainrate = \frac{1}{2} \brac{\nabmat \vit  +  \nabmattransp \vit}
+\strainrateliq = \frac{1}{2} \brac{\nabmat \vit  +  \nabmattransp \vit}
 \end{align}
 %-------------------------------------------------------------------------------------------
 Finally, we obtain the final form of momentum conservation in the liquid phase coupled with the averaged mass balance, by injecting \cref{eq:fluid_weight,eq:interfacial_momentum_hydrostatic,eq:interfacial_momentum_deviatoric,eq:stress_liq_incompressible2,eq:tensor_strainrate}

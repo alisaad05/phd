@@ -14,6 +14,7 @@ For that, a minimum of four conservation equations are necessary:
 conservation  of  mass, momentum,  chemical  species and  energy. The  phase  change
 literature  contains a  wealth of numerical methods to solve energy conservation
 in solidifying alloys. A comprehensive overview of these methods is given by \citet{swaminathan._enthalpy_1993}.
+
 The corresponding equation associates the total average enthalpy to the
 temperature  via  intrinsic  alloy  properties, such  as the heat  capacity of  the
 phases and the latent  heat associated with the phase transformations. However, in the course
@@ -24,13 +25,13 @@ is not a mere constant that could be distributed as a function of the phase frac
 assuming only temperature-dependent phases' properties, as often found in the literature \citep{bellet_call_2009}.
 It is thus impossible to establish a priori the dependence of the enthalpy with respect
 to temperature when macrosegregation alters the average composition, even in the case of full thermodynamic equilibrium
-between phases. In this chapter, we discuss a suitable numerical scheme based on an enthalpy method,
+between phases. 
+
+In this chapter, we discuss a suitable numerical scheme based on an enthalpy method,
 already used in the literature  to  alleviate this macrosegregation-related problem \citep{swaminathan._enthalpy_1993,
 carozzani_direct_2013}. Later on, we introduce a modified formulation, using the effective heat capacity method that 
 increases the original scheme's efficiency. 
-
-The method introduced in this chapter is an enthalpy method that makes use of a temperature-based solver. 
-Moreover, it uses tabulated thermodynamic quantities (solidification paths, phases' enthalpy  and composition) 
+The introduced method uses tabulated thermodynamic quantities (solidification paths, phases' enthalpy  and composition) 
 in a range of average compositions and temperatures as found in the literature 
 \citep{dore_modelling_2000,thuinet_prediction_2004,du_modeling_2007}, 
 with the aim of evaluating the total average enthalpy as well as the effective heat capacity. 

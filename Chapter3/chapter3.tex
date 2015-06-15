@@ -66,7 +66,9 @@ formulation, these fields are decomposed according to these scales as follows:
 where $\vit_h$ and $p_h$ are the coarse scale velocity and pressure discretised on the finite element mesh (hence the subscript $h$), 
 while the remaining terms represent the fine scale velocity and pressure that cannot be captured at the scale of the FE grid. Instead 
 of defining a finer grid to model the effect of these terms, one can solve the fine scale equations obtained once \cref{eq:vms_multiscale_v,eq:vms_multiscale_p}
-are injected in \cref{eq:Navier-Stokes2} then use the output in the coarse scale equations. Further technical details about the method and the equations are found in the PhD work of \citet{hachem_stabilized_2009}. 
+are injected in \cref{eq:Navier-Stokes2} then use the output in the coarse scale equations. 
+Further technical details about the method and the equations are found in the PhD work of \citet{hachem_stabilized_2009}. 
+
 The added value of the VMS method is the time gain that we get 
 by incorporating the effect of the fine scale into the 
 coarse scale physics without discretising on a finer grid, 
@@ -74,35 +76,60 @@ while maintaining the ability to predict localised fluid motion such as small vo
 %
 %%-----------------
 %
-\section{VMS solver}
-In the present thesis, we chose to solve the fluid momentum conservation using the VMS approach. The VMS solver developed 
-by \citet{hachem_stabilized_2010} is a convenience choice to solve Navier-Stokes with Darcy terms while at the same time 
-have convection stablisation terms, such as the well known Streamline Upwind Petrov-Galerkin (SUPG) and Shock Capturing Petrov-Galerkin (SCPG)
-stabilisation techniques for convection-dominated problems.
-%\subsection{Variational form}
+\section{Navier-Stokes solver}
+In the present thesis, we chose to solve the fluid momentum conservation using a stabilised P1-P1 formulation with additional 
+element-level integrals to add stability for convection-dominated terms, transient-dominated terms and pressure terms. 
+The stabilisation techniques include the streamline upwind/Petrov-Galerkin (SUPG), pressure stabilising/Petrov-Galerkin (PSPG) and
+the least-squares on incompressibility constraint (LSIC) as a stabilisation framework introduced by \citet{tezduyar_incompressible_1992}.
+The global approach, more commonly known as SUPG-PSPG-LSIC, prevents the classical formulation instability coming from the 
+linear equal-order interpolation functions.
+
+It is important to note that the P1-P1 SUPG-PSPG-LSIC approach is slightly different than a VMS approach 
+as the derivation of stabilising terms in the latter comes from a physical interpretation of two different 
+length scales, a resolved coarse scale and an unresolved fine scale. The incorporation of the fine-scale equation
+within the coarse-scale one results in additional stabilising terms, while in the current approach these terms
+come from a mathematical analysis based on limiting cases of diffusion or advection. 
+The final stabilising scheme is however very similar.
+The Navier-Stokes solver developed by \citet{hachem_stabilized_2010,rivaux_simulation_2011} is a convenience choice 
+to solve a stabilised Navier-Stokes system with Darcy terms. 
+%For the details of deriving the weak form, the reader is referred to these references.
+%---------
 \subsection{Strong and weak formulations}
 %
 The strong form of the fluid mechanics problem has been previously established in chapter 2 (\cref{fig:algo_monodomain}),
 where we obtained the following system of mass and liquid momentum conservation equations:
-%
-\begin{equation*}
-	\label{eq:vms_strong}
+%------
+\begin{equation}
+   \label{eq:vms_strong}
    \left\{
    \begin{aligned}
       & \rholref \brac{\tempup{ \vit } + \frac{1}{\gl} \nabvec \cdot \brac{\vit \times \vit}} = \\
-	  &- \gl\nabvec \pl - 2 \mul \nabvec \cdot \brac{\nabmat \vit + \nabmattransp \vit}
+	  &- \gl\nabvec \pl - \nabvec \cdot \brac{2 \mul \strainrateliq}
 	  - \gl \mul \K^{-1} \vit + \gl \rhol \gravity\\ \\
       & \nabla \cdot \vit =0
     \end{aligned}
     \right.
-\end{equation*}
-%
-where some assumptions have been made:
+\end{equation}
+%------
+The strong solution consists of finding the pair 
+$\brac{\vit, \pl}$ of the previous system, when the following essential (Dirichlet type) and natural (Neumann type) boundary 
+conditions are applied :
+%----------------
+\begin{align}
+%\label{eq:vms_bc}
+& \vit = \vec{v_0} \text{ on } \partial \Ohm_\text{Dirichlet}  \\
+&  \avg{\sigmal} \cdot \vec{n} = \vec{N}  \text{ on } \partial \Ohm_\text{Neumann} \\
+&\text{with } \partial\Ohm_\text{Dirichlet} \cup  \partial\Ohm_\text{Dirichlet} = \partial\Ohm
+\end{align}
+%----------------	
+
+We can comment on the strong form with the following recap points:
+%%%----
 \begin{enumerate}
 \itemsep0em
 \item	the liquid metal is Newtonian with a dynamic viscosity denoted $\mul$
 \item	the metal is incompressible, therefore the liquid and solid densities are constant and equal (hence
-		$\rholref$ in the inertial term) and the mass balance reduced to $\nabla \cdot \vit =0$
+		$\rholref$ in the inertial term) and the mass balance reduces to \\ $\nabla \cdot \vit =0$
 \item	the Boussinesq approximation is used to compute the thermosolutal buoyancy force in the melt
 		via the term $\gl \rhol \gravity = \gl \rhol \brac{T,\avg{w_i}^l} \gravity$, where $\rhol \brac{T,\avg{w_i}^l}$
 		can be either tabulated as a function of temperature and liquid composition for each solute $i$, or directly 
@@ -115,21 +142,201 @@ where some assumptions have been made:
 		%----------------		
 		where $\betaT$ and $\betawil$ are respectively the thermal and solutal expansion coefficients, while
 		$\Tref$ and $\wilref$ represent a reference temperature and a reference liquid composition for each chemical species, respectively.
-\item	the term $\nabvec \cdot \brac{\vit \times \vit}$ reduces to $\brac{\nabmat \vit}\vit$ as 
-		consequence of the metal's incompressibility. The latter product is linearised in a semi-implicit
-		way, hence		
-		%----------------
-		\begin{align}
-		\label{eq:semi_implicit_velocity}
- 		\brac{\nabmat \vit}\vit = \brac{\nabmat \vit} \vit^{t-\Delta t}
-		\end{align}
+%\item	the term $\nabvec \cdot \brac{\vit \times \vit}$ reduces to $\brac{\nabmat \vit}\vit$ as 
+%		consequence of the metal's incompressibility. The latter product is linearised in a semi-implicit
+%		way \citep{gouttebroze_modelisation_2005}, hence		
+%		%----------------
+%		\begin{align}
+%		\label{eq:semi_implicit_velocity}
+ %		\brac{\nabmat \vit}\vit = \brac{\nabmat \vit} \vit^{t-\Delta t}
+	%	\end{align}
 		%----------------	
 \end{enumerate}
-%%%
+%%%----
+The weak form treated by the VMS solver derives from the strong form by multiplying
+by test functions for velocity and pressure belonging to these functional spaces:
+%\citep{hachem_stabilized_2009}
+%----------------
+\begin{align*}
+%\label{eq:}
+& \upsilon = \curly{\vec{u}, \quad \vec{u} \in \brac{\hilbert \brac{\Ohm}}^d | \vec{u} = \vec{v_0} \text{ on } \partial \Ohm } \\
+& \upsilon^0 = \curly{\vec{u}, \quad \vec{u} \in \brac{\hilbert \brac{\Ohm}}^d | \vec{u} = \vec{0} \text{ on } \partial \Ohm } \\
+& \varrho = \curly{q, \quad q \in L^2 \brac{\Ohm}}
+\end{align*}
+%----------------	
+where $d$ stands for the space dimension. Then, based on these definitions, we write the advective upwinding 
+stabilised test function for the velocity, $\vec{U}$:
+%---------------
+\begin{align}
+\label{eq:supg_test}
+& \vec{U} = \vec{u} + \tausupg \nabmat \vec{u} \cdot \vit_{\Ohm_E}
+\end{align}
+%----------------
+$\tausupg$ is an elemental stabilising parameter for advection-dominated terms and $\vit_{\Ohm_E}$
+is the superficial velocity in the element ${\Ohm_E}$, calculated by regular P1 interpolation:
+%----------------
+\begin{align}
+%\label{eq:}
+& \vit_{\Ohm_E} = \frac{\sum_{i=1}^{D} \vit_{i}}{D}
+\end{align}
+%----------------
+Moreover, we need the following operators in order to simplify the notation of element-based variational integrals:
+%----------------
+\begin{align}
+%\label{eq:}
+& \crochet{a,b} = \integral{\Ohm_E}{ab}{\Ohm} \\
+& \crochet{c,d}^{*} = \integral{\partial\Ohm_E}{cd}{\Gamma}
+\end{align}
+%----------------
+Finally, the SUPG-PSPG-LSIC stabilised weak formulation writes:
+%---------------
+\begin{equation}
+	\label{eq:weakform_before}
+   \left\{
+   \begin{aligned}
+      &\forall \vec{u} \in \upsilon^0 \\
+	&\crochet{ \brac{\frac{\rholref}{\gl} \tempup{\vit}},\vec{U}} + 
+	 \crochet{ \brac{\frac{\rholref}{\gl^2} \brac{\nabmat \vit} \vit},\vec{U}} + 
+	 \crochet{\brac{\frac{2\mul}{\gl}}, \strainrate\brac{\vit}:\strainrate\brac{\vec{U}} } \\
+	& + \crochet{\brac{\mul \K^{-1} \vit },\vec{U}}
+	 - \crochet{\brac{\rhol \gravity},\vec{U}}
+	 - \crochet{p,\nabla \cdot \vec{U}}
+	 - \crochet{\frac{\vec{N}}{\gl},\vec{U}}^{*} \\
+	 & + \crochet{\taulsic, \brac{\rholref \nabla \cdot \vit \nabla \cdot \vec{u} }} = 0\\ \\
+	 &\forall q \in \varrho \\
+	&\crochet{ \nabla \cdot \vit, q} + \\
+	&\crochet{\taupspg \frac{\nabvec q}{\rholref}, \brac{\frac{\rholref}{\gl} \tempup{\vit} 
+	+ \frac{\rholref}{\gl^2} \brac{\nabmat \vit} \vit 
+	+ \mul \K^{-1} \vit -\rhol \gravity}} = 0
+    \end{aligned}
+    \right.
+\end{equation}
+%----------------
+Replacing \cref{eq:supg_test} in \cref{eq:weakform_before}, we get the final weak form:
+%---------------
+\begin{equation}
+	\label{eq:weakform_after}
+   \left\{
+   \begin{aligned}
+    &\forall \vec{u} \in \upsilon^0 \\
+	&\crochet{ \brac{\frac{\rholref}{\gl} \tempup{\vit}},\vec{u}} + 
+	 \crochet{ \brac{\frac{\rholref}{\gl^2} \brac{\nabmat \vit} \vit},\vec{u}} + 
+	 \crochet{\brac{\frac{2\mul}{\gl}}, \strainrate\brac{\vit}:\strainrate\brac{\vec{u}} } \\
+	& + \crochet{\brac{\mul \K^{-1} \vit },\vec{u}}
+	 - \crochet{\brac{\rhol \gravity},\vec{u}}
+	 - \crochet{p,\nabla \cdot \vec{u}}
+	 - \crochet{\frac{\vec{N}}{\gl},\vec{u}}^{*} \\
+	 %-----------
+	 & + \crochet{\tausupg \nabmat \vec{u} \cdot \vit_{\Ohm_E} , 
+	 \brac{\frac{\rholref}{\gl} \tempup{\vit} + \frac{\rholref}{\gl^2} \brac{\nabmat \vit} \vit
+	   +  \mul \K^{-1} \vit + \nabvec \pl -\rhol \gravity} } \\
+	 & + \crochet{\taulsic, \brac{\rholref \nabla \cdot \vit \nabla \cdot \vec{u} }} = 0  \\ \\
+	 %-----------
+	 &\forall q \in \varrho \\
+	&\crochet{ \nabla \cdot \vit, q} + \\
+	&\crochet{\taupspg \frac{\nabvec q}{\rholref}, \brac{\frac{\rholref}{\gl} \tempup{\vit} 
+	+ \frac{\rholref}{\gl^2} \brac{\nabmat \vit} \vit 
+	+ \mul \K^{-1} \vit + \nabvec \pl -\rhol \gravity}} = 0
+    \end{aligned}
+    \right.
+\end{equation}
+%----------------
+\subsection{Stabilisation parameters}
 
-\subsection{CFL condition}
+Several expressions for $\tausupg$ were derived by \citet{tezduyar_incompressible_1992,tezduyar_finite_2000}, from which
+we retain the following:
+%----------------
+\begin{align}
+%\label{eq:}
+& \tausupg = \brac{\frac{1}{\tau_\text{advec}^2} + \frac{1}{\tau_\text{diff}^2} + \frac{1}{\tau_\text{trans}^2} }^{-1/2}
+\end{align}
+%----------------
+where we use three parameters $\tau_\text{advec}$, $\tau_\text{diff}$ and $\tau_\text{trans}$ 
+having time as unit ($s$) that stabilise respectively advection-dominated, diffusion-dominated and transient-dominated
+regimes, given by:
+%----------------
+\begin{align}
+%\label{eq:}
+& \tau_\text{advec} = \frac{h_\text{stream}}{2 \norm{\vit_{\Ohm_E}}}  \\ 
+& \tau_\text{diff} = \frac{h_\text{stream}^2}{4\nu^l}  \\ 
+\label{eq:supg_transient}
+& \tau_\text{trans} = \frac{\Delta t}{2}
+\end{align}
+%----------------
+where $h_\text{stream}=2\norm{\vit_{\Ohm_E}}\brac{\vit_{\Ohm_E} \cdot \nabvec \interp}$ is the element length in the stream direction, computed using
+the local superficial velocity and the interpolation functions $\interp_j$ relative to each local node $j$,
+$\nu^l$ is the liquid's kinematic viscosity ($\si{\udiffusivity}$) and $\Delta t$ is the time step.
+The transient term stabilisation was initially derived for Navier-Stokes equations without Darcy term.
+As the latter has a significant role in the weak form \cref{eq:weakform_after}, it needs to be stabilised.
+The current thesis is based on several past projects that either considered \cref{eq:supg_transient}
+like \citet{liu_finite_2005} or modified it like \citet{gouttebroze_modelisation_2005,rivaux_simulation_2011} 
+to take account the Darcy term, giving the term:
+ %----------------
+\begin{align}
+\label{eq:supg_transient_darcy}
+& \tau_\text{trans-darcy} = \frac{\Delta t}{2\brac{1+\Delta t \frac{\mul}{\rholref \K}}}
+\end{align}
+%----------------
+In the literature, no substantial references were found to backup the formulation of \cref{eq:supg_transient_darcy}, it will
+be used in the current work though. It is worth mentioning that \citet{zabaras_stabilized_2004} has invoked the necessity
+to stabilise Darcy terms in a generalised Navier-Stokes/Darcy P1-P1 formulation, 
+and introduced what they call Darcy-Stabilising/Petrov-Galerkin (DSPG), using local non-dimensional numbers of Darcy ($Da$) and
+Prandtl ($Pr$) numbers expressing respectively the ratio of local permeability to a characteristic length $L$ and the ratio of
+momentum diffusivity, $\nu^l$, to heat diffusivity in the liquid, $\alpha^l$:
+ %----------------
+\begin{align}
+\label{eq:supg_darcy}
+& \tau_\text{darcy} = \frac{Da}{Pr} \brac{\frac{\gl}{1-\gl}}^2= \frac{\alpha^l \K}{\nu^l L^2} \brac{\frac{\gl}{1-\gl}}^2
+\end{align}
+%----------------
+Last, the definitions of the remaining stabilisation parameters are given as follows:
+ %----------------
+\begin{align}
+\label{eq:pspg}
+& \taupspg = \tausupg =
+	\brac{ 
+	\brac{\frac{2 \norm{\vit_{\Ohm_E}}}{h_\text{stream}}}^2
+   + \brac{\frac{4\nu^l}{h_\text{stream}^2}}^2
+   + \brac{\frac{2\brac{1+\Delta t \frac{\mul}{\rholref \K}}}{\Delta t}}^2 } \\
+& \taulsic = \frac{h_\text{stream}}{2} \norm{\vit_{\Ohm_E}} Z(Re_{\Ohm_E})  
+\end{align}
+%----------------
+with $Z(Re_{\Ohm_E})$ being a local Reynolds-dependant function that evaluates to:
+%------------
+\begin{align}
+\label{eq:lsic}
+Z(Re_{\Ohm_E}) = 
+\begin{cases}
+  Re_{\Ohm_E}/3		& \text{ if } Re_{\Ohm_E} \leq 3 \\ 
+  1					& \text{ if } Re_{\Ohm_E} > 3
+\end{cases}
+\end{align}
+%------------
+and
+%------------
+\begin{align}
+Re_{\Ohm_E} = \frac{\norm{\vit_{\Ohm_E}} h_\text{stream}}{2 \nu^l}
+\end{align}
+%------------
+%------------------------------------------
+\subsection{Implementation}
+The final matrix definition of the weak form of \cref{eq:vms_strong} is given by:
+%----------------
+\begin{align}
+\label{eq:matrix_form}
+\begin{pmatrix}
+ A_{vv} & A_{vp}\\ 
+ A_{pv} & A_{pp} 
+\end{pmatrix}
+\begin{pmatrix}  \vit\\  \pl \end{pmatrix}
+= \binom{B_{v}}{B_{p}}
+\end{align}
+%----------------
 %
-\subsection{Integration order}
+%--------------------------------------------------
+\subsubsection{CFL condition}
+%
+\subsubsection{Integration order}
 %
 Using P1 linear elements implies a P2 integration ? what are the advantages (time) and limitations ?
 
@@ -682,15 +889,21 @@ perturbed as shown by the formation of numerous plumes when coupling with grain 
 front displayed on the grain structure at the right most column of \cref{fig:planche_cafe} dictates the leading position of the 
 mushy zone shown in the third column. Note that each color corresponds to one grain, with 17 grains having nucleated 
 at the cell’s bottom surface. However, comparison of the solid fraction maps between \cref{fig:planche_fe} and \cref{fig:planche_cafe} at the 
-same times reveals a delay in the growing front position. Values of the nucleation parameters in \cref{table:simulation_InGa_cafe} are such 
+same times reveals a delay in the growing front position. 
+
+Values of the nucleation parameters in \cref{table:simulation_InGa_cafe} are such 
 that few grains rapidly form below the nominal liquidus isotherm. The delay is therefore not due to the nucleation 
 undercooling but to the growth undercooling of the dendrite tips. It should be noticed that, the growth front driven 
 by undercooling in \cref{fig:planche_cafe} also forms with a higher initial solid fraction and hence larger solute segregation occurs 
 at the front. This effect, together with instabilities of the composition field, is caused by a more perturbed fluid flow 
 and more plumes as observed in CAFE-G2R1L1 compared to FE-G2R1L1. Such observations fit to the complicated fluid and solute 
-flow patterns typically occurring in the experiments as shown in \cref{fig:experimental_freckles_gradients}. It becomes obvious that the consideration of grain 
+flow patterns typically occurring in the experiments as shown in \cref{fig:experimental_freckles_gradients}. 
+
+It becomes obvious that the consideration of grain 
 structure and growth undercooling are vital to accurately simulate segregated channels formation in these experiments. The reasons for the 
-instabilities are discussed hereinafter. In the present 3D CAFE simulation, each grain shown in \cref{fig:planche_composition_grain} 
+instabilities are discussed hereinafter. 
+
+In the present 3D CAFE simulation, each grain shown in \cref{fig:planche_composition_grain} 
 is associated with a crystallographic orientation. 
 The growth kinetics is only given for the $\avg{100}$ crystallographic directions at the grain boundaries with the liquid. The CA growth model 
 is based on the hypothesis that, in a quiescent liquid of uniform temperature distribution and composition, the grain envelop should 
@@ -731,12 +944,15 @@ R=\SI{-0.01}{\uCR} and temperature gradients of (a) G=\SI{1.1}{\ugradT} and (b) 
 %
 %
 \subsection{Effect of vertical temperature gradient}
+
 The influence of diverse process parameters can now be considered in context of the grain structure. 
 The effect of the vertical temperature gradient is shown by comparing the previous case CAFE-G2R1L1 
 with case CAFE-G1R1L1. The temperature gradient is decreased about 7 times here, from G2=\SI{1.5}{\ugradT}
 to G1=\SI{0.2}{\ugradT}. In fact, both cases share almost all traits with respect to flow patterns and velocity
 magnitude in the bulk. Main differences are yet seen regarding the dynamics of the plumes shown in 
-\cref{fig:cafe_G1G2}. In the case of a low temperature gradient (G1), the solidification front cannot maintain a 
+\cref{fig:cafe_G1G2}. 
+
+In the case of a low temperature gradient (G1), the solidification front cannot maintain a 
 shape as smooth as for the case of a large temperature gradient (G2): the solute gradient in the 
 liquid of the mushy zone (basically following the lever rule approximation for a given temperature) 
 decreases, leading to a lower gradient of the solutal buoyancy force. In turn, more solute accumulates 
@@ -748,7 +964,9 @@ cooling rate, R1, is the same in both cases. Moreover, because the dendrite tip 
 increasing function with the undercooling \citep{gandin_boundary_2003}, the latter for CAFE-G1R1L1 is larger 
 than for CAFE-G2R1L1. Height differences of the growth front are proportional to the variations of the 
 undercooling by the temperature gradient. Therefore, this forms larger steps on the growth front for case 
-G1 compared to G2. The chimney extends deeper in the mushy zone when the temperature gradient increases. 
+G1 compared to G2. 
+
+The chimney extends deeper in the mushy zone when the temperature gradient increases. 
 This is confirmed by both the simulation results shown in \cref{fig:cafe_G1G2} as well as the experimental observations. 
 Another remarkable phenomenon is also observed in the low gradient case: a “pulsing” mechanism in CAFE-G1R1L1 
 where a series of solute rich liquid pockets are observed one above the other. This corresponds to a repeated

@@ -46,6 +46,9 @@
 \newcommand{\mtrx}[1]{{\overline{\overline{#1}}} }
 \newcommand{\mat}[1]{{\overline{\overline{#1}}} }
 
+\newcommand{\tausupg}{\ensuremath{\tau_\text{SUPG}}}
+\newcommand{\taupspg}{\ensuremath{\tau_\text{PSPG}}}
+\newcommand{\taulsic}{\ensuremath{\tau_\text{LSIC}}}
 
 \newcommand\hilbert{\ensuremath{\mathscr{H}^1}}
 \newcommand\order{\ensuremath{\mathscr{O}}}
@@ -91,7 +94,8 @@
 \newcommand\vit{\ensuremath{\avg{\vl}}}  
 \newcommand\vitf{\ensuremath{\avg{\vf}}}
 \newcommand\vita{\ensuremath{\avg{\va}}}
-\newcommand\strainrate{\ensuremath{\avg{\mat{\dot{\varepsilon}^l}}}}
+\newcommand\strainrateliq{\ensuremath{\avg{\mat{\dot{\varepsilon}^l}}}}
+\newcommand\strainrate{\ensuremath{\mat{\dot{\varepsilon}}}}
 \newcommand\I{\ensuremath{\mat{\mathrm{I}}}}  
 
 %TODO :redundant defnitions rh and rhoh
@@ -318,23 +322,26 @@ CCEMLCC & 	Chill Cooling for the Electro-Magnetic Levitator in relation with Con
 CEMEF 	& 	Center for Material Forming 	\\
 CSF		&	Continuum Surface Force			\\
 DLR		&	Deutsches Zentrum für Luft- und Raumfahrt  \\
+DSPG	&	Darcy-Stabilising/Petrov-Galerkin \\
 EML 	& 	Electromagnetic levitation 		\\
 ESA 	& 	European Space Agency 			\\
 FEM 	& 	Finite Element Method 			\\
 GMAW	& 	Gas Metal Arc Welding			\\
 ISS 	&	International Space Station 	\\
 IWT		&	Institut für Werkstofftechnik 	\\
-LHS		& 	Left Hand Side					\\ 
+LHS		& 	Left-hand side					\\ 
+LSIC	&	Least squares on incompressibility constraint \\
 LSM		&	Level set method				\\
 MAC		&	Marker-and-cell 				\\
 %MIN		&	Mini-element 					\\
 PF		&	Phase field 					\\
-RHS		& 	Right Hand Side					\\ 
+PSPG	&	Pressure-Stabilising/Petrov-Galerkin \\
+RHS		& 	Right-hand side					\\ 
 RUB		& 	Ruhr Universität Bochum 		\\ 
 RVE		&	Representative Elementary Volume\\
 SBB		&	Satisfying Babuška-Brezzi \\
-SCPG	& 	Shock Capturing Petrov-Galerkin	\\
-SUPG	&	Streamline Upwind Petrov-Galerkin \\
+%SCPG	& 	Shock Capturing Petrov-Galerkin	\\
+SUPG	&	Streamline-Upwind/Petrov-Galerkin \\
 VMS		&	Variational MultiScale			\\
 VOF		&	Volume Of Fluid					\\\tabucline[1pt]{-}
 %-----------------------------
