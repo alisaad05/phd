@@ -1105,6 +1105,74 @@ Moreover, the authors give a comparison of the previously stated methods on 2D a
 performance of direction reinitialisation when used with k-d trees algorithm, hence we use it in the present work.
 %
 %--------------------------------------
+\section{Mesh adaptation}
+The key to reduce spatial discretisation errors and obtain better results is a fine mesh. The optimal mesh resolution
+of course depends on the equations being discretised and solved on the FE grid. The easiest meshing solution one can 
+choose is to create homogeneous and isotropic grid (\cref{fig:mesh_iso_homo_unstruct}), while respecting some constraints regarding the time step (temporal
+discretisation) stemming from physical or numerical conditions, e.g. diffusion shock constraint in diffusional transient equations
+or Courant–Friedrichs–Lewy (CFL) condition in advective equations. In such a case, errors due to interpolation are minimised,
+which guaranties good results but with an expensive time cost. 
+
+Heterogeneous meshes (\cref{fig:mesh_iso_hetero_unstruct}) that consist of fine isotropic elements
+in areas of interest along with coarser isotropic elements in other areas, may reduce the needed time to solver each conservation
+equation. Although this is an interesting alternative, it is less powerful than anisotropic meshing. In the latter (\cref{fig:mesh_aniso_hetero_unstruct}),
+elements adapt to a physical quantity, such as enthalpy or velocity, 
+reducing the elemental length in the direction where the gradient is higher, while stretching the element in the orthogonal direction. This allows more accurate 
+resolution with less elements than needed by isotropic meshing. Moreover, this type of meshing is well adapted to the context of this thesis 
+as it allows local mesh refinement around the mobile interface over time, as well as regions undergoing solidification. These regions
+are indeed important to track as microsegregation starts in the mushy zone, i.e. between the liquidus and solidus temperatures given by a local solute
+composition, where fluid flow may transport species, leading eventually to macrosegregation.
+%
+%-----------------
+\begin{figure}[htbp]
+\centering
+   %------------
+  \begin{subfigure}[t]{0.25\textwidth}
+    \centering
+	\includegraphics[width=\textwidth]{Chapter1/Graphics/mesh_iso_homo_struct.png}
+	\caption{}
+    \label{fig:mesh_iso_homo_struct}
+  \end{subfigure}
+   %------------
+   %\hspace{1cm}
+   \begin{subfigure}[t]{0.25\textwidth}
+    \centering
+	\includegraphics[width=\textwidth]{Chapter1/Graphics/mesh_iso_homo_unstruct.png}
+	\caption{}
+    \label{fig:mesh_iso_homo_unstruct}
+  \end{subfigure}
+  %--------
+  \vskip\baselineskip
+   %------------
+  \begin{subfigure}[t]{0.25\textwidth}
+    \centering
+	\includegraphics[width=\textwidth]{Chapter1/Graphics/mesh_iso_hetero_unstruct.png}
+	\caption{}
+    \label{fig:mesh_iso_hetero_unstruct}
+  \end{subfigure}
+   %------------
+   %\hspace{1cm}
+   \begin{subfigure}[t]{0.25\textwidth}
+    \centering
+	\includegraphics[width=\textwidth]{Chapter1/Graphics/mesh_aniso_hetero_unstruct.png}
+	\caption{}
+    \label{fig:mesh_aniso_hetero_unstruct}
+  \end{subfigure}
+  %-------- 
+\caption{Alternatives for initial finite element grid generation: (a) structured homogeneous, (b) unstructured homogeneous isotropic,
+(c) unstructured heterogeneous isotropic and (d) unstructured heterogeneous anisotropic meshes. } 
+\label{fig:premeshing_options}
+\end{figure}
+%-----------------
+%
+
+Since mesh adaptation involves a mathematical notions, readers interested in the basics are referred to the following references:
+\citep{coupez_grandes_1991,coupez_generation_2000,gruau_3d_2005,jannoun_space-time_2014}.
+In this study, we show and compare different remeshing methods relevant to macrosegregation prediction, and based on previous work
+done at CEMEF. These techniques rely on metric tensors, briefly explained in the next section, and belong to
+\emph{a posteriori} error estimators category. The metric information is then passed to a mesh generation tool, \emph{MTC},
+which is based on an iterative procedure of local topology optimisations.
+%--------------------------------------
 \section*{To do ?}
 \comment{Interface Remeshing: Importance when using a static level set and more importantly when LS is transported,
 influence of mixing area \emph{thickness} and \emph{resolution} (i.e. nb of nodes with the area),
