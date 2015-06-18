@@ -353,7 +353,7 @@ for time step $t$ in a local element $\element$:
 \begin{align}
 \begin{split}
 \label{eq:discretise_residual_local}
-& \brac{R_i^E}^t = \Mij^E \brac{\Hjt - \Hjtminus} + \Aij^E \Tjt + \brac{\Kija^E + \Kijb^E}-\Fi^E - \Si^E=0 \\
+& \brac{R_i^E}^t = \Mij^E \brac{\Hjt - \Hjtminus} + \Aij^E \Tjt + \brac{\Kija^E + \Kijb^E}-\Fi^E - \Qi^E=0 \\
 & i,j:1 \rightarrow \text{NbLoc}
 \end{split}
 \end{align}
@@ -364,7 +364,7 @@ where the volumetric contributions are detailed as follows:
 & \textit{transient term:} \quad  \Mij^E = \integral{\OhmE}{\frac{1}{\dt} \interp_i \interp_j }{V} \\ 
 & \textit{advection term:} \quad  \Aij^E = \integral{\OhmE}{\rhol \cpl \interp_i \vit \cdot \nabvec \interp_j}{V} \\ 
 & \textit{diffusion term:} \quad  \Kija^E = \integral{\OhmE}{\avg{\kappa} \nabvec \interp_i\nabvec \interp_j}{V} \\ 
-& \textit{source term:} \quad  \Si^E = \integral{\OhmE}{\interp_i \source}{V}
+& \textit{source term:} \quad  \Qi^E = \integral{\OhmE}{\interp_i \source}{V}
 \end{align}
 %------------
 while the surface boundary contributions are given by:
@@ -384,13 +384,13 @@ the assembly of these contributions, should be minimized:
 \begin{align}
 \begin{split}
 \label{eq:discretise_residual_global}
-& \brac{R_i}^t = \Mij \brac{\Hjt - \Hjtminus} + \Aij \Tjt + \brac{\Kija + \Kijb}\Tjt -\Fi - \Si=0 \\
+& \brac{R_i}^t = \Mij \brac{\Hjt - \Hjtminus} + \Aij \Tjt + \brac{\Kija + \Kijb}\Tjt -\Fi - \Qi=0 \\
 & i,j:1 \rightarrow \text{NbGlob}
 \end{split}
 \end{align}
 %------------
-where the global tensors $\Mij$, $\Aij$, $\Kija$ , $\Kijb$ , $\Fi$ and $\Si$ contain respectively, after an assembly step, 
-the contributions of the local matrices $\Mij^E$, $\Aij^E$, $\Kija^E$ , $\Kijb^E$ , $\Fi^E$ and $\Si^E$ from each discretised 
+where the global tensors $\Mij$, $\Aij$, $\Kija$ , $\Kijb$ , $\Fi$ and $\Qi$ contain respectively, after an assembly step, 
+the contributions of the local matrices $\Mij^E$, $\Aij^E$, $\Kija^E$ , $\Kijb^E$ , $\Fi^E$ and $\Qi^E$ from each discretised 
 element in the domain $\Ohm$. Accordingly, the indices $i$ and $j$ refer to global node numbers, where the total number of nodes is 
 denoted by "NbGlob". It is clear that the global residual inherits the dependence between enthalpy and temperature. 
 This is shown in \cref{eq:discretise_residual_global} where the average volume enthalpy is a function of the temperature. It infers that this residual 
@@ -500,7 +500,7 @@ is re-evaluated with the newly determined temperature $\Tj^\iterplus$ and enthal
 \begin{align}
 \begin{split}
 \label{eq:discretise_residual_global_new}
-& \brac{R_i}^\iterplus = \Mij \brac{\Hj^\iterplus) - \Hjtminus} + \Aij \Tj^\iterplus + \brac{\Kija + \Kijb}\Tj^\iterplus -\Fi - \Si \\
+& \brac{R_i}^\iterplus = \Mij \brac{\Hj^\iterplus) - \Hjtminus} + \Aij \Tj^\iterplus + \brac{\Kija + \Kijb}\Tj^\iterplus -\Fi - \Qi \\
 & i,j:1 \rightarrow \text{NbGlob}
 \end{split}
 \end{align}

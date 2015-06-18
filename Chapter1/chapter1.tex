@@ -60,7 +60,8 @@ triggering a eutectic solidification. The phase compositions are given by:
 \subsubsection*{Finite back diffusion}
 %***********************************************
 It has been concluded that the assumption of a negligeable back diffusion overestimates the liquid composition
-and the resulting eutectic fraction. Therefore, many models studied the limited diffusion in the solid. One of the earliest models is the Brody-Flemings models \citep{khan_influence_2014} that is a based on a differential solute balance equation for a parabolic growth rate, as follows:
+and the resulting eutectic fraction. Therefore, many models studied the limited diffusion in the solid. 
+One of the earliest models is the Brody-Flemings models \citep{khan_influence_2014} that is a based on a differential solute balance equation for a parabolic growth rate, as follows:
 %----------------------
 \begin{align}
 \label{eq:brodyflemings}
@@ -1119,7 +1120,7 @@ choose is to create unstructured homogeneous and isotropic grid
 discretisation) stemming from physical or numerical conditions, e.g. diffusion shock constraint in diffusional transient equations
 or Courant–Friedrichs–Lewy (CFL) condition in transient advective equations. 
 In such a case, errors due to interpolation are minimised,
-which guaranties good results but with an expensive time cost. 
+which guaranties good results but with expensive time cost. 
 
 Heterogeneous meshes (\cref{fig:mesh_iso_hetero_unstruct}) that consist of fine isotropic elements
 in areas of interest along with coarser isotropic elements in other areas, may reduce the needed time to solver each conservation
@@ -1130,9 +1131,10 @@ reducing the elemental length in the direction where the gradient is higher,
 while stretching the element in the orthogonal direction. This allows more accurate 
 resolution with less elements than needed by isotropic meshing. Moreover, this type of 
 meshing is well adapted to the context of this thesis 
-as it allows local mesh refinement around the mobile interface over time, as well as regions 
-undergoing solidification. These regions are indeed important to track as microsegregation 
-starts in the mushy zone, i.e. between the liquidus and solidus temperatures given by a local solute
+as it allows getting a fine mesh in the normal direction to the interface, that is
+in its transport direction, while reducing the number of elements in other directions.
+Regions undergoing solidification are also important to remesh since microsegregation 
+starts in the mushy zone, i.e. between the liquidus and solidus temperatures given by a local average
 composition, where fluid flow may transport species, leading eventually to macrosegregation.
 
 %
@@ -1183,7 +1185,7 @@ Since mesh adaptation involves advanced mathematical notions, readers interested
 in the basics are referred to the following references:
 \citep{coupez_grandes_1991,coupez_generation_2000,gruau_3d_2005,jannoun_space-time_2014}.
 In this study, we show and compare different remeshing methods relevant to macrosegregation prediction, and based on previous work
-done at CEMEF. These techniques rely on metric tensors, and belong to
+done at CEMEF. These techniques rely on metric tensors, and some of them belong to
 \emph{a posteriori} error estimators category. A metric or a metric tensor $\mathcal{M}$, 
 also known as \emph{Riemannian} metric, is a positive symmetric definite matrix that relates 
 to an element's size in $\mathbb{R}^3$ via:
@@ -1210,10 +1212,47 @@ where $\mathcal{R}$ is a rotation matrix and $h_x$, $h_y$ and $h_z$ are the resp
 dilatation scalars defined by the metric in the $\brac{x,y,z}$ space, describing
 a three-dimensional anisotropy.
 The metric information is then passed to a mesh generation tool, called \emph{MTC},
-which is based on an iterative procedure of local topology optimisations.
+which is based on an iterative procedure of local topology optimisations. We focus hereafter
+on two adaptive remeshing techniques, then discuss the functional details and show some examples.
 
 \subsection{\emph{Remesh2}: Interface remeshing}
-It is a metric construction method based on ISMetriqueMDS
+\emph{Remesh2} is an explicit method to compute an anisotropic metric around the zero surface of a distance function.
+The idea is, as mentioned previously, to reduce the elements cost in the tangential directions to level set by
+stretching the elements, leaving small element lengths in the normal direction, where the level set gradient is the greatest.
+This method is not based on error estimators, but rather on explicit input from the user who chooses the mesh size in
+normal and tangential directions to the interface, as well as in the positive and negative regions delimited by the level set.
+The following parameters are used as input data to determine the final node-wise metric:
+%------------------------------------
+\begin{tabbing}
+\hspace{1cm}\=\kill
+$h_{\vec{n}}$ \> mesh size in the normal direction of the level set\\ 
+$h_{\vec{\tau}}$ \> mesh size in the tangential directions of the level set\\ 
+$h_M$ \>  mesh size in the metal \\
+$h_A$ \>  mesh size in the air  \\
+$\levelset$ \> distance function (level set) \\
+$\varepsilon$ \>  level set mixing thickness \\
+$\vec{V}$ \> arbitrary vector
+\end{tabbing} 
+%------------------------------------
+\begin{algorithm}[H]
+ \KwData{$\vec{n}\quad h_M \quad h_A \quad h_{\vec{n}} \quad h_{\vec{\tau}} \quad \levelset$ }
+ \KwResult{$\mathcal{M}_2$ }
+ Initialise node index: $j=0$\;
+ \While{$j \leq j_\text{end}$}{
+  \eIf{$\levelset_j < \varepsilon$}{
+    Compute normal direction to level set: $\vec{n} ={\nabvec \levelset }/{\norm{\nabvec \levelset }}$\;
+    Compute the first tangential direction: $\vec{\tau_1} = \vec{V} - \brac{\vec{V} \cdot \vec{n}}\cdot \vec{n}$\;
+    Deduce the second tangential direction: $\vec{\tau_2} = \vec{n} \wedge \vec{\tau_1}$\;
+    Compute rotation matrix and its transpose: $\mathcal{R}_j$ and $\mathcal{R}_j^{-1}$\;
+    Deduce P1 metric at node $j$: $\brac{\mathcal{M}_2}_j = \mathcal{R}_j \Lambda \mathcal{R}_j^{-1}$
+   }{
+   go back to the beginning of current section\;
+  	}
+  Increment $j$ \;	
+  }  
+ \caption{\emph{Remesh2} metric construction}
+\end{algorithm}
+
 
 \subsection{\emph{Remesh4}: Multi-criteria remeshing}
 It is a metric construction method based on edge-based error distribution
