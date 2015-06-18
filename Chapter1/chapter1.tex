@@ -1106,22 +1106,35 @@ performance of direction reinitialisation when used with k-d trees algorithm, he
 %
 %--------------------------------------
 \section{Mesh adaptation}
+
+\subsection{Metrics and anisotropy}
+
 The key to reduce spatial discretisation errors and obtain better results is a fine mesh. The optimal mesh resolution
-of course depends on the equations being discretised and solved on the FE grid. The easiest meshing solution one can 
-choose is to create homogeneous and isotropic grid (\cref{fig:mesh_iso_homo_unstruct}), while respecting some constraints regarding the time step (temporal
+depends on the equations being discretised and solved on the FE grid, which consists of an array of structured triangles (\cref{fig:mesh_iso_homo_struct}), 
+in the most basic situation. However, the potential of the Finite Element Method 
+over other methods like the Finite Volume Method (FVM) 
+is the use of unstructured grids. The easiest meshing solution one can 
+choose is to create unstructured homogeneous and isotropic grid 
+(\cref{fig:mesh_iso_homo_unstruct}), while respecting some constraints regarding the time step (temporal
 discretisation) stemming from physical or numerical conditions, e.g. diffusion shock constraint in diffusional transient equations
-or Courant–Friedrichs–Lewy (CFL) condition in advective equations. In such a case, errors due to interpolation are minimised,
+or Courant–Friedrichs–Lewy (CFL) condition in transient advective equations. 
+In such a case, errors due to interpolation are minimised,
 which guaranties good results but with an expensive time cost. 
 
 Heterogeneous meshes (\cref{fig:mesh_iso_hetero_unstruct}) that consist of fine isotropic elements
 in areas of interest along with coarser isotropic elements in other areas, may reduce the needed time to solver each conservation
-equation. Although this is an interesting alternative, it is less powerful than anisotropic meshing. In the latter (\cref{fig:mesh_aniso_hetero_unstruct}),
+equation. Although this is an interesting alternative, it is less powerful than anisotropic meshing. 
+In the latter (\cref{fig:mesh_aniso_hetero_unstruct}),
 elements adapt to a physical quantity, such as enthalpy or velocity, 
-reducing the elemental length in the direction where the gradient is higher, while stretching the element in the orthogonal direction. This allows more accurate 
-resolution with less elements than needed by isotropic meshing. Moreover, this type of meshing is well adapted to the context of this thesis 
-as it allows local mesh refinement around the mobile interface over time, as well as regions undergoing solidification. These regions
-are indeed important to track as microsegregation starts in the mushy zone, i.e. between the liquidus and solidus temperatures given by a local solute
+reducing the elemental length in the direction where the gradient is higher, 
+while stretching the element in the orthogonal direction. This allows more accurate 
+resolution with less elements than needed by isotropic meshing. Moreover, this type of 
+meshing is well adapted to the context of this thesis 
+as it allows local mesh refinement around the mobile interface over time, as well as regions 
+undergoing solidification. These regions are indeed important to track as microsegregation 
+starts in the mushy zone, i.e. between the liquidus and solidus temperatures given by a local solute
 composition, where fluid flow may transport species, leading eventually to macrosegregation.
+
 %
 %-----------------
 \begin{figure}[htbp]
@@ -1160,18 +1173,50 @@ composition, where fluid flow may transport species, leading eventually to macro
   \end{subfigure}
   %-------- 
 \caption{Alternatives for initial finite element grid generation: (a) structured homogeneous, (b) unstructured homogeneous isotropic,
-(c) unstructured heterogeneous isotropic and (d) unstructured heterogeneous anisotropic meshes. } 
+(c) unstructured heterogeneous isotropic and (d) unstructured heterogeneous anisotropic meshes.} 
 \label{fig:premeshing_options}
 \end{figure}
 %-----------------
 %
 
-Since mesh adaptation involves a mathematical notions, readers interested in the basics are referred to the following references:
+Since mesh adaptation involves advanced mathematical notions, readers interested 
+in the basics are referred to the following references:
 \citep{coupez_grandes_1991,coupez_generation_2000,gruau_3d_2005,jannoun_space-time_2014}.
 In this study, we show and compare different remeshing methods relevant to macrosegregation prediction, and based on previous work
-done at CEMEF. These techniques rely on metric tensors, briefly explained in the next section, and belong to
-\emph{a posteriori} error estimators category. The metric information is then passed to a mesh generation tool, \emph{MTC},
+done at CEMEF. These techniques rely on metric tensors, and belong to
+\emph{a posteriori} error estimators category. A metric or a metric tensor $\mathcal{M}$, 
+also known as \emph{Riemannian} metric, is a positive symmetric definite matrix that relates 
+to an element's size in $\mathbb{R}^3$ via:
+%------
+\begin{align}
+\label{eq:metric}
+& \mathcal{M} = 
+\begin{pmatrix}
+M_{11} & M_{12} & M_{13} \\
+M_{12} & M_{22} & M_{23} \\
+M_{13} & M_{23} & M_{33}
+\end{pmatrix}
+=
+\mathcal{R} 
+\begin{pmatrix}
+1/{h_x^2} & 0 & 0 \\
+0 & 1/{h_y^2} & 0 \\
+0 & 0 & 1/{h_z^2}
+\end{pmatrix}
+\mathcal{R}^T
+\end{align}
+%------------ 
+where $\mathcal{R}$ is a rotation matrix and $h_x$, $h_y$ and $h_z$ are the respective 
+dilatation scalars defined by the metric in the $\brac{x,y,z}$ space, describing
+a three-dimensional anisotropy.
+The metric information is then passed to a mesh generation tool, called \emph{MTC},
 which is based on an iterative procedure of local topology optimisations.
+
+\subsection{\emph{Remesh2}: Interface remeshing}
+It is a metric construction method based on ISMetriqueMDS
+
+\subsection{\emph{Remesh4}: Multi-criteria remeshing}
+It is a metric construction method based on edge-based error distribution
 %--------------------------------------
 \section*{To do ?}
 \comment{Interface Remeshing: Importance when using a static level set and more importantly when LS is transported,
