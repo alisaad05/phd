@@ -961,16 +961,88 @@ imposed at the free surface, as a result of a decreasing permeability.
 \section{Applications}
 %--
 \subsection{1D application: \bin{Al}{7}{Si}}
+%--------------------------------------------
 A simple but very efficient way of analysing the model is to test it through a 1D flow configuration with energy and species conservation.
 For this purpose, we take an aluminium-silicon alloy with the same properties used for the thermal solver validation in \cref{table:data_case_alsi7}.
 The major difference with respect to the former validation setup is the air domain that should also be included in the mesh.
 We consider a 2D rod having as dimensions \SI{0.14}{\metre}$\times$\SI{0.001}{m}, where initially the air column's height is only \SI{0.04}{\metre}
 and the remainder of the length is for the metal.  
+\textbf{FIGURE} shows the geometry, mesh used for this section simulations, while \textbf{FIGURE} shows the thermal and mechanical boundary conditions.
+In the latter, velocity-slip conditions were imposed on the lateral boundaries while a no-slip was used at the bottom where heat is extracted,
+to ensure a 1D air flow from the free air inlet at the top. 
 
-Present pseudo 1D case with results + discussion \\
-Explain how the flow and heat transfer in the air are not important \\ 
-Give the strong form equations to be solved OR simply refer the previous section where the model was defined \\
-Initial and boundary conditions for energy and momentum:  Initially we have liquid and air at rest. 
+%
+%-----------------
+\begin{figure}[htbp]
+\centering
+   %------------
+  \begin{subfigure}[t]{0.45\textwidth}
+    \centering
+	\includegraphics[width=\textwidth]{Misc/dummy.pdf}
+	\caption{}
+    \label{fig:1d_alsi7_geo}
+  \end{subfigure}
+   %------------
+   \begin{subfigure}[t]{0.45\textwidth}
+    \centering
+	\includegraphics[width=\textwidth]{Misc/dummy.pdf}
+	\caption{}
+    \label{fig:1d_alsi7_bc}
+  \end{subfigure}
+  %-------- 
+\caption{Geo and boundary conditions} 
+\label{fig:}
+\end{figure}
+%-----------------
+%
+\subsubsection{Shrinkage without macrosegregation}
+%----------------------------------------------------
+The first simulation is the solidification without any segregation, hence a unique solidification path is considered at $\Cnominal=$\bin{Al}{7}{Si},
+shown in \cref{fig:shrinkage_nomacro_sp}.
+This case is interesting as a reference case, where we can study volume shrinkage and level set behaviour in a simple segregation-free configuration.
+We first use a homogeneous isotropic mesh of constant size $h=$ \SI{200}{\micro \metre}.
+%--------------------------------------
+\begin{figure}[htbp]
+\centering
+\begin{tikzpicture}
+ \pgfkeys{%
+    /pgf/number format/set thousands separator = {}}
+\begin{axis}
+[
+	table/col sep=comma,
+	smooth, %ybar
+	%stack plots=y,
+	%area style,
+	enlarge x limits=false,
+	legend pos=north west,
+	scaled ticks=true,
+	xlabel=Temperature (\si{\udegC}),
+	ylabel=Volume fraction (-),
+	xticklabel style={/pgf/number format/fixed},
+	xtick={577, 600, 618},
+	%x tick label style={rotate=45,anchor=east},
+	%width=0.5\textwidth,
+	mark repeat	= {3},
+]
+\addplot table [x=Temperature, y expr=\thisrow{LIQ}] {Chapter4/Data/1d_alsi7_nominalSP/sp.csv} \closedcycle ;
+\addplot table [x=Temperature, y expr=\thisrow{ALPHA}] {Chapter4/Data/1d_alsi7_nominalSP/sp.csv}\closedcycle;
+\addplot table [x=Temperature, y expr=\thisrow{BETA}] {Chapter4/Data/1d_alsi7_nominalSP/sp.csv}\closedcycle;
+
+\legend{Liquid, BCC, FCC}
+\end{axis}
+\end{tikzpicture}
+
+\caption{Unique solidification path at nominal composition for the shrinkage without macrosegregation case.}
+\label{fig:shrinkage_nomacro_sp}
+\end{figure}
+%--------------------------------------
+
+\subsubsection{TODO}
+Compare shrinkage and without shrinkage cooling curves \\
+Compare shrinkage and shrinkage macroseg cooling curves \\
+Show and discuss mass conservation and solute mass conservation as a function of fixed or adaptive mesh \\
+
+
 \subsection{2D application: \bin{Sn}{3}{Pb}}
 Present 2D case with results + discussion
 %--

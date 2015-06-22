@@ -1257,6 +1257,12 @@ $\vec{V}$ \> arbitrary vector
 \subsection{\emph{Remesh4}: Multi-criteria remeshing}
 It is a metric construction method based on edge-based error distribution
 %--------------------------------------
+
+What i concluded from Z-FAST-SMACS cases A and B, where remesh4 was used in two different ways (LS and velocity/100  ,  LS and ConcentrationPosNeg)
+is that for diffuse interface thickness less than 2e-4 m, mass conservation gets all sorts of problems, because of low element resolution 
+around interface while higher resolution at the tips of the transition region
+
+
 \section*{To do ?}
 \comment{Interface Remeshing: Importance when using a static level set and more importantly when LS is transported,
 influence of mixing area \emph{thickness} and \emph{resolution} (i.e. nb of nodes with the area),
