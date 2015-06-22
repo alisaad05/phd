@@ -1000,7 +1000,9 @@ to ensure a 1D air flow from the free air inlet at the top.
 The first simulation is the solidification without any segregation, hence a unique solidification path is considered at $\Cnominal=$\bin{Al}{7}{Si},
 shown in \cref{fig:shrinkage_nomacro_sp}.
 This case is interesting as a reference case, where we can study volume shrinkage and level set behaviour in a simple segregation-free configuration.
-We first use a homogeneous isotropic mesh of constant size $h=$ \SI{200}{\micro \metre}.
+We first use a homogeneous isotropic mesh of constant size $h=$ \SI{200}{\micro \metre}. The liquid and solid phase densities are assumed constant
+and respectively equal to \SI{2600}{\udensity} and \SI{2800}{\udensity}. This density difference is equivalent to a ratio of $\beta_{SS}= \brac{\rhos-\rhol}/\rhos$,
+also termed as \emph{solidification shrinkage} by \citet{flemings_macrosegregation:_1967}. In the current conditions, $\beta=$\SI{7.14}{\percent}.
 %--------------------------------------
 \begin{figure}[htbp]
 \centering
