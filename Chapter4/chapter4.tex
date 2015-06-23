@@ -114,7 +114,7 @@ However, several reasons motivate us to settle on the level set method.
 First, the easiest solution is testing a method which already exists in \cimlib library.
 The level set method was implemented by HERE as a framework for monolithic resolution. Since this work,
 the method has been extensively used and improved in several projects mainly for multiphase flows, which is the 
-main competence of the Computational Fluids LXXXX group at CEMEF. Another motivation is the compatibility
+main competence of the Computing and FLuids (C.F.L) group at CEMEF. Another motivation is the compatibility
 between \cimlib and \thercast, where the latter is the final destination of the code developed during for the Ph.D. thesis.
 In its recent versions, \thercast handles laminar and turbulent ingot filling where the level set method is used 
 to capture the free surface of the molten metal. Aside from the practical motivations, some technical aspects of the level
@@ -735,13 +735,16 @@ The mechanical properties are mixed as follows:
 %
 \end{align}
 %-----------
+
 We defined a fluid fraction, $\gf$, as an arithmetic mixing between liquid and air fractions across the interface.
 This quantity will be essential for the monolithic Darcy term. As for the weight force in both domains, it is taken 
 into account via \cref{eq:monolithic_boussinesq}. The phase densities may vary as functions of other parameters such
 as temperature or phase composition ($\rhol$ depends on both), creating buoyancy forces of convection inside the fluid.
 In our approach, since we are only interested in liquid's flow, we keep the air phase density $\rhoa$ constant,
 so as to prevent a mixture of forces around the level set, which helps stabilise the fluid flow resolution.
+
 %---
+
 \subsubsection{Energy conservation}
 %
 Deriving the monolithic energy conservation equation is straightforward. The monolithic system writes:
@@ -754,13 +757,13 @@ Deriving the monolithic energy conservation equation is straightforward. The mon
 		+ \mix{\Phi} 
 \end{align}
 %-------
+
 The solution of \cref{eq:monolithic_energy} is $\mix{\avg{\rho h}}$, a mixed field between both domains average volumetric
 enthalpies. The other parameters are $\mix{\brac{\rho h}^F}$ and $\mix{\avg{\kappa}}$ which denote respectively
 the fluids' mixture volume enthalpy and the mixture of average thermal conductivities.
 The last term, $\mix{\Phi}$, is an average heat source accounting for energy change caused by the 
 alloy's shrinking volume. As no volume change was considered for the air, $\mix{\Phi}$ is present only 
-in the metal's energy balance.
-These quantities are defined in the following equations:
+in the metal's energy balance. These quantities are defined in the following equations:
 %------------
 \begin{align}
 %
@@ -800,6 +803,7 @@ in Tsolver HeavisideA is taken into account then next time step's T2H will deter
 in the ChampParametre of Tsolver and T2H}
 \subsection{Darcy term in the air}
 %------
+
 We have seen in the previous chapter that adding the Darcy term into Navier-Stokes system modifies the shape of the 
 equation, dividing all terms by the liquid fraction, $\gl$ (REF VMS SOLVER CHAPTER 4). The presence of this dissipation term 
 in one domain, obliges us to keep it in both domains but "deactivate" it where it is useless, i.e. in the air.
@@ -852,12 +856,14 @@ The arrows indicate three different transitions of the Darcy term between the ai
 %------------------
 \subsection{Interface motion and stability}
 %-----------------------------
+
 In chapter 2, we have presented the transport equation of the distance function using the velocity solution 
 provided by solving momentum conservation equations. In this section, we discuss some important points regarding the stability
 of the interface while being transported. When real values are assigned for the mechanical properties, especially density,
 a ratio of three orders of magnitude exists in the diffuse interface. This high ratio may badly influence the stability
 of the interface, unless we pay attention to the order of the integration method as well as the time step used in Navier-Stokes
 resolution.
+
 \subsubsection{Integration order influence}
 %---------------------------------
 \subsubsection{Time step influence}
@@ -894,6 +900,7 @@ when solidification is complete.
 \end{figure}
 %----------------------
 %%---------
+
 \subsubsection{Modified coupling}
 In contrast to a classic coupling, here we attempt to modify the velocity field before feeding to the transport solver.
 The main motivation for considering this approach is the lack of stability that we observed whenever the mechanical
@@ -909,6 +916,7 @@ The algorithm should simultaneously fulfil these requirements:
 We want to process the original transport velocity by imposing a uniform motion (speed and direction) 
 at the nodes of the free surface, and at the same time, be able to follow the pipe formation at the 
 surface as a result of solidification shrinkage, as shown in \cref{fig:horizontal_liquid_surface}.
+
 %----------------------
 \begin{figureth}
 % textwidth 
@@ -941,6 +949,7 @@ initial level of the free liquid surface.}
 \label{fig:bottom_side_cooling}
 \end{figureth}
 %-----------------------------------
+
 The general idea is read the velocity around the interface up to a certain thickness, which may be the same 
 thickness as the diffuse interface defined in \cref{sec:heaviside}, then compute a volumetric average
 from all the elements in the thickness. This average is then given to the transport solver, which will apply
@@ -956,6 +965,7 @@ as a consequence of the solid front progression. In this case, the average trans
 from the elements belonging to the free surface. The remaining part of the interface which belongs to partial or full 
 solid regions, is transported with Navier-Stokes output, which should be some orders of magnitude less than the velocity
 imposed at the free surface, as a result of a decreasing permeability.
+
 %
 %--------------------------------
 \section{Applications}
@@ -997,12 +1007,56 @@ to ensure a 1D air flow from the free air inlet at the top.
 %
 \subsubsection{Shrinkage without macrosegregation}
 %----------------------------------------------------
+
 The first simulation is the solidification without any segregation, hence a unique solidification path is considered at $\Cnominal=$\bin{Al}{7}{Si},
 shown in \cref{fig:shrinkage_nomacro_sp}.
 This case is interesting as a reference case, where we can study volume shrinkage and level set behaviour in a simple segregation-free configuration.
 We first use a homogeneous isotropic mesh of constant size $h=$ \SI{200}{\micro \metre}. The liquid and solid phase densities are assumed constant
 and respectively equal to \SI{2600}{\udensity} and \SI{2800}{\udensity}. This density difference is equivalent to a ratio of $\beta_{SS}= \brac{\rhos-\rhol}/\rhos$,
-also termed as \emph{solidification shrinkage} by \citet{flemings_macrosegregation:_1967}. In the current conditions, $\beta=$\SI{7.14}{\percent}.
+also termed as \emph{solidification shrinkage} by \citet{flemings_macrosegregation:_1967}. 
+In the current conditions, $\beta_{SS}$ is constant and equal to \SI{7.14}{\percent}. 
+The domain is initially meshed before any resolution, as shown in \cref{fig:1dalsi7_lsmixing}, in a way to reduce interpolation errors that may
+cause coarse elements within the transition of fluids density and dynamic viscosity, reminding that these parameters are crucial for the stability 
+of the velocity solution used later in the transport step. The chosen mixing laws are arithmetic for the density and logarithmic for the viscosity.
+The choice is based on tests done in former Ph.D. projects at CEMEF. The initial mesh sizes are given in \cref{table:1dalsi7_meshsize}.
+
+%--------------------------------
+\begin{table}[htbp]
+\centering
+\caption{Summary of the different mesh sizes used to generate an adaptive anisotropic mesh, along with the level mixing thickness, $\varepsilon$. 
+Refer to \cref{sec:remesh2_params} for the definition of each mesh parameter.}
+\label{table:1dalsi7_meshsize}
+{\tabulinesep=1.0mm \begin{tabu}{ll}
+\tabucline[1pt]{-}
+\textbf{Mesh parameter} & \textbf{Size} \\\tabucline[1pt]{-}
+%-----------------------------
+$\varepsilon $			&	\SI{2.5e-4}{\metre}	\\
+$h_{\vec{n}}$ 			&	\SI{2.5e-5}{\metre}	\\ 
+$h_{\vec{\tau}}$ 		&	\SI{2e-4}{\metre}	\\ 
+$h_M$  					&	\SI{1.5e-4}{\metre}	\\
+$h_A$  					&	\SI{2.5e-4}{\metre} \\\tabucline[1pt]{-}
+%-----------------------------
+\end{tabu}}
+\end{table}
+%--------------------------------
+
+%--------------
+\begin{figureth}
+% textwidth 
+{1.0}
+%path 
+{Chapter4/Graphics/1d/ls_mixing.pdf}
+% caption
+{Snapshots of the initial adapted mesh around the interface with different mesh sizes in the air and the metal. The adapted region
+is stretched beyond the level set mixing thickness to ensure better interpolation around the interface, in case of emergence of diffusion
+instabilities. To the right, the reference fluid density and viscosity are plotted in the transition zone, showing a symmetric mixing for the former
+and a shifted mixing for the latter, as a consequence of the mixing laws.
+The thick blue line represents the zero iso-value of the distance function.}
+% label
+\label{fig:1dalsi7_lsmixing}
+\end{figureth}
+%--------------
+
 %--------------------------------------
 \begin{figure}[htbp]
 \centering
@@ -1024,7 +1078,7 @@ also termed as \emph{solidification shrinkage} by \citet{flemings_macrosegregati
 	xtick={577, 600, 618},
 	%x tick label style={rotate=45,anchor=east},
 	%width=0.5\textwidth,
-	mark repeat	= {3},
+	mark repeat	= {2},
 ]
 \addplot table [x=Temperature, y expr=\thisrow{LIQ}] {Chapter4/Data/1d_alsi7_nominalSP/sp.csv} \closedcycle ;
 \addplot table [x=Temperature, y expr=\thisrow{ALPHA}] {Chapter4/Data/1d_alsi7_nominalSP/sp.csv}\closedcycle;
@@ -1034,10 +1088,57 @@ also termed as \emph{solidification shrinkage} by \citet{flemings_macrosegregati
 \end{axis}
 \end{tikzpicture}
 
-\caption{Unique solidification path at nominal composition for the shrinkage without macrosegregation case.}
+\caption{Unique solidification path at nominal composition for the shrinkage case without macrosegregation.}
 \label{fig:shrinkage_nomacro_sp}
 \end{figure}
 %--------------------------------------
+
+At a first glance, results show that the interface stability is compromised by a chosen time step for a given mesh size, and that the interface dynamics
+require attention even before investigating the feeding flow created by solidification. As a demonstration, \cref{fig:1dalsi7_velocity_dt} shows different
+time steps with the same adaptive meshing parameters. For time steps greater than 0.01 s, Navier-Stokes computations did not converge resulting in an high artificial 
+flow quickly destabilising the interface. It should be noted that the frame corresponding to 0.02 s was taken at an earlier time than the two other frames.
+
+%--------------
+\begin{figureth}
+% textwidth 
+{0.6}
+%path 
+{Chapter4/Graphics/1d/ls_velocity_dt.pdf}
+% caption
+{Three average fluid velocity frames at different time steps: 0.005 s, 0.01 s and 0.02 s. The first and second frame are taken after 
+100 seconds of cooling while for the last frame, the frame was taken after only 1 second of cooling, thus it is crossed to show non-convergence.
+The thick black line represents the zero iso-value of the distance function.}
+% label
+\label{fig:1dalsi7_velocity_dt}
+\end{figureth}
+%--------------
+
+Although no solidification has yet started at 100 s, a two-dimensional flow is observed around the interface, while no driving forces exist.
+\Cref{fig:1dalsi7_velocity_dt} confirms that this flow is still predicted at smaller time steps. This flow seems like a pure numerical response
+to the properties transition across the interface, namely density and dynamic viscosity. It is also noted that the interface position
+is not modified by the neighbouring currents, that reach a maximum magnitude of \SI{e-4}{\uvelocity}. Furthermore, this fact is confirmed by a computation 
+having the same parameters as the second case in \cref{fig:1dalsi7_velocity_dt}, but giving the air subdomain the metal's properties, making it 
+denser and more viscous by several orders of magnitude. The result of this computation are given in \cref{fig:1dalsi7_equalprops}. 
+It is noted that the time step in the latter simulation is changed to 0.1 s, as the air behaves mechanically like a fluid metal, 
+therefore no transitions are seen by the interface.
+
+%--------------
+\begin{figureth}
+% textwidth 
+{0.4}
+%path 
+{Misc/dummy.pdf}
+% caption
+{Comparison computation showing the effect of taking equal properties across the level set interface.}
+% label
+\label{fig:1dalsi7_equalprops}
+\end{figureth}
+%--------------
+
+\subsubsection{Shrinkage with macrosegregation}
+
+
+
 
 \subsubsection{TODO}
 Compare shrinkage and without shrinkage cooling curves \\
@@ -1048,6 +1149,6 @@ Show and discuss mass conservation and solute mass conservation as a function of
 \subsection{2D application: \bin{Sn}{3}{Pb}}
 Present 2D case with results + discussion
 %--
-\subsection{3D applicataion: TEXUS steel}
+\subsection{3D application: TEXUS steel}
 Present 2D and 3D case with results + discussion
 %--
