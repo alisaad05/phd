@@ -968,10 +968,10 @@ imposed at the free surface, as a result of a decreasing permeability.
 
 %
 %--------------------------------
-\section{Applications}
 %--
-\subsection{1D application: \bin{Al}{7}{Si}}
+\section{1D application: \bin{Al}{7}{Si}}
 %--------------------------------------------
+\subsection{Geometry and boundary conditions}
 A simple but very efficient way of analysing the model is to test it through a 1D flow configuration with energy and species conservation.
 For this purpose, we take an aluminium-silicon alloy with the same properties used for the thermal solver validation in \cref{table:data_case_alsi7}.
 The major difference with respect to the former validation setup is the air domain that should also be included in the mesh.
@@ -980,6 +980,12 @@ and the remainder of the length is for the metal.
 \textbf{FIGURE} shows the geometry, mesh used for this section simulations, while \textbf{FIGURE} shows the thermal and mechanical boundary conditions.
 In the latter, velocity-slip conditions were imposed on the lateral boundaries while a no-slip was used at the bottom where heat is extracted,
 to ensure a 1D air flow from the free air inlet at the top. 
+
+In this case, imposing slip conditions on lateral sides is two-fold: on one hand, we need to ensure that the fluid flow solution
+remain one-dimensional, hence symmetry on the boundaries solves the issue, while on the other hand during solidification, 
+the resulting feeding flow should be able to transport the interface intersecting with boundary nodes. If boundary velocities
+are zero, then the interface transport will face problems at these boundary nodes. This is indeed an important and relevant point 
+in the next 2D test case.
 
 %
 %-----------------
@@ -1005,7 +1011,7 @@ to ensure a 1D air flow from the free air inlet at the top.
 \end{figure}
 %-----------------
 %
-\subsubsection{Shrinkage without macrosegregation}
+\subsection{Shrinkage without macrosegregation}
 %----------------------------------------------------
 
 The first simulation is the solidification without any segregation, hence a unique solidification path is considered at $\Cnominal=$\bin{Al}{7}{Si},
@@ -1106,49 +1112,98 @@ flow quickly destabilising the interface. It should be noted that the frame corr
 {Chapter4/Graphics/1d/ls_velocity_dt.pdf}
 % caption
 {Three average fluid velocity frames at different time steps: 0.005 s, 0.01 s and 0.02 s. The first and second frame are taken after 
-100 seconds of cooling while for the last frame, the frame was taken after only 1 second of cooling, thus it is crossed to show non-convergence.
+50 seconds of cooling while for the last frame, the frame was taken after only 1 second of cooling, thus it is crossed to show non-convergence.
 The thick black line represents the zero iso-value of the distance function.}
 % label
 \label{fig:1dalsi7_velocity_dt}
 \end{figureth}
 %--------------
 
-Although no solidification has yet started at 100 s, a two-dimensional flow is observed around the interface, while no driving forces exist.
+Although no solidification has yet started at 100 s, a two-dimensional flow is observed around the interface, while tends to \SI{e-8}{\uvelocity} elsewhere in the ingot.
 \Cref{fig:1dalsi7_velocity_dt} confirms that this flow is still predicted at smaller time steps. This flow seems like a pure numerical response
-to the properties transition across the interface, namely density and dynamic viscosity. It is also noted that the interface position
-is not modified by the neighbouring currents, that reach a maximum magnitude of \SI{e-4}{\uvelocity}. Furthermore, this fact is confirmed by a computation 
-having the same parameters as the second case in \cref{fig:1dalsi7_velocity_dt}, but giving the air subdomain the metal's properties, making it 
+to the properties jump across the interface, namely density and dynamic viscosity. It is also noted that the interface position
+is not modified by the neighbouring currents, that reach a maximum magnitude of \SI{e-4}{\uvelocity}. 
+
+Furthermore, this fact is confirmed by a computation 
+with the same time step as the second case in \cref{fig:1dalsi7_velocity_dt}, but the air subdomain is given the metal's properties, making it 
 denser and more viscous by several orders of magnitude. The result of this computation are given in \cref{fig:1dalsi7_equalprops}. 
-It is noted that the time step in the latter simulation is changed to 0.1 s, as the air behaves mechanically like a fluid metal, 
-therefore no transitions are seen by the interface.
+It is noted that the time step in the latter simulation is increased to 0.1 s, as the air behaves mechanically like a fluid metal, 
+therefore no steep transitions are seen by the interface. From the same simulation in \cref{fig:1dalsi7_equalprops}, we notice another
+important issue to discuss, that is the transport of the level set near the end of solidification. We notice that the interface gradually
+goes from being horizontal to skewed between 400 s and 800 s, then a final shape change takes place a little after 800 s. 
+These spurious interface shape changes are mainly caused by the presence of a mushy zone in contact with the diffuse interface, causing problems
+with mass conservation and affecting the level set transport, which is discussed in details the next paragraph.
+The "real" air simulation ran for 23.3 hours on 6 processors while the "artificial" air simulation took only 2 hours running on the same number of
+processors.
+%-----------------------------------------
+\begin{figure}[htbp]
+\centering
+%======
+  \begin{subfigure}{0.6\textwidth}
+  \centering
+    \includegraphics[width=\textwidth]{Chapter4/Graphics/1d/ls_velocity_equalprops.pdf}
+	\caption{Shrinkage "artificial" air simulation with a time step of 0.1 s.}
+    \label{fig:1dalsi7_equalprops}
+  \end{subfigure}  
+%======
+\vskip\baselineskip
+%======
+  \begin{subfigure}{0.6\textwidth}
+    \centering
+    \includegraphics[width=\textwidth]{Chapter4/Graphics/1d/ls_velocity_differentprops.pdf}
+	\caption{Shrinkage "real" air simulation with a time step of 0.01 s.}
+    \label{fig:1dalsi7_differentprops}
+  \end{subfigure}
+%======
+\caption{Comparison of two simulations in several stages of solidification ending shortly after 800 s.
+The results shows the influence of density and viscosity properties across the level set interface.
+The plotted field is the average fluid velocity, on which the corresponding nodal vectors are superimposed, pointing
+towards the solidification front. The thick black line represents the zero iso-value of the distance function.
+The vectors were made transparent in the transition zone so as not to hide the interface level.}
+\label{fig:1dalsi7_props}
+\end{figure}
+%-----------------------------------------
+\subsubsection{Mass conservation study}
 
-%--------------
-\begin{figureth}
-% textwidth 
-{0.4}
-%path 
-{Misc/dummy.pdf}
-% caption
-{Comparison computation showing the effect of taking equal properties across the level set interface.}
-% label
-\label{fig:1dalsi7_equalprops}
-\end{figureth}
-%--------------
+The previous computations showed that the mass conservation, which is the consequence of the level set transport,
+can be lost. In order to better understand the process, we define the metal's mass as a function of the 
+metal's average density and the heaviside function relative to the metal subdomain, as follows:
+%----------------
+\begin{align}
+\label{eq:metal_mass}
+& m^M = \integral{\Ohm}{H^M \avg{\rho}^M}{\Ohm}	
+\end{align}
+%---------------
+Then, the mass conservation can be followed by processing \cref{eq:metal_mass} at each time step, and computing
+the relative mass change through:
+%----------------
+\begin{align}
+\label{eq:metal_mass_variation}
+&  m^M_\% = \frac{m^M - m^M_i}{m^M_i} \times 100	
+\end{align}
+%---------------
+The relative mass change gives us information on the level set transport.
+As the current case is 1D and phase densities are constant throughout the simulation, mass conservation can be 
+checked by a much simpler than by checking \cref{eq:metal_mass_variation}. Since we know the initial metal's column
+length, $l^M_0$, and the expected solidification shrinkage is \SI{7.14}{\percent}, we should expect a final length of 
+$l^M_f= \brac{1-\beta_{SS}} l^M_0 =$  0.09286 \si{\metre}. However, this equation is crucial to be used with more complex
+solidification shrinkage cases.
 
-\subsubsection{Shrinkage with macrosegregation}
+\subsection{Shrinkage with macrosegregation}
 
 
-
-
-\subsubsection{TODO}
+\subsection{TODO}
+plot  mass conservation plots for several blocking liquid fraction (no blocking, 25 pct, 50 pct)
+plot intrinsic and average fluid velocity against arc length for several time steps (0,200,400,600,800) to show the effect of increase of real liquid velocity deep in the mushy
+zone. \\
 Compare shrinkage and without shrinkage cooling curves \\
 Compare shrinkage and shrinkage macroseg cooling curves \\
 Show and discuss mass conservation and solute mass conservation as a function of fixed or adaptive mesh \\
 
 
-\subsection{2D application: \bin{Sn}{3}{Pb}}
+\section{2D application: \bin{Sn}{3}{Pb}}
 Present 2D case with results + discussion
 %--
-\subsection{3D application: TEXUS steel}
+\section{3D application: TEXUS steel}
 Present 2D and 3D case with results + discussion
 %--
