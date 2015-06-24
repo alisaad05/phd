@@ -1189,6 +1189,42 @@ length, $l^M_0$, and the expected solidification shrinkage is \SI{7.14}{\percent
 $l^M_f= \brac{1-\beta_{SS}} l^M_0 =$  0.09286 \si{\metre}. However, this equation is crucial to be used with more complex
 solidification shrinkage cases.
 
+%--------------------------------------
+\begin{figure}[htbp]
+\centering
+\begin{tikzpicture}
+ \pgfkeys{%
+    /pgf/number format/set thousands separator = {}}
+\begin{axis}
+[
+	table/col sep=tab,
+	smooth, %ybar
+	%stack plots=y,
+	%area style,
+	enlarge x limits=false,
+	legend pos=north west,
+	scaled ticks=true,
+	xlabel=Time (s),
+	ylabel=$m^M_\%$ (\%),
+	xticklabel style={/pgf/number format/fixed},
+	xtick={0,200,400,600,800,1000},
+	%x tick label style={rotate=45,anchor=east},
+	width=0.7\textwidth,
+	mark repeat	= {30},
+]
+\addplot table [x=Temps, y=mMpct] {Chapter4/Data/1d_alsi7_mass/DarcyBlocking25pct.txt}\closedcycle;
+\addplot table [x=Temps, y=mMpct] {Chapter4/Data/1d_alsi7_mass/DarcyBlocking50pct.txt}\closedcycle;
+\addplot table [x=Temps, y=mMpct, mark repeat = {1}] {Chapter4/Data/1d_alsi7_mass/DarcyBlocking100pct.txt} \closedcycle ;
+\legend{Blocking at 25\% $\gl$, Blocking at 50\% $\gl$, Blocking at 100\% $\gl$}
+\end{axis}
+\end{tikzpicture}
+
+\caption{Metal mass variation in different case with respect to the liquid blocking fraction to truncate the transport velocity in the mushy zone.}
+\label{fig:shrinkage_nomacro_massconserv}
+\end{figure}
+%--------------------------------------
+
+
 \subsection{Shrinkage with macrosegregation}
 
 
