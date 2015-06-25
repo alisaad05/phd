@@ -1131,9 +1131,15 @@ It is noted that the time step in the latter simulation is increased to 0.1 s, a
 therefore no steep transitions are seen by the interface. From the same simulation in \cref{fig:1dalsi7_equalprops}, we notice another
 important issue to discuss, that is the transport of the level set near the end of solidification. We notice that the interface gradually
 goes from being horizontal to skewed between 400 s and 800 s, then a final shape change takes place a little after 800 s. 
-These spurious interface shape changes are mainly caused by the presence of a mushy zone in contact with the diffuse interface, causing problems
-with mass conservation and affecting the level set transport, which is discussed in details the next paragraph.
-The "real" air simulation ran for 23.3 hours on 6 processors while the "artificial" air simulation took only 2 hours running on the same number of
+These spurious interface shape changes are mainly caused by the presence of a mushy zone in contact with the diffuse interface, affecting the level set transport 
+and thus causing problems regarding mass conservation.
+In contrast, \cref{fig:1dalsi7_differentprops} shows more viable results as far as the level set transport is concerned.
+From 200 s to 800 s, the local flow instability discussed in \cref{fig:1dalsi7_velocity_dt} is sustained, even until after solidification is complete.
+However, in regions of 100\% metal and 100\% air the computed velocity is nearly the same order of magnitude as predicted in the \cref{fig:1dalsi7_equalprops} case.
+We notice a recirculating air flow in the vicinity of the interface as no metal shrinkage may further occur once solidification is complete, thus air flows freely in and out 
+of the upper boundary with a very low magnitude ($\sim$ \SI{e-7}{\uvelocity}), while impinging on the air-metal surface.
+
+The "real" air simulation ran for 23.3 hours of CPU time on 6 processors while the "artificial" air simulation lasted only 2 hours, running on the same number of
 processors.
 %-----------------------------------------
 \begin{figure}[htbp]
@@ -1167,7 +1173,7 @@ The vectors were made transparent in the transition zone so as not to hide the i
 
 The previous computations showed that the mass conservation, which is the consequence of the level set transport,
 can be lost. In order to better understand the process, we define the metal's mass as a function of the 
-metal's average density and the heaviside function relative to the metal subdomain, as follows:
+metal's average density and the Heaviside function relative to the metal subdomain, as follows:
 %----------------
 \begin{align}
 \label{eq:metal_mass}
@@ -1186,17 +1192,19 @@ The relative mass change gives us information on the level set transport.
 As the current case is 1D and phase densities are constant throughout the simulation, mass conservation can be 
 checked by a much simpler than by checking \cref{eq:metal_mass_variation}. Since we know the initial metal's column
 length, $l^M_0$, and the expected solidification shrinkage is \SI{7.14}{\percent}, we should expect a final length of 
-$l^M_f= \brac{1-\beta_{SS}} l^M_0 =$  0.09286 \si{\metre}. However, this equation is crucial to be used with more complex
-solidification shrinkage cases.
-
+$l^M_f= \brac{1-\beta_{SS}} l^M_0 =$  0.09286 \si{\metre}. However, this equation is very useful in more complex
+cases of solidification shrinkage.
 %--------------------------------------
 \begin{figure}[htbp]
 \centering
 \begin{tikzpicture}
  \pgfkeys{%
     /pgf/number format/set thousands separator = {}}
+%================================================
 \begin{axis}
-[
+[	name=artificial,
+	title=(a) "Artificial" air,
+	scale only axis,
 	table/col sep=tab,
 	smooth, %ybar
 	%stack plots=y,
@@ -1209,21 +1217,65 @@ solidification shrinkage cases.
 	xticklabel style={/pgf/number format/fixed},
 	xtick={0,200,400,600,800,1000},
 	%x tick label style={rotate=45,anchor=east},
-	width=0.7\textwidth,
+	width=0.4\textwidth,
+	%height=5cm,	
 	mark repeat	= {30},
 ]
-\addplot table [x=Temps, y=mMpct] {Chapter4/Data/1d_alsi7_mass/DarcyBlocking0pct.txt} \closedcycle ;
-\addplot table [x=Temps, y=mMpct] {Chapter4/Data/1d_alsi7_mass/DarcyBlocking25pct.txt}\closedcycle;
-\addplot table [x=Temps, y=mMpct] {Chapter4/Data/1d_alsi7_mass/DarcyBlocking50pct.txt}\closedcycle;
-\addplot table [x=Temps, y=mMpct] {Chapter4/Data/1d_alsi7_mass/DarcyBlocking99pct.txt}\closedcycle;
-\legend{Blocking at 0\% $\gl$, Blocking at 25\% $\gl$, Blocking at 50\% $\gl$, Blocking at 99\% $\gl$}
+\addplot table [x=Temps, y=mMpct] {Chapter4/Data/1d_alsi7_mass/ArtificialDarcyBlocking0pct.txt} \closedcycle ;
+%\addplot table [x=Temps, y=mMpct] {Chapter4/Data/1d_alsi7_mass/ArtificialDarcyBlocking25pct.txt}\closedcycle;
+%\addplot table [x=Temps, y=mMpct] {Chapter4/Data/1d_alsi7_mass/ArtificialDarcyBlocking50pct.txt}\closedcycle;
+%\addplot table [x=Temps, y=mMpct] {Chapter4/Data/1d_alsi7_mass/ArtificialDarcyBlocking99pct.txt}\closedcycle;
+%\legend{Blocking at 0\% $\gl$, Blocking at 25\% $\gl$, Blocking at 50\% $\gl$, Blocking at 99\% $\gl$}
+\end{axis}
+%================================================
+%\hfill
+%================================================
+\begin{axis}
+[	name=real,
+	title=(b) "Real" air,
+	at=(artificial.right of south east), anchor=left of south west,
+	scale only axis,
+	yticklabel pos=right,
+	table/col sep=tab,
+	smooth, %ybar
+	%stack plots=y,
+	%area style,
+	enlarge x limits=false,
+	legend pos=north west,
+	scaled ticks=true,
+	xlabel=Time (s),
+	%ylabel=$m^M_\%$ (\%),
+	xticklabel style={/pgf/number format/fixed},
+	xtick={0,200,400,600,800,1000},
+	%x tick label style={rotate=45,anchor=east},
+	width=0.4\textwidth,
+	%height=5cm,	
+	mark repeat	= {30},
+]
+\addplot table [x=Temps, y=mMpct] {Chapter4/Data/1d_alsi7_mass/RealDarcyBlocking0pct.txt} \closedcycle ;
+%\addplot table [x=Temps, y=mMpct] {Chapter4/Data/1d_alsi7_mass/RealDarcyBlocking25pct.txt}\closedcycle;
+%\addplot table [x=Temps, y=mMpct] {Chapter4/Data/1d_alsi7_mass/RealDarcyBlocking50pct.txt}\closedcycle;
+%\addplot table [x=Temps, y=mMpct] {Chapter4/Data/1d_alsi7_mass/RealDarcyBlocking99pct.txt}\closedcycle;
+%\legend{Blocking at 0\% $\gl$, Blocking at 25\% $\gl$, Blocking at 50\% $\gl$, Blocking at 99\% $\gl$}
 \end{axis}
 \end{tikzpicture}
-
-\caption{Metal mass variation in different case with respect to the liquid blocking fraction to truncate the transport velocity in the mushy zone.}
+%================================================
+\caption{UPDATE CAPTION Variation of the metal's mass versus solidification time in different cases with respect to the liquid blocking fraction varies from between two limiting
+cases: from 0\%, i.e. where the transport velocity is given by the Navier-Stokes-Darcy resolution, up to 99\% which means that once a node's liquid fraction becomes less than 99\%, 
+its transport velocity becomes zero. Note that the blue curve corresponds to the results shown in \cref{fig:1dalsi7_equalprops}.}
 \label{fig:shrinkage_nomacro_massconserv}
 \end{figure}
 %--------------------------------------
+
+In the previous section, we observed transport problems taking place around 400 s of cooling. Although it was clearly seen in \cref{fig:1dalsi7_equalprops}, it applies
+for both cases, whether air properties are equal or different than the liquid's properties across the interface. 
+The mass variation plots in \cref{fig:shrinkage_nomacro_massconserv} confirm these observations.
+Therefore, we can deduce that regardless of the time step and the level set mixing of properties, 
+transport problems may occur. 
+
+This is no surprise about how poor is mass conservation with the level set method. However, the mass variation
+that we see in the previous plots is more related to a physical problem: \textbf{at which velocity does the interface move?}
+In our simulations, we systemtically considered the Navier-Stokes solution $\vitf$, which is $\vit= \gl \vl$ in the metal subdomain.
 
 
 \subsection{Shrinkage with macrosegregation}
