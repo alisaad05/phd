@@ -1212,10 +1212,11 @@ solidification shrinkage cases.
 	width=0.7\textwidth,
 	mark repeat	= {30},
 ]
+\addplot table [x=Temps, y=mMpct] {Chapter4/Data/1d_alsi7_mass/DarcyBlocking0pct.txt} \closedcycle ;
 \addplot table [x=Temps, y=mMpct] {Chapter4/Data/1d_alsi7_mass/DarcyBlocking25pct.txt}\closedcycle;
 \addplot table [x=Temps, y=mMpct] {Chapter4/Data/1d_alsi7_mass/DarcyBlocking50pct.txt}\closedcycle;
-\addplot table [x=Temps, y=mMpct, mark repeat = {1}] {Chapter4/Data/1d_alsi7_mass/DarcyBlocking100pct.txt} \closedcycle ;
-\legend{Blocking at 25\% $\gl$, Blocking at 50\% $\gl$, Blocking at 100\% $\gl$}
+\addplot table [x=Temps, y=mMpct] {Chapter4/Data/1d_alsi7_mass/DarcyBlocking99pct.txt}\closedcycle;
+\legend{Blocking at 0\% $\gl$, Blocking at 25\% $\gl$, Blocking at 50\% $\gl$, Blocking at 99\% $\gl$}
 \end{axis}
 \end{tikzpicture}
 
