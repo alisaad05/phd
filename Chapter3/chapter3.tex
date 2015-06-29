@@ -77,14 +77,14 @@ while maintaining the ability to predict localised fluid motion such as small vo
 %%-----------------
 %
 \section{Navier-Stokes solver}
-In the present thesis, we chose to solve the fluid momentum conservation using a stabilised P1-P1 formulation with additional 
+In the present thesis, we chose to solve the fluid momentum conservation using a stabilised P1/P1 formulation with additional 
 element-level integrals to add stability for convection-dominated terms, transient-dominated terms and pressure terms. 
 The stabilisation techniques include the streamline upwind/Petrov-Galerkin (SUPG), pressure stabilising/Petrov-Galerkin (PSPG) and
 the least-squares on incompressibility constraint (LSIC) as a stabilisation framework introduced by \citet{tezduyar_incompressible_1992}.
 The global approach, more commonly known as SUPG-PSPG-LSIC, prevents the classical formulation instability coming from the 
 linear equal-order interpolation functions.
 
-It is important to note that the P1-P1 SUPG-PSPG-LSIC approach is slightly different than a VMS approach 
+It is important to note that the P1/P1 SUPG-PSPG-LSIC approach is slightly different than a VMS approach 
 as the derivation of stabilising terms in the latter comes from a physical interpretation of two different 
 length scales, a resolved coarse scale and an unresolved fine scale. The incorporation of the fine-scale equation
 within the coarse-scale one results in additional stabilising terms, while in the current approach these terms
@@ -279,7 +279,7 @@ to take account the Darcy term, giving the term:
 %----------------
 In the literature, no substantial references were found to backup the formulation of \cref{eq:supg_transient_darcy}, it will
 be used in the current work though. It is worth mentioning that \citet{zabaras_stabilized_2004} has invoked the necessity
-to stabilise Darcy terms in a generalised Navier-Stokes/Darcy P1-P1 formulation, 
+to stabilise Darcy terms in a generalised Navier-Stokes/Darcy P1/P1 formulation, 
 and introduced what they call Darcy-Stabilising/Petrov-Galerkin (DSPG), using local non-dimensional numbers of Darcy ($Da$) and
 Prandtl ($Pr$) numbers expressing respectively the ratio of local permeability to a characteristic length $L$ and the ratio of
 momentum diffusivity, $\nu^l$, to heat diffusivity in the liquid, $\alpha^l$:

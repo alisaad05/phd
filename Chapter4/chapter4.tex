@@ -1203,7 +1203,7 @@ cases of solidification shrinkage.
 %================================================
 \begin{axis}
 [	name=artificial,
-	title=(a) "Artificial" air,
+	title=(a) "Artificial" air - $\Delta t$=0.01 s,
 	scale only axis,
 	table/col sep=tab,
 	smooth, %ybar
@@ -1221,7 +1221,7 @@ cases of solidification shrinkage.
 	%height=5cm,	
 	mark repeat	= {30},
 ]
-\addplot table [x=Temps, y=mMpct] {Chapter4/Data/1d_alsi7_mass/ArtificialDarcyBlocking0pct.txt} \closedcycle ;
+\addplot table [x=Temps, y=mMpct] {Chapter4/Data/1d_alsi7_mass/ArtificialDarcyBlocking0pct_smallstep.txt} \closedcycle ;
 %\addplot table [x=Temps, y=mMpct] {Chapter4/Data/1d_alsi7_mass/ArtificialDarcyBlocking25pct.txt}\closedcycle;
 %\addplot table [x=Temps, y=mMpct] {Chapter4/Data/1d_alsi7_mass/ArtificialDarcyBlocking50pct.txt}\closedcycle;
 %\addplot table [x=Temps, y=mMpct] {Chapter4/Data/1d_alsi7_mass/ArtificialDarcyBlocking99pct.txt}\closedcycle;
@@ -1232,7 +1232,7 @@ cases of solidification shrinkage.
 %================================================
 \begin{axis}
 [	name=real,
-	title=(b) "Real" air,
+	title=(b) "Real" air - $\Delta t$=0.01 s,
 	at=(artificial.right of south east), anchor=left of south west,
 	scale only axis,
 	yticklabel pos=right,
@@ -1273,9 +1273,41 @@ The mass variation plots in \cref{fig:shrinkage_nomacro_massconserv} confirm the
 Therefore, we can deduce that regardless of the time step and the level set mixing of properties, 
 transport problems may occur. 
 
-This is no surprise about how poor is mass conservation with the level set method. However, the mass variation
+There is no surprise of how poor mass conservation is with the level set method. However, the mass variation
 that we see in the previous plots is more related to a physical problem: \textbf{at which velocity does the interface move?}
-In our simulations, we systemtically considered the Navier-Stokes solution $\vitf$, which is $\vit= \gl \vl$ in the metal subdomain.
+In our simulations, we systemically considered the Navier-Stokes solution $\vitf$ (equal to $\vit= \gl \vl$ in the metal subdomain),
+that serves to transport the metal-air interface. However in reality (depicted by the first row in \cref{fig:1dalsi7_interface_stages}, 
+between the metal and the air two interfaces exist: the liquid-air ($\liqair$) and solid-air ($\solair$) interfaces, and these interfaces become more defined as solidification proceeds.
+The liquid-air interface exists at early stages of solidification where only liquid is in contact with the air. In later stages,
+the mushy zone delimited by dendrite tips, reaches the free liquid surface, creating hence two distinct interfaces: a first interface separating
+interdendritic liquid from the air, and a second interface that separates the dendrites also from the air. The $\liqair$ interface is driven
+by solidification shrinkage and therefore by the real microscopic velocity of the interdendritic liquid, $\vl$. According to \citet{dantzig_solidification_2009},
+this velocity is constant when the solidification shrinkage and the isotherms velocity $\vec{v}_T$ are constant, as states the equation:
+%----------------
+\begin{align}
+\label{eq:real_velocity}
+& \vl = -\beta_{SS} \vec{v}_T
+\end{align}
+%---------------
+As for the $\solair$ interface, its motion is induced by a mechanical deformation of the solid phase either due to thermal shrinkage or external mechanical stresses.
+The first factor is ubiquitous in any solidification process. In the present work, we remind that the solid phase is assumed fixed and rigid, therefore we consider dendrites
+to be undeformable during their growth. Unfortunately, this assumption is contradictory with our current situation where the metal is shrinking upon solidification, 
+until dendrite tips become close to the metal-air interface (overlapping of diffuse interface region and mushy zone, shown in lower right corner of \cref{fig:1dalsi7_interface_stages}).
+At this stage, tracking a single interface induces concept errors, because we are not sure which of the previously mentioned interfaces is being tracked, and hence failing
+to determine a adequate transport velocity field. 
+%--------------
+\begin{figureth}
+% textwidth 
+{1.0}
+%path 
+{Chapter4/Graphics/1d/interface_stages.pdf}
+% caption
+{My caption}
+% label
+\label{fig:1dalsi7_interface_stages}
+\end{figureth}
+%--------------
+
 
 
 \subsection{Shrinkage with macrosegregation}
@@ -1292,7 +1324,84 @@ Show and discuss mass conservation and solute mass conservation as a function of
 
 \section{2D application: \bin{Sn}{3}{Pb}}
 Present 2D case with results + discussion
+
 %--
+
+
+
 \section{3D application: TEXUS steel}
-Present 2D and 3D case with results + discussion
+
+\subsection{Introduction}
+As presented in the introductory chapter, the aim of the CCEMLCC project is to "reach a better
+understanding of surface defects formed during processing of steels from the liquid state" \citep{gandin_project_2014}.
+Among the several scientific topics being studied, the interaction between skin macrosegregation 
+and thermomechanical deformation is investigated through chill cooling experiments.
+The idea is to have the molten steel in a containerless environment, which could be done by several ways: 
+electromagnetic levitation, onboard parabolic flights or sounding rockets and finally
+in a real microgravity context as in the ISS. Heat is extracted from the sample by contact with a ceramic 
+(Si$_3$N$_4$) substrate at room temperature (hence the term "chill cooling"), that collides into the alloy at a controlled speed.
+This contact situation generating high thermal gradients is comparable to casting processes between the molten alloy and the moulds.
+For ground-based experiments, EML is the exclusive technique to achieve a chill cooling experiment. However, it is technically 
+difficult to achieve levitation without currents in the spherical sample, generated by means of electromagnetic stirring (Lorentz forces) on the one hand but also
+by thermal convection on the other hand. In reduced gravity conditions, the dynamics of the phenomena behind fluid motion are less significant.
+The current application is therefore dedicated to chill cooling experiments performed in sounding rockets with reduced gravitational forces ($\norm{\gravity}$=\SI{e-5}{\uacceleration}).
+
+%--------------
+\begin{figureth}
+% textwidth 
+{1.0}
+%path 
+{Chapter4/Graphics/3d/exp.pdf}
+% caption
+{My caption}
+% label
+\label{fig:somefig2}
+\end{figureth}
+%--------------
+
+
+\subsection{TEXUS experiment}
+TEXUS-46 is actually the name of the sounding rocket that carries the experimental setup, 
+but for simplicity we will refer to the latter as being the TEXUS experiment.
+
+
+
+%--------------
+\begin{figureth}
+% textwidth 
+{1.0}
+%path 
+{Chapter4/Graphics/3d/camera.pdf}
+% caption
+{Image sequence given by a high speed camera onboard a TEMPUS parabolic flight, showing the 
+solidification progress between 0 s (when contact with the chill is initiated) to 3.75 s in a \tern{Fe}{0.9}{C}{0.2}{Si} steel droplet. 
+The progress of the solidification front is marked by the green dashed line. In some frames, the droplet is partially hidden by the narrow 
+opening of the sample holder facing the camera.}
+% label
+\label{fig:camera}
+\end{figureth}
+%--------------
+
+
+\subsection{Previous contribution}
+A former contribution by CEMEF was done by \citet{rivaux_simulation_2011}, as mentioned in the first chapter. 
+His model considered both the steel droplet and the ceramic chill in a Lagrangian formulation, i.e. each object is
+modelled using a separate deformable mesh. Conservation equations of mass, energy,
+chemical species and momentum were solved in the metal domain, while the energy
+conservation was the sole equation solved on the chill mesh. The mechanical problem was divided
+into two parts: fluid and mechanics and solid mechanics. For the first part, the momentum conservation in the liquid phase was solved using an
+incompressible P1/P1 SUPG-PSPG formulation of Navier-Stokes equations, i.e. without any contraction for the liquid phase neither solidification shrinkage at the solid-liquid interface.
+The second part, solid mechanics,
+was solved using P1+/P1 formulation to predict solid deformation caused by the previously mentioned factors, 
+using elasto-visco-plastic behaviour. 
+The simulation results showed that the total droplet deformation that has been
+observed in the experiments is not primarily due to solid deformation. The density jump
+between the solid and liquid phases at the solidification front is actually predominant. High
+speed camera images endorse this observation, where the droplet underwent a continuous
+spherical-to-elliptic shape change while the solidification front travelled away from the
+contact point.
+ 
+ 
+ 
+ 
 %--
