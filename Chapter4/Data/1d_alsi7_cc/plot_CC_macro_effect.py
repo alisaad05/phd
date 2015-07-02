@@ -1,0 +1,95 @@
+# check http://matplotlib.org/users/customizing.html
+sz=20
+import numpy as np
+import matplotlib.pyplot as plt
+import itertools
+from matplotlib import rc
+rc('font',**{'family':'serif','serif':['Palatino']})
+rc('text', usetex=True)
+rc('axes', labelsize=sz)
+rc('xtick', labelsize=sz)
+rc('ytick', labelsize=sz)
+rc('legend', fontsize=sz)
+
+foldername = 'no_macro_with_shrinkage'
+z1 = np.genfromtxt(foldername+'\CapteurP1_1.xls', delimiter='\t', skip_header=0, skip_footer=0, names=True , usecols=("Temps","TemperatureC") )
+z2 = np.genfromtxt(foldername+'\CapteurP1_2.xls', delimiter='\t', skip_header=0, skip_footer=0, names=True , usecols=("Temps","TemperatureC") )
+z3 = np.genfromtxt(foldername+'\CapteurP1_3.xls', delimiter='\t', skip_header=0, skip_footer=0, names=True , usecols=("Temps","TemperatureC") )
+z4 = np.genfromtxt(foldername+'\CapteurP1_4.xls', delimiter='\t', skip_header=0, skip_footer=0, names=True , usecols=("Temps","TemperatureC") )
+z5 = np.genfromtxt(foldername+'\CapteurP1_5.xls', delimiter='\t', skip_header=0, skip_footer=0, names=True , usecols=("Temps","TemperatureC") )
+z6 = np.genfromtxt(foldername+'\CapteurP1_6.xls', delimiter='\t', skip_header=0, skip_footer=0, names=True , usecols=("Temps","TemperatureC") )
+z7 = np.genfromtxt(foldername+'\CapteurP1_7.xls', delimiter='\t', skip_header=0, skip_footer=0, names=True , usecols=("Temps","TemperatureC") )
+z8 = np.genfromtxt(foldername+'\CapteurP1_8.xls', delimiter='\t', skip_header=0, skip_footer=0, names=True , usecols=("Temps","TemperatureC") )
+
+marker = itertools.cycle(('^','x', 'o', 'p', 'v','d','>','+'))  #randomize marker style
+# col = itertools.cycle(( (0.3,0.3,0.3), (0.4,0.4,0.4),(0.5,0.5,0.5),(0.65,0.65,0.65), (0.75,0.75,0.75),(0.9,0.9,0.9)))  #randomize marker style
+# col = itertools.cycle(('g', 'b', 'r', 'c', 'y', 'k', 'm'))  #randomize color
+# col = itertools.cycle((grey))
+mFreq = 20000 #Mark plot every x number of points
+mTransp = 0.75
+mSize = 7
+lw=1
+# plt.figure(1)
+fig, ax = plt.subplots()
+fig.set_size_inches(10, 6)
+
+c1 = 'b'
+ax.plot(z1['Temps'], z1['TemperatureC'], marker = marker.next(), color=c1, markersize=mSize, markevery=mFreq, alpha=mTransp, lw=lw)
+ax.plot(z2['Temps'], z2['TemperatureC'], marker = marker.next(), color=c1, markersize=mSize, markevery=mFreq, alpha=mTransp, lw=lw)
+ax.plot(z3['Temps'], z3['TemperatureC'], marker = marker.next(), color=c1, markersize=mSize, markevery=mFreq, alpha=mTransp, lw=lw)
+ax.plot(z4['Temps'], z4['TemperatureC'], marker = marker.next(), color=c1, markersize=mSize, markevery=mFreq, alpha=mTransp, lw=lw)
+ax.plot(z5['Temps'], z5['TemperatureC'], marker = marker.next(), color=c1, markersize=mSize,markevery=mFreq, alpha=mTransp, lw=lw)
+ax.plot(z6['Temps'], z6['TemperatureC'], marker = marker.next(), color=c1, markersize=mSize,  markevery=mFreq, alpha=mTransp, lw=lw)
+ax.plot(z7['Temps'], z7['TemperatureC'], marker = marker.next(), color=c1, markersize=mSize,  markevery=mFreq, alpha=mTransp, lw=lw)
+ax.plot(z8['Temps'], z8['TemperatureC'], marker = marker.next(), color=c1, markersize=mSize, markevery=mFreq, alpha=mTransp, lw=lw)
+
+
+foldername = 'macro_shrinkage' 
+z1 = np.genfromtxt(foldername+'\CapteurP1_1.xls', delimiter='\t', skip_header=0, skip_footer=0, names=True , usecols=("Temps","TemperatureC") )
+z2 = np.genfromtxt(foldername+'\CapteurP1_2.xls', delimiter='\t', skip_header=0, skip_footer=0, names=True , usecols=("Temps","TemperatureC") )
+z3 = np.genfromtxt(foldername+'\CapteurP1_3.xls', delimiter='\t', skip_header=0, skip_footer=0, names=True , usecols=("Temps","TemperatureC") )
+z4 = np.genfromtxt(foldername+'\CapteurP1_4.xls', delimiter='\t', skip_header=0, skip_footer=0, names=True , usecols=("Temps","TemperatureC") )
+z5 = np.genfromtxt(foldername+'\CapteurP1_5.xls', delimiter='\t', skip_header=0, skip_footer=0, names=True , usecols=("Temps","TemperatureC") )
+z6 = np.genfromtxt(foldername+'\CapteurP1_6.xls', delimiter='\t', skip_header=0, skip_footer=0, names=True , usecols=("Temps","TemperatureC") )
+z7 = np.genfromtxt(foldername+'\CapteurP1_7.xls', delimiter='\t', skip_header=0, skip_footer=0, names=True , usecols=("Temps","TemperatureC") )
+z8 = np.genfromtxt(foldername+'\CapteurP1_8.xls', delimiter='\t', skip_header=0, skip_footer=0, names=True , usecols=("Temps","TemperatureC") )
+
+c2 = 'r'
+lw = 1
+mTransp = 0.75
+mFreq = 20000 #Mark plot every x number of points
+
+ax.plot(z1['Temps'], z1['TemperatureC'], marker = marker.next(), color=c2, markersize=mSize, markevery=mFreq, alpha=mTransp, lw=lw)
+ax.plot(z2['Temps'], z2['TemperatureC'], marker = marker.next(), color=c2, markersize=mSize, markevery=mFreq, alpha=mTransp, lw=lw)
+ax.plot(z3['Temps'], z3['TemperatureC'], marker = marker.next(), color=c2, markersize=mSize, markevery=mFreq, alpha=mTransp, lw=lw)
+ax.plot(z4['Temps'], z4['TemperatureC'], marker = marker.next(), color=c2, markersize=mSize, markevery=mFreq, alpha=mTransp, lw=lw)
+ax.plot(z5['Temps'], z5['TemperatureC'], marker = marker.next(), color=c2, markersize=mSize, markevery=mFreq, alpha=mTransp, lw=lw)
+ax.plot(z6['Temps'], z6['TemperatureC'], marker = marker.next(), color=c2, markersize=mSize, markevery=mFreq, alpha=mTransp, lw=lw)
+ax.plot(z7['Temps'], z7['TemperatureC'], marker = marker.next(), color=c2, markersize=mSize, markevery=mFreq, alpha=mTransp, lw=lw)
+ax.plot(z8['Temps'], z8['TemperatureC'], marker = marker.next(), color=c2, markersize=mSize, markevery=mFreq, alpha=mTransp, lw=lw)
+
+
+## Plot and annotate liquidus temperature
+# Tliq = plt.axhline(y=618, linewidth=1, color='k')
+# Tliq.set_linestyle('--')
+# plt.text(10, 625, r'$T_{L}$')
+
+## Plot and annotate eutectic temperature
+# Teut = plt.axhline(y=577, linewidth=1, color='k')
+# Teut.set_linestyle('--')
+# plt.text(10, 583, r'$T_{E}$')
+
+plt.xlim(0, 1000)
+plt.ylim(350, 810)
+
+
+## Show background grid
+# plt.grid(True)
+	   
+plt.xlabel('Time (s)')
+plt.ylabel('Temperature ($^\circ$C)')
+# plt.title('Cooling Curves $T(t)$')
+
+# plt.show()
+plt.savefig('macro_effect.png', dpi=300, bbox_inches='tight')
+plt.savefig('macro_effect.pdf', bbox_inches='tight')
