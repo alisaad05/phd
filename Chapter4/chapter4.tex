@@ -1517,7 +1517,7 @@ with a \SI{0.1}{\ucomposition} step for average composition within an offset of 
 a cooling range between $T_E$ and \SI{630}{\udegC} is considered with a step of \SI{1}{\udegC}. It is noted that for this application,
 the phase enthalpies are deduced from constant specific heat of each phase as well as constant latent heat.
 
-In order to understand better the effect of shrinkage combined with macrosegregation, we plot in \cref{fig:1dasi7_macro_shrinkage}
+In order to understand better the effect of shrinkage combined with macrosegregation, we plot in \cref{fig:1dasi7_macro_shrinkage},
 3 different simulations: pure diffusion (i.e. no momentum conservation resolution) solidification without shrinkage (grey), 
 used previosuly in chapter 2 for validation, solidification with shrinkage at a constant average composition (blue)
 and finally solidification with shrinkage and macrosegregation (red).
@@ -1565,8 +1565,6 @@ we show (b) the effect of macrosegregation on temperature in the presence of sol
 %------------------
 %
 
-
-
 %--------------
 \begin{figureth}
 % textwidth 
@@ -1574,11 +1572,52 @@ we show (b) the effect of macrosegregation on temperature in the presence of sol
 %path 
 {Chapter4/Graphics/1d/macro/gs_w.pdf}
 % caption
-{My caption}
+{Zoom on the lower part, approximately 1.5 cm of the alloy close to the cooling boundary condition. The upper row of figures show the evolution of volume solid fraction, when eutectic transformation takes place. The vectors represent the direction of the average velocity field, with a length proportional
+to the magnitude. The lower row of figures show for the same time increments, the solute redistribution, clearly changing behind the eutectic front.}
 % label
-\label{fig:somefig3}
+\label{fig:1dalsi7_gs_w}
 \end{figureth}
 %--------------
+
+
+%--------------
+
+%=====================================BIG LANDSCAPE FIGURE =====================================
+\begin{landscape}
+\begin{figureth}
+% textwidth 
+{1.5}
+%path 
+{Chapter4/Data/1d_alsi7_arc_compositions/compositions_vs_length.pdf}
+% caption
+{Group of plots where each row is a given time increment (t=200 s, t=600 s and t=800 s) of the 1D solidification shrinkage simulation with macrosegregation, 
+while each column one or more physical quantities are plotted along a vertical line passing through the center of the sample. Plots are titled with the corresponding plotted quantities.}
+% label
+\label{fig:1dalsi7_dataVSlength}
+\end{figureth}
+\end{landscape}
+%=====================================BIG LANDSCAPE FIGURE =====================================
+
+The plots in \cref{fig:1dalsi7_dataVSlength} give important information on the segregation shown in  \cref{fig:1dalsi7_gs_w}.
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
 
 
@@ -1664,6 +1703,8 @@ spherical-to-elliptic shape change while the solidification front travelled away
 contact point.
  
  
- 
+\subsection{TODO}
+Compare mass conservation between anisotropic mesh (up to 20\% loss) and isotropic fixed (up to 3\% only) \\
+Compare results of binary, ternary and quaternary tabulations then simplified quaternary \\
  
 %--

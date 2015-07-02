@@ -1,0 +1,16 @@
+[1mdiff --git a/Chapter4/chapter4.tex b/Chapter4/chapter4.tex[m
+[1mindex e7790d0..deaaaa9 100644[m
+[1m--- a/Chapter4/chapter4.tex[m
+[1m+++ b/Chapter4/chapter4.tex[m
+[36m@@ -1664,6 +1664,8 @@[m [mspherical-to-elliptic shape change while the solidification front travelled away[m
+ contact point.[m
+  [m
+  [m
+[31m- [m
+[32m+[m[32m\subsection{TODO}[m
+[32m+[m[32mCompare mass conservation between anisotropic mesh (up to 20\% loss) and isotropic fixed (up to 3\% only) \\[m
+[32m+[m[32mCompare results of binary, ternary and quaternary tabulations then simplified quaternary \\[m
+  [m
+ %--[m
+warning: LF will be replaced by CRLF in Chapter4/chapter4.tex.
+The file will have its original line endings in your working directory.
