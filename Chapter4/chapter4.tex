@@ -1086,9 +1086,9 @@ The thick blue line represents the zero iso-value of the distance function.}
 	%width=0.5\textwidth,
 	mark repeat	= {2},
 ]
-\addplot table [x=Temperature, y expr=\thisrow{LIQ}] {Chapter4/Data/1d_alsi7_nominalSP/sp.csv} \closedcycle ;
-\addplot table [x=Temperature, y expr=\thisrow{ALPHA}] {Chapter4/Data/1d_alsi7_nominalSP/sp.csv}\closedcycle;
-\addplot table [x=Temperature, y expr=\thisrow{BETA}] {Chapter4/Data/1d_alsi7_nominalSP/sp.csv}\closedcycle;
+\addplot table [x=Temperature, y expr=\thisrow{LIQ}] {Chapter4/Data/1d_alsi7_nominalSP/sp.csv};% \closedcycle ;
+\addplot table [x=Temperature, y expr=\thisrow{ALPHA}] {Chapter4/Data/1d_alsi7_nominalSP/sp.csv};%\closedcycle;
+\addplot table [x=Temperature, y expr=\thisrow{BETA}] {Chapter4/Data/1d_alsi7_nominalSP/sp.csv};%\closedcycle;
 
 \legend{Liquid, BCC, FCC}
 \end{axis}
@@ -1272,7 +1272,7 @@ cases of solidification shrinkage.
 	ymin=-0.1, ymax=0.2,
 	mark repeat	= {30},
 ]
-\addplot table [x=Temps, y=mMpct] {Chapter4/Data/1d_alsi7_mass/ArtificialDarcyBlocking0pct_smallstep.txt} \closedcycle ;
+\addplot table [x=Temps, y=mMpct] {Chapter4/Data/1d_alsi7_mass/ArtificialDarcyBlocking0pct_smallstep.txt}; %\closedcycle; 
 %\addplot table [x=Temps, y=mMpct] {Chapter4/Data/1d_alsi7_mass/ArtificialDarcyBlocking25pct.txt}\closedcycle;
 %\addplot table [x=Temps, y=mMpct] {Chapter4/Data/1d_alsi7_mass/ArtificialDarcyBlocking50pct.txt}\closedcycle;
 %\addplot table [x=Temps, y=mMpct] {Chapter4/Data/1d_alsi7_mass/ArtificialDarcyBlocking99pct.txt}\closedcycle;
@@ -1302,7 +1302,7 @@ cases of solidification shrinkage.
 	ymin=-0.1, ymax=0.2,
 	mark repeat	= {30},
 ]
-\addplot table [x=Temps, y=mMpct] {Chapter4/Data/1d_alsi7_mass/RealDarcyBlocking0pct.txt} \closedcycle ;
+\addplot table [x=Temps, y=mMpct] {Chapter4/Data/1d_alsi7_mass/RealDarcyBlocking0pct.txt}; %\closedcycle;
 %\addplot table [x=Temps, y=mMpct] {Chapter4/Data/1d_alsi7_mass/RealDarcyBlocking25pct.txt}\closedcycle;
 %\addplot table [x=Temps, y=mMpct] {Chapter4/Data/1d_alsi7_mass/RealDarcyBlocking50pct.txt}\closedcycle;
 %\addplot table [x=Temps, y=mMpct] {Chapter4/Data/1d_alsi7_mass/RealDarcyBlocking99pct.txt}\closedcycle;
@@ -1411,10 +1411,10 @@ the mass increases up to 3\% while the eutectic front is consuming the liquid wi
 ]
 %\coordinate (pt) at (axis cs:500,0);
 %\coordinate (posZoom) at (axis cs:100,0.5);
-\addplot table [x=Temps, y=mMpct] {Chapter4/Data/1d_alsi7_mass/RealDarcyBlocking0pct.txt} \closedcycle ;
-\addplot table [x=Temps, y=mMpct] {Chapter4/Data/1d_alsi7_mass/RealDarcyBlocking50pct.txt} \closedcycle ;
-\addplot table [x=Temps, y=mMpct] {Chapter4/Data/1d_alsi7_mass/RealDarcyBlocking75pct.txt} \closedcycle ;
-\addplot table [x=Temps, y=mMpct] {Chapter4/Data/1d_alsi7_mass/RealDarcyBlocking99pct.txt} \closedcycle ;
+\addplot table [x=Temps, y=mMpct] {Chapter4/Data/1d_alsi7_mass/RealDarcyBlocking0pct.txt};% \closedcycle ;
+\addplot table [x=Temps, y=mMpct] {Chapter4/Data/1d_alsi7_mass/RealDarcyBlocking50pct.txt};% \closedcycle ;
+\addplot table [x=Temps, y=mMpct] {Chapter4/Data/1d_alsi7_mass/RealDarcyBlocking75pct.txt};% \closedcycle ;
+\addplot table [x=Temps, y=mMpct] {Chapter4/Data/1d_alsi7_mass/RealDarcyBlocking99pct.txt};% \closedcycle ;
 \legend{$g^{BL}=0\%$, $g^{BL}=50\%$, $g^{BL}=75\%$, $g^{BL}=99\%$}
 %----
 %\begin{scope}
@@ -1455,10 +1455,10 @@ the mass increases up to 3\% while the eutectic front is consuming the liquid wi
 ]
 %\coordinate (pt) at (axis cs:500,0);
 %\coordinate (posZoom) at (axis cs:100,0.5);
-\addplot table [x=Temps, y=mMpct] {Chapter4/Data/1d_alsi7_mass/RealDarcyBlocking0pct.txt} \closedcycle ;
-%\addplot table [x=Temps, y=mMpct] {Chapter4/Data/1d_alsi7_mass/RealDarcyBlocking25pct.txt} \closedcycle ;
-\addplot table [x=Temps, y=mMpct] {Chapter4/Data/1d_alsi7_mass/RealDarcyBlocking50pct.txt} \closedcycle ;
-%\addplot table [x=Temps, y=mMpct] {Chapter4/Data/1d_alsi7_mass/RealDarcyBlocking99pct.txt} \closedcycle ;
+\addplot table [x=Temps, y=mMpct] {Chapter4/Data/1d_alsi7_mass/RealDarcyBlocking0pct.txt};% \closedcycle ;
+%\addplot table [x=Temps, y=mMpct] {Chapter4/Data/1d_alsi7_mass/RealDarcyBlocking25pct.txt};% \closedcycle ;
+\addplot table [x=Temps, y=mMpct] {Chapter4/Data/1d_alsi7_mass/RealDarcyBlocking50pct.txt};% \closedcycle ;
+%\addplot table [x=Temps, y=mMpct] {Chapter4/Data/1d_alsi7_mass/RealDarcyBlocking99pct.txt};% \closedcycle ;
 \legend{$g^{BL}=0\%$, $g^{BL}=50\%$}
 %----
 %\begin{scope}
@@ -1617,18 +1617,45 @@ As the transport continues in the same direction,
 solute is progressively depleted in the remaining liquid, causing negative macrosegregation in the last solidified nodes of the metal, 
 as clearly shown in \cref{fig:1dalsi7_wVSlength}.
 
-%--------------
-\begin{figureth}
-% textwidth 
-{1.0}
-%path 
-{Misc/dummy.pdf}
-% caption
-{Plot of the average composition as function of length, along a vertical line passing through the center of the sample.}
-% label
+%--------------------------------------
+\begin{figure}[htbp]
+\centering
+%-------
+\begin{tikzpicture}
+  \begin{axis}
+  [	name=one,
+	%title= mass conservation,
+	scale only axis,
+	table/col sep=comma,  % comma % tab
+	enlarge x limits=false,
+	%legend pos=north east,
+	scaled ticks=true,
+	xlabel=Sample length (m),
+	ylabel=$\avg{w}$ (wt.\% Si),
+	xticklabel style={/pgf/number format/fixed},
+	xtick={0,0.02,...,0.14},
+	%ytick={-0.1,0,0.1,0.2},
+	%x tick label style={rotate=45,anchor=east},
+	width=0.9\textwidth,
+	height=4cm,	
+	%ymin=-0.1, ymax=0.2,
+	%xmax=0.0928,
+	mark repeat	= {200},
+]
+	\addplot table [x=arc_length, y=Concentration] {Chapter4/Data/1d_alsi7_composition/ModifyVitLiq.csv}; %\closedcycle ;
+	%\addplot[thick, samples=50, smooth,magenta, name path=ls] coordinates {(0.09268,\pgfkeysvalueof{/pgfplots/ymin})(0.09268,\pgfkeysvalueof{/pgfplots/ymax})};
+	\draw[thick, magenta,  opacity=0.5] (axis cs:0.0926,\pgfkeysvalueof{/pgfplots/ymin}) -- (axis cs:0.0926,\pgfkeysvalueof{/pgfplots/ymax});
+	\draw[thin, dashed, black, opacity=0.5] (axis cs:\pgfkeysvalueof{/pgfplots/xmin},7) -- (axis cs:\pgfkeysvalueof{/pgfplots/xmax},7);
+  	\end{axis}
+  	%-------------------
+ 
+\end{tikzpicture}
+%-------
+\caption{Plot of the average composition as function of length, along a vertical line passing through the center of the sample.}
 \label{fig:1dalsi7_wVSlength}
-\end{figureth}
-%--------------
+\end{figure}
+%--------------------------------------
+
 
 %=====================================BIG LANDSCAPE FIGURE =====================================
 \begin{landscape}
@@ -1662,23 +1689,42 @@ Show solute mass conservation with equal or low solute diffusion in air
 
 
 
-
-
-
-
-
-
-
-
-
-
-
 \section{2D application: \bin{Sn}{3}{Pb}}
-Present 2D case with results + discussion
 
-%--
+This type of applications is very known to the solidification literature and very important in understanding and predicting macrosegregation produced by liquid convection,
+solid grains sedimentation and volume shrinkage.
+An molten alloy is put in a rectangular crucible with controlled cooling flux on one or two sides to the crucible. The importance of the experiment lies in the 
+thermal convection forces arising from temperature gradients, but also solutal buoyancy forces arising from liquid concentration gradients. 
+Depending on the density of each chemical species, these convection forces may either be in the same or opposite direction, changing the final macrosegregation pattern.
+\citet{hebditch_observations_1974} suggested one of the first experiments working on Sn-Zn and Sn-Pb alloys. A part of their results is shown in \cref{fig:HH_exp}. 
+More recently, an experimental benchmark was performed by \citet{hachani_experimental_2012} to obtain more accurate 
+composition results with different Sn-Pb and Pb-Sn alloys. In the current section, we are interested in the latter experiment.
 
-
+%
+%-----------------
+\begin{figure}[htbp]
+\centering
+   %------------
+  \begin{subfigure}[t]{0.45\textwidth}
+    \centering
+	\includegraphics[width=\textwidth]{Chapter4/Graphics/2d/HH1.png}
+	\caption{}
+    \label{fig:HH1}
+  \end{subfigure}
+  %------------------------------
+  %------------------------------
+  \begin{subfigure}[t]{0.45\textwidth}
+    \centering
+	\includegraphics[width=\textwidth]{Chapter4/Graphics/2d/HH2.png}
+	\caption{}
+    \label{fig:HH2}
+  \end{subfigure}
+   %------------
+\caption{Final macrosegregation patterns in (a) \bin{Sn}{5}{Zn} and (b) \bin{Sn}{5}{Pb} castings, with a visible sign of volume shrinkage at the top. 
+		The rectangular grid on both alloys is used to measure concentration at control points located at each rectangle's centre \citep{hebditch_observations_1974}.} 
+\label{fig:HH_exp}
+\end{figure}
+%------------------
 
 
 
@@ -1773,7 +1819,10 @@ shrinkage in the solid resolution, although this type of shrinkage does not gene
 in the solidifying alloy, compared to thermal shrinkage for instance.
 
 
-
+\subsection{Geometry and boundary conditions}
+\subsection{Texus binary alloy}
+\subsection{Texus ternary alloy}
+\subsection{Texus quaternary alloy}
  
  \subsection{TODO}
 Compare mass conservation between anisotropic mesh (up to 20\% loss) and isotropic fixed (up to 3\% only) \\
