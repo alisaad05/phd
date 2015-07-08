@@ -969,7 +969,7 @@ imposed at the free surface, as a result of a decreasing permeability.
 %
 %--------------------------------
 %--
-\section{1D application: \bin{Al}{7}{Si}}
+\section{1D application: solidification with inverse segregation}
 %--------------------------------------------
 \subsection{Geometry and boundary conditions}
 A simple but very efficient way of analysing the model is to test it through a 1D flow configuration with energy and species conservation.
@@ -1530,7 +1530,7 @@ we use it as a reference case,
 convection-diffusion solidification with $\rhol \neq \rhos$ (with level set) and macrosegregation.
 \end{itemize}
 
-\subsubsection{Solidification shrinkage effect on temperature}
+\subsubsection{Shrinkage effect on temperature}
 If we focus first on \cref{fig:shrinkage_effect}, we first compare solidification cases G and G0, both with equal phase densities, hence no shrinkage.
 This first comparison shows that the introduction of the level set method, compared to a monodomain configuration, heats up
 the overall sample temperature by about \SI{5}{\udegC}, causing solidification to finish a few seconds later than predicted in case G0.
@@ -1551,7 +1551,7 @@ is a Fourier-type with the same heat transfer coefficient $\hext$ in both cases.
 front, and thus raising slightly the temperature in regions close to the cool wall. Therefore, the Fourier flux proportional to the temperature difference $(T-\Text)$ increases
 and the sample solidifies earlier. 
 
-\subsubsection{Solidification shrinkage with macrosegregation effect on temperature}
+%\subsubsection{Solidification shrinkage with macrosegregation effect on temperature}
 Finally, \cref{fig:macro_effect} compares cases B and R, both with unequal phase densities but only predicting macrosegregation in the latter case. 
 Differences are not striking, as temperatures
 along the metal sample are the same. We spot however a difference at the 10 cm probe, 
@@ -1604,7 +1604,7 @@ clearly changing behind the eutectic front.}
 \end{figureth}
 %--------------
 
-\subsubsection{Inverse segregation}
+\subsubsection{Shrinkage effect on average composition}
 \Cref{fig:1dalsi7_gs_w} shows snapshots at different times of the shrinkage flow caused by the density difference between liquid and solid phases.
 By solid phases, we mean the primary solid phase assumed in a dendritic structure, then the primary and secondary solid phases form together the eutectic
 that we see starting at 150 s in \cref{fig:1dalsi7_gs_w}. We can see that some solute segregation has already initiated in the mushy zone at 100 s.
@@ -1614,17 +1614,91 @@ as each node's density varies from $\rhol$ to $\rhos$ in a single time step, at 
 causes species transport in the opposite direction of solidification, hence solute "freezes" in the eutectic structure leading to positive macrosegregation
 in the first solidified nodes. This phenomenon is better known as inverse segregation. 
 As the transport continues in the same direction, 
-solute is progressively depleted in the remaining liquid, causing negative macrosegregation in the last solidified nodes of the metal, 
-as clearly shown in \cref{fig:1dalsi7_wVSlength}.
+solute is progressively depleted in the remaining liquid, causing negative macrosegregation at nodes located between 2 cm and 7 cm from the cold wall.
+\Cref{fig:1dalsi7_gs_w} shows only the first 1.5 cm of the soldifiying sample, therefore a complete segregation profile is plotted along the sample length in \cref{fig:1dalsi7_wVSlength}a,
+showing thus the negative macrosegregation as previouly explained.
+However, from 7 cm to the metal-air interface, the average composition rises as clearly shown in \cref{fig:1dalsi7_wVSlength}a. This looks more like a numerical
+instability than a physical rise in concentration. 
+Bearing in mind that a reduced solute diffusion coefficient is imposed in the air subdomain \SI{1.5e-12}{\udiffusivity} compared to 
+\SI{1.5e-9}{\udiffusivity} in the metal, we investigate into this instability by proposing two test cases: first, we try to limit the solute advection in the transition
+zone where flow instabilities may form as seen previously in the segregation-free sample but keeping equal solute diffusion coefficients in both domains to \SI{1.5e-9}{\udiffusivity},
+while for the second test case, we combine both low solute diffusion and low solute advection. The average composition results of these two test cases
+are respectively plotted in \cref{fig:1dalsi7_wVSlength}b and \cref{fig:1dalsi7_wVSlength}c.
+These results (second plot in \cref{fig:1dalsi7_wVSlength})  clearly show that just by reducing solute advection in the mixing zone reduce the amplitude of the composition instability.
+In contrast, changing solute diffusion properties for the air coupled with reduced solute advection (third plot in \cref{fig:1dalsi7_wVSlength}) offers no futher stability
+in the segregation profile, which should normally say below the nominal value near the interface.
 
 %--------------------------------------
+\shorthandoff{;:?!} %http://tex.stackexchange.com/questions/74860/unexpected-clash-between-babel-and-pgf-spy
 \begin{figure}[htbp]
 \centering
 %-------
-\begin{tikzpicture}
+\begin{tikzpicture}%[spy using outlines={rectangle, magnification=3, width=1cm, height=6cm, connect spies}]
+%[spy using outlines={circle, magnification=3, connect spies}]
   \begin{axis}
   [	name=one,
-	%title= mass conservation,
+	title= (a),
+	%at=(one.right of south east), anchor=left of south west,
+	scale only axis,
+	table/col sep=comma,  % comma % tab
+	enlarge x limits=false,
+	%legend pos=north east,
+	scaled ticks=true,
+	%xlabel=Sample length (m),
+	ylabel=$\avg{w}$ (wt.\% Si),
+	xticklabel style={/pgf/number format/fixed},
+	xtick={0,0.02,...,0.14},
+	xticklabels={},
+	ytick={6.5,7,7.5},
+	%x tick label style={rotate=45,anchor=east},
+	width=0.9\textwidth,
+	height=5cm,	
+	ymin=6.45, ymax=7.55,
+	%xmax=0.0928,
+	mark repeat	= {142},
+	cycle list name=exotic,
+]
+	\coordinate (spypoint) at (0.002,7.25);
+	\coordinate (magnifyglass) at (0.06,7.3);
+	\addplot table [x=arc_length, y=Concentration] {Chapter4/Data/1d_alsi7_composition/ModifyDiffSoluteAir.csv}; %\closedcycle ;
+	%\addplot[thick, samples=50, smooth,magenta, name path=ls] coordinates {(0.09268,\pgfkeysvalueof{/pgfplots/ymin})(0.09268,\pgfkeysvalueof{/pgfplots/ymax})};
+	\draw[thick, magenta,  opacity=0.5] (axis cs:0.0926,\pgfkeysvalueof{/pgfplots/ymin}) -- (axis cs:0.0926,\pgfkeysvalueof{/pgfplots/ymax});
+	\draw[thick, dashed, black, opacity=0.5] (axis cs:\pgfkeysvalueof{/pgfplots/xmin},7) -- (axis cs:\pgfkeysvalueof{/pgfplots/xmax},7);
+  	\end{axis}
+%-------------------
+ \begin{axis}
+  [	name=two,
+	title= (b),
+	at=(one.below south west), anchor=above north west,
+	scale only axis,
+	table/col sep=comma,  % comma % tab
+	enlarge x limits=false,
+	%legend pos=north east,
+	scaled ticks=true,
+	%xlabel=Sample length (m),
+	ylabel=$\avg{w}$ (wt.\% Si),
+	xticklabel style={/pgf/number format/fixed},
+	xtick={0,0.02,...,0.14},
+	xticklabels={},
+	ytick={6.5,7,7.5},
+	%x tick label style={rotate=45,anchor=east},
+	width=0.9\textwidth,
+	height=5cm,	
+	ymin=6.45, ymax=7.55,
+	%xmax=0.0928,
+	mark repeat	= {142},
+	cycle list name=exotic,
+]
+	\addplot table [x=arc_length, y=Concentration] {Chapter4/Data/1d_alsi7_composition/ModifyVitLiq.csv}; %\closedcycle ;
+	%\addplot[thick, samples=50, smooth,magenta, name path=ls] coordinates {(0.09268,\pgfkeysvalueof{/pgfplots/ymin})(0.09268,\pgfkeysvalueof{/pgfplots/ymax})};
+	\draw[thick, magenta,  opacity=0.5] (axis cs:0.0926,\pgfkeysvalueof{/pgfplots/ymin}) -- (axis cs:0.0926,\pgfkeysvalueof{/pgfplots/ymax});
+	\draw[thick, dashed, black, opacity=0.5] (axis cs:\pgfkeysvalueof{/pgfplots/xmin},7) -- (axis cs:\pgfkeysvalueof{/pgfplots/xmax},7);
+  	\end{axis}
+%-------------------
+ \begin{axis}
+  [	name=three,
+	title= (c),
+	at=(two.below south west), anchor=above north west,
 	scale only axis,
 	table/col sep=comma,  % comma % tab
 	enlarge x limits=false,
@@ -1633,28 +1707,34 @@ as clearly shown in \cref{fig:1dalsi7_wVSlength}.
 	xlabel=Sample length (m),
 	ylabel=$\avg{w}$ (wt.\% Si),
 	xticklabel style={/pgf/number format/fixed},
-	xtick={0,0.02,...,0.14},
-	%ytick={-0.1,0,0.1,0.2},
+	xtick={0,0.02,0.04,0.06,0.08,0.1,0.12,0.14},
+	xticklabels={0,0.02,0.04,0.06,0.08,0.1,0.12,0.14},
+	ytick={6.5,7,7.5},
 	%x tick label style={rotate=45,anchor=east},
 	width=0.9\textwidth,
-	height=4cm,	
-	%ymin=-0.1, ymax=0.2,
+	height=5cm,	
+	ymin=6.45, ymax=7.55,
 	%xmax=0.0928,
-	mark repeat	= {200},
+	mark repeat	= {142},
+	cycle list name=exotic,
 ]
-	\addplot table [x=arc_length, y=Concentration] {Chapter4/Data/1d_alsi7_composition/ModifyVitLiq.csv}; %\closedcycle ;
+	\addplot table [x=arc_length, y=Concentration] {Chapter4/Data/1d_alsi7_composition/ModifyVitLiq_ModifyDiffSoluteAir.csv}; %\closedcycle ;
 	%\addplot[thick, samples=50, smooth,magenta, name path=ls] coordinates {(0.09268,\pgfkeysvalueof{/pgfplots/ymin})(0.09268,\pgfkeysvalueof{/pgfplots/ymax})};
 	\draw[thick, magenta,  opacity=0.5] (axis cs:0.0926,\pgfkeysvalueof{/pgfplots/ymin}) -- (axis cs:0.0926,\pgfkeysvalueof{/pgfplots/ymax});
-	\draw[thin, dashed, black, opacity=0.5] (axis cs:\pgfkeysvalueof{/pgfplots/xmin},7) -- (axis cs:\pgfkeysvalueof{/pgfplots/xmax},7);
+	\draw[thick, dashed, black, opacity=0.5] (axis cs:\pgfkeysvalueof{/pgfplots/xmin},7) -- (axis cs:\pgfkeysvalueof{/pgfplots/xmax},7);
   	\end{axis}
-  	%-------------------
- 
+%\spy [black] on (spypoint) in node[fill=white] at (magnifyglass);  
 \end{tikzpicture}
 %-------
-\caption{Plot of the average composition as function of length, along a vertical line passing through the center of the sample.}
+\caption{Plot of the average composition as function of length, along a vertical line passing through the center of the sample at 1000 s, with 
+		(a) low solute solute diffusion in the air but unmodified solute advection (minimum composition \bin{}{2.2}{Si} not shown), 
+		(b) reduced solute advection in the level set transition zone or (c) a combination of the previous
+		techniques. The solid magenta line shows the position of the interface after solidification 
+		while the black dashed line shows the nominal average composition of the alloy.}
 \label{fig:1dalsi7_wVSlength}
 \end{figure}
 %--------------------------------------
+\shorthandon{;:?!} %http://tex.stackexchange.com/questions/74860/unexpected-clash-between-babel-and-pgf-spy
 
 
 %=====================================BIG LANDSCAPE FIGURE =====================================
@@ -1689,10 +1769,10 @@ Show solute mass conservation with equal or low solute diffusion in air
 
 
 
-\section{2D application: \bin{Sn}{3}{Pb}}
+\section{2D application: controlled solidification benchmark}
 
 This type of applications is very known to the solidification literature and very important in understanding and predicting macrosegregation produced by liquid convection,
-solid grains sedimentation and volume shrinkage.
+solid grains settling and volume shrinkage.
 An molten alloy is put in a rectangular crucible with controlled cooling flux on one or two sides to the crucible. The importance of the experiment lies in the 
 thermal convection forces arising from temperature gradients, but also solutal buoyancy forces arising from liquid concentration gradients. 
 Depending on the density of each chemical species, these convection forces may either be in the same or opposite direction, changing the final macrosegregation pattern.
@@ -1721,7 +1801,7 @@ composition results with different Sn-Pb and Pb-Sn alloys. In the current sectio
   \end{subfigure}
    %------------
 \caption{Final macrosegregation patterns in (a) \bin{Sn}{5}{Zn} and (b) \bin{Sn}{5}{Pb} castings, with a visible sign of volume shrinkage at the top. 
-		The rectangular grid on both alloys is used to measure concentration at control points located at each rectangle's centre \citep{hebditch_observations_1974}.} 
+		The rectangular grid on both alloys is used to measure concentration at grid points \citep{hebditch_observations_1974}.} 
 \label{fig:HH_exp}
 \end{figure}
 %------------------
@@ -1732,9 +1812,9 @@ composition results with different Sn-Pb and Pb-Sn alloys. In the current sectio
 
 
 
-\section{3D application: TEXUS steel}
+\section{3D application: reduced-gravity solidification}
 
-\subsection{Introduction}
+%\subsection{Introduction}
 As presented in the introductory chapter, the aim of the CCEMLCC project is to "reach a better
 understanding of surface defects formed during processing of steels from the liquid state" \citep{gandin_project_2014}.
 Among the several scientific topics being studied, the interaction between skin macrosegregation 
@@ -1746,8 +1826,12 @@ in a real microgravity context as in the ISS. Heat is extracted from the sample 
 This contact situation generating high thermal gradients is comparable to casting processes between the molten alloy and the moulds.
 For ground-based experiments, EML is the exclusive technique to achieve a chill cooling experiment. However, it is technically 
 difficult to achieve levitation without currents in the spherical sample, generated by means of electromagnetic stirring (Lorentz forces) on the one hand but also
-by thermal convection on the other hand. In reduced gravity conditions, the dynamics of the phenomena behind fluid motion are less significant.
-The current application is therefore dedicated to chill cooling experiments performed in sounding rockets with reduced gravitational forces ($\norm{\gravity}$=\SI{e-5}{\uacceleration}).
+by thermal convection on the other hand. In reduced-gravity conditions, the dynamics of the phenomena behind fluid motion are less significant.
+The current application is therefore compared to chill cooling experiments performed in parabolic flights and sounding rockets 
+with reduced gravitational forces ($\norm{\gravity}\sim $\num{e-2}-\SI{e-5}{\uacceleration}).
+
+
+\subsection{Previous work}
 
 %--------------
 \begin{figureth}
@@ -1758,15 +1842,19 @@ The current application is therefore dedicated to chill cooling experiments perf
 % caption
 {My caption}
 % label
-\label{fig:somefig2}
+\label{fig:Experimental setup used onboard TEXUS flights, showing the initial alloy sample, the cage and the positiong coil. The setup
+is similar to the one used for TEMPUS experiments.}
 \end{figureth}
 %--------------
 
+\subsubsection{TEMPUS experiment on parabolic flight}
+The TEMPUS experiment came as a first alternative for EML experiments. During several cycles of free fall, a reduced-gravity condition
+is created allowing to use only a single RF coil to stabilise the position of the droplet, while the substrate comes into contact with the molten sample
+from above it. An axial pyrometer
 
-\subsection{Previous experimental and numerical studies}
-TEXUS-46 is actually the name of the sounding rocket that carries the experimental setup, 
+\subsubsection{TEXUS sounding rocket}
+TEXUS-46 is the name of the sounding rocket that carries the experimental setup, 
 but for simplicity we will refer to the latter as being the TEXUS experiment.
-
 
 
 %--------------
@@ -1798,7 +1886,9 @@ opening of the sample holder facing the camera.}
 \end{figureth}
 %--------------
 
-A former contribution by CEMEF was done by \citet{rivaux_simulation_2011}, as mentioned in the first chapter. 
+
+\subsubsection{Numerical contribution}
+A former numerical contribution was done by \citet{rivaux_simulation_2011} at CEMEF, as mentioned in the first chapter. 
 His model considered both the steel droplet and the ceramic chill in a Lagrangian formulation, i.e. each object is
 modelled using a separate deformable mesh. Conservation equations of mass, energy,
 chemical species and momentum were solved in the metal domain, while the energy
@@ -1820,7 +1910,62 @@ in the solidifying alloy, compared to thermal shrinkage for instance.
 
 
 \subsection{Geometry and boundary conditions}
+
 \subsection{Texus binary alloy}
+\begin{figure}[htbp]
+\centering
+\begin{tikzpicture}%[spy using outlines={draw, blue, magnification=2, connect spies}]
+ \pgfkeys{%
+    /pgf/number format/set thousands separator = {}}
+%================================================
+\begin{axis}
+[	name=mass curves,
+	%title= mass conservation,
+	scale only axis,
+	table/col sep=tab,
+	enlarge x limits=false,
+	legend pos=north west,
+	scaled ticks=true,
+	xlabel=Time (s),
+	ylabel= Front position (m),
+	xticklabel style={/pgf/number format/fixed},
+	%xtick={0,200,400,600,800,1000},
+	%ytick={-0.1,0,0.1,0.2},
+	%x tick label style={rotate=45,anchor=east},
+	width=0.5\textwidth,
+	%height=5cm,	
+	%ymin=-0.1, ymax=0.2,
+	%mark repeat	= {30},
+	cycle list name=exotic,
+]
+\addplot table [x=time, y=position] {Chapter4/Data/3d/olddroplet_frontposition_vs_time.txt};
+\addplot table [x=time, y expr=\thisrow{position}/1000] {Chapter4/Data/3d/EXP_texus2009_frontposition_vs_time.txt};
+\addplot table [x=time, y expr=\thisrow{position}/1000] {Chapter4/Data/3d/exp_tempus2014_frontposition_vs_time.txt};
+
+\legend{Simulation, TEXUS, TEMPUS}
+\end{axis}
+\end{tikzpicture}
+\caption{Position of solidification front versus time for the binary alloy simulation compared to the experimental findings of the TEXUS-46 flight in 2009 and TEMPUS 2014 measurements \citep{gandin_project_2014}.}
+\label{fig:position_vs_time_binary}
+\end{figure}
+%--------------------------------------
+
+
+%--------------
+\begin{figureth}
+% textwidth 
+{1.0}
+%path 
+{Chapter4/Graphics/3d/simu_exp.pdf}
+% caption
+{Comparison between experimental (TEMPUS) and numerical (TEXUS) results showing the initial profile in both cases in \green{green}, while the final deformed profile
+  is the \blue{blue} line obtained experimentally, the \red{red} line predicted numerically. The direction of the gravitational fields points downwards, depicted
+  by the arrow (note that the vector length is not scaled to its magnitude).}
+% label
+\label{fig:simu_exp}
+\end{figureth}
+%--------------
+
 \subsection{Texus ternary alloy}
 \subsection{Texus quaternary alloy}
  
