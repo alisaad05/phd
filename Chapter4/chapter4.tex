@@ -1834,6 +1834,22 @@ with reduced gravitational forces ($\norm{\gravity} \in \crochet{10^{-1};10^{-5}
 
 \subsection{Previous work}
 
+\subsubsection{TEMPUS experiment on parabolic flight}
+The TEMPUS experiment came as a first alternative for EML experiments in which accurate thermophysical and rheological characterisation were difficult to achieve.
+The flight consists of several cycles of free fall, a reduced-gravity environment is hence created, 
+allowing to use only a single RF coil to stabilise the position of the droplet, while the substrate comes into contact with the molten sample
+from above it. An axial pyrometer measures the sample temperature during the process. 
+Also, a high-speed camera records the solidification process, producing frames as shown in \cref{fig:camera}.
+This is useful to measure the front growth speed. 
+Each parabola cycle lasts for 50 s, offering an effective low gravity ($\norm{\gravity}\approx$\SI{e-1}{\uacceleration}) for about 20 s.
+
+\subsubsection{TEXUS sounding rocket}
+TEXUS-46 is the name of the sounding rocket mission that carries the experimental setup, 
+but for simplicity we will refer to the latter as being the TEXUS experiment. The setup is shown in \cref{fig:texus_exp}.
+The main difference with respect to parabolic flight experiments,
+TEXUS features solidification in near-zero gravitational fields and for extended periods of time (3 minutes). 
+We do not have an exact measurement of the gravitational field magnitude, but it is several orders
+less than Earth's gravity magnitude ($\norm{\gravity} \in \crochet{10^{-5};10^{-8}}$\si{\uacceleration}).
 %--------------
 \begin{figureth}
 % textwidth 
@@ -1841,25 +1857,14 @@ with reduced gravitational forces ($\norm{\gravity} \in \crochet{10^{-1};10^{-5}
 %path 
 {Chapter4/Graphics/3d/exp.pdf}
 % caption
-{My caption}
-% label
-\label{fig:Experimental setup used onboard TEXUS flights, showing the initial alloy sample, the cage and the positiong coil. The setup
+{Three frames describing the experimental setup used to achieve reduced-gravity 
+solidification onboard a sounding rocket flight,
+showing the initial alloy sample, the cage and the positiong coil. The setup
 is similar to the one used for TEMPUS experiments.}
+% label
+\label{fig:texus_exp}
 \end{figureth}
 %--------------
-
-\subsubsection{TEMPUS experiment on parabolic flight}
-The TEMPUS experiment came as a first alternative for EML experiments in which accurate thermophysical and rheological characterisation were difficult to achieve.
-The flight consists of several cycles of free fall, a reduced-gravity environment is hence created, 
-allowing to use only a single RF coil to stabilise the position of the droplet, while the substrate comes into contact with the molten sample
-from above it. An axial pyrometer measures the sample temperature during the process. Also, a high-speed camera records the solidification process, useful
-to measure the front growth speed. Each parabola cycle lasts for 50 s, offering an effective low gravity ($\norm{\gravity}\approx$\SI{e-1}{\uacceleration}) for about 20 s.
-
-\subsubsection{TEXUS sounding rocket}
-TEXUS-46 is the name of the sounding rocket mission that carries the experimental setup, 
-but for simplicity we will refer to the latter as being the TEXUS experiment. The main difference with respect to parabolic flight experiments,
-TEXUS features solidification in near-zero gravitational fields and for extended periods of time (3 minutes). 
-
 
 %--------------
 \begin{figureth}
@@ -1880,16 +1885,15 @@ opening of the sample holder facing the camera.}
 %--------------
 \begin{figureth}
 % textwidth 
-{0.5}
+{0.4}
 %path 
 {Chapter4/Graphics/3d/camera_end.pdf}
 % caption
-{Camera image of the fully solidified droplet with a deformed shape, after 10 s.}
+{Camera image from the TEMPUS 2014 experiment, showing the fully solidified droplet with a deformed shape after 10 s.}
 % label
 \label{fig:camera_end}
 \end{figureth}
 %--------------
-
 
 \subsubsection{Numerical contribution}
 A former numerical contribution was done by \citet{rivaux_simulation_2011} at CEMEF, as mentioned in the first chapter. 
@@ -1912,27 +1916,78 @@ contact point. Another interesting point to comment is the computation of solidi
 shrinkage in the solid resolution, although this type of shrinkage does not generate stresses 
 in the solidifying alloy, compared to thermal shrinkage for instance.
 
-
 \subsection{Computational configuration}
-\subsubsection{Geometry and boundary conditions}
+\subsubsection{Geometry and initial mesh}
 The simulation considers only 1/4 of the droplet-substrate-gas system, given the axial symmetry of the problem.
-Furthermore, the substrate is implicitly taken into account via a boundary condition. This is sufficient in the 
-current context, because we are only interested in the energy transfer from the droplet to the substrate. The latter is hence modeled 
-Fourier condition with $\Text$=\SI{25}{\udegC} and an effective exchange coefficient $\hext$ of \SI{2500}{\uhconvec}.
-The $\hext$ coefficient's value has been determined by running multiple simulations with different values in the aim
-of achieving the same solidification time as in the experiment. The steel sample is a pseudo-spherical droplet of \SI{3}{\milli \metre}-radius,
-with a planar surface (diameter of \SI{1.5}{\centi \metre} at its south pole, where the contact is initiated. The alloy is immersed in a gas (argon)
-medium, such that both subdomains form together 1/4 of a cylinder having \SI{9999}{\milli \metre} in radius and  \SI{9999}{\milli \metre} in height.
+Furthermore, the substrate is implicitly taken into account via a boundary condition, explained in the next section. 
+This is sufficient in the current context, because we are only interested in the energy transfer from the droplet to the substrate. 
 
-As for the boundary conditions, \cref{fig:texus_bc} shows that the droplet-substrate 
-contact is considered without any slip, since this area solidifies in the first place without further fluid motion, as shows FIGURE EXP.
+The steel sample is not perfectly spherical initially. The droplet hence is compared to an ellipsoid having
+a vertical minor axis of \SI{5.68}{\milli \metre} and a horizontal major axis of \SI{6.6}{\milli \metre} 
+in the X and Y directions.
+The bottom is a planar surface (diameter of \SI{1}{\centi \metre}, where the contact is initiated). 
+The alloy is immersed in a gas medium (argon), such that both subdomains form together 1/4 of a 
+cylinder having \SI{8}{\milli \metre} in radius and  \SI{8}{\milli \metre} in height.
+
+\subsubsection{Initial and boundary conditions}
+The thermal boundary conditions are set as follows: Heat loss by radiation is experimentally avoided, therefore it is not considered in our model, hence all boundaries are considered adiabatic, except for the metal-substrate contact area,
+as previously mentioned. This surface is modelled by a Fourier condition with $\Text$=\SI{25}{\udegC} and an effective exchange coefficient $\hext$ of \SI{2500}{\uhconvec}. The $\hext$ coefficient's value has been determined by running multiple simulations with different values in the aim
+of predicting a front speed as closer as possible to the experimental measurements plotted in \cref{fig:position_vs_time_binary}.
+
+%--------------------------------------
+\begin{figure}[htbp]
+\centering
+\begin{tikzpicture}%[spy using outlines={draw, blue, magnification=2, connect spies}]
+ \pgfkeys{%
+    /pgf/number format/set thousands separator = {}}
+%================================================
+\begin{axis}
+[	name=mass curves,
+	%title= mass conservation,
+	scale only axis,
+	table/col sep=tab,
+	enlarge x limits=false,
+	legend pos=north west,
+	scaled ticks=true,
+	xlabel=Time (s),
+	ylabel= Front position (m),
+	xticklabel style={/pgf/number format/fixed},
+	%xtick={0,200,400,600,800,1000},
+	%ytick={-0.1,0,0.1,0.2},
+	%x tick label style={rotate=45,anchor=east},
+	width=0.4\textwidth,
+	%height=5cm,	
+	%ymin=-0.1, ymax=0.2,
+	%mark repeat	= {30},
+	cycle list name=exotic,
+]
+\addplot table [x=time, y=position] {Chapter4/Data/3d/olddroplet_frontposition_vs_time.txt};
+\addplot table [x=time, y expr=\thisrow{position}/1000] {Chapter4/Data/3d/EXP_texus2009_frontposition_vs_time.txt};
+\addplot table [x=time, y expr=\thisrow{position}/1000] {Chapter4/Data/3d/exp_tempus2014_frontposition_vs_time.txt};
+
+\legend{Simulation, TEXUS, TEMPUS}
+\end{axis}
+\end{tikzpicture}
+\caption{Position of solidification front versus time for the binary alloy 
+simulation compared to the experimental findings of the TEXUS-46 flight 
+in 2009 and TEMPUS 2014 measurements \citep{gandin_project_2014}.}
+\label{fig:position_vs_time_binary}
+\end{figure}
+%--------------------------------------
+
+
+For the velocity-pressure boundary conditions, \cref{fig:texus_bc} shows that a no-slip condition is imposed
+on the droplet-substrate surface, 
+since this area solidifies in the first place without further fluid motion, as shows \cref{fig:camera}.
 It is noted that the first solidified shell may experimentally deform under thermal contraction stresses, but we do not consider it 
 hereafter. For the rest of the domain, we impose the normal velocity component to zero on both symmetry faces, 
 while keeping free tangential components. The remaining boundaries, namely the top and the outer surface of the argon gas (cylinder generatrix),
-have free velocity components. However, such condition may cause instability in the level set transport solver, as seen in \cref{fig:transport_instability}.
-This problem has been reported by \citep{basset_simulation_2006}, showing a limitation in the imposed boundary conditions between Navier-Stokes solver and
-level set transport. Therefore, we limit these instabilities by imposing a no-slip condition, thus allowing the argon to flow in the computational
-domain through the generatrix. The pressure condition is left free for all boundaries, as the experiment does not provide any pressure measurement 
+have free velocity components. However, such condition may cause instability in the level set transport solver, as seen in \cref{fig:transport_instability}. 
+This problem has been reported by \citep{basset_simulation_2006}, showing a limitation in the imposed boundary conditions between Navier-Stokes solver and level set transport. 
+Therefore, we limit these instabilities by imposing a no-slip condition, thus allowing the argon to flow in the computational
+domain through the generatrix. The cylinder height was taken big enough to prevent any flow damping near the droplet's north pole,
+which may spuriously alter its final shape.
+The pressure condition is left free for all boundaries, as the experiment does not provide any pressure measurement 
 of the confined argon.
 %--------------
 \begin{figureth}
@@ -1967,43 +2022,6 @@ composition is given in TABLETABLE
 
 
 \subsection{Texus binary alloy}
-\begin{figure}[htbp]
-\centering
-\begin{tikzpicture}%[spy using outlines={draw, blue, magnification=2, connect spies}]
- \pgfkeys{%
-    /pgf/number format/set thousands separator = {}}
-%================================================
-\begin{axis}
-[	name=mass curves,
-	%title= mass conservation,
-	scale only axis,
-	table/col sep=tab,
-	enlarge x limits=false,
-	legend pos=north west,
-	scaled ticks=true,
-	xlabel=Time (s),
-	ylabel= Front position (m),
-	xticklabel style={/pgf/number format/fixed},
-	%xtick={0,200,400,600,800,1000},
-	%ytick={-0.1,0,0.1,0.2},
-	%x tick label style={rotate=45,anchor=east},
-	width=0.5\textwidth,
-	%height=5cm,	
-	%ymin=-0.1, ymax=0.2,
-	%mark repeat	= {30},
-	cycle list name=exotic,
-]
-\addplot table [x=time, y=position] {Chapter4/Data/3d/olddroplet_frontposition_vs_time.txt};
-\addplot table [x=time, y expr=\thisrow{position}/1000] {Chapter4/Data/3d/EXP_texus2009_frontposition_vs_time.txt};
-\addplot table [x=time, y expr=\thisrow{position}/1000] {Chapter4/Data/3d/exp_tempus2014_frontposition_vs_time.txt};
-
-\legend{Simulation, TEXUS, TEMPUS}
-\end{axis}
-\end{tikzpicture}
-\caption{Position of solidification front versus time for the binary alloy simulation compared to the experimental findings of the TEXUS-46 flight in 2009 and TEMPUS 2014 measurements \citep{gandin_project_2014}.}
-\label{fig:position_vs_time_binary}
-\end{figure}
-%--------------------------------------
 
 
 %--------------
