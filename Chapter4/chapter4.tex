@@ -1779,7 +1779,8 @@ thermal convection forces arising from temperature gradients, but also solutal b
 Depending on the density of each chemical species, these convection forces may either be in the same or opposite direction, changing the final macrosegregation pattern.
 \citet{hebditch_observations_1974} suggested one of the first experiments working on Sn-Zn and Sn-Pb alloys. A part of their results is shown in \cref{fig:HH_exp}. 
 More recently, an experimental benchmark was performed by \citet{hachani_experimental_2012} to obtain more accurate 
-composition results with different Sn-Pb and Pb-Sn alloys. In the current section, we are interested in the latter experiment.
+composition results with different Sn-Pb and Pb-Sn alloys. In the current section, we are interested in the latter experiment, especially in the prediction
+of the metal's shrunk surface together with the final macrosegregation.
 
 %
 %-----------------
@@ -1807,6 +1808,11 @@ composition results with different Sn-Pb and Pb-Sn alloys. In the current sectio
 \end{figure}
 %------------------
 
+
+\section{Absence of convection}
+We first try to simulate the solidification process by neglecting thermasolutal dependence of phase densities in the Navier-Stokes solver. By doing so,
+no convection forces should arise during solidification, 
+hence the generated flow is only due to the difference between solid and liquid densities, that is the shrinkage driving force.
 
 
 
@@ -1922,16 +1928,34 @@ The simulation considers only 1/4 of the droplet-substrate-gas system, given the
 Furthermore, the substrate is implicitly taken into account via a boundary condition, explained in the next section. 
 This is sufficient in the current context, because we are only interested in the energy transfer from the droplet to the substrate. 
 
-The steel sample is not perfectly spherical initially. The droplet hence is compared to an ellipsoid having
+The steel sample is not perfectly spherical initially as surface oscillations perturb the equilibrium shape. 
+Such perturbations may be attributed to Lorentz forces creating by the positioning coil. 
+The droplet hence is compared to an ellipsoid having
 a vertical minor axis of \SI{5.68}{\milli \metre} and a horizontal major axis of \SI{6.6}{\milli \metre} 
-in the X and Y directions.
-The bottom is a planar surface (diameter of \SI{1}{\centi \metre}, where the contact is initiated). 
-The alloy is immersed in a gas medium (argon), such that both subdomains form together 1/4 of a 
-cylinder having \SI{8}{\milli \metre} in radius and  \SI{8}{\milli \metre} in height.
+in the X and Y directions, as shown in \cref{fig:imagetomesh}.
+The bottom is a planar surface (diameter of \SI{2}{\milli \metre}, where the contact is initiated). 
+Also in \cref{fig:imagetomesh}, the alloy is immersed in a gas medium (argon), such that both subdomains form together 1/4 of a 
+cylinder having \SI{8}{\milli \metre} in radius and  \SI{8}{\milli \metre} in height (not fully shown in the figure).
+
+%--------------
+\begin{figureth}
+% textwidth 
+{1.0}
+%path 
+{Chapter4/Graphics/3d/imagetomesh.pdf}
+% caption
+{(a) The camera frame before the onset of solidification gives the essential information to (b) 
+rebuild the droplet geometry then (c) a standalone 2D mesh used to obtain (d) the final immersed 3D mesh.}
+% label
+\label{fig:imagetomesh}
+\end{figureth}
+%--------------
 
 \subsubsection{Initial and boundary conditions}
-The thermal boundary conditions are set as follows: Heat loss by radiation is experimentally avoided, therefore it is not considered in our model, hence all boundaries are considered adiabatic, except for the metal-substrate contact area,
-as previously mentioned. This surface is modelled by a Fourier condition with $\Text$=\SI{25}{\udegC} and an effective exchange coefficient $\hext$ of \SI{2500}{\uhconvec}. The $\hext$ coefficient's value has been determined by running multiple simulations with different values in the aim
+The thermal boundary conditions are set as follows: Heat loss by radiation is experimentally avoided, 
+therefore it is not considered in our model, hence all boundaries are considered adiabatic, except for the metal-substrate contact area,
+as previously mentioned. This surface is modelled by a Fourier condition with $\Text$=\SI{25}{\udegC} 
+and an effective exchange coefficient $\hext$ of \SI{6e4}{\uhconvec}. The $\hext$ coefficient's value has been determined by running multiple simulations with different values in the aim
 of predicting a front speed as closer as possible to the experimental measurements plotted in \cref{fig:position_vs_time_binary}.
 
 %--------------------------------------
@@ -1962,10 +1986,11 @@ of predicting a front speed as closer as possible to the experimental measuremen
 	cycle list name=exotic,
 ]
 \addplot table [x=time, y=position] {Chapter4/Data/3d/olddroplet_frontposition_vs_time.txt};
+\addplot table [x=time, y=position] {Chapter4/Data/3d/newdroplet_h6e4.txt};
 \addplot table [x=time, y expr=\thisrow{position}/1000] {Chapter4/Data/3d/EXP_texus2009_frontposition_vs_time.txt};
 \addplot table [x=time, y expr=\thisrow{position}/1000] {Chapter4/Data/3d/exp_tempus2014_frontposition_vs_time.txt};
 
-\legend{Simulation, TEXUS, TEMPUS}
+\legend{Old Simulation, New $\hext=6e^4$, TEXUS, TEMPUS}
 \end{axis}
 \end{tikzpicture}
 \caption{Position of solidification front versus time for the binary alloy 
