@@ -1,10 +1,12 @@
+%%%%%% PS:  Textext-compatible preamble, the "\text" is hence replaced by "\textup"
+
 %%------------------------ FONTS -------------------------------
 \usepackage{Utopia} % Utopia font-typesetting including mathematical formula compatible with newer TeX-Distributions (>2010)
 % \usepackage{mathpazo}
 %% ------------------------ MATHs commands--------------------------
 
-\newcommand\bin[3]{#1-\SI{#2}{\ucomposition} #3}	% used in text
-\newcommand\tern[5]{#1-\SI{#2}{\ucomposition} #3-\SI{#4}{\ucomposition} #5} % used in text
+\newcommand\bin[3]{#1-\SI{#2}{\ucomposition} #3}	% used in textup
+\newcommand\tern[5]{#1-\SI{#2}{\ucomposition} #3-\SI{#4}{\ucomposition} #5} % used in textup
 
 %\renewcommand{matrix}[1]{#1 \rangle} 
 \newcommand{\avg}[1]{\ensuremath{\langle  #1 \rangle}}
@@ -66,7 +68,7 @@
 
 \newcommand\nabvec{\ensuremath{\vec{\nabla}}}
 \newcommand\nabmat{\ensuremath{\mat{\nabla}}}
-\newcommand\nabmattransp{\ensuremath{\mat{\nabla^\text{t}}}}
+\newcommand\nabmattransp{\ensuremath{\mat{\nabla^\textup{t}}}}
 \newcommand\vit{\ensuremath{\avg{\vec{v^l}}}}  
 \newcommand\vitf{\ensuremath{\avg{\vf}}}
 \newcommand\vita{\ensuremath{\avg{\va}}}
@@ -116,11 +118,11 @@
 \newcommand\Tjkplus{\ensuremath{T_j^{\iterplus}}}
 \newcommand\Tjtminus{\ensuremath{T_j^{t-\dt}}} 
 \newcommand\Tjtplus{\ensuremath{T_j^{t+\dt}}} 
-\newcommand\nosum{\text{no sum on }j} 
+\newcommand\nosum{\textup{no sum on }j} 
 
 %TODO :redundant defnitions rhoref and rref
-\newcommand\rhoref{\ensuremath{\rho_{\text{ref}}}}
-\newcommand\rref{\ensuremath{\rho_{\text{ref}}}}
+\newcommand\rhoref{\ensuremath{\rho_{\textup{ref}}}}
+\newcommand\rref{\ensuremath{\rho_{\textup{ref}}}}
 \newcommand\rholref{\ensuremath{\rho_{0}^{l}}}
 \newcommand\Tref{\ensuremath{T_{0}}}
 \newcommand\wlref{\ensuremath{w_{0}^l}}
@@ -128,36 +130,36 @@
 \newcommand\betaT{\ensuremath{\beta_T}}
 \newcommand\betawl{\ensuremath{\beta_{\wl}}}
 \newcommand\betawil{\ensuremath{\beta_{\wil}}}
-\newcommand\betawlC{\ensuremath{\beta_{\avg{w_\text{C}}^l}}}
-\newcommand\betawlCR{\ensuremath{\beta_{\avg{w_\text{Cr}}^l}}}
+\newcommand\betawlC{\ensuremath{\beta_{\avg{w_\textup{C}}^l}}}
+\newcommand\betawlCR{\ensuremath{\beta_{\avg{w_\textup{Cr}}^l}}}
 
 \newcommand\wavg{\ensuremath{\avg{w}}}
-\newcommand\wC{\ensuremath{\avg{w_\text{C}}}}
-\newcommand\wCR{\ensuremath{\avg{w_\text{Cr}}}}
+\newcommand\wC{\ensuremath{\avg{w_\textup{C}}}}
+\newcommand\wCR{\ensuremath{\avg{w_\textup{Cr}}}}
 \newcommand\wl{\ensuremath{\avg{w}^l}}
 \newcommand\ws{\ensuremath{\avg{w}^s}}
 \newcommand\wa{\ensuremath{\avg{w}^A}}
 \newcommand\Cnominal{\ensuremath{{w}_0}}
 \newcommand\Cl{\ensuremath{{w}^l}}
-\newcommand\Clstar{\ensuremath{{w}^{l \text{*}} }}
+\newcommand\Clstar{\ensuremath{{w}^{l \textup{*}} }}
 \newcommand\Cs{\ensuremath{{w}^s}}
-\newcommand\Csstar{\ensuremath{{w}^{s \text{*}} }}
+\newcommand\Csstar{\ensuremath{{w}^{s \textup{*}} }}
 
 \renewcommand\k{\ensuremath{k}}
 \newcommand\ml{\ensuremath{{m}^l}}
 \newcommand\ms{\ensuremath{{m}^s}}
 \newcommand\pdas{\ensuremath{{\lambda}_{1}}}
 \newcommand\sdas{\ensuremath{{\lambda}_{2}}} 
-\newcommand\Tcoh{\ensuremath{{T}_{\text{coh}}}} 
-\newcommand\Fos{\ensuremath{\text{Fo}^s}} % Fourier number in the solid
-\newcommand\tsolidif{\ensuremath{t_\text{s}}} % solidification time in Fourier number 
-\newcommand\rev{\ensuremath{V_\text{E}}} % V_\text{RVE}
+\newcommand\Tcoh{\ensuremath{{T}_{\textup{coh}}}} 
+\newcommand\Fos{\ensuremath{\textup{Fo}^s}} % Fourier number in the solid
+\newcommand\tsolidif{\ensuremath{t_\textup{s}}} % solidification time in Fourier number 
+\newcommand\rev{\ensuremath{V_\textup{E}}} % V_\textup{RVE}
 \newcommand\Vs{\ensuremath{V^s}}
 \newcommand\Vl{\ensuremath{V^l}}
 \newcommand\Vphi{\ensuremath{V^\phi}}
 \newcommand\psis{\ensuremath{\avg{\psi}^s}}
 \newcommand\psil{\ensuremath{\avg{\psi}^l}}
-\newcommand\gammastar{\ensuremath{{\Gamma}^{\text{*}} }}
+\newcommand\gammastar{\ensuremath{{\Gamma}^{\textup{*}} }}
 
 \newcommand\rhof{\ensuremath{\rho^F}}
 \newcommand\rhoa{\ensuremath{\rho^A}}
@@ -209,23 +211,23 @@
 \newcommand\vs{\ensuremath{\vec{v}^s}}
 \newcommand\vphi{\ensuremath{\vec{v}^\phi}}
 \newcommand\vphistar{\ensuremath{\vec{v}^{\phi_1/\phi_2}}}
-\newcommand\vstar{\ensuremath{\vec{v}^\text{*}}}
-\newcommand\vlstar{\ensuremath{\vec{v}^{l \text{*}}}}
-\newcommand\vsstar{\ensuremath{\vec{v}^{s \text{*}}}}
+\newcommand\vstar{\ensuremath{\vec{v}^\textup{*}}}
+\newcommand\vlstar{\ensuremath{\vec{v}^{l \textup{*}}}}
+\newcommand\vsstar{\ensuremath{\vec{v}^{s \textup{*}}}}
 
 \newcommand\gravity{\ensuremath{\vec{g}}}
 
 \newcommand\dt{\ensuremath{\Delta t}}
-\newcommand\hext{\ensuremath{h_{\text{ext}}}}
-\newcommand\Text{\ensuremath{T_{\text{ext}}}}
-\newcommand\Ttop{\ensuremath{T_{\text{Top}}}}
-\newcommand\Tbottom{\ensuremath{T_{\text{Bottom}}}}
+\newcommand\hext{\ensuremath{h_{\textup{\tiny{ext}}}}}
+\newcommand\Text{\ensuremath{T_{\textup{\tiny{ext}}}}}
+\newcommand\Ttop{\ensuremath{T_{\textup{\tiny{Top}}}}}
+\newcommand\Tbottom{\ensuremath{T_{\textup{\tiny{Bottom}}}}}
 
 \newcommand*\widefbox[1]{\fbox{\hspace{2em}#1\hspace{2em}}}
 
 % From "Mixing Boussinesq" report
 %\renewcommand\v{\ensuremath{\vec{v}}}  
-\newcommand\Fv{\ensuremath{\vec{F}_{\text{v}}^l}}  
+\newcommand\Fv{\ensuremath{\vec{F}_{\textup{v}}^l}}  
 \newcommand\rhog{\ensuremath{\rho \vec{g}}}  
 \newcommand\rhobouss{\ensuremath{\widetilde{\rho}}} 
 \newcommand\heaviside{\ensuremath{H}}  
@@ -233,8 +235,8 @@
 \newcommand{\heavisideA}{ \ensuremath{\heaviside^A}}
 \newcommand\dirac{\ensuremath{\delta \brac{\levelset}}}
 \newcommand\levelset{\ensuremath{\alpha}}
-\newcommand\levelsettest{\ensuremath{\alpha^\text{*}}}
-\newcommand\levelsetSUPG{\ensuremath{\alpha_{SUPG}^\text{*}}}
+\newcommand\levelsettest{\ensuremath{\alpha^\textup{*}}}
+\newcommand\levelsetSUPG{\ensuremath{\alpha_{SUPG}^\textup{*}}}
 \newcommand\levelsetx{\ensuremath{\levelset \brac{\vec{x}}}}
 \newcommand{\mix}[1]{\ensuremath{\widehat{#1}}} % \widehat % \overbrace % \widetilde
 
@@ -244,9 +246,9 @@
 \newcommand{\thercast}{\emph{Thercast\registered }}
 \newcommand{\ccemlcc}{\emph{CCEMLCC }} 
 \newcommand{\doitpoms}{\emph{© DoITPoMS, University of Cambridge}} 
-\newcommand\HtoT{$\text{H2T}$}
-\newcommand\TtoH{$\text{T2H}$}
-\newcommand\carbide{\ensuremath{\text{M}_7 \text{C}_3}}
+\newcommand\HtoT{$\textup{H2T}$}
+\newcommand\TtoH{$\textup{T2H}$}
+\newcommand\carbide{\ensuremath{\textup{M}_7 \textup{C}_3}}
 
 % Colors
 \newcommand{\red}[1]{{\color{Red} #1}}

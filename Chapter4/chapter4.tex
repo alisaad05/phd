@@ -1809,7 +1809,7 @@ of the metal's shrunk surface together with the final macrosegregation.
 %------------------
 
 
-\section{Absence of convection}
+\subsection{Absence of convection}
 We first try to simulate the solidification process by neglecting thermasolutal dependence of phase densities in the Navier-Stokes solver. By doing so,
 no convection forces should arise during solidification, 
 hence the generated flow is only due to the difference between solid and liquid densities, that is the shrinkage driving force.
@@ -1923,7 +1923,7 @@ shrinkage in the solid resolution, although this type of shrinkage does not gene
 in the solidifying alloy, compared to thermal shrinkage for instance.
 
 \subsection{Computational configuration}
-\subsubsection{Geometry and initial mesh}
+\subsubsection{Geometry and mesh}
 The simulation considers only 1/4 of the droplet-substrate-gas system, given the axial symmetry of the problem.
 Furthermore, the substrate is implicitly taken into account via a boundary condition, explained in the next section. 
 This is sufficient in the current context, because we are only interested in the energy transfer from the droplet to the substrate. 
@@ -1931,8 +1931,7 @@ This is sufficient in the current context, because we are only interested in the
 The steel sample is not perfectly spherical initially as surface oscillations perturb the equilibrium shape. 
 Such perturbations may be attributed to Lorentz forces creating by the positioning coil. 
 The droplet hence is compared to an ellipsoid having
-a vertical minor axis of \SI{5.68}{\milli \metre} and a horizontal major axis of \SI{6.6}{\milli \metre} 
-in the X and Y directions, as shown in \cref{fig:imagetomesh}.
+a vertical minor axis of \SI{5.68}{\milli \metre} and a horizontal major axis of \SI{6.6}{\milli \metre}, as shown in \cref{fig:imagetomesh}.
 The bottom is a planar surface (diameter of \SI{2}{\milli \metre}, where the contact is initiated). 
 Also in \cref{fig:imagetomesh}, the alloy is immersed in a gas medium (argon), such that both subdomains form together 1/4 of a 
 cylinder having \SI{8}{\milli \metre} in radius and  \SI{8}{\milli \metre} in height (not fully shown in the figure).
@@ -1950,6 +1949,31 @@ rebuild the droplet geometry then (c) a standalone 2D mesh used to obtain (d) th
 \label{fig:imagetomesh}
 \end{figureth}
 %--------------
+
+The mesh is then automatically adapted to the moving interface using \emph{Remesh2}. We adopt the same remeshing strategy applied 
+for 1D cases, whereby a fixed mesh size is imposed in the metal subdomain to limit as much as possible information diffusion due to remeshing,
+this is specially important for the average composition field. The corresponding parameters are given by \cref{table:texus_remeshing_params}.
+Remeshing is performed each second.
+%--------------------------------
+\begin{table}[htbp]
+\centering
+\caption{Summary of the different mesh sizes used to generate an adaptive isotropic mesh, along with the level mixing thickness, $\varepsilon$. 
+Refer to \cref{sec:remesh2_params} for the definition of each mesh parameter.}
+\label{table:texus_remeshing_params}
+{\tabulinesep=1.0mm \begin{tabu}{ll}
+\tabucline[1pt]{-}
+\textbf{Mesh parameter} & \textbf{Size [\si{\metre}]} \\\tabucline[1pt]{-}
+%-----------------------------
+$\varepsilon $			&	\num{1.5e-4}	\\
+$h_{\vec{n}} = h_{\vec{\tau}}$			&	\num{2e-5}	\\ 
+$h_M$  					&	\num{1e-4}	\\
+$h_A$  					&	\num{6e-4} \\\tabucline[1pt]{-}
+%-----------------------------
+\end{tabu}}
+\end{table}
+%--------------------------------
+
+
 
 \subsubsection{Initial and boundary conditions}
 The thermal boundary conditions are set as follows: Heat loss by radiation is experimentally avoided, 
@@ -1985,12 +2009,12 @@ of predicting a front speed as closer as possible to the experimental measuremen
 	%mark repeat	= {30},
 	cycle list name=exotic,
 ]
-\addplot table [x=time, y=position] {Chapter4/Data/3d/olddroplet_frontposition_vs_time.txt};
+%\addplot table [x=time, y=position] {Chapter4/Data/3d/olddroplet_frontposition_vs_time.txt};
 \addplot table [x=time, y=position] {Chapter4/Data/3d/newdroplet_h6e4.txt};
 \addplot table [x=time, y expr=\thisrow{position}/1000] {Chapter4/Data/3d/EXP_texus2009_frontposition_vs_time.txt};
 \addplot table [x=time, y expr=\thisrow{position}/1000] {Chapter4/Data/3d/exp_tempus2014_frontposition_vs_time.txt};
 
-\legend{Old Simulation, New $\hext=6e^4$, TEXUS, TEMPUS}
+\legend{Simulation, TEXUS, TEMPUS}
 \end{axis}
 \end{tikzpicture}
 \caption{Position of solidification front versus time for the binary alloy 
@@ -2011,45 +2035,80 @@ have free velocity components. However, such condition may cause instability in 
 This problem has been reported by \citep{basset_simulation_2006}, showing a limitation in the imposed boundary conditions between Navier-Stokes solver and level set transport. 
 Therefore, we limit these instabilities by imposing a no-slip condition, thus allowing the argon to flow in the computational
 domain through the generatrix. The cylinder height was taken big enough to prevent any flow damping near the droplet's north pole,
-which may spuriously alter its final shape.
-The pressure condition is left free for all boundaries, as the experiment does not provide any pressure measurement 
-of the confined argon.
+which may spuriously alter its final shape. The pressure condition for the argon gas is left free for all boundaries.
+%as the experiment does not provide any pressure measurement of the confined argon.
+The adopted time step is 0.01 s.
+
 %--------------
 \begin{figureth}
 % textwidth 
-{0.4}
-%path 
-{Misc/dummy.pdf}
-% caption
-{3D views showing the different boundary conditions used for reduced-gravity simulations.}
-% label
-\label{fig:texus_bc}
-\end{figureth}
-%--------------
-%--------------
-\begin{figureth}
-% textwidth 
-{0.3}
+{0.25}
 %path 
 {Chapter4/Graphics/3d/transport_instability.png}
 % caption
-{2D view showing the two interfaces: the green line is the initial metal-gas interface, while the blue line represents
-the transported zero-level of the distance, showing a transport instability at the top.}
+{2D view showing a transport instability at the top. The green line is the initial metal-gas interface, while the blue line represents
+the transported zero-level of the distance.}
 % label
 \label{fig:transport_instability}
 \end{figureth}
 %--------------
 
-\subsubsection{Nominal composition}
-Various steel grades were considered in the CCEMLCC projet. Each grade was assigned to a specific experiment. 
-We limit our study to the steel aigned for TEXUS missions, the grade is designated as "b1" alloy. Its ominal 
-composition is given in TABLETABLE
-
-
-\subsection{Texus binary alloy}
-
 
 %--------------
+\begin{figureth}
+% textwidth 
+{1.0}
+%path 
+{Chapter4/Graphics/3d/bc.pdf}
+% caption
+{3D views showing the thermal (in \red{red}) and mechanical (in \blue{blue}) boundary conditions used in reduced-gravity simulations.}
+% label
+\label{fig:texus_bc}
+\end{figureth}
+%--------------
+
+
+
+\subsubsection{Nominal composition}
+Various steel grades were considered in the CCEMLCC projet. Each grade was assigned to a specific experiment. 
+We limit our study to the steel assigned for TEXUS missions, the grade is designated as "\emph{b1}" alloy. Its nominal 
+composition is given in \cref{table:texus_b1}. As our approach relies on therymodynamic tabulations, we show in 
+the next section that we can take into account the multicomponent alloy to predict segregation, by considering 
+first only one species, hence a binary Fe-C alloy. In a later step, we consider a ternary Fe-C-Si alloy. Finally, we consider
+a quaternary Fe-C-Mn-Si alloy. 
+
+
+%--------------------------------
+\begin{table}[htbp]
+\centering
+\caption{Nominal composition (\si{\ucomposition}) of the \emph{b1} steel}
+\label{table:texus_b1}
+{\tabulinesep=1.0mm \begin{tabu}{lcccccc}
+\tabucline[1pt]{-}
+\textbf{Alloy} & \textbf{C} & \textbf{Mn} & \textbf{Si} & \textbf{Al} & \textbf{S} & \textbf{P} \\\tabucline[1pt]{-}
+%-----------------------------
+\emph{b1}				&	0.105 	& 		0.636	&	0.268	&	\num{0.0067} 	&		0.009		&	0.0189		\\
+Binary \emph{b1}		&	0.105 	&		-		&	-		&			-		&		-			&		-		\\
+Ternary \emph{b1}		&	0.105 	& 		0.636	&	-		&			-		&		-			&	 	-		\\		
+Quaternary \emph{b1}	&	0.105 	& 		0.636	&	0.268 	&			-		&		-			& 		- 		\\\tabucline[1pt]{-}
+%-----------------------------
+\end{tabu}}
+\end{table}
+%--------------------------------
+
+
+The interesting point about performing the same reduced-gravity simulation while varying the alloy from binary to quaternary, is the effect 
+on solidification paths caused by segregation, but also try to seek for a possible interaction between the solidification paths 
+and the final droplet shape, whereas the shrinkage profile is directly related to the solid fraction and its evolution with time.
+
+\subsection{Texus binary alloy}
+We first with the binary alloy, given previously in \cref{table:texus_b1}.
+
+\subsection{Texus ternary alloy}
+\subsection{Texus quaternary alloy}
+ 
+ \subsection{TODO}
+ %--------------
 \begin{figureth}
 % textwidth 
 {1.0}
@@ -2064,10 +2123,6 @@ composition is given in TABLETABLE
 \end{figureth}
 %--------------
 
-\subsection{Texus ternary alloy}
-\subsection{Texus quaternary alloy}
- 
- \subsection{TODO}
 Compare mass conservation between anisotropic mesh (up to 20\% loss) and isotropic fixed (up to 3\% only) \\
 Compare results of binary, ternary and quaternary tabulations then simplified quaternary \\
  
