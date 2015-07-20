@@ -1964,10 +1964,10 @@ Refer to \cref{sec:remesh2_params} for the definition of each mesh parameter.}
 \tabucline[1pt]{-}
 \textbf{Mesh parameter} & \textbf{Size [\si{\metre}]} \\\tabucline[1pt]{-}
 %-----------------------------
-$\varepsilon $			&	\num{1.5e-4}	\\
-$h_{\vec{n}} = h_{\vec{\tau}}$			&	\num{2e-5}	\\ 
-$h_M$  					&	\num{1e-4}	\\
-$h_A$  					&	\num{6e-4} \\\tabucline[1pt]{-}
+$\varepsilon $							&	\num{1.5e-4}	\\
+$h_{\vec{n}} = h_{\vec{\tau}}$			&	\num{2e-5}		\\ 
+$h_M$  									&	\num{1e-4}		\\
+$h_A$  									&	\num{6e-4} 		\\\tabucline[1pt]{-}
 %-----------------------------
 \end{tabu}}
 \end{table}
@@ -1979,8 +1979,9 @@ $h_A$  					&	\num{6e-4} \\\tabucline[1pt]{-}
 The thermal boundary conditions are set as follows: Heat loss by radiation is experimentally avoided, 
 therefore it is not considered in our model, hence all boundaries are considered adiabatic, except for the metal-substrate contact area,
 as previously mentioned. This surface is modelled by a Fourier condition with $\Text$=\SI{25}{\udegC} 
-and an effective exchange coefficient $\hext$ of \SI{6e4}{\uhconvec}. The $\hext$ coefficient's value has been determined by running multiple simulations with different values in the aim
-of predicting a front speed as closer as possible to the experimental measurements plotted in \cref{fig:position_vs_time_binary}.
+and an effective exchange coefficient $\hext$ of \SI{6e4}{\uhconvec}. 
+The $\hext$ coefficient's value has been determined by running multiple simulations with different values in the aim
+of predicting a front speed as closer as possible to the experimental measurements plotted in \cref{fig:position_vs_time_binary}, as explained in the coming sections.
 
 %--------------------------------------
 \begin{figure}[htbp]
@@ -2074,12 +2075,12 @@ the transported zero-level of the distance.}
 \label{table:texus_b1}
 {\tabulinesep=1.0mm \begin{tabu}{lcccccc}
 \tabucline[1pt]{-}
-\textbf{Alloy} & \textbf{C} & \textbf{Mn} & \textbf{Si} & \textbf{Al} & \textbf{S} & \textbf{P} \\\tabucline[1pt]{-}
+\textbf{Alloy} & \textbf{C} & \textbf{Si} & \textbf{Mn} & \textbf{Al} & \textbf{S} & \textbf{P} \\\tabucline[1pt]{-}
 %-----------------------------
-\emph{b1}				&	0.105 	& 		0.636	&	0.268	&	\num{0.0067} 	&		0.009		&	0.0189		\\
-Binary \emph{b1}		&	0.105 	&		-		&	-		&			-		&		-			&		-		\\
-Ternary \emph{b1}		&	0.105 	& 		0.636	&	-		&			-		&		-			&	 	-		\\		
-Quaternary \emph{b1}	&	0.105 	& 		0.636	&	0.268 	&			-		&		-			& 		- 		\\\tabucline[1pt]{-}
+\emph{b1}				&	0.105 	& 		0.268	&	0.636	&	\num{0.0067} 	&		0.009		&	0.0189		\\
+Binary \emph{b1}		&	0.105 	&		-		&	 -		&		-			&		-			&		-		\\
+Ternary \emph{b1}		&	0.105 	& 		0.268	&	 -		&		-			&		-			&	 	-		\\		
+Quaternary \emph{b1}	&	0.105 	& 		0.268	&	0.636 	&		-			&		-			& 		- 		\\\tabucline[1pt]{-}
 %-----------------------------
 \end{tabu}}
 \end{table}
@@ -2117,12 +2118,18 @@ a time step constraint. However, if we neglect this force, the droplet will tend
 Consequently, a parametric study helps us determine this gravity threshold, in the absence of surface tension. 
 \end{enumerate}
 
+A series of test simulations were launched in the aim of getting comparable results with the experiment.
+Several values of $\hext$ were tested in the interval [\num{e2};\num{e6}], while the gravity acceleration influence was tested
+for values lying in in the interval [\num{e-6};\num{e-2}]. The best match for the final shape while preserving a front propagation
+speed close to \SI{0.7}{\milli \uvelocity}, was obtained by setting simultaneously $\hext$=\SI{6e4}{\uhconvec} and $\norm{\gravity}$=\num{5e-5} \si{\uacceleration}.
+To demonstrate the effect of varying these parameters, we present a parametric study in \cref{table:parametric_study}, where only the most relevant cases are studied.
+
 %--------------------------------
 \begin{table}[htbp]
 \centering
 \caption{Summary of the parametric study for the conductive heat transfer coefficient (H) and the magnitude of the gravity vector (G, not to be confused with thermal gradient).
 The cases are defined by fixing each parameter to a reference value then varying the latter parameter. The reference values, H0$=$\num{6e4} and G0$=$\num{5e-5}, ensure
-a good compromise between solidification rate and the droplet final shape.}
+a good compromise when compared to the experimental solidification rate and final droplet shape.}
 \label{table:parametric_study}
 {\tabulinesep=1.0mm \begin{tabu}{lcc}
 \tabucline[1pt]{-}
@@ -2135,12 +2142,12 @@ H4G0 	&	\num{e6}	&	\num{5e-5} 		\\\tabucline[1pt]{-}
 %-----------------------------
 H0G1 	&	\num{6e4}	&	\num{e-3}		\\
 H0G2 	&	\num{6e4}	&	\num{e-4}		\\
-H0G3 	&	\num{6e4}	&	\num{e-5} 		\\\tabucline[1pt]{-}
+H0G3 	&	\num{6e4}	&	\num{e-5}		\\
+H0G4 	&	\num{6e4}	&	\num{e-6} 		\\\tabucline[1pt]{-}
 %-----------------------------
 \end{tabu}}
 \end{table}
 %--------------------------------
-
 
 \subsubsection{Mesh influence}
 Adaptive iso versus adaptive aniso on mass conservation
@@ -2150,6 +2157,7 @@ Adaptive iso versus adaptive aniso on mass conservation
 Now that the optimal computational configuration is known, we proceed to simulate the solidification of the binary alloy given previously in \cref{table:texus_b1}.
 
 \subsection{Texus ternary alloy}
+
 \subsection{Texus quaternary alloy}
  
  \subsection{TODO}
