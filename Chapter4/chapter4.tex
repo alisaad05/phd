@@ -2121,7 +2121,7 @@ Consequently, a parametric study helps us determine this gravity threshold, in t
 A series of test simulations were launched in the aim of getting comparable results with the experiment.
 Several values of $\hext$ were tested in the interval [\num{e2};\num{e6}], while the gravity acceleration influence was tested
 for values lying in in the interval [\num{e-6};\num{e-2}]. The best match for the final shape while preserving a front propagation
-speed close to \SI{0.7}{\milli \uvelocity}, was obtained by setting simultaneously $\hext=6 \times 10^{4}$\si{\uhconvec} and $\norm{\gravity}=5*\times 10^{-5}$ \si{\uacceleration}.
+speed close to \SI{0.7}{\milli \uvelocity}, was obtained by setting simultaneously $\hext=6 \times 10^{4}$ \si{\uhconvec} and $\norm{\gravity}=5\times 10^{-5}$ \si{\uacceleration}.
 To demonstrate the effect of varying these parameters, we present a parametric study in \cref{table:parametric_study}, where only the most relevant cases are studied with
 a binary alloy, \bin{Fe}{0.105}{C}.
 
@@ -2150,6 +2150,108 @@ H0G4 	&	\num{6e4}	&	\num{e-6} 		\\\tabucline[1pt]{-}
 \end{table}
 %--------------------------------
 
+We start the analysis by observing the results in \cref{fig:parametricH}, where the parameter $\hext$ increases from case H1G0 to H4G0, while maintaining
+a constant gravity acceleration at \SI{5e-5}{\uacceleration}.
+In the first case, H1G0, the heat coefficient is at its lowest between the droplet and the chill. As this contact is the only way to dissipate heat from the droplet,
+a low heat exchange coefficient means a slow cooling. Therefore, contact area of the droplet solidifies first. As we consider a fixed solid in our model, any solidified 
+part can no longer move or deform. As time passes, solidification is slow, such that the droplet starts collapsing at about 10 sec, undergoing a significant shape change under
+the gravity's action. In reality, such microgravity conditions are not sufficient to deform the droplet as seen in case H1G0. However, it should be noted
+that at such small gravity accelerations, surface tension forces play a central role in stabilising the sample shape, by minimising it surface energy.
+As we neglect it in our simulations, the droplet tends naturally in the direction of the gravity vector.
+We can make the same conclusion for case H2G0, while taking note of the smaller overall vertical deformation. 
+We may also see that the solid shell base is thicker in the horizontal direction, featuring also necking around the droplet axis mid-height, showing
+a competition between solidification shrinkage and gravity effect. It should be noted that in both cases H1G0 and H2G0, solidification is not complete 
+at 15 s.
+
+More interesting results are obtained in case H3G0 where the heat coefficient is two orders of magnitude 
+higher than that in the first case. The high solidification rate allows the mushy front 
+to capture liquid nodes before deformation occurs by gravity. We see a global deformation which is qualitatively comparable to the experimental 
+results: an ellipsoid form with a longer vertical axis with respect to the initial shape, while the horizontal axis decreases compared to the original
+sample diameter. 
+The last case for the 
+
+%--------------------------------------
+\begin{figure}[htbp]
+\centering
+\begin{tikzpicture}%[spy using outlines={draw, blue, magnification=2, connect spies}]
+ \pgfkeys{%
+    /pgf/number format/set thousands separator = {}}
+%================================================
+\begin{axis}
+[	name=mass curves,
+	%title= mass conservation,
+	scale only axis,
+	table/col sep=tab,
+	enlarge x limits=false,
+	legend pos=south west,
+	scaled ticks=true,
+	xlabel=Time (s),
+	ylabel=$m^M_\%$ (\%),
+	xticklabel style={/pgf/number format/fixed},
+	xtick={0,3,6,9,12,15},
+	%ytick={-0.1,0,0.1,0.2},
+	%x tick label style={rotate=45,anchor=east},
+	width=0.9\textwidth,
+	height=4cm,	
+	%ymin=-0.1, ymax=0.2,
+	mark repeat	= {50},
+	cycle list name=exotic,
+]
+\addplot table [x=Temps, y expr=100*(\thisrow{mM}-0.00022585082)/0.00022585082] {Chapter4/Data/3d_parametric/H1G0.txt};
+\addplot table [x=Temps, y expr=100*(\thisrow{mM}-0.00022585082)/0.00022585082] {Chapter4/Data/3d_parametric/H2G0.txt};
+\addplot table [x=Temps, y expr=100*(\thisrow{mM}-0.00022585082)/0.00022585082] {Chapter4/Data/3d_parametric/H3G0.txt};
+\addplot table [x=Temps, y expr=100*(\thisrow{mM}-0.00022585082)/0.00022585082] {Chapter4/Data/3d_parametric/H4G0.txt};
+
+\legend{H1G0,H2G0,H3G0,H4G0}
+\end{axis}
+\end{tikzpicture}
+\caption{Mass conservation analysis for cases HxG0 (x=1,2,3,4).}
+\label{fig:mass_parametricH}
+\end{figure}
+%--------------------------------------
+
+
+%--------------
+\begin{figureth}
+% textwidth 
+{0.95}
+%path 
+{Chapter4/Graphics/3d/parametricH.pdf}
+% caption
+{3D snapshots of a droplet (only half shown for symmetry) undergoing solidification shrinkage where the heat exchange coefficient 
+increases from H1 to H4 according to \cref{table:parametric_study}. The \green{green} surface is the initial droplet profile while the \blue{blue} surface
+is the deforming droplet profile. The camera rotation over time allows observing deformation from different angles. The gravity vector points downwards.}
+% label
+\label{fig:parametricH}
+\end{figureth}
+%--------------
+
+%--------------
+\begin{figureth}
+% textwidth 
+{0.95}
+%path 
+{Chapter4/Graphics/3d/parametricG.pdf}
+% caption
+{3D snapshots of a droplet (only half shown for symmetry) undergoing solidification shrinkage where the magnitude of the gravitational field
+decreases from G1 to G4 according to \cref{table:parametric_study}. The \green{green} surface is the initial droplet profile while the \blue{blue} surface
+is the deforming droplet profile. The camera rotation over time allows observing deformation from different angles.
+The gravity vector points downwards.}
+% label
+\label{fig:parametricG}
+\end{figureth}
+%--------------
+
+
+
+
+
+
+
+
+
+
+
 
 
 \subsubsection{Mesh influence}
@@ -2157,7 +2259,10 @@ Adaptive iso versus adaptive aniso on mass conservation
 
 \subsection{Texus binary alloy}
 
-Now that the optimal computational configuration is known, we proceed to simulate the solidification of the binary alloy given previously in \cref{table:texus_b1}.
+Now that the optimal computational configuration is known, we proceed to simulate the solidification of the binary alloy given previously in \cref{table:texus_b1}. \\
+
+Draw table of tabulation size on disk and computation time. Stress on the fact that shrinkage results from binary to quaternay are much more different because
+the tabulation is more reliable in terms of resolution. For the others the deformation may be spurious, driven by an unprecise solidification paths.
 
 \subsection{Texus ternary alloy}
 
