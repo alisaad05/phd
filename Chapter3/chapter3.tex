@@ -1,635 +1,1162 @@
-\chapter{Macrosegregation with liquid metal motion}
+\chapter{Energy balance with thermodynamic tabulations}
+%\chaptermark{Energy Balance with thermodynamic tabulations}
 \begin{nolinkcolors} 
 \minitoc
 \end{nolinkcolors}
 \newpage
 %
 %
-\section{Introduction}
-Fluid flow is an important part, if not the most important, in understanding the evolution of a system
-undergoing phase change and chemical segregation. It is attributed to the convective transport in fluids
-where the variations time scale is much smaller than the remaining physics that are characterised by
-smoother variations. To understand how fluid motion contributes to the heat and mass transfer, we have 
-swiftly presented the momentum conservation equation in a solidifying liquid, \cref{eq:Navier-Stokes2}.
-In this chapter, we will first give quick overview of the numerical treatment of this system of 
-Navier-Stokes equations, then comment on some computational aspects such as the choice of a suitable time step and
-the conditions that impose minimum and maximum bounds on both time step and mesh size.
-%
-%%-----------------
-%
-\section{Formulation stability}
-A wide array of numerical methods can be used to solve systems like \cref{eq:Navier-Stokes2}. 
-When speaking about Navier-Stokes equations, the choice can be narrowed to two famous
-approaches with some similarities: stable mixed finite element method and \textbf{V}ariational \textbf{M}utli\textbf{S}cale (VMS) method.
-When two finite element spaces are introduced (e.g. one for velocity and another for pressure), 
-the essential \emph{inf-sup} condition (also known as stability condition) determined by \citet{babuska_error-bounds_1971} and \citet{brezzi_existence_1974} 
-should be fulfilled. It states that the formulation is not well-posed if the both spaces have the same interpolation 
-order. For instance, a P1/P1 element (i.e. P1 for velocity / P1 for pressure) cannot guarantee the stability of the Navier-Stokes solution since
-velocity and pressure are both linearly interpolated at the simplex vertices.
-However, the major difference between the previously mentioned formulations is the way in which the inf-sup condition is accounted for.
-Stable mixed finite elements are stable because they directly respond to the stability condition by enriching the velocity space, 
-hence they fall under the category of Satisfying Babuška-Brezzi (SBB) methods. In contrast, methods like VMS belong to the
-Circumventing Babuška-Brezzi (CBB) category \citep{barbosa_finite_1991}.
-CBB methods rely on equal-order interpolations with additional stabilisation that circumvents the need to satisfy the stability condition.
-Further details about both formulation types are given in the next subsections.
-%
-\subsection{Stable mixed finite elements}
-First introduced by \citet{arnold_stable_1984}, the MINI element is the key ingredient of this approach.
-This type of element introduces an additional degree of freedom for the velocity field while keeping a linear
-interpolation for the pressure field, thus satisfying the Babuška-Brezzi condition with a richer velocity space.
-The additional degree, known as the \emph{bubble} function, vanishes on the element's boundary.
-We may therefore speak of a P1+/P1 finite element in a velocity-pressure formulation. 
-This stable formulation has been the de facto standard for solving fluid 
-and solid mechanics for many years at CEMEF.
-%
-%-----------------------
-\begin{figureth}
-{0.75}
-{Chapter3/Graphics/minielement/minielement.pdf}
-{Schematic of 2D and 3D stable P1+/P1 finite elements, respectively triangle and tetrahedron, with velocity and pressure fields interpolation order.
-The dots represent the nodes while the squares represent the bubbles.}
-\label{fig:minielement}
-\end{figureth}
-%--------------------------------------------------------
-%
-\subsection{Variational multiscale (VMS)}
-As the name indicates, this approach considers two scales of phenomena: the coarse and fine scales. Applied to a velocity-pressure
-formulation, these fields are decomposed according to these scales as follows:
-%----------------
-\begin{align}
-\label{eq:vms_multiscale_v}
- &\vit = \vit_h + \tilde{\vl} \\ 
-\label{eq:vms_multiscale_p}
- &p = p_h + \tilde{p}
-\end{align}
-%----------------
-where $\vit_h$ and $p_h$ are the coarse scale velocity and pressure discretised on the finite element mesh (hence the subscript $h$), 
-while the remaining terms represent the fine scale velocity and pressure that cannot be captured at the scale of the FE grid. Instead 
-of defining a finer grid to model the effect of these terms, one can solve the fine scale equations obtained once \cref{eq:vms_multiscale_v,eq:vms_multiscale_p}
-are injected in \cref{eq:Navier-Stokes2} then use the output in the coarse scale equations. 
-Further technical details about the method and the equations are found in the PhD work of \citet{hachem_stabilized_2009}. 
+%=====================================
+\section{State of the art}
+%=====================================
+When speaking about macrosegregation, one needs to know that the problem involves phase change.
+For that, a minimum of four conservation equations are necessary:
+conservation  of  mass, momentum,  chemical  species and  energy. The  phase  change
+literature  contains a  wealth of numerical methods to solve energy conservation
+in solidifying alloys. A comprehensive overview of these methods is given by \citet{swaminathan._enthalpy_1993}.
 
-The added value of the VMS method is the time gain that we get 
-by incorporating the effect of the fine scale into the 
-coarse scale physics without discretising on a finer grid, 
-while maintaining the ability to predict localised fluid motion such as small vortices.
-%
-%%-----------------
-%
-\section{Navier-Stokes solver}
-In the present thesis, we chose to solve the fluid momentum conservation using a stabilised P1/P1 formulation with additional 
-element-level integrals to add stability for convection-dominated terms, transient-dominated terms and pressure terms. 
-The stabilisation techniques include the streamline upwind/Petrov-Galerkin (SUPG), pressure stabilising/Petrov-Galerkin (PSPG) and
-the least-squares on incompressibility constraint (LSIC) as a stabilisation framework introduced by \citet{tezduyar_incompressible_1992}.
-The global approach, more commonly known as SUPG-PSPG-LSIC, prevents the classical formulation instability coming from the 
-linear equal-order interpolation functions.
+The corresponding equation associates the total average enthalpy to the
+temperature  via  intrinsic  alloy  properties, such  as the heat  capacity of  the
+phases and the latent  heat associated with the phase transformations. However, in the course
+of solidification and while macrosegregation is taking place, these  properties change because the average
+composition may  vary  significantly: the  transformation paths are thus modified, as well as
+the phases' composition and heat capacity. Similarly, the latent heat of phase  transformations
+is not a mere constant that could be distributed as a function of the phase fractions
+assuming only temperature-dependent phases' properties, as often found in the literature \citep{bellet_call_2009}.
+It is thus impossible to establish a priori the dependence of the enthalpy with respect
+to temperature when macrosegregation alters the average composition, even in the case of full thermodynamic equilibrium
+between phases. 
 
-It is important to note that the P1/P1 SUPG-PSPG-LSIC approach is slightly different than a VMS approach 
-as the derivation of stabilising terms in the latter comes from a physical interpretation of two different 
-length scales, a resolved coarse scale and an unresolved fine scale. The incorporation of the fine-scale equation
-within the coarse-scale one results in additional stabilising terms, while in the current approach these terms
-come from a mathematical analysis based on limiting cases of diffusion or advection. 
-The final stabilising scheme is however very similar.
-The Navier-Stokes solver developed by \citet{hachem_stabilized_2010,rivaux_simulation_2011} is a convenience choice 
-to solve a stabilised Navier-Stokes system with Darcy terms. 
-%For the details of deriving the weak form, the reader is referred to these references.
-%---------
-\subsection{Strong and weak formulations}
+In this chapter, we discuss a suitable numerical scheme based on an enthalpy method,
+already used in the literature  to  alleviate this macrosegregation-related problem \citep{swaminathan._enthalpy_1993,
+carozzani_direct_2013}. Later on, we introduce a modified formulation, using the effective heat capacity method that 
+increases the original scheme's efficiency. 
+The introduced method uses tabulated thermodynamic quantities (solidification paths, phases' enthalpy  and composition) 
+in a range of average compositions and temperatures as found in the literature 
+\citep{dore_modelling_2000,thuinet_prediction_2004,du_modeling_2007}, 
+with the aim of evaluating the total average enthalpy as well as the effective heat capacity. 
+The novelty of the modified method resides in the use of thermodynamic tabulations without losing 
+the advantages of the previous method, thus yielding faster computation times while maintaining a 
+good accuracy.
 %
-The strong form of the fluid mechanics problem has been previously established in chapter 2 (\cref{fig:algo_monodomain}),
-where we obtained the following system of mass and liquid momentum conservation equations:
-%------
-\begin{equation}
-   \label{eq:vms_strong}
-   \left\{
-   \begin{aligned}
-      & \rholref \brac{\tempup{ \vit } + \frac{1}{\gl} \nabvec \cdot \brac{\vit \times \vit}} = \\
-	  &- \gl\nabvec \pl - \nabvec \cdot \brac{2 \mul \strainrateliq}
-	  - \gl \mul \K^{-1} \vit + \gl \rhol \gravity\\ \\
-      & \nabla \cdot \vit =0
-    \end{aligned}
-    \right.
-\end{equation}
-%------
-The strong solution consists of finding the pair 
-$\brac{\vit, \pl}$ of the previous system, when the following essential (Dirichlet type) and natural (Neumann type) boundary 
-conditions are applied :
-%----------------
+%
+%=====================================
+\section{Thermodynamic considerations}
+%=====================================
+%
+%-----------------------------
+\subsection{Volume averaging} 
+%-----------------------------
+The volume averaging technique, presented in \cref{sec:volumeavg}, is the first thing consider
+when solving the energy equation in the presence of macrosegregation. The reason is that phase
+quantities that vary with the average composition, have a great impact on the thermal properties,
+hence on the overall heat transfer in the system. We recall the basic equation:
+%%-------------
 \begin{align}
-%\label{eq:vms_bc}
-& \vit = \vec{v_0} \text{ on } \partial \Ohm_\text{Dirichlet}  \\
-&  \avg{\sigmal} \cdot \vec{n} = \vec{N}  \text{ on } \partial \Ohm_\text{Neumann} \\
-&\text{with } \partial\Ohm_\text{Dirichlet} \cup  \partial\Ohm_\text{Dirichlet} = \partial\Ohm
+\label{eq:volume_average_psi}
+& \avg{\psi} = \sum_\phi \gphi \avg{\psi}^{\phi}
 \end{align}
-%----------------	
+%%-------------
+where $g^\phi$ denotes the volume fraction of phase $\phi$ in the RVE. 
+It should be emphasized that the averaging technique applies to virtually all thermodynamic variables (enthalpy, density $\dots$). 
+Among these variables, the temperature is also considered to be uniform in the RVE. 
+Applying the volume averaging technique to the energy 
+conservation principle along with interfacial balances between the phases, results in the following averaged equation \citep{rappaz_numerical_2003}:
+%%-------------
+\begin{align}
+\label{eq:averaged_energy_eqn}
+& \frac{\d \rh}{\d t} + \nabla \cdot \rhv = \nabla \cdot \brac{\avg{\kappa} \nabvec T} + \avg{\dot{Q}_V}
+\end{align}
+%%-------------
+where $\rho$ stands for the density, $h$ the mass enthalpy, $\vec{v}$ the velocity field, $\kappa$ the thermal conductivity, $T$ the temperature 
+and $\dot{Q}_V$ a possible volume heat source. 
+\Cref{eq:averaged_energy_eqn} is the standard averaged form of the energy conservation equation used in non-stationary phase 
+change problems. 
+%\comment{ I could elaborate more in this paragraph by showing the possible equations for the explicit formulation and maybe a figure to show the AlSi7
+%computation that i did with a v small time step }
+ 
+Once the variational form has been discretised in space and time, two possible resolution schemes emerge: the first is an 
+explicit forward Euler scheme which gives rise to a linear equation where the temperature is known at time $t$, $T^t$. This requires very small 
+time steps in the current context, which limits the solver's usability at the scale of industrial applications. The second scheme is the 
+backward Euler or full implicit discretisation where terms are function of $T^{t+\Delta t}$. It leads to a nonlinear equation with 2 interdependent 
+unknowns, $\rh^{t+\Delta t}$ and  $T^{t+\Delta t}$. It is clear that the nature of the temperature-enthalpy relationship plays a central 
+role when formulating the resolution strategy of this nonlinear equation. Generally, it is admitted that, depending on the resolution strategy, 
+it is necessary to express enthalpy as a function of temperature or vice-versa, together with associated partial derivatives, 
+$\frac{d \rh}{dT}$ or $\frac{dT }{d \rh}$.
 
-We can comment on the strong form with the following recap points:
-%%%----
-\begin{enumerate}
-\itemsep0em
-\item	the liquid metal is Newtonian with a dynamic viscosity denoted $\mul$
-\item	the metal is incompressible, therefore the liquid and solid densities are constant and equal (hence
-		$\rholref$ in the inertial term) and the mass balance reduces to \\ $\nabla \cdot \vit =0$
-\item	the Boussinesq approximation is used to compute the thermosolutal buoyancy force in the melt
-		via the term $\gl \rhol \gravity = \gl \rhol \brac{T,\avg{w_i}^l} \gravity$, where $\rhol \brac{T,\avg{w_i}^l}$
-		can be either tabulated as a function of temperature and liquid composition for each solute $i$, or directly 
-		approximated by:
-		%----------------
-		\begin{align}
-		\label{eq:boussinesq}
- 		\rhol = \rholref \brac{1-\betaT \brac{T-\Tref}- \sum_{i=1}^{\text{nb species}} \betawil \brac{\avg{w_i}^l-\wilref}}
-		\end{align}
-		%----------------		
-		where $\betaT$ and $\betawil$ are respectively the thermal and solutal expansion coefficients, while
-		$\Tref$ and $\wilref$ represent a reference temperature and a reference liquid composition for each chemical species, respectively.
-%\item	the term $\nabvec \cdot \brac{\vit \times \vit}$ reduces to $\brac{\nabmat \vit}\vit$ as 
-%		consequence of the metal's incompressibility. The latter product is linearised in a semi-implicit
-%		way \citep{gouttebroze_modelisation_2005}, hence		
-%		%----------------
-%		\begin{align}
-%		\label{eq:semi_implicit_velocity}
- %		\brac{\nabmat \vit}\vit = \brac{\nabmat \vit} \vit^{t-\Delta t}
-	%	\end{align}
-		%----------------	
-\end{enumerate}
-%%%----
-The weak form treated by the VMS solver derives from the strong form by multiplying
-by test functions for velocity and pressure belonging to these functional spaces:
-%\citep{hachem_stabilized_2009}
-%----------------
-\begin{align*}
-%\label{eq:}
-& \upsilon = \curly{\vec{u}, \quad \vec{u} \in \brac{\hilbert \brac{\Ohm}}^d | \vec{u} = \vec{v_0} \text{ on } \partial \Ohm } \\
-& \upsilon^0 = \curly{\vec{u}, \quad \vec{u} \in \brac{\hilbert \brac{\Ohm}}^d | \vec{u} = \vec{0} \text{ on } \partial \Ohm } \\
-& \varrho = \curly{q, \quad q \in L^2 \brac{\Ohm}}
-\end{align*}
-%----------------	
-where $d$ stands for the space dimension. Then, based on these definitions, we write the advective upwinding 
-stabilised test function for the velocity, $\vec{U}$:
-%---------------
+\subsection{The temperature-enthalpy relationship} 
+In solidification problems, additional variables are involved in \cref{eq:volume_average_psi} and \cref{eq:averaged_energy_eqn}, 
+like the transformation path that defines the history of the phase fractions, as well as the average chemical composition $\wi$, 
+i being the index of the chemical species (only the solutes are considered). The temperature-enthalpy relation averaged over the 
+phases in a given RVE writes:
+%%-------------
 \begin{align}
-\label{eq:supg_test}
-& \vec{U} = \vec{u} + \tausupg \nabmat \vec{u} \cdot \vit_{\Ohm_E}
+\label{eq:volume_average_enthalpy}
+& \rh = \sum_\phi \gphi_{\brac{T, \wi \dots}} \rphi_{\brac{T, \wi^{\phi} \dots}} \hphi_{\brac{T, \wi^{\phi} \dots}}
 \end{align}
-%----------------
-$\tausupg$ is an elemental stabilising parameter for advection-dominated terms and $\vit_{\Ohm_E}$
-is the superficial velocity in the element ${\Ohm_E}$, calculated by regular P1 interpolation:
-%----------------
-\begin{align}
-%\label{eq:}
-& \vit_{\Ohm_E} = \frac{\sum_{i=1}^{D} \vit_{i}}{D}
-\end{align}
-%----------------
-Moreover, we need the following operators in order to simplify the notation of element-based variational integrals:
-%----------------
-\begin{align}
-%\label{eq:}
-& \crochet{a,b} = \integral{\Ohm_E}{ab}{\Ohm} \\
-& \crochet{c,d}^{*} = \integral{\partial\Ohm_E}{cd}{\Gamma}
-\end{align}
-%----------------
-Finally, the SUPG-PSPG-LSIC stabilised weak formulation writes:
-%---------------
-\begin{equation}
-	\label{eq:weakform_before}
-   \left\{
-   \begin{aligned}
-      &\forall \vec{u} \in \upsilon^0 \\
-	&\crochet{ \brac{\frac{\rholref}{\gl} \tempup{\vit}},\vec{U}} + 
-	 \crochet{ \brac{\frac{\rholref}{\gl^2} \brac{\nabmat \vit} \vit},\vec{U}} + 
-	 \crochet{\brac{\frac{2\mul}{\gl}}, \strainrate\brac{\vit}:\strainrate\brac{\vec{U}} } \\
-	& + \crochet{\brac{\mul \K^{-1} \vit },\vec{U}}
-	 - \crochet{\brac{\rhol \gravity},\vec{U}}
-	 - \crochet{p,\nabla \cdot \vec{U}}
-	 - \crochet{\frac{\vec{N}}{\gl},\vec{U}}^{*} \\
-	 & + \crochet{\taulsic, \brac{\rholref \nabla \cdot \vit \nabla \cdot \vec{u} }} = 0\\ \\
-	 &\forall q \in \varrho \\
-	&\crochet{ \nabla \cdot \vit, q} + \\
-	&\crochet{\taupspg \frac{\nabvec q}{\rholref}, \brac{\frac{\rholref}{\gl} \tempup{\vit} 
-	+ \frac{\rholref}{\gl^2} \brac{\nabmat \vit} \vit 
-	+ \mul \K^{-1} \vit -\rhol \gravity}} = 0
-    \end{aligned}
-    \right.
-\end{equation}
-%----------------
-Replacing \cref{eq:supg_test} in \cref{eq:weakform_before}, we get the final weak form:
-%---------------
-\begin{equation}
-	\label{eq:weakform_after}
-   \left\{
-   \begin{aligned}
-    &\forall \vec{u} \in \upsilon^0 \\
-	&\crochet{ \brac{\frac{\rholref}{\gl} \tempup{\vit}},\vec{u}} + 
-	 \crochet{ \brac{\frac{\rholref}{\gl^2} \brac{\nabmat \vit} \vit},\vec{u}} + 
-	 \crochet{\brac{\frac{2\mul}{\gl}}, \strainrate\brac{\vit}:\strainrate\brac{\vec{u}} } \\
-	& + \crochet{\brac{\mul \K^{-1} \vit },\vec{u}}
-	 - \crochet{\brac{\rhol \gravity},\vec{u}}
-	 - \crochet{p,\nabla \cdot \vec{u}}
-	 - \crochet{\frac{\vec{N}}{\gl},\vec{u}}^{*} \\
-	 %-----------
-	 & + \crochet{\tausupg \nabmat \vec{u} \cdot \vit_{\Ohm_E} , 
-	 \brac{\frac{\rholref}{\gl} \tempup{\vit} + \frac{\rholref}{\gl^2} \brac{\nabmat \vit} \vit
-	   +  \mul \K^{-1} \vit + \nabvec \pl -\rhol \gravity} } \\
-	 & + \crochet{\taulsic, \brac{\rholref \nabla \cdot \vit \nabla \cdot \vec{u} }} = 0  \\ \\
-	 %-----------
-	 &\forall q \in \varrho \\
-	&\crochet{ \nabla \cdot \vit, q} + \\
-	&\crochet{\taupspg \frac{\nabvec q}{\rholref}, \brac{\frac{\rholref}{\gl} \tempup{\vit} 
-	+ \frac{\rholref}{\gl^2} \brac{\nabmat \vit} \vit 
-	+ \mul \K^{-1} \vit + \nabvec \pl -\rhol \gravity}} = 0
-    \end{aligned}
-    \right.
-\end{equation}
-%----------------
-\subsection{Stabilisation parameters}
+%%-------------
+Note that the volume average enthalpy is approximated by the product $\avg{\rho h}^{\phi}=\avg{\rho}^{\phi}\avg{h}^{\phi}$ in the current work. As stated 
+in the introduction, it becomes clear from \cref{eq:volume_average_enthalpy} that phase properties, i.e. average phase density, , \rphi and enthalpy, \hphi, 
+are temperature and composition dependent. This equation is the key to convert the average volume enthalpy to temperature (through a procedure named \emph{H2T}) 
+or vice-versa (\emph{T2H}). The values of the different phase fractions $\gphi$ (solidification path) and phase enthalpies $\rh^{\phi}$ are thus needed 
+to close the relation.
 
-Several expressions for $\tausupg$ were derived by \citet{tezduyar_incompressible_1992,tezduyar_finite_2000}, from which
-we retain the following:
-%----------------
-\begin{align}
-%\label{eq:}
-& \tausupg = \brac{\frac{1}{\tau_\text{advec}^2} + \frac{1}{\tau_\text{diff}^2} + \frac{1}{\tau_\text{trans}^2} }^{-1/2}
-\end{align}
-%----------------
-where we use three parameters $\tau_\text{advec}$, $\tau_\text{diff}$ and $\tau_\text{trans}$ 
-having time as unit ($s$) that stabilise respectively advection-dominated, diffusion-dominated and transient-dominated
-regimes, given by:
-%----------------
-\begin{align}
-%\label{eq:}
-& \tau_\text{advec} = \frac{h_\text{stream}}{2 \norm{\vit_{\Ohm_E}}}  \\ 
-& \tau_\text{diff} = \frac{h_\text{stream}^2}{4\nu^l}  \\ 
-\label{eq:supg_transient}
-& \tau_\text{trans} = \frac{\Delta t}{2}
-\end{align}
-%----------------
-where $h_\text{stream}=2\norm{\vit_{\Ohm_E}}\brac{\vit_{\Ohm_E} \cdot \nabvec \interp}$ is the element length in the stream direction, computed using
-the local superficial velocity and the interpolation functions $\interp_j$ relative to each local node $j$,
-$\nu^l$ is the liquid's kinematic viscosity ($\si{\udiffusivity}$) and $\Delta t$ is the time step.
-The transient term stabilisation was initially derived for Navier-Stokes equations without Darcy term.
-As the latter has a significant role in the weak form \cref{eq:weakform_after}, it needs to be stabilised.
-The current thesis is based on several past projects that either considered \cref{eq:supg_transient}
-like \citet{liu_finite_2005} or modified it like \citet{gouttebroze_modelisation_2005,rivaux_simulation_2011} 
-to take account the Darcy term, giving the term:
- %----------------
-\begin{align}
-\label{eq:supg_transient_darcy}
-& \tau_\text{trans-darcy} = \frac{\Delta t}{2\brac{1+\Delta t \frac{\mul}{\rholref \K}}}
-\end{align}
-%----------------
-In the literature, no substantial references were found to backup the formulation of \cref{eq:supg_transient_darcy}, it will
-be used in the current work though. It is worth mentioning that \citet{zabaras_stabilized_2004} has invoked the necessity
-to stabilise Darcy terms in a generalised Navier-Stokes/Darcy P1/P1 formulation, 
-and introduced what they call Darcy-Stabilising/Petrov-Galerkin (DSPG), using local non-dimensional numbers of Darcy ($Da$) and
-Prandtl ($Pr$) numbers expressing respectively the ratio of local permeability to a characteristic length $L$ and the ratio of
-momentum diffusivity, $\nu^l$, to heat diffusivity in the liquid, $\alpha^l$:
- %----------------
-\begin{align}
-\label{eq:supg_darcy}
-& \tau_\text{darcy} = \frac{Da}{Pr} \brac{\frac{\gl}{1-\gl}}^2= \frac{\alpha^l \K}{\nu^l L^2} \brac{\frac{\gl}{1-\gl}}^2
-\end{align}
-%----------------
-Last, the definitions of the remaining stabilisation parameters are given as follows:
- %----------------
-\begin{align}
-\label{eq:pspg}
-& \taupspg = \tausupg =
-	\brac{ 
-	\brac{\frac{2 \norm{\vit_{\Ohm_E}}}{h_\text{stream}}}^2
-   + \brac{\frac{4\nu^l}{h_\text{stream}^2}}^2
-   + \brac{\frac{2\brac{1+\Delta t \frac{\mul}{\rholref \K}}}{\Delta t}}^2 } \\
-& \taulsic = \frac{h_\text{stream}}{2} \norm{\vit_{\Ohm_E}} Z(Re_{\Ohm_E})  
-\end{align}
-%----------------
-with $Z(Re_{\Ohm_E})$ being a local Reynolds-dependant function that evaluates to:
-%------------
-\begin{align}
-\label{eq:lsic}
-Z(Re_{\Ohm_E}) = 
-\begin{cases}
-  Re_{\Ohm_E}/3		& \text{ if } Re_{\Ohm_E} \leq 3 \\ 
-  1					& \text{ if } Re_{\Ohm_E} > 3
-\end{cases}
-\end{align}
-%------------
-and
-%------------
-\begin{align}
-Re_{\Ohm_E} = \frac{\norm{\vit_{\Ohm_E}} h_\text{stream}}{2 \nu^l}
-\end{align}
-%------------
-%------------------------------------------
-\subsection{Implementation}
-The final matrix definition of the weak form of \cref{eq:vms_strong} is given by:
-%----------------
-\begin{align}
-\label{eq:matrix_form}
-\begin{pmatrix}
- A_{vv} & A_{vp}\\ 
- A_{pv} & A_{pp} 
-\end{pmatrix}
-\begin{pmatrix}  \vit\\  \pl \end{pmatrix}
-= \binom{B_{v}}{B_{p}}
-\end{align}
-%----------------
+\subsection{Tabulation of properties}
+The complexity of performing a thermodynamic conversion is directly linked 
+to the simplicity of determining the alloy properties, namely the phase fractions 
+and phase enthalpies. In the case of binary alloys and with several assumptions 
+with respect to the system (e.g., linear mono-variant temperature composition 
+relationships, constant heat capacity of phases and constant latent heat of transformations, 
+equilibrium approximations between phases) analytical calculations are often used to determine 
+the properties. Nevertheless, analytical relations are more complex or even impossible to derive 
+in the case of multicomponent alloys ($i>1$). To overcome this problem, one can resort to 
+thermodynamic databases and phase equilibrium calculations to tabulate the transformation paths 
+and the phase enthalpies for a given range of temperatures and average compositions. It is a handy 
+solution for two main reasons: first, the conversion is merely a binary search in a table; secondly, 
+it is a simple solution for coupling with macrosegregation. In this way, phase fractions $\gphi$ are 
+tabulated as functions of temperature and average composition, while for each phase $\phi$ the mass 
+enthalpy, $\hphi$, and the density, $\rphi$, are tabulated as functions of temperature and phase 
+intrinsic average compositions $\wiphi$, as well as other possible parameters. \Cref{table:t2h_data} summarizes the 
+steps in order to perform a temperature-to-enthalpy (\emph{T2H}) conversion using the predefined tabulation 
+approach. In step 1, the transformation path is acquired for each average composition and temperature 
+to determine the list of phases, their volume fractions $\gphi$ and their intrinsic compositions $\wi^{\phi}$. 
+In step 2, the phase enthalpy $\hphi$  and density $\rphi$ are determined by searching for the temperature and 
+the already known phase composition $\wi^{\phi}$. In step 3, the average volume enthalpy is computed from the 
+volume fraction, density and mass enthalpy of phases using \cref{eq:volume_average_enthalpy}.
 %
-%--------------------------------------------------
-\subsubsection{CFL condition}
-%
-\subsubsection{Integration order}
-%
-Using P1 linear elements implies a P2 integration ? what are the advantages (time) and limitations ?
-
-%-------------------------------------------------------------
-\section{Application to multicomponent alloys}
-In the previous chapter, we have considered a static melt upon solidification of multicomponent alloy. 
-The artificial consideration of a still flow is dropped in this chapter, hence taking into account macrosegregation 
-caused by fluid motion, using realistic values of the expansion coefficients given in \cref{table:ternary_data_case}.
-In the real conditions, the melt is in constant motion and knowing that the carbon and chromium solutes have lightening effects on the liquid 
-at nominal composition, the density inversion resulting from the composition gradient in the interdendritic 
-liquid, may cause flow instability (segregation plumes) at the solidification front. While the selected alloy 
-is a steel, this application is also representative of directional cooling in a single crystal casting, e.g. 
-for nickel-base superalloys \citep{beckermann_development_2000}. Solidification of this class of alloys is carefully
-controlled so as to prevent any freckle-type defect to exist in the as-cast state.
-In this section, we consider the same simulation parameters defined in \cref{table:ternary_data_case} as well the geometry and thermal boundary conditions
-previously defined in \cref{fig:mutlicomponent_geobc}. Moreover, we solve the liquid momentum conservation equation, with non-slip boundary conditions
-on all external sides of the cylinder.
-%
-%=====================================BIG LANDSCAPE FIGURE =====================================
-\begin{landscape}
-\begin{figureth}
-{1.15}
-{Chapter3/Graphics/multicomponent/planche_macroseg.pdf}
-{: Upward solidification of a cylinder rod  at 3 stages showing the metallurgical consequences 
-of macrosegregation \tern{Fe}{2}{C}{30}{Cr}. The left columns show the average 
-composition and temperature distribution, while the right columns show the phase fractions.}
-\label{fig:planche_withmacroseg}
-%\thispagestyle{headings}
-\end{figureth}
-\end{landscape}
-%=====================================BIG LANDSCAPE FIGURE =====================================
-%
-\subsection{Results}
-Solidification starts at 407 s when the cylinder’s bottom base temperature 
-reaches the liquidus temperature of the alloy. 
-In fact, the solidification onset is the same as in the pure diffusion case in \cref{fig:planche_nomacroseg}, 
-since the average composition remains unchanged for an entirely liquid domain (assuming an initially infinite 
-solute mixing in the melt). As shown in \cref{fig:planche_withmacroseg} at 600 s, the first solid phase to form 
-remains ferrite. We can also see solute-rich channels forming in the mushy zone and solute 
-plumes rising in the melt above the mushy zone due to a subsequent upward flow. It is actually 
-caused by the thermosolutal buoyancy force created by the carbon and chromium solutes. Such 
-phenomenon could delay solidification inside liquid-rich channels and results in a freckling 
-defect \citep{felicelli_simulation_1991} on the surface of the cylinder as well as inside, as shown later in this section. 
-As solidification proceeds, the liquid becomes more enriched with solute and the peritectic 
-reaction forming the austenite phase is reached. However, for very large enriched melt, it can 
-also be observed that primary solidification proceeds with the austenite phase rather than the 
-ferrite phase. The carbide phase can also form with the austenite phase at some locations. These 
-observations correspond to a simulation time of \num{2000} s in \cref{fig:planche_withmacroseg}. Solidification ends at 
-around \num{2475} s, the last liquid solidifying at the cylinder’s top surface, where the average composition 
-reaches a maximum of \tern{Fe}{2.151}{C}{30.633}{Cr}, i.e. a relative positive macrosegregation, 
-$\brac{\wi-\wi_0}/\wi_0$, of 7.5\% for carbon and 2.1\% for chromium. The fact that the maximum average 
-composition is observed at the top, is verified in \cref{fig:final_interior_ZZ_FF} which shows the composition map in a 2D 
-vertical slice through the longitudinal axis of the cylinder. We can also see it in \cref{fig:final_segregation_ZZ_FF} where the 
-relative composition profile are plotted at the end of the cooling process along the longitudinal cylinder 
-axis Z-Z’ and along the axis of the segregated channel, F-F’. The negative segregation up to 1 cm from the chill corresponds 
-to the solute depletion caused by the first solid formation. The subsequent solidification enriches further the 
-liquid; hence the solid composition also increases. The composition evolution trend for both solutes is similar: 
-an overall rise until positive segregation is achieved above \SI{5}{\centi\metre} from the chill. The positive macrosegregation 
-intensifies when the profile is chosen at the center of the segregated channel, negative segregation then becoming less pronounced.
-%
-%-----------------
-\begin{figure}[htbp]
+%---------------------------
+% this table did not work when using custom tabulate env. because of the call to \cref ?
+\begin{table}[htbp]
 \centering
-   %------------
-  \begin{subfigure}[t]{0.4\textwidth}
-    \centering
-	\includegraphics[width=1.0\textwidth]{Chapter3/Graphics/multicomponent/interior/final_interior_ZZ_FF.pdf}
-	\caption{}
-    \label{fig:final_interior_ZZ_FF}
-  \end{subfigure}
-  %------------------------------
-	\hfill  
-   %------------------------------
-  \begin{subfigure}[t]{0.55\textwidth}
-    \centering
-	\includegraphics[width=1.0\textwidth]{Chapter3/Graphics/multicomponent/interior/final_segregation_ZZ_FF.pdf}
-	\caption{}
-    \label{fig:final_segregation_ZZ_FF}
-  \end{subfigure}
-   %------------
-\caption{(a) average composition map on a vertical section inside the sample, with
- (b) relative macrosegregation profiles on the vertical revolution axis.} 
-\label{fig:final_ZZ_FF}
+\caption{Tabulation processing for a \emph{T2H} procedure}
+\label{table:t2h_data}
+{\tabulinesep=1.0mm
+\begin{tabu}{|c|c|c|c|}
+\tabucline[1pt]{-}
+\textbf{Step Number} 	& 	\textbf{1}	& \textbf{2}	& 	\textbf{3} 				\\\tabucline[1pt]{-}
+\textbf{Inputs} 		&  ${T,\wi}$	& ${T,\wiphi}$	&	${\gphi, \rphi \hphi}$ \\
+\textbf{Outputs} 		&  ${\gphi,\wiphi}$	& ${\rphi,\hphi}$	&	${\avg{\rho h}}$ (\cref{eq:volume_average_enthalpy})
+				\\\tabucline[1pt]{-}
+\end{tabu}}
+\end{table}
+%---------------------------
+%
+The methodology to build the tabulations is straightforward. It is based on two main scans. On the one hand, intervals for the variation of the 
+average composition $\wi$ are chosen from the known alloy composition. These variations have to cover the extreme values adopted during the 
+simulation, which are not known a priori. An interval is also selected for the variation of temperature. The latter is easier to determine as it
+usually starts from the initial melt temperature and goes down to the room temperature in a standard casting simulation. For each mapping of
+composition and temperature, a thermodynamic equilibrium state is computed. The outputs are the 
+number of phases encountered, together with their fraction and intrinsic compositions. The minimum and maximum intrinsic composition for each phase 
+could then be determined. On the other hand, for each phase, a scan of the intrinsic composition and temperature is made to compute the intrinsic 
+properties. The same temperature interval and step as defined earlier are used.
+Regarding the enthalpy-to-temperature conversion (\emph{H2T}), a backward iterative \emph{T2H} search is performed. 
+For a known composition $\wi$, denoting $\brent$ the iteration index to convert the enthalpy 
+$H_{\text{input}}$, we start with an initial guess for temperature $T^{\brentzero}$ then convert it to an 
+enthalpy $H^{\brentzero}$ with the \emph{T2H} conversion. Using an appropriate nonlinear algorithm (Brent is the most versatile 
+in our case), we aim at minimizing the following scalar residual: $R_{H} = \abval{H_{\text{input}} - H^\brent }$. 
+Once the algorithm has converged, the temperature $T^\brent$ is the result of the \emph{H2T} conversion. It is 
+inferred that the first conversion (\emph{T2H}) is a direct one whereas the latter (\emph{H2T}) is indirect and requires 
+a series of iterative steps; each step being a single \emph{T2H} resolution. In other words, a \emph{H2T} conversion is a 
+backward search for a temperature, hence it is slower. This conversion's speed lag is exacerbated when tabulations 
+increase in size (e.g. large number of temperature and composition steps) and complexity (e.g., multicomponent 
+industrial alloys used in casting), since the search gets more complicated with the increasing number of input 
+columns (one column for each alloying element).
+%
+%
+%-------------------------------------------------------------------------------------
+\begin{figure}[htbp]
+\newlength{\rightcol}
+\setlength{\largeur}{9cm}
+\setlength{\llargeur}{4.2cm}
+\setlength{\rightcol}{4cm}
+\centering
+\begin{tikzpicture}[node distance=0.4cm]
+
+\tikzstyle{rect}=[rectangle,draw,text=black]
+\tikzstyle{whiterect}=[rectangle,text=black]
+\tikzstyle{test}=[diamond,aspect=3,draw,text=black]
+\tikzstyle{fleche}=[->,>=stealth]
+\tikzstyle{trait}=[]
+\setlength{\rlargeur}{\largeur}
+\addtolength{\rlargeur}{-2.\tabcolsep}
+\addtolength{\rlargeur}{-1.\llargeur}
+
+
+\node[rect] (init) at (0cm,5cm)
+{
+	\begin{tabular}{@{}p{\llargeur}p{\rightcol}@{}}
+		\textbf{Initialisation} \\
+		Temperature 	& $\Tj$ \\
+		Average composition & $\wi_j$ \\
+	\end{tabular}
+};
+
+\node[rect,below=of init] (microseg)
+{
+	\begin{tabular}{@{}p{\llargeur}p{\rightcol}@{}}
+		\textbf{Microsegregation law} \\		
+		Phase fractions		& $(\Tj,\wi_j) \rightarrow g^\phi_j$ \\
+		Phase compositions 	& $(\Tj,\wi_j) \rightarrow \wiphi_j$ \\
+		Phase enthalpy 		& $(\Tj,\wiphi_j) \rightarrow \hphi_j$ \\
+	\end{tabular}
+};
+\draw[trait] (init) -- (microseg);
+
+\node[rect,below=of microseg] (solve)
+{
+	\begin{tabular}{@{}p{\llargeur}p{\rightcol}@{}}
+		\textbf{Total enthalpy} &	$ \rhoh_j=\sum_\phi \crochet{g^\phi_j \rphi_j \hphi_j}_{\Tj}$ \\
+								&	(\cref{eq:volume_average_enthalpy})
+	\end{tabular}
+};
+\draw[trait] (microseg) -- (solve);
+
+\end{tikzpicture}
+\caption{Algorithm for a single temperature to enthalpy (\emph{T2H}) conversion.}
+\label{fig:algorithm_t2h}
 \end{figure}
-%------------------
+%-------------------------------------------------------------------------------------
 %
-Beyond \num{2475} seconds, no variations of the average composition maps are observed since solute diffusion 
-in the solid phases is neglected. Nonetheless, as temperature decreases, solid-state transformations are 
-still possible as for the case with no macrosegregation. The formation of a cementite phase begins at the 
-cylinder base at \num{8843} s with a temperature of \SI{496.9}{\udegC}. At about \num{9293} s, the isotherm \SI{488.5}{\udegC} reaches the 
-top surface. This temperature value is the local cementite solvus temperature. The difference in the solvus 
-temperature between the bottom and top surfaces is due macrosegregation. Macrosegregation also explains the 
-variation in the cementite content. The solid state transformation ends shortly before \num{10500} s. The influence of the solidification process is clear on 
-the final macrosegregation pattern, hence the final phase distribution. This is better illustrated by drawing the time evolution of phase fractions at the 
-center of the bottom and top surfaces of the cylinder in \cref{fig:tp_macroseg_influence}. With no macrosegregation, in 
-\cref{fig:tp_nomacroseg}, the final distribution of the phases is the same at time \num{12000} s, while with macrosegregation, 
-in \cref{fig:tp_withmacroseg}, variations of the cementite and ferrite are revealed. 
-The segregated channels inside the cylinder and on the boundary, are often termed "freckles" when they consist of visible equiaxed grains \citep{copley_origin_1970}.
-This defect is marked by a noticeable gradient of composition and phase fractions, possibly changing the mechanical 
-properties in the channels, hence the overall mechanical behaviour of the alloy . The coupling of the Tsolver with 
-thermodynamic tabulations is thus demonstrated. It shows the ability to predict complex solidification paths, even if 
-only at equilibrium. As for the computation time, the Tsolver resolution performed better: 500 seconds of solidification 
-required 6 hours 14 minutes compared to 8 hours 6 minutes spent by the enthalpy resolution with 12 cores on the same machine. 
-The gain factor is about 22\%.
+%
+
+%-------------------------------------------------------------------------------------
+\begin{figure}[htbp]
+\setlength{\largeur}{9cm}
+\setlength{\llargeur}{4.2cm}
+\setlength{\rightcol}{5cm}
+\newcommand\Tjbrent{\ensuremath{T_j^\brent}}
+\newcommand\Hjbrent{\ensuremath{\rhoh_j^\brent}}
+\centering
+\begin{tikzpicture}[node distance=0.5cm]
+
+\tikzstyle{rect}=[rectangle,draw,text=black]
+\tikzstyle{whiterect}=[rectangle,text=black]
+\tikzstyle{test}=[diamond,aspect=3,draw,text=black]
+\tikzstyle{fleche}=[->,>=stealth]
+\tikzstyle{trait}=[]
+\setlength{\rlargeur}{\largeur}
+\addtolength{\rlargeur}{-2.\tabcolsep}
+\addtolength{\rlargeur}{-1.\llargeur}
+
+
+\node[rect] (init) at (0cm,5cm)
+{
+	\begin{tabular}{@{}p{\llargeur}p{\rightcol}@{}}
+		\textbf{Initialisation} \\
+		Enthalpy			& $\rhoh_j$ \\
+		Old temperature 	& $\Tjtminus$ \\
+		Average composition & $\wi_j$ \\
+	\end{tabular}
+};
+
+\node[rect, below=of init] (brent_init)
+{
+	\begin{tabular}{@{}p{\llargeur}p{\rightcol}@{}}
+		\textbf{Brent's initialisation} \\
+		Iteration &	$\brentzero$ \\
+		Temperature & $T^\brentzero = \Tjtminus$
+	\end{tabular}
+};
+\draw[trait] (init) -- (brent_init);
+
+\node[rect,below=of brent_init] (microseg)
+{
+	\begin{tabular}{@{}p{\llargeur}p{\rightcol}@{}}
+		\textbf{Microsegregation law} \\		
+		Phase fractions		& $(\Tjbrent,\wi_j) \rightarrow \crochet{g^\phi_j}^\brent$ \\
+		Phase compositions 	& $(\Tjbrent,\wi_j) \rightarrow \crochet{\wiphi_j}^\brent$ \\
+		Phase enthalpy 		& $(\Tjbrent,\wiphi_j) \rightarrow \crochet{\hphi_j}^\brent$ \\
+	\end{tabular}
+};
+\draw[trait] (brent_init) -- (microseg);
+
+\node[rect,below=of microseg] (TtoH)
+{
+	\begin{tabular}{@{}p{\llargeur}p{\rightcol}@{}}
+		\textbf{\emph{T2H} conversion} & $\Tjbrent \rightarrow \Hjbrent $ \quad (\cref{fig:algorithm_t2h})
+	\end{tabular}
+};
+\draw[trait] (microseg) -- (TtoH);
+
+\node[rect,below=of TtoH] (residual)
+{
+	\begin{tabular}{@{}p{\llargeur}p{\rightcol}@{}}
+		\textbf{Enthalpy residual} & $R_\text{Brent}^\brentplus = \abval{\rhoh_j - \Hjbrent }$
+	\end{tabular}
+};
+\draw[trait] (TtoH) -- (residual);
+
+\node[test,below=of residual] (test)
+{
+	$R_\text{Brent}^\brentplus < \varepsilon_\text{Brent}$
+};
+\draw[trait] (residual) -- (test);
+
+\node[rect,below=of test] (update)
+{
+	\begin{tabular}{@{}p{\llargeur}p{\rightcol}@{}}
+		\textbf{Conversion} & $T_j = \Tjbrent$
+	\end{tabular}
+};
+\draw[trait] (test) -- (update);
+%----
+\coordinate[shift={(-3mm,0mm)}] (microsegwest) at (microseg.west);
+\draw[fleche] (test.west) -| (microsegwest) -- (microseg);
+\node[anchor=south east] (No) 	at (test.west) {No};
+\node[anchor=north east] (iterate) at (test.west) {$\brent \leftarrow \brentplus$};
+
+\end{tikzpicture}
+\caption{Algorithm for a single enthalpy to temperature (\emph{H2T}) conversion.}
+\label{fig:algorithm_h2t}
+\end{figure}
+%-------------------------------------------------------------------------------------
+%==================
+\section{Numerical method}
+%==================
+%
+The finite element method is used to solve the energy conservation as expressed by \cref{eq:averaged_energy_eqn}. 
+A test function $\test$ belonging to the Hilbertian Sobolev space $\hilbert(\OhmE)$ of continuous integrable test functions 
+is used to formulate the integral variational form of \cref{eq:averaged_energy_eqn} \citep{suli_lecture_2000}. 
+A Fourier boundary condition is considered on the domain boundary $\partial \OhmE$. The domain $\Ohm$
+is discretised using first-order linear simplexes, $\OhmE$, defined by their number of local nodes (denoted “NbLoc”): triangles 
+in 2D with NbLoc=3 and tetrahedra in 3D with  NbLoc=4. The outcome is a residual that we aim to minimize so that the 
+conservation principle is satisfied. Therefore, the weak form writes:
+%----------------------
+\begin{multline}
+\label{eq:weak_energy}
+\forall \test \in M=\curly{u \in \hilbert(\OhmE)} \\
+\integral{\OhmE}{\test \tempup{\rhoh}}{V} 
+ + \integral{\OhmE}{\test \vit \cdot \nabvec \brac{\rhol \hl}}{V}
+ - \integral{\OhmE}{\test \diff{\avg{\kappa}}{T} }{V}
+ - \integral{\OhmE}{\test \source }{V}
+ = 0
+\end{multline}
+%------------
+where we assumed a static solid phase and an incompressible liquid phase, which allowed recasting the second term of 
+\cref{eq:averaged_energy_eqn} into $\vit \cdot \nabvec \brac{\rhol \hl}$. 
+The steps for discretizing in time and space the previous equation are well detailed in  
+some book references like \citet{rappaz_numerical_2003,dantzig_solidification_2009}. 
+As for enthalpy and temperature, they are spatially discretised in each simplex 
+using interpolations functions $\interp$, thus defining the nodal values $H_j$ and $T_j$, respectively: 
+%----------------------
+\begin{align}
+\label{eq:discretise_H}
+\rhoh 	&= \sum_{j=1}^{\text{NbLoc}}  \interp_j   \Hj \\ 
+\label{eq:discretise_T}
+T		&= \sum_{j=1}^{\text{NbLoc}}  \interp_j   \Tj
+\end{align}
+%------------
+Note that $H_j$ is a volumetric enthalpy. The Galerkin formulation gives the following 
+expression for the residual contribution at a mesh node $i$ (PS: here $i$ is not the usual solute index)
+for time step $t$ in a local element $\element$:
+%----------------------
+\begin{align}
+\begin{split}
+\label{eq:discretise_residual_local}
+& \brac{R_i^E}^t = \Mij^E \brac{\Hjt - \Hjtminus} + \Aij^E \Tjt + \brac{\Kija^E + \Kijb^E}-\Fi^E - \Qi^E=0 \\
+& i,j:1 \rightarrow \text{NbLoc}
+\end{split}
+\end{align}
+%------------
+where the volumetric contributions are detailed as follows:
+%----------------------
+\begin{align}
+& \textit{transient term:} \quad  \Mij^E = \integral{\OhmE}{\frac{1}{\dt} \interp_i \interp_j }{V} \\ 
+& \textit{advection term:} \quad  \Aij^E = \integral{\OhmE}{\rhol \cpl \interp_i \vit \cdot \nabvec \interp_j}{V} \\ 
+& \textit{diffusion term:} \quad  \Kija^E = \integral{\OhmE}{\avg{\kappa} \nabvec \interp_i\nabvec \interp_j}{V} \\ 
+& \textit{source term:} \quad  \Qi^E = \integral{\OhmE}{\interp_i \source}{V}
+\end{align}
+%------------
+while the surface boundary contributions are given by:
+%-------
+\begin{align}
+& \textit{boundary condition term 1:}	\quad  \Kijb^E = \integral{\dOhmE}{\hext \interp_i \interp_j}{S} \\ 
+& \textit{boundary condition term 2:}	\quad	\Fi^E = \integral{\dOhmE}{\hext \Text \interp_i}{S} \\
+\end{align}
+%-------
+%
+The surface integrals $\Kijb^E$ and $\Fi^E$ are related to a Fourier-type boundary condition, 
+with $\hext$ as a coefficient of heat exchange and $\Text$ as the external temperature far from the 
+boundary. The energy conservation principle is satisfied when the sum of the residual contributions 
+coming from all the mesh elements is zero. In other words, the following global residual defined by 
+the assembly of these contributions, should be minimized: 
+%----------------------
+\begin{align}
+\begin{split}
+\label{eq:discretise_residual_global}
+& \brac{R_i}^t = \Mij \brac{\Hjt - \Hjtminus} + \Aij \Tjt + \brac{\Kija + \Kijb}\Tjt -\Fi - \Qi=0 \\
+& i,j:1 \rightarrow \text{NbGlob}
+\end{split}
+\end{align}
+%------------
+where the global tensors $\Mij$, $\Aij$, $\Kija$ , $\Kijb$ , $\Fi$ and $\Qi$ contain respectively, after an assembly step, 
+the contributions of the local matrices $\Mij^E$, $\Aij^E$, $\Kija^E$ , $\Kijb^E$ , $\Fi^E$ and $\Qi^E$ from each discretised 
+element in the domain $\Ohm$. Accordingly, the indices $i$ and $j$ refer to global node numbers, where the total number of nodes is 
+denoted by "NbGlob". It is clear that the global residual inherits the dependence between enthalpy and temperature. 
+This is shown in \cref{eq:discretise_residual_global} where the average volume enthalpy is a function of the temperature. It infers that this residual 
+is a non-linear function; therefore minimizing it requires an iterative non-linear algorithm. Our choice settles on the 
+Newton-Raphson method, known for its quadratic convergence speed. A solidification problem can induce severe non-linearities 
+from the release of the latent heat (which itself is temperature-composition dependent) and the variations of the thermophysical 
+properties of the alloy with respect to temperature and average composition. This algorithm could thus treat such variations. 
+Considering the link between enthalpy and temperature, \cref{eq:discretise_residual_global} may be solved either for enthalpy 
+or for temperature as a nodal unknown; hence both formulations are presented hereafter.
+%
+%
+%---------------
+\subsection{Enthalpy-based approach }
+%---------------
+The residual is re-written using a Taylor series expansion to the first order for a nonlinear iteration $\iter$ :
+%-----------------
+\begin{align}
+\label{eq:Hsolver_residual}
+& \brac{R_i}^\iterplus = \brac{R_i}^\iter + \brac{\dRdH}^{\iter}_{ij} \Delta \Hj^\iter + \order\brac{\Hj^2}
+\end{align}
+%------------
+Neglecting the second order terms, the suggested correction at each iteration in view of cancelling 
+the residual and giving the new value $\Hj^\iter$, is given by the linear system in \cref{eq:Hsolver_residual_linear}
+relative to what we call a \emph{Hsolver}:
+%-----------------
+\begin{align}
+\label{eq:Hsolver_residual_linear}
+& \brac{\dRdH}^{\iter}_{ij} \brac{\Hj^\iterplus - \Hj^\iter} = -R_i^\iter
+\end{align}
+%------------
+where $\dRdH$ is a global tangent matrix yielding the variations of the residual with respect to the enthalpy 
+in the last iteration, $\Hj^\iter$. If \cref{eq:discretise_residual_local} is considered, then the contribution of an element $\OhmE$ writes:
+%-----------------
+\begin{align}
+\label{eq:dRdH}
+& \brac{\dRdH}^{\iter E}_{ij} 
+= \Mij^E 
++ \underbrace{\Aij^E \brac{\dTdH}^{\iter}_{j}}_{\nosum}
++ \underbrace{\brac{\Kija^E + \Kijb^E} \brac{\dTdH}^{\iter}_{j}}_{\nosum}
+\end{align}
+%------------
+\Cref{eq:dRdH} is the core of the enthalpy-based solver. The resolution of \cref{eq:Hsolver_residual_linear} 
+then yields a new estimate of the vector of nodal enthalpies $H^\iterplus$, which are the only unknowns to be solved for. 
+Once determined at iteration $\iter$, convergence tests are performed (refer to section %TODO ).
+%
+%
+%---------------
+\subsection{Temperature-based approach }
+%---------------
+Similarly to the Hsolver, the local residual is recast for a nonlinear iteration $\iter$, 
+leading this time to an iterative temperature correction:
+%-----------------
+\begin{align}
+\label{eq:Tsolver_residual_linear}
+& \brac{\dRdT}^\iter_{ij} \brac{\Tj^\iterplus - \Tj^\iter} = -R_i^\iter
+\end{align}
+%------------
+where $\dRdT$ is a global tangent matrix yielding the variations of the residual with respect to temperature $\Tj^\iter$ at the previous iteration. 
+This solver will be referred to as \emph{Tsolver}.
+The contribution of an element $\OhmE$ to this tangent matrix is evaluated as:
+%-----------------
+\begin{align}
+\label{eq:dRdT}
+& \crochet{\dRdTijk}^E
+= \underbrace{\Mij^E \brac{\dHdT}^{\iter}_{j}}_{\nosum}
++ \Aij^E
++ \brac{\Kija^E + \Kijb^E}
+\end{align}
+%------------
+In contrast to the previous solver, \cref{eq:dRdT} is the core of the temperature-based solver. The resolution of \cref{eq:Tsolver_residual_linear} 
+then yields a new estimate of the vector of nodal temperatures $T^\iterplus$, which are the only unknowns to be solved for. 
+Once updated for iteration $\iter$, convergence tests are performed (refer to section %TODO ).
+%
+%
+%-------------------
+\subsection{Convergence}
+%
+The previous two sections described the iterative resolution of the same discretised energy 
+conservation by both Tsolver and Hsolver. However, in \cref{eq:dRdH,eq:dRdT}, an important 
+term emerges from the tangent matrix evaluation describing the variations between temperature 
+and enthalpy: $\dHdT$ (or $\dTdH$). This term invokes the previously mentioned temperature-enthalpy 
+tabulations which depend on the alloy composition. Consequently,  $\dHdT$ (or $\dTdH$)
+has a great influence on the convergence of the Tsolver (respectively the Hsolver). 
+When \cref{eq:Hsolver_residual_linear} or \cref{eq:Tsolver_residual_linear} is solved at iteration $\iter$, this term is written using a finite difference:
+%-----------------
+\begin{align}
+\label{eq:finite_difference_Tsolver}
+& \textbf{Tsolver} \qquad \brac{\dHdT}^{\iterplus}_{j} = \frac{\rhoh_j^\iterplus - \rhoh_j^\iter}{T_j^\iterplus - T_j^\iter} \\
+\label{eq:finite_difference_Hsolver}
+& \textbf{Hsolver} \qquad \brac{\dTdH}^{\iterplus}_{j} = \frac{T_j^\iterplus - T_j^\iter}{\rhoh_j^\iterplus - \rhoh_j^\iter}
+\end{align}
+%------------
+For the Tsolver, the enthalpy $\rhoh_j^\iter$ is needed to evaluate \cref{eq:finite_difference_Tsolver}. 
+In contrast, the Hsolver requires the value of $T_j^\iter$ to evaluate the corresponding \cref{eq:finite_difference_Hsolver}.
+In both cases, the unknown is determined by the temperature-enthalpy relation. The indices next to the mentioned unknowns
+indicate that this relation is used for each iteration $\iter$ at each mesh node $j$, hence affecting the global resolution time 
+between the two solvers. The Hsolver needs a \emph{H2T} to evaluate $\dTdH$, whereas the Tsolver needs a \emph{T2H} to evaluate $\dHdT$.
+It can be seen that Tsolver uses solely \emph{T2H} procedure (flowchart in \cref{fig:algorithm_t2h}) and the thermodynamic tabulations to determine the enthalpy, 
+hence the term $\dHdT$. On the other hand, Hsolver repeats the same procedure a finite number of times in order to 
+determine a temperature output through \emph{H2T} (flowchart in \cref{fig:algorithm_h2t}) and use it to compute $\dTdH$. This algorithmic difference leverages the 
+Tsolver in terms of computation time providing the same numerical accuracy while conserving the total system energy. 
+
+Convergence tests are necessary at the end of each iteration of the energy solver to determine 
+the convergence status of the algorithm. In the context of the Tsolver for instance, the residual 
+is re-evaluated with the newly determined temperature $\Tj^\iterplus$ and enthalpy $\Hj^\iterplus$ so \cref{eq:discretise_residual_global} rewrites:
+%-----------------
+\begin{align}
+\begin{split}
+\label{eq:discretise_residual_global_new}
+& \brac{R_i}^\iterplus = \Mij \brac{\Hj^\iterplus) - \Hjtminus} + \Aij \Tj^\iterplus + \brac{\Kija + \Kijb}\Tj^\iterplus -\Fi - \Qi \\
+& i,j:1 \rightarrow \text{NbGlob}
+\end{split}
+\end{align}
+%------------
+The norm of the current residual, $\norm{R^\iterplus}$, is compared to a fixed small 
+value $\varepsilon_R \approx \crochet{\num{d-5};\num{d-4}}$. The resulting temperature variation, 
+$\abval{\Tj^\iter-\Tj^\iterminus}$, should also respond to similar criterion between two consecutive 
+iterations. For that purpose, we compare it to another fixed value $\varepsilon_T \approx \crochet{\num{d-3};\num{d-2}}$.
+Convergence is ultimately achieved when the following criteria are simultaneously met:
+%------
+\begin{equation}
+\label{eq:energy_convergence_criteria}
+   \left\{
+   \begin{aligned}
+      & \norm{R^\iterplus} < \varepsilon_R \\
+	  & \text{Max}_{j:1 \rightarrow \text{NbGlob}} \abval{\Tj^\iterplus-\Tj^\iter} < \varepsilon_T
+    \end{aligned}
+    \right.
+\end{equation}
+%------------
+A comparison of both solver formulations is done in the hereafter test cases section.
+%
+%
+%
+\begin{figure}[htbp]
+%\newlength{\largeur}	% defined in chapter2
+%\newlength{\llargeur}	% defined in chapter2
+%\newlength{\rlargeur}	% defined in chapter2
+
+\setlength{\largeur}{13.5cm}
+\setlength{\llargeur}{3.8cm}
+\centering
+\begin{tikzpicture}[node distance=0.3cm]
+
+\tikzstyle{rect}=[rectangle,draw,text=black]
+\tikzstyle{whiterect}=[rectangle,text=black]
+\tikzstyle{test}=[diamond,aspect=3,draw,text=black]
+\tikzstyle{fleche}=[->,>=stealth]
+\tikzstyle{trait}=[]
+
+\setlength{\rlargeur}{\largeur}
+\addtolength{\rlargeur}{-2.\tabcolsep}
+\addtolength{\rlargeur}{-1.\llargeur}
+
+
+\node[rect] (init) at (0cm,5cm)
+{
+	\begin{tabular}{@{}p{\llargeur}p{\rlargeur}@{}}
+		\textbf{Initialisation} \\
+		Time stepping 	& $t$, $\Delta t$ \\
+		Nodal values	& $\Hjt$, $\Tjt$, $\dHdTjt$ %, $\avg{w}^t$, $\avg{v^l}^t$
+	\end{tabular}
+};
+
+\node[rect,below=of init] (init_iter)
+{
+	\begin{tabular}{@{}p{\llargeur}p{\rlargeur}@{}}
+		\textbf{Newton-Raphson} \\		
+		Iteration step	& $\iter=0$ \\
+		Nodal values 	& $\Hjk=\Hjt$, \\ 
+						& $\Tjk=\Tjt$, \\
+						& $\dHdTjk=\dHdTjt$ %, $\avg{w}^t$, $\avg{v^l}^t$
+	\end{tabular}
+};
+	
+\node[rect,below=of init_iter] (local_contrib)
+{
+	\begin{tabular}{@{}p{\llargeur}p{\rlargeur}@{}}
+		\textbf{Local contributions} \\
+		& $\crochet{A_{ij}^\iter}^E=\crochet{\dRdTijk}^E$  \quad (\cref{eq:dRdT}) \\
+		& $\crochet{b_{j}^\iter}^E=\crochet{\dRdTijk}^E \Tjk - \Rjk$	\quad (\cref{eq:discretise_residual_local})
+	\end{tabular}
+};
+
+\node[rect,below=of local_contrib] (assembly)
+{
+	\begin{tabular}{@{}p{\llargeur}p{\rlargeur}@{}}
+	\textbf{Matrices assembly}\\
+		Global matrices & 	$\crochet{A^\iter} \leftarrow \crochet{A^\iter}^E$, $\crochet{b^\iter} \leftarrow \crochet{b^\iter}^E$, $\forall E \in \Ohm$ \\
+		Residual norm	&	$\norm{R^\iter} = \norm{A^\iter \Tk - b^\iter}$ \\ 
+	\end{tabular}
+};
+
+\node[rect,below=of assembly] (solve)
+{
+	\begin{tabular}{@{}p{\llargeur}p{\rlargeur}@{}}
+	\textbf{Solve linear system} &	$ \Tkplus= (A^\iter)^{-1} b^\iter$ \\
+	\end{tabular}
+};
+
+
+\node[rect,below=of solve] (microseg)
+{
+	\begin{tabular}{@{}p{\llargeur}p{\rlargeur}@{}}
+	\textbf{Microsegregation} \\
+	Tabulation (\emph{T2H}) 	&	$ \Tkplus \rightarrow \rhoh^\iterplus$ \\
+	Update				& 	$\dHdTjkplus=f(\Tjkplus,\rhoh^\iterplus)$ (\cref{fig:algorithm_t2h})\\
+	\end{tabular}
+};
+
+\node[rect,below=of microseg] (reassembly)
+{
+	\begin{tabular}{@{}p{\llargeur}p{\rlargeur}@{}}
+	\textbf{Matrices reassembly}\\
+		Global matrices & 	$\crochet{A^\iterplus} \leftarrow \crochet{A^\iterplus}^E$, $\crochet{b^\iterplus} \leftarrow \crochet{b^\iterplus}^E$, $\forall E \in \Ohm$ \\
+		Residual norm	&	$\norm{R^\iterplus} =  \norm{A^\iterplus \Tkplus - b^\iterplus}$ \\ 
+	\end{tabular}
+};
+
+\node[test,below=of reassembly,shift={(-3.7cm,0mm)}] (convergence_res)
+{
+	\begin{tabu}{c}
+	$\norm{R^\iterplus} < \varepsilon_R $ \\
+	%Max $\Delta T_j < \varepsilon_T$ \\
+	(\cref{eq:energy_convergence_criteria})
+	\end{tabu}
+};
+
+
+\node[test,right=of convergence_res,shift={(0.2cm,0mm)}] (convergence_temp)
+{
+	\begin{tabu}{c}
+	%$\norm{R^\iterplus} < \varepsilon_R $ \\
+	Max $\Delta T_j < \varepsilon_T$ \\
+	(\cref{eq:energy_convergence_criteria})
+	\end{tabu}
+};
+
+
+\node[rect,below=of reassembly,shift={(0.0cm,-3cm)}] (update)
+{
+	\begin{tabular}{@{}p{\llargeur}p{\rlargeur}@{}}
+	\textbf{Update} &	\\
+	Nodal values	& $\Hjtplus=\Hjkplus$, $\Tjtplus=\Tjkplus$ \\
+	\end{tabular}
+};
+
+\node[test,below=of update, aspect=4] (test_end)
+{
+	$t+\dt=t_{end}$
+};
+
+
+
+\node[rect,right=of test_end] (end)
+{
+	End
+};
+
+\draw[trait] (init) -- (init_iter);
+\draw[trait] (init_iter) -- (local_contrib);
+\draw[trait] (local_contrib) -- (assembly);
+\draw[trait] (assembly) -- (solve);
+\draw[trait] (solve) -- (microseg);
+\draw[trait] (microseg) -- (reassembly);
+%\draw[trait] (reassembly.south) -- (convergence_res.north);
+\draw[trait] (convergence_res) -- (convergence_temp);
+%\draw[trait] (convergence_temp.south) -- (update.north);
+\draw[trait] (update) -- (test_end);
+\draw[trait] (test_end) -- (end);
+
+\coordinate[shift={(0mm,-2mm)}] (convsouth) at (convergence_res.south);
+\coordinate[shift={(-8mm,0mm)}] (contribwest) at (local_contrib.west);
+\draw[fleche] (convergence_res.south) -- (convsouth) -| (contribwest) -- (local_contrib.west);
+
+\coordinate[shift={(0mm,-2mm)}] (reassemblysouth) at (reassembly.south);
+\draw[trait] (reassembly.south) -- (reassemblysouth) -| (convergence_res);
+
+\coordinate[shift={(0mm,-2mm)}] (convergence_tempsouth) at (convergence_temp.south);
+\coordinate[shift={(-8mm,0mm)}] (contribwest_bis) at (local_contrib.west);
+\draw[trait] (convergence_temp.south) -- (convergence_tempsouth) -- (convsouth);
+
+\coordinate[shift={(2mm,0mm)}] (convergence_tempeast) at (convergence_temp.east);
+\coordinate[shift={(0mm,2mm)}] (updatenorth) at (update.north);
+\draw[trait] (convergence_temp.east) -- (convergence_tempeast) |- (updatenorth) -- (update);
+
+\coordinate[shift={(-12mm,0mm)}] (initwest) at (init.west);
+\draw[fleche] (test_end.west) -| (initwest) -- (init);
+
+%%-------------
+\coordinate[shift={(6mm,0mm)}] (convsouth_no) at (convsouth.east);
+\node[anchor=south west] (convres_no) at (convsouth_no.east) {No};
+\coordinate[shift={(6mm,0mm)}] (convsouthtemp_no) at (convergence_tempsouth.east);
+\node[anchor=south west] (convtemp_no) at (convsouthtemp_no.east) {No};
+\coordinate[shift={(-1.2cm,0mm)}] (convsouth_process) at (convsouth.west);
+\node[anchor=south east] (conv_no_process) at (convsouth_process.west) {$\iter \leftarrow \iterplus$};
+%%-------------
+\node[anchor=south east] (test_end_no) at (test_end.west) {No};
+\node[anchor=north east] (test_end_process) at (test_end.west) {$t \leftarrow t+\dt$};
+%%-------------
+
+\end{tikzpicture}
+
+\caption{Resolution algorithm of the temperature-based solver.}
+
+\end{figure}
+%
+%
+%
+%
+%
+\begin{figure}[htbp]
+
+\setlength{\largeur}{13.5cm}
+\setlength{\llargeur}{3.8cm}
+\centering
+\begin{tikzpicture}[node distance=0.3cm]
+
+\tikzstyle{rect}=[rectangle,draw,text=black]
+\tikzstyle{whiterect}=[rectangle,text=black]
+\tikzstyle{test}=[diamond,aspect=3,draw,text=black]
+\tikzstyle{fleche}=[->,>=stealth]
+\tikzstyle{trait}=[]
+
+\setlength{\rlargeur}{\largeur}
+\addtolength{\rlargeur}{-2.\tabcolsep}
+\addtolength{\rlargeur}{-1.\llargeur}
+
+\node[rect] (init) at (0cm,5cm)
+{
+	\begin{tabular}{@{}p{\llargeur}p{\rlargeur}@{}}
+		\textbf{Initialisation} \\
+		Time stepping 	& $t$, $\Delta t$ \\
+		Nodal values	& $\Hjt$, $\Tjt$, $\dTdHjt$ %, $\avg{w}^t$, $\avg{v^l}^t$
+	\end{tabular}
+};
+
+\node[rect,below=of init] (init_iter)
+{
+	\begin{tabular}{@{}p{\llargeur}p{\rlargeur}@{}}
+		\textbf{Newton-Raphson} \\		
+		Iteration step	& $\iter=0$ \\
+		Nodal values 	& $\Hjk=\Hjt$, \\ 
+						& $\Tjk=\Tjt$, \\
+						& $\dTdHjk=\dTdHjt$ %, $\avg{w}^t$, $\avg{v^l}^t$
+	\end{tabular}
+};
+	
+\node[rect,below=of init_iter] (local_contrib)
+{
+	\begin{tabular}{@{}p{\llargeur}p{\rlargeur}@{}}
+		\textbf{Local contributions} \\
+		& $\crochet{A_{ij}^\iter}^E=\crochet{\dRdHijk}^E$  \quad (\cref{eq:dRdH}) \\
+		& $\crochet{b_{j}^\iter}^E= \Rjk$	\quad (\cref{eq:discretise_residual_local})
+	\end{tabular}
+};
+
+\node[rect,below=of local_contrib] (assembly)
+{
+	\begin{tabular}{@{}p{\llargeur}p{\rlargeur}@{}}
+	\textbf{Matrices assembly}\\
+		Global matrices & 	$\crochet{A^\iter} \leftarrow \crochet{A^\iter}^E$, $\crochet{b^\iter} \leftarrow \crochet{b^\iter}^E$, $\forall E \in \Ohm$ \\
+		Residual norm	&	$\norm{R^\iter} =  \norm{A^\iter \deltaHk - b^\iter}$ \\ 
+	\end{tabular}
+};
+
+\node[rect,below=of assembly] (solve)
+{
+	\begin{tabular}{@{}p{\llargeur}p{\rlargeur}@{}}
+	\textbf{Solve linear system} &	$ \Delta \Hkplus= (A^\iter)^{-1} b^\iter$ \\
+	\textbf{Update iterate} &	$ \Hjkplus = \Delta \Hjkplus + \Hjk$ \\
+	\end{tabular}
+};
+
+
+\node[rect,below=of solve] (microseg)
+{
+	\begin{tabu}{@{}p{\llargeur}p{\rlargeur}@{}}
+	\textbf{Microsegregation} \\
+	Tabulation (\emph{H2T})	&	$ \rhoh^\iterplus \rightarrow \Tkplus$ \quad (\cref{fig:algorithm_h2t}) \\
+	Update				& 	$\dTdHjkplus=f(\Tjkplus,\rhoh^\iterplus)$ (\cref{eq:finite_difference_Hsolver})\\
+	\end{tabu}
+};
+
+\node[rect,below=of microseg] (reassembly)
+{
+	\begin{tabular}{@{}p{\llargeur}p{\rlargeur}@{}}
+	\textbf{Matrices reassembly}\\
+		Global matrices & 	$\crochet{A^\iterplus} \leftarrow \crochet{A^\iterplus}^E$, $\crochet{b^\iterplus} \leftarrow \crochet{b^\iterplus}^E$, $\forall E \in \Ohm$ \\
+		Residual norm	&	$\norm{R^\iterplus} =  \norm{A^\iterplus \deltaHkplus - b^\iterplus}$ \\ 
+	\end{tabular}
+};
+
+\node[test,below=of reassembly,shift={(-3.7cm,0mm)}] (convergence_res)
+{
+	\begin{tabu}{c}
+	$\norm{R^\iterplus} < \varepsilon_R $ \\
+	%Max $\Delta T_j < \varepsilon_T$ \\
+	(\cref{eq:energy_convergence_criteria})
+	\end{tabu}
+};
+
+
+\node[test,right=of convergence_res,shift={(0.2cm,0mm)}] (convergence_temp)
+{
+	\begin{tabu}{c}
+	%$\norm{R^\iterplus} < \varepsilon_R $ \\
+	Max $\Delta T_j < \varepsilon_T$ \\
+	(\cref{eq:energy_convergence_criteria})
+	\end{tabu}
+};
+
+
+\node[rect,below=of reassembly,shift={(0.0cm,-3cm)}] (update)
+{
+	\begin{tabular}{@{}p{\llargeur}p{\rlargeur}@{}}
+	\textbf{Update} &	\\
+	Nodal values	& $\Hjtplus=\Hjkplus$, $\Tjtplus=\Tjkplus$ \\
+	\end{tabular}
+};
+
+\node[test,below=of update, aspect=4] (test_end)
+{
+	$t+\dt=t_{end}$
+};
+
+
+
+\node[rect,right=of test_end] (end)
+{
+	End
+};
+
+\draw[trait] (init) -- (init_iter);
+\draw[trait] (init_iter) -- (local_contrib);
+\draw[trait] (local_contrib) -- (assembly);
+\draw[trait] (assembly) -- (solve);
+\draw[trait] (solve) -- (microseg);
+\draw[trait] (microseg) -- (reassembly);
+%\draw[trait] (reassembly.south) -- (convergence_res.north);
+\draw[trait] (convergence_res) -- (convergence_temp);
+%\draw[trait] (convergence_temp.south) -- (update.north);
+\draw[trait] (update) -- (test_end);
+\draw[trait] (test_end) -- (end);
+
+\coordinate[shift={(0mm,-2mm)}] (convsouth) at (convergence_res.south);
+\coordinate[shift={(-8mm,0mm)}] (contribwest) at (local_contrib.west);
+\draw[fleche] (convergence_res.south) -- (convsouth) -| (contribwest) -- (local_contrib.west);
+
+\coordinate[shift={(0mm,-2mm)}] (reassemblysouth) at (reassembly.south);
+\draw[trait] (reassembly.south) -- (reassemblysouth) -| (convergence_res);
+
+\coordinate[shift={(0mm,-2mm)}] (convergence_tempsouth) at (convergence_temp.south);
+\coordinate[shift={(-8mm,0mm)}] (contribwest_bis) at (local_contrib.west);
+\draw[trait] (convergence_temp.south) -- (convergence_tempsouth) -- (convsouth);
+
+\coordinate[shift={(2mm,0mm)}] (convergence_tempeast) at (convergence_temp.east);
+\coordinate[shift={(0mm,2mm)}] (updatenorth) at (update.north);
+\draw[trait] (convergence_temp.east) -- (convergence_tempeast) |- (updatenorth) -- (update);
+
+\coordinate[shift={(-12mm,0mm)}] (initwest) at (init.west);
+\draw[fleche] (test_end.west) -| (initwest) -- (init);
+
+%%-------------
+\coordinate[shift={(6mm,0mm)}] (convsouth_no) at (convsouth.east);
+\node[anchor=south west] (convres_no) at (convsouth_no.east) {No};
+\coordinate[shift={(6mm,0mm)}] (convsouthtemp_no) at (convergence_tempsouth.east);
+\node[anchor=south west] (convtemp_no) at (convsouthtemp_no.east) {No};
+\coordinate[shift={(-1.2cm,0mm)}] (convsouth_process) at (convsouth.west);
+\node[anchor=south east] (conv_no_process) at (convsouth_process.west) {$\iter \leftarrow \iterplus$};
+%%-------------
+\node[anchor=south east] (test_end_no) at (test_end.west) {No};
+\node[anchor=north east] (test_end_process) at (test_end.west) {$t \leftarrow t+\dt$};
+%%-------------
+
+\end{tikzpicture}
+
+\caption{Resolution algorithm of the enthalpy-based solver.}
+
+\end{figure}
+%
+%
+%
+
+\section{Validation}
+%==================
+%
+%------------------------------
+\subsection{Pure diffusion}
+%------------------------------
+The two solvers are first tested in a purely diffusive case for a one-dimensional solidification configuration. 
+Predictions with a 1D front tracking model \citep{gandin_constrained_2000} is used as a benchmark. It provides 
+solutions for the temperature and solid fraction during directional solidification of a 10 cm long \bin{Al}{7}{Si}
+ingot. The melt, with initial uniform temperature, is cooled with a heat exchange coefficient (assuming a Fourier 
+boundary condition) from one side, the other side being adiabatic. All values for alloy properties, initial and 
+boundary conditions and numerical parameters are listed in \cref{table:data_case_alsi7}. For this simple test case, 
+we use linear temperature dependence of the intrinsic phase enthalpies, that is $\rh^s= \rcp T$ and $\rh^l= \rcp T + \rho L$, 
+where $\rcp$ is the heat capacity per unit volume and $\rho L$ is the latent heat per unit volume. Values for $\rcp$ 
+and $\rho L$, as well as for the thermal conductivities, $\kappa = \kl = \ks$, are taken constant. Moreover, a 
+Gulliver Scheil approximation is used to compute a single temperature – fraction of solid relationship in the 
+absence of macrosegregation. This is done assuming a linear binary phase diagram and thus requires using the 
+properties listed in \cref{table:data_case_alsi7}, i.e. the segregation coefficient, $k$, the liquidus slope, $m_L$, the 
+liquidus temperature, $T_L$, and the eutectic temperature, $T_E$. \Cref{fig:validation_diffusion} show the comparison with 
+the Hsolver and Tsolver. The cooling curves and liquid fraction results are found superimposed to the front tacking solution, 
+thus giving validation of the implementation as well as the iterative schemes presented above to solve the energy conservation 
+%------------------------
+\begin{tabulate}
+% caption 
+{Parameters for the pure diffusion test case with an \bin{Al}{7}{Si} alloy presented in \cref{fig:validation_diffusion}}
+% label
+{table:data_case_alsi7}
+% line separation (e.g. 1.5mm)
+{1.0mm}
+% column justification-number (e.g. |c|ll|)
+{llll}
+% header titles (should use the & sign to switch columns)
+{\textbf{Parameter} & \textbf{Symbol} & \textbf{Value} & \textbf{Unit}}
+% cells content (should use the & and // to switch columns and rows)
+{Nominal composition 	& $\avg{w}_0$ 	& \num{7} 		& \si{\ucomposition} \\ 
+Liquidus temperature 	& $T_l$ 		& \num{618} 	& \si{\udegC} \\ 
+Eutectic temperature 	& $T_E$ 		& \num{577}	 	& \si{\udegC} \\  
+Segregation coefficient & $k$ 			& \num{0.13} 	& $-$  \\  
+Liquidus slope 						& $m_l$ 		& \num{-6.5} 	& \si{\uslope} \\ 
+Heat capacity (liquid and solid) 	& $\rho C_p$ 	& \num{2.6e6} 	& \si{\uvolumecapacity} \\  
+Enthalpy of fusion 				 	& $\rho L$ 		& \num{9.5e8} 	& \si{\uvolumeenergy} \\ 
+Thermal conductivity 
+(liquid and solid) 					& $\kappa$ 		& \num{70} 		& \si{\uconductivity}	\\
+\hline  
+Heat transfer coefficient 		& $\hext$ 	& \num{500} & \si{\uhconvec} \\ 
+External temperature 			& $\Text$ 	& \num{100} & \si{\udegC} \\ 
+Initial temperature 			& $T_0$ 	& \num{800} & \si{\udegC} \\ 
+Ingot length 					&  			& \num{0.1} & \si{\metre} \\ 	
+\hline 
+FE mesh size 						&  					& \num{e-3} & \si{\metre} \\ 
+Time step 							& $\dt$ 			& \num{0.1} & \si{\second} \\ 
+Convergence criterion (residual) 	& $\varepsilon_R$	& \num{e-6} & $-$ \\ 
+Convergence criterion (temperature) & $\varepsilon_T$ 	& \num{e-2} & \si{\udegK}}
+%
+\end{tabulate}
+%------------------------
 %
 %-----------------
 \begin{figure}[htbp]
 \centering
    %------------
-  \begin{subfigure}[t]{0.6\textwidth}
+  \begin{subfigure}[t]{0.7\textwidth}
     \centering
-	\includegraphics[width=\textwidth]{Chapter3/Graphics/multicomponent/transformationpath/TP_nomacro.pdf}
+	\includegraphics[width=\textwidth]{Chapter2/Graphics/diffusion/diffusion_CC.pdf}
 	\caption{}
-    \label{fig:tp_nomacroseg}
+    \label{fig:validation_diffusion_CC}
   \end{subfigure}
   %------------------------------
   \vskip\baselineskip
   %------------------------------
-  \begin{subfigure}[t]{0.6\textwidth}
+  \begin{subfigure}[t]{0.7\textwidth}
     \centering
-	\includegraphics[width=\textwidth]{Chapter3/Graphics/multicomponent/transformationpath/TP_macro.pdf}
+	\includegraphics[width=\textwidth]{Chapter2/Graphics/diffusion/diffusion_LF.pdf}
 	\caption{}
-    \label{fig:tp_withmacroseg}
+    \label{fig:validation_diffusion_LF}
   \end{subfigure}
    %------------
-\caption{History of phase fraction (a) without macrosegregation and (b) with 
-macrosegregation at the center of the (plain) bottom and (dashed) top surfaces 
-of the cylinder surfaces, extracted from simulations displayed in (a) \cref{fig:planche_nomacroseg}
-and (b) \cref{fig:planche_withmacroseg}.} 
-\label{fig:tp_macroseg_influence}
+\caption{Computed unidirectional heat diffusion during solidification of an \bin{Al}{7}{Si} alloy 
+using (orange) the enthalpy method and (black) the temperature method, comparison being made 
+for (a) cooling curves  and (b) the liquid fraction history. 
+Each curve corresponds to a position along the sample, from 0 cm (cooling 
+side) to 10 cm (insulated side), with 2 cm spacing between the positions.} 
+\label{fig:validation_diffusion}
 \end{figure}
 %------------------
 %
-\section{Macroscopic prediction of channel segregates}
-%\comment{I should maybe mention that a constant gradient in the coming simulation is a one big difference compared to the previous FeCrC simulation}
-%--------------------------
-\subsection{Introduction}
-\label{sec:intro_freckle}
-We have seen in the previous multicomponent solidification test case, a formation of segregated channels in the cylinder. 
-This defect manifests itself as a composition inhomogeneity that is highly non-isotropic. A typical description of its 
-morphology would consider a channel with a diameter proportional to few primary dendrite arm spacing and a length that 
-could vary from millimeters to centimeters. These “worm”-like shapes could form during directional solidification of cast 
-parts designed for engine applications, particularly in Nickel-base superalloys \citep{giamei_nature_1970,beckermann_development_2000,
-genereux_characterization_2000,schneider_modeling_1997}. In the latter situation, the channels are filled with a chain of small equiaxed 
-crystals, thus referring to the term “freckle”. In large steel ingots, these channel defects are also related to A- and V-segregates   
-\citep{pickering_macrosegregation_2013}. 
-
-Considering a binary alloy with a partition coefficient less than unity and having a negative liquidus slope, 
-freckles may form by the following mechanisms: i) solute partitioning occurs at the scale of dendrite arms and 
-solute is rejected in the melt, ii) local composition gradients are intensified resulting in an increase of the 
-solutal buoyancy force in the mushy zone, iii) solute-rich pools are formed, causing segregation chimneys and convective plumes in the melt, 
-iv) which lead to partial remelting and transport of dendrites, continuous solute feeding and locally delayed solidification,
-and finally v) accumulation of fragments and/or equiaxed crystals in the chimneys before the end of solidification.
-
-Because it is of prime importance to control the occurrence of channel segregation, several attempts have been made 
-from the late 1960’s \citep{flemings_macrosegregation:_1967, flemings_macrosegregation:_1968-1,flemings_macrosegregation:_1968} 
-to the early 2000’s \citep{ramirez_evaluation_2003} to understand it and characterise it by deriving freckling criteria. 
-These studies are summarized in \citep{auburtin_determination_1998}. One of the reasons for only considering freckling criteria 
-is that direct realistic simulations of the formation of freckles in a casting geometry are still difficult. 
-Indeed, experimental observations show that it requires a satisfying description of the microstructure together 
-with the 3D convective flow controlled by the cooling conditions of the complete cast part \citep{shevchenko_chimney_2013}. 
-Such information is not accessible yet. Only simulations in representative simple cuboid or cylindrical domains are 
-usually achieved \citep{felicelli_simulation_1991,felicelli_modeling_1998,kohler_peritectic_2008,guo_three-dimensional_2003}, 
-except when considering small volume casting \citep{desbiolles_micro-macrosegregation_2003}. 
-They are usually limited to unstable thermosolutal convection without or with 
-little regard to the microstructural features. Considering the spatial resolution of the defect, being for example of the 
-order of the primary dendrite arm spacing, a fluid flow computation in the 3D casting part is also very demanding and not 
-common in the literature. 
-Among  other criteria, the dimensionless Rayleigh number has been identified as a good indicator 
-for  the occurrence of segregation channels or a subsequent freckle defect. The dependence of freckling tendency on the 
-Rayleigh number has been studied numerically 
-and compared to experimental observations, as done by \citep{ramirez_evaluation_2003}.
-%--------------------------
-\subsection{Experimental work} 
-\label{sec:freckle_exp}
-An interesting experimental work on directional solidification of \bin{In}{75}{Ga}
-featuring in-situ X-ray monitoring has been recently carried out by \citet{shevchenko_chimney_2013}. 
-The comparison with numerical modelling is paramount for two main reasons: firstly, the in-situ technique allows to follow solidification in real-time 
-and offers visual description of the system behaviour: grain morphology, composition evolution, effect on fluid flow in the 
-mushy zone and chimney initiation, as well as other modelling input data such as dendritic and eutectic nucleation undercooling; 
-secondly, an indium-gallium system is more representative of metallic alloy solidification than the widely used organic systems, 
-e.g. the succinonitrile-acetone mixture that exhibits alloy-like dendritic formation in its growth stage. Further information with respect 
-to the experimental hardware, procedure and data analysis can be found in \citep{boden_x-ray_2008,shevchenko_chimney_2013}.
+\subsection{Convection and diffusion}
+To validate the Tsolver with fluid flow, we consider the following set of equations
+already defined in the flowchart of \cref{fig:algo_monodomain}. Moreover, an assumption 
+of a static and non deformable solid phase is made. Consequently, the mechanical model is 
+reduced to the conservation of momentum in the liquid phase. This assumption also yields 
+some other consequences on the mass balance and the liquid momentum conservation. In the 
+latter, a Darcy term is added to take into account the dissipative interfacial stress in 
+the porous-like mushy zone. Its main parameter is the permeability of the mushy zone, $K$. 
+It is considered isotropic, hence reducing to a scalar which is given by the Carman-Kozeny 
+relation, based on the secondary dendrite arm spacing $\lambda_2: K= \frac{g^{l^3}  \lambda_2^{2}
+ }{180\brac{1-g^l}^2}$. The liquid density being taken constant, its spatial variations 
+as a function of temperature and average composition are still needed to compute thermosolutal 
+convection forces. For that purpose, the Boussinesq approximation (\cref{eq:boussinesq}) is used, 
+considering the thermal $\betaT$ and solutal $\betawl$) expansion coefficients 
+and a reference density, $\rref$, defined at a reference temperature $\Tref$ and reference 
+composition $\wlref$. Values for the references are taken at the liquidus temperature and the nominal 
+composition of the alloy, $\w_0$ \citep{carozzani_direct_2013}. More details about the FE formulation can be found in 
+the PhD work of \citet{rivaux_simulation_2011, carozzani_developpement_2012}.
+%
+%----------------------
+\begin{figureth}
+% textwidth 
+{0.85}
+%path 
+{Chapter2/Graphics/convection_diffusion/smacs_CC.pdf}
+% caption
+{Experimental cooling curves overlap with the results of the 3D FE convection-diffusion simulation.
+The left (LHE) and right (RHE) heat exchangers impose the boundary temperature in the experiment.}
+% label
+\label{fig:validation_convectiondiffusion}
+\end{figureth}
+%-----------------------------------
+%
+The Tsolver’s ability to be coupled with various physical phenomena like macrosegregation and fluid flow 
+in porous medium is displayed in this test case. Details about fluid flow resolution will not be given 
+in this section, but rather in the next chapter. It consists of a solidification benchmark where a \SI{10}{\centi \metre}
+width $\times$ \SI{6}{\centi \metre} height $\times$ \SI{1}{\centi \metre} thick cavity containing 
+a \bin{Sn}{3}{Pb} melt is cooled down from its two 
+narrowest vertical sides using heat exchangers (LHE: left heat exchanger, RHE: right heat exchanger). The 
+experiment, inspired by \citet{hebditch_observations_1974} similar set up, has been 
+revisited by \citet{hachani_experimental_2012} who performed the solidification with better 
+controlled conditions and using an increased number of samples for composition analysis. Recently, a successful 
+attempt to simulate the experiment was carried out by \citet{carozzani_direct_2013} relying on an enthalpy resolution. 
+All details regarding geometry, finite element discretization, material properties 
+and boundary conditions can be found in the latter reference. 
+For this computation, solidification paths, phase compositions and phase enthalpies were determined by a thermodynamic 
+module dedicated to equilibrium calculations for binary alloys. The 3D simulation results in \cref{fig:validation_convectiondiffusion}
+show a satisfactory agreement with the experimental temperature measurements recorded at mid heights of the cavity and uniformly 
+distributed along its width \citep{carozzani_direct_2013}. In fact, simulation results with the Tsolver and the Hsolver were 
+found to be almost superimposed, as shows \cref{fig:validation_convectiondiffusion}. 
+Further comparison is made between both solvers, as shows \cref{fig:planche_HvsT}, where the average
+composition, liquid fraction and temperature fields are extracted from a cut plane halfway through the ingot. On the same figure,
+if we compare the composition, we notice that the solidified part (right side) has basically the same segregation pattern, while
+in the convected liquid has a slightly different solute distribution. As for the extent of the mushy zone, we observe that liquid
+fraction contours are very close, indicating that temperature distributions and interdendritic segregation are also close between 
+both solvers predictions.
+Regarding the computation, the Tsolver resolution proves to be 
+faster than the Hsolver used by \citet{carozzani_direct_2013}: a process time of 7000s required a computation time of 90 hours 
+13 minutes compared to 114 hours 21 minutes spent by the enthalpy resolution with 32 cores on the same cluster. The gain factor 
+is about 20\%.
+%
+%----------------------
+\begin{figureth}
+% textwidth 
+{0.85}
+%path 
+{Chapter2/Graphics/convection_diffusion/planche_HvsT.pdf}
+% caption
+{Comparison of 3D simulation results: average composition, liquid fraction and temperature at t=3000 s for Tsolver and Hsolver.}
+% label
+\label{fig:planche_HvsT}
+\end{figureth}
+%-----------------------------------
+%
+\section{Application: multicomponent alloy solidification}
+%==================
+%
+We have shown that the efficiency of the temperature-based resolution resides in its performance when combined with 
+thermodynamic tabulations. A multicomponent alloy consists of at least two solute elements, and 
+therefore the tabulation size increases, hence the number of search operations also increases. 
+To demonstrate the speed-up ability of the temperature-based approach while predicting all phase 
+transformations during macrosegregation caused solely by mass diffusion, we consider the solidification of a ternary alloy, \tern{Fe}{2}{C}{30}{Cr}.
+In order to neglect fluid flow resolution, we assume that solidification in this case is so slow that no forces are generated inside the melt, while
+additionally all buoyancy forces are also neglected, so no momentum conservation is solved in this section.
+As illustrated in \cref{fig:mutlicomponent_geo}, the alloy domain has a cylinder shape close to 3-inch height $\times$ 1-inch diameter. 
+Exact values are reported in \cref{table:ternary_data_case} with all material properties, initial and boundary conditions, 
+as well as numerical parameters for the simulations. The melt steel is initially at \SI{1395}{\udegC}. The 
+temperature of the bottom surface is imposed with a constant decreasing rate of \SI{0.1}{\uCR} starting 
+with \SI{1380}{\udegC}, i.e. \SI{40}{\udegC} higher than the nominal liquidus temperature, as shown 
+in \cref{fig:mutlicomponent_bc}. The other surfaces are kept adiabatic. The cylinder is held in a vertical position. 
+\cref{fig:ternary_nominalpath} also provides the transformation path of the alloy at nominal composition, i.e. assuming no macrosegregation and full 
+thermodynamic equilibrium as computed with ThermoCalc and the TCFE6 database \citep{tcfe6_tcfe6:_2010, andersson_thermo-calc_2002}. 
+A total of 5 phases need to be handled, the characteristic temperature for their formation being reported 
+in \cref{fig:mutlicomponent_bc}.
+%
+%----------------------
+\begin{figureth}
+% textwidth 
+{0.8}
+%path 
+{Chapter2/Graphics/multicomponent/SP_nominal.pdf}
+% caption
+{Thermodynamic mapping \citep{tcfe6_tcfe6:_2010, andersson_thermo-calc_2002} of the transformation path for the \tern{Fe}{2}{C}{30}{Cr} at nominal composition.}
+% label
+\label{fig:ternary_nominalpath}
+\end{figureth}
+%-----------------------------------
+%
+\subsection{Tabulations}
+Full thermodynamic equilibrium is considered in the present case. Due to macrosegregation, 
+the average composition is expected to continuously vary in time and space during casting. 
+Transformation paths are thus determined a priori for a set of average compositions around 
+the nominal value. Hence, carbon content varies in the interval [\SI{1.8}{\ucomposition}, \SI{2.2}{\ucomposition}] 
+while chromium content variation is in the interval [\SI{27}{\ucomposition}, \SI{33}{\ucomposition}]. The offset of $\pm$ 10\%  with 
+respect to the nominal composition value allows tabulating relatively small composition steps
+to ensure a fairly accurate mapping when compared to the corresponding ternary phase diagram. The average 
+composition step is \SI{0.04}{\ucomposition} for carbon and \SI{0.6}{\ucomposition} for chromium, thus representing 2\% 
+intervals with respect to the nominal composition. The temperature varies in the interval 
+[\SI{100}{\udegC}, \SI{1600}{\udegC}] by \SI{5}{\udegC} steps. For each triplet (carbon content 
+in \si{\ucomposition} C, $\wC_0$ , chromium content in \si{\ucomposition} Cr,  $\wCR_0$, temperature in \si{\udegK}) 
+corresponds a phase fraction $g^\phi$ and a pair of intrinsic phase composition ($\wCR^\phi$,$\wCR^\phi$). For the 5 
+phases listed in \cref{fig:ternary_nominalpath} (LIQ$\equiv$liquid, BCC$\equiv$ferrite, FCC$\equiv$austenite, 
+$\carbide \equiv$carbide, CEM$\equiv$cementite), the enthalpy $h^\phi$ and density $\rho^\phi$, are tabulated 
+as functions of temperature and phase intrinsic composition. If this latter input lies between two tabulated 
+values, a linear interpolation is performed to determine the output, i.e. phase enthalpy and density. With 
+the advancement of solidification, the liquid is enriched with solute by macrosegregation, which enables new 
+solidification paths. It means that the primary solidifying phase is not necessarily the same as when considering 
+the nominal composition. For this reason, the tabulation approach is interesting inasmuch as it provides phase 
+transformation paths and values of phase properties that are compatible with the system’s actual composition. 
+\Cref{fig:ternary_tabulations} summarizes the tabulated thermodynamic data for two sets of average composition for the considered 
+ternary system. Note that in the present test case, phase densities are taken constant ($\rhos=\rhol=$ \SI{6725}{\udensity}). 
+Therefore they are not tabulated. With this assumption, no shrinkage occurs upon phase change.
 %
 %-----------------
 \begin{figure}[htbp]
 \centering
-  %------------
-  \begin{subfigure}{0.5\textwidth}
+   %------------
+  \begin{subfigure}[t]{0.3\textwidth}
     \centering
-	\includegraphics[height=3.5cm]{Chapter3/Graphics/freckle_exp/setup.pdf}
+	\includegraphics[height=6cm]{Chapter2/Graphics/multicomponent/geo_bc/Cylinder_nocolor_annotate.pdf}
 	\caption{}
-    \label{fig:experimental_setup}
-  \end{subfigure}
-   %------------------------------
-  %\vskip\baselineskip
-  %------------------------------
-  \begin{subfigure}{0.5\textwidth}
-    \centering
-	\includegraphics[height=4cm]{Chapter3/Graphics/freckle_exp/img.png}
-	\caption{}
-    \label{fig:experimental_img}
+    \label{fig:mutlicomponent_geo}
   \end{subfigure}
    %------------
-\caption{Illustration of the benchmark experiments for in-situ observation of segregated channels
-formation using X-Ray radiography with (a) a schematic of the cell and (b) a typical image 
-of the microstructure formed during directional solidification of an \bin{In}{75}{Ga} alloy. Reproduced from \citep{shevchenko_chimney_2013}.} 
-\label{fig:experimental_freckles}
+   \hspace{1mm}%\quad
+   \begin{subfigure}[t]{0.5\textwidth}
+    \centering
+	\includegraphics[height=6cm]{Chapter2/Graphics/multicomponent/geo_bc/BC.pdf}
+	\caption{}
+    \label{fig:mutlicomponent_bc}
+  \end{subfigure}
+  %------------------------------
+\caption{Configurations for directional casting of (a) a 1 inch diameter $\times$ 3 inches height cylindrical domain for which
+(b) temperature-time conditions are imposed at its bottom surface.} 
+\label{fig:mutlicomponent_geobc}
 \end{figure}
 %-----------------
 %
-%--------------------------
-\subsection{Macroscopic scale simulations}
 %
-\subsubsection{Configuration}
-The focus of this section is on qualitative comparison between numerical simulation and the previously mentioned experiment. 
-The experimental cell geometry shown in \cref{fig:freckle} is hexagonal. With adiabatic lateral sides, it results in a 
-bending of the isotherm surfaces as shown in the experiment. The metallic cooling plates shown in \cref{fig:experimental_setup}
-partly compensate for this effect. However, a residual horizontal component of the temperature gradient 
-remains. To qualitatively replicate this effect while simplifying the cell geometry, a \SI{22 x 22 x 1}{\milli \uvolume}  
-cuboid cell is considered with small cooling fluxes on its lateral vertical side surfaces computed using a constant heat transfer 
-coefficient, $\hext$, and a constant environment temperature, $\Text$. Temperatures at the bottom and top surfaces, 
-respectively $\Ttop$  and $\Tbottom$, are imposed in a way to maintain a constant vertical gradient, G, thus linearly 
-decreasing over time with the same cooling rate R. Both square faces of the geometry, having an area of \SI{22 x 22}{\milli \uarea}, 
-are adiabatic. In spite of taking cell dimensions similar to benchmark experiments presented above, the cell thickness 
-is increased from \SI{150}{\micro \metre} to \SI{1}{\milli \metre}. This facilitates the computation and will later be subject to discussion. 
+%=====================================BIG LANDSCAPE FIGURE =====================================
+%\begin{landscape}
+%\begin{figure}[htbp]
+%\centering
+%	\includegraphics[width=1.5\textwidth]{Chapter2/Graphics/multicomponent/tabulations/planche_tabulations.pdf}
+%\caption{Tabulated thermodynamic data for the ternary system Fe-C-Cr alloy with software Thermo-Calc \citep{andersson_thermo-calc_2002}  with database TCFE6 %\citep{tcfe6_tcfe6:_2010}.}
+%\label{fig:planche_tabulations}
+%\end{figure}
+%\end{landscape}
+%=====================================BIG LANDSCAPE FIGURE =====================================
 %
-%--------------------------------
-\begin{table}[htbp]
-\centering
-\caption{Summary of the simulations and and the corresponding parameters for the FE cases, where a purely macroscopic model is used.
-Parameters are varied from (G1) low to (G2) high gradient and (L0) no, to (L1) low lateral cooling.}
-\label{table:simulation_InGa_fe}
-\resizebox{\columnwidth}{!}{%
-{\tabulinesep=1.1mm \begin{tabu}{C{2cm} C{3cm} C{2.5cm} C{3cm} C{4.5cm}}
-\tabucline[1pt]{-}
-\textbf{Case} & Vertical gradient & Cooling rate & Lateral cooling & Initial temperature \\
-			  &     G 			  & 	R		 & 			L \quad ($\hext$, $\Text$)	& ($T_{top}$, $T_{bottom}$) \\
- 			  & [\si{\ugradT}] & [\si{\uCR}] &  [\si{\uhconvec}, \si{\udegC}] &  [\si{\udegC}]\\\tabucline[1pt]{-}
-%-----------------------------
-FE-G1R1L0 & G1:0.2 & R1:-0.01 & L0:(0,0) & (29.75, 25.25)  \\ 
-FE-G1R1L1  & G1:0.2 & R1:-0.01 & L1:(20,0) & (29.75, 25.25)  \\ 
-FE-G2R1L1  & G2:1.5 & R1:-0.01 & L1:(20,0) & (58.25, 25.25)  \\\tabucline[1pt]{-}
-%-----------------------------
-\end{tabu}}
-}
-\end{table}
-%--------------------------------
 %
-
-Materials properties are provided in \cref{table:data_case_InGa} while initial and boundary conditions are given in \cref{table:simulation_InGa_fe}. 
-A series of computations is performed to understand the influence of process parameters on the final macrosegregation pattern. 
-In directional growth, the main parameters are the vertical temperature gradient, G, and the cooling rate, R, since they control the isotherms 
-speed. However, the effect of a higher lateral cooling is also considered below by increasing the heat transfer coefficient,
-$\hext$. Finally, the grain structure is another crucial parameter that drastically changes the analysis inasmuch as growth 
-undercooling is fundamental to determine the onset of solidification. The computation cases used in this study are presented 
-in \cref{table:simulation_InGa_fe}. The label of each case allows direct access to the simulation parameters as explained in the caption. Values for 
-these parameters are inspired from the above experiments (\cref{sec:freckle_exp}). Initial conditions consider a quiescent 
-liquid at uniform composition given by the nominal alloy composition $\avg{\Cnominal}$. The temperature field is also initially uniform 
-at a temperature averaged between the top and bottom initial values provided in \cref{table:simulation_InGa_fe}. It has been checked that a uniform 
-temperature gradient is swiftly reached, and that the unsteady regime to settle a vertical temperature gradient does not affect 
-the phenomena studied. For simulations with grain structures, boundary conditions for nucleation at the bottom horizontal \SI{22 x 1}{\milli \uarea} 
-surface are kept constant as given in \cref{table:simulation_InGa_fe}.
-
-The macroscale approach employs the finite element method to compute the temperature and composition fields at FE nodes. 
-The liquid fraction is then determined directly from the former fields, assuming a linear phase diagram, i.e. linear liquidus 
-with full thermodynamic equilibrium between phases or lever rule approximation. This linear approximation is made available by 
-the dotted line provided in \cref{fig:phasediagram_InGa}. Note that this line defines a phase diagram that seems very different from the correct one. 
-However, this linear fit is only used in a composition region located around the nominal composition of the alloy. It is also worth 
-noticing that the eutectic microstructure is expected to appear at \SI{15.3}{\udegC}. However, experimental observations revealed that large 
-eutectic nucleation undercooling was reached, so the eutectic solidification was not reported in the experiments studied by 
-\citet{shevchenko_chimney_2013}. Consequently, the solidification path is computed without accounting for the eutectic microstructure 
-in the present simulations, thus extending the liquidus and solidus lines below the eutectic temperature as sketched with the linear 
-approximations in \cref{fig:phasediagram_InGa}.
-%
-%-----------------------
+%=====================================BIG PORTRAIT FIGURE =====================================
 \begin{figureth}
-{0.6}
-{Chapter3/Graphics/freckle_fe/phasediagram/PhaseDiagram.pdf}
-{Binary phase diagram of the In-Ga system \citep{andersson_thermo-calc_2002,tcbin_tcbin:_2006} and 
-its approximation for solidification studies with an \bin{In}{75}{Ga} alloy. 
-The dashed and dotted lines are linear liquidus and solidus approximations near the nominal composition.}
-\label{fig:phasediagram_InGa}
+% textwidth 
+{0.75}
+%path 
+{Chapter2/Graphics/multicomponent/tabulations/planche_tabulations_portrait.pdf}
+% caption
+{Tabulated thermodynamic data for the ternary system Fe-C-Cr alloy with software 
+Thermo-Calc \citep{andersson_thermo-calc_2002}  with database TCFE6 \citep{tcfe6_tcfe6:_2010}.
+The two columns represent two values of nominal average composition, for a) low carbon and chromium content
+and b) high carbon and chromium content.
+The effect of their variation on transformation paths, phase compositions and phase enthalpies is shown in the corresponding graphs.}
+% label
+\label{fig:ternary_tabulations}
+%\thispagestyle{headings}
 \end{figureth}
-%-----------------------
+%=====================================BIG PORTRAIT FIGURE =====================================
 %
 %----------------
 \begin{tabulate}
 %
 % caption 
-{Material parameters for \bin{In}{75}{Ga} and numerical parameters.}
+{Solidification parameters for the \tern{Fe}{2}{C}{30}{Cr} alloy.}
 % label
-{table:data_case_InGa}
+{table:ternary_data_case}
 % line separation (e.g. 1.5mm)
 {0.6mm}
 % column justification-number (e.g. |c|ll|)
@@ -638,625 +1165,74 @@ The dashed and dotted lines are linear liquidus and solidus approximations near 
 {\textbf{Parameter} & \textbf{Symbol} & \textbf{Value} & \textbf{Unit}}
 % cells content (should use the & and // to switch columns and rows)
 {
-Nominal composition 			& $\avg{\Cnominal}$		& 75 					& \si{\ucomposition} 	\\ 
-Liquidus temperature			& $T_l$ 				& \num{25.25} 			& \si{\udegC} 			\\
-Segregation coefficient			& $\k$					& \num{0.0165}			& \si{\ucomposition \per \ucomposition} \\
-Liquidus slope					& $m_l$					& \num{-2.73}			& \si{\udegK \per \ucomposition} \\
-\hline
-Gibbs-Thomson coefficient			&$\Gamma_{\text{GT}}$	&\num{2e-7}			& \si{\udegK \per \metre} 		\\ 	
-Heat capacity (liquid and solid)	&$C_p$ 					&\num{380.74}		& \si{\umasscapacity} 		\\ 	
-Enthalpy of fusion					&$L$ 					&\num{8.02d-4}		& \si{\umassenergy} 	\\ 	
-Diffusion coefficient of Ga in liquid In 		& $\Dl$ 	& \num{1.525d-9} 	& \si{\udiffusivity}  	\\ 
+Nominal composition 			& $\wC_0$ 				& 2 					& \si{\ucomposition} 	\\ 
+                    			& $\wCR_0$ 				& 30 					& \si{\ucomposition} 	\\ 
+Characteristic temperatures 	& $T_\text{bottom}$ 	& \cref{fig:mutlicomponent_bc}	 & \si{\udegC} \\ 
+Phase fraction 					& $g^\phi$ 				& Tabulations \cref{fig:ternary_tabulations}	& $-$ 					\\ 
+Phase enthalpy 					& $\h^\phi$ 			& Tabulations \cref{fig:ternary_tabulations}	& $-$ 					\\ 
+Phase composition 				& $\wC^\phi$ 			& Tabulations \cref{fig:ternary_tabulations}	& \si{\ucomposition}  	\\ 
+Phase composition               & $\wCR^\phi$ 			& Tabulations \cref{fig:ternary_tabulations}	& \si{\ucomposition}  	\\ 
+Diffusion coefficients 			& $\avg{D_\text{C}}^l$ 	& \num{15e-10} 	& \si{\udiffusivity}  	\\ 
+                        		& $\avg{D_\text{Cr}}^l$	 & \num{15e-10} 	& \si{\udiffusivity}  	\\ 
 Dynamic viscosity  				& $\mul$ 					& \num{2e-3} 		& \si{\uviscosity}  	\\ 
-Thermal expansion coefficient 	& \betaT 					& \num{0.0978e-3} 	& \si{\ubetaT}  		\\ 
-Solutal expansion coefficient 	& $\betawl$ 				& \num{1.44e-3} 	& \si{\ubetawl}  		\\  
+Thermal expansion coefficient 	& \betaT 					& \num{8.96e-5} 	& \si{\ubetaT}  		\\ 
+Solutal expansion coefficient 	& $\betawlC$ 				& \num{1.54e-3} 	& \si{\ubetawl}  		\\  
+                              	& $\betawlCR$ 				& \num{1.72e-2} 	& \si{\ubetawl}  		\\ 
 Thermal conductivity in the solid & $\ks$ 					& \num{40} 			& \si{\uconductivity}  	\\ 
 Thermal conductivity in the liquid & $\kl$ 					& \num{28} 			& \si{\uconductivity}  	\\ 
 Dendrite arm spacing 			& $\lambda$ 				& \num{60e-6} 		& \si{\metre}  			\\ 
-Density 						& $\rholref$ 				& \num{6725} 		& \si{\udensity}  		\\ 
-Reference composition			&$\wlref$					& \num{75} 			& \si{\ucomposition}  	\\
-Reference temperature 			&$\Tref$					& \num{25.25} 		& \si{\udegC}  			\\
-%\hline 
-%Initial temperature 	& $T_{\text{init}}$ & \num{1395}	& \si{\udegC}  \\ 
-%Ingot diameter 			&   	& \num{25e-3} 	& \si{\metre}  \\ 
-%Ingot length 			&   	& \num{75e-3} 	& \si{\metre}  \\ 
+Density 						& $\rholref$ 						& \num{6725} 	& \si{\udensity}  		\\ 
+Reference composition (carbon)	&$\avg{w_\text{C}}_\text{ref}^l$	& \num{2} 		& \si{\ucomposition}  	\\
+Reference composition (chromium)&$\avg{w_\text{Cr}}_\text{ref}^l$	& \num{30} 		& \si{\ucomposition}  	\\
+Reference temperature 			&$\avg{w_\text{C}}_\text{ref}^l$	& \num{1377} 	& \si{\udegC}  	\\
 \hline 
-CA cell size			&		& \num{30e-6}		& \si{\metre}  \\ 
-FE mesh size 			&  		& \num{140e-6} 	& \si{\metre}  \\ 
-Time step 				& $\dt$ & \num{0.1} 	& \si{\second}
+Initial temperature 	& $T_0$ & \num{1395}	& \si{\udegC}  \\ 
+Ingot diameter 			&   	& \num{25e-3} 	& \si{\metre}  \\ 
+Ingot length 			&   	& \num{75e-3} 	& \si{\metre}  \\ 
+\hline 
+FE mesh size 			&  		& \num{e-3} 	& \si{\metre}  \\ 
+Time step 				& $\dt$ & \num{0.1} 	& \si{\second}  \\ 
+Convergence criterion (residual) 	& $\varepsilon_R$ & \num{e-6} & $-$ \\ 
+Convergence criterion (temperature) & $\varepsilon_T$ & \num{e-2} & \si{\udegK} 
 }
 %
 \end{tabulate}
 %-----------------
 %
-\subsubsection{Results}
-The first case labeled FE-G1R1L0 is a reference case that features a low gradient (G1), low cooling rate (R1), 
-and without any lateral cooling (L0), ensuring that isotherms retain a planar shape. These simulation parameters 
-defined in \cref{table:data_case_InGa}, result in a negligible fluid flow reaching a maximum velocity of \SI{4d-8}{\milli\uvelocity} in the bulk. 
-Accordingly, the solidification front remains stable and follows the planar isotherms; no chimneys are observed. 
-The average composition field is thus only little modified in the mushy zone as shown in \cref{fig:freckles_fe} (mind the values of the scale limits). 
-It is concluded that velocity in the bulk is not high enough to initiate instabilities. In the next case, FE-G1R1L1, 
-a cooling flux with a constant and very low value of the heat transfer coefficient is imposed on both vertical lateral 
-surfaces to initiate a downward fluid flow by thermal buoyancy. Once solidification starts, solute-rich regions start 
-to appear on the sides of the domain. Despite the visible concentration difference between these lateral regions and 
-the central mush seen in \cref{fig:freckles_fe}, their diffuse and uniform aspect indicates no resemblance to segregated channels. We keep the 
-same configuration but increase the vertical gradient from \SI{0.2}{\ugradT} (G1) to \SI{1.5}{\ugradT} (G2) in the case FE-G2R1L1. 
-The isotherms become closer to each over hence reducing the depth of the mushy zone for the same time increment compared 
-to the preceding case. The rejected gallium solute locally accumulates at several different positions in the mushy zone, 
-stemming from the base of the cell, with a maximum of \SI{0.7}{\ucomposition}Ga above nominal composition. 
-This is the consequence of segregation of gallium rich liquid being lighter than the above liquid bulk and creating an 
-upward buoyancy force. The positive segregation and subsequent Ga-rich chimneys then rise up with an upward velocity 
-component slightly greater than \SI{1}{\milli\uvelocity}.
-%
-%-----------------
-\begin{figure}[htbp]
-\centering
-  %------------
-  \begin{subfigure}{0.4\textwidth}
-    \centering
-	\includegraphics[width=\textwidth]{Chapter3/Graphics/freckle_fe/refA_new_annotate.png}
-	\caption{FE-G1R1L0}
-    \label{fig:refA}
-  \end{subfigure}
-   %------------------------------
-  \vskip\baselineskip
-  %------------------------------
-  \begin{subfigure}{0.4\textwidth}
-    \centering
-	\includegraphics[width=\textwidth]{Chapter3/Graphics/freckle_fe/refB_new.png}
-	\caption{FE-G1R1L1}
-    \label{fig:refB}
-  \end{subfigure}
-   %-----------
-  \vskip\baselineskip
-  %------------------------------
-  \begin{subfigure}{0.4\textwidth}
-    \centering
-	\includegraphics[width=\textwidth]{Chapter3/Graphics/freckle_fe/refC_new.png}
-	\caption{FE-G2R1L1}
-    \label{fig:refC}
-  \end{subfigure}
-   %------------
-\caption{Average Ga composition field at \SI{250}{\utime} for the 3 FE cases showing the influence of 
-process parameters on the freckling tendency. The black line represents the liquidus isotherm given in \cref{table:data_case_InGa}.} 
-\label{fig:freckles_fe}
-\end{figure}
-%-----------------
-%
-\Cref{fig:planche_fe} gives a series of snapshots for case FE-G2R1L1 at three different times. Among the two clear distinct 
-plumes that are visible at \SI{250}{\utime} in \cref{fig:freckles_fe}, only one has led to a channel formation,
-that remains in \cref{fig:planche_fe} at \SI{500}{\utime}. 
-In fact, an animation between \SI{250}{\utime} and \SI{500}{\utime} (not shown here) reveals that one plume vanishes, 
-thus permitting the first one to further develop. A second freckle is also seen on the left hand side of the cell. 
-These two freckles are stable for a long time since they remain at time \SI{1000}{\utime}. However, the left side freckle 
-develops further to become the main one at \SI{1500}{\utime}, while the mid-width freckle decreases in intensity, changes 
-orientation and subsequently disappears (not shown here). Thus, the birth and death of very few freckles is observed in this 
-simulation, mainly due to solutal instability, as the temperature field shown in \cref{fig:planche_fe} clearly remains stable despite 
-the low lateral heat flux. As shown in \cref{fig:freckles_fe}, instability is yet required to create these chemical plumes and channels. 
-Here, it is created by a very small lateral heat flow but other sources of instability could be involved, as shown with the grain structure in the next section.
+\subsection{Discussion}
+%-----------------------
+A first case is considered without macrosegregation, that is, all mechanical driving forces are bypassed, leading to a static melt. 
+This is achieved by nullifying the thermal and solutal expansion coefficients, which is equivalent to a constant density in space 
+and time, i.e. no Boussinesq force is considered. This way, the average composition may only vary due to diffusion in the liquid 
+phase according to \cref{eq:diag_solute} where the convection term is neglected. Diffusion is significantly small in the present case and can be 
+neglected too. In such a case, the composition distribution maintains a homogeneous aspect throughout the sample during the entire 
+cooling sequence. The phase transformations then are necessarily expected to follow the unique path shown in \cref{fig:ternary_nominalpath}. After 407 s 
+of cooling, the liquidus isotherm enters the bottom surface of the geometry and starts its upward propagation, marking the solidification 
+onset. \Cref{fig:planche_nomacroseg} presents the simulation results at 3 successive times for the distribution of the solute species and the temperature, as 
+well as for the fraction of phases listed in \cref{fig:ternary_nominalpath}. At 600 s, a fully liquid region is still largely present while the mushy zone is 
+made of liquid plus the primary solid phase (ferrite). At \num{10560} s, the sample is full solid, with fractions of ferrite and cementite that 
+corresponds to the values read in \cref{fig:ternary_nominalpath} at low temperature. At the selected intermediate time, the presence of 4 phases is found. The 
+solid region at the bottom of the cylinder is made of ferrite, austenite plus carbide, the temperature being still too high to permit the 
+cementite to form. The mushy zone above the solid region is characterized by the presence of 3 phases due to a peritectic reaction taking 
+place that progressively transform ferrite into austenite in the presence of liquid. It can be noticed that the phase fraction isovalues 
+in \cref{fig:planche_nomacroseg} (at 600 s) are horizontal, owing this to two factors: the first is the temperature field, which varies unidirectionally from 
+bottom to top, controlled by thermal diffusion, while the second is the uniform average composition throughout the sample due to the absence 
+of convection. In fact both factors are consequences of the flow absence, which would transport heat and solute by advection, thus inevitably 
+changing the phase distribution. The succeeding phase change is a solid-state transformation where $\alpha$-ferrite and the carbide $\carbide$ react to form 
+cementite at \SI{490}{\udegC} at nominal composition, as shown in \cref{fig:mutlicomponent_bc}. The reaction is relatively slow, ending with 28\% 
+of cementite and 72\% of $\alpha$-ferrite.
 %
 %=====================================BIG LANDSCAPE FIGURE =====================================
 \begin{landscape}
 \begin{figureth}
 {1.15}
-{Chapter3/Graphics/freckle_fe/planche_fe.pdf}
-{Simulation results for case FE-G2R1L1 showing maps of the average composition in gallium,
-the solid fraction, the superficial velocity field (vertical component) and the temperature, 
-on a cut plane at the center of the cell at 500 s, 1000 s and 1500 s.}
-\label{fig:planche_fe}
+{Chapter2/Graphics/multicomponent/planche_nomacroseg.pdf}
+{: Upward solidification of a cylinder rod with a static liquid at 
+3 stages in a \tern{Fe}{2}{C}{30}{Cr}. The left columns show the average 
+composition and temperature distribution, while the right columns show the phase fractions.}
+\label{fig:planche_nomacroseg}
 %\thispagestyle{headings}
 \end{figureth}
 \end{landscape}
 %=====================================BIG LANDSCAPE FIGURE =====================================
 %
-\subsubsection{Discussion}
-In \cref{sec:intro_freckle}, we have introduced some successful attempts of freckle predictions. 
-The authors tackled the problem from an qualitative perspective. 
-To our knowledge, the closest work to quantitative freckling analysis in solidification literature was done by \citet{ramirez_evaluation_2003}.
-They attempted to draw a correlation (freckling criterion) between the process parameters and the occurrence of freckles, 
-(without any size or shape constraints, i.e. any flow instability that may appear and form the smallest freckle is considered). 
-To accomplish this, they took a number of experiments done independently by \citet{pollock_breakdown_1996} and \citet{auburtin_freckle_2000} 
-where the casting parameters vary one at a time: casting speed (R), thermal gradient (G), angle ($\theta$) with respect to vertical 
-orientation and nominal composition ($\avg{w_0}$), giving a database for 6 different superalloys. The experimental results were 
-compared to a modified Rayleigh number that accounts for the various parameters. It allowed them to define a threshold for freckle 
-formation in Nickel-base superalloys, as well as Pb-Sn alloys.
-Other contributions by \citet{yuan_new_2012} (Pb-Sn alloy) and  \citet{karagadde_3-d_2014} (In-Ga alloy) relied on a Cellular Automata Finite Difference
-(CAFD) model developed by \citet{lee_modeling_2002}, which  solves the dendrite tip growth kinetics at 
-the solid-liquid interface together with macroscopic conservation equations. 
-The authors compared the simulated formation of freckles with the results obtained by \citet{shevchenko_chimney_2013}.
-However, these simulations follow solidification in a small volume that contains a few dendrites with interdendritic liquid, 
-therefore limited as far as to predict the liquid behaviour outside the mushy zone.
-On another hand, experimental observations reveal a great deal of information 
-regarding solute redistribution, first in the chimneys that wash the dendrites in their 
-way and then convective plumes that expel chemical species outside the mush, resulting in a global complex phenomenon.
-In order to capture simultaneously the interaction between the mushy zone and the free liquid, we use 
-the Cellular Automata Finite Element (CAFE) method to combine the macroscopic and mesoscopic length scales
-and predict more realistic channel segregation.
-%
-%-----------------------------------------------
-\section{Meso-Macro prediction of channel segregates}
-%
-\subsection{Numerical method}
-%
-\subsubsection{Microscopic scale}
-The CAFE model introduces a grid of regular and structured cubic cells, with a constant size 
-in all space directions, referred to as the cellular automaton (CA) grid. It is different from 
-the unstructured finite element mesh previously mentioned for the solution of the average conservation 
-equations. A typical CA step dimension is smaller than the smallest FE mesh size. The CA grid serves to 
-represent solidification phenomena including nucleation, growth and remelting of the envelope of the 
-primary dendritic grains. Details about the CAFE model can be found in \citep{carozzani_3d_2012,carozzani_direct_2013,carozzani_optimized_2014}. 
-Cell information, such as the temperature, the average composition or the velocity of the liquid phase, is interpolated from 
-the nodes of the FE mesh. State indices are also defined for each CA cell, providing the presence of liquid or solid phases. 
-%
-\subsubsection{Nucleation}
-Initially, cells are in a fully liquid state. In the present situation, random nucleation sites are 
-chosen based on a nucleation density, $n_\text{max}$ (expressed in surface density inverse \si{\per \uarea}), at the 
-bottom surface of the geometry in contact with the cooler. Nucleation occurs in a cell only if the 
-latter contains a nucleation site, and when the local undercooling of the cell reaches the critical 
-nucleation undercooling given as input by a Gaussian distribution of mean undercooling $\Delta T_N$ with a 
-standard deviation $\Delta T_\sigma$. The crystallographic orientation of each grain newly nucleated is also randomly 
-chosen using values of the Euler angles to fully define the three rotations that transform the reference 
-frame to the $\avg{100}$ directions that define the main growth axes of the dendrite trunks and arms. Grain 
-selection is therefore solely controlled by growth competition.
-%
-\subsubsection{Growth}
-Dendrite growth is driven by the chemical supersaturation $\Omega_\textbf{saturation}$, which is a 
-dimensionless number proportional to the difference between the liquid composition at the dendrite 
-tip and the melt composition far away from the tip. The higher the supersaturation, the faster the 
-dendrite tip velocity. However, in the presence of a convective fluid, the chemical supersaturation 
-is highly influenced by the intensity and the direction of the flow with respect to the growth direction 
-of the dendrites. In the current model, convection is central in studying freckle formation. Therefore, 
-the purely diffusive Ivantsov relation used to determine the Peclet number $Pe$ as function of the supersaturation, 
-is replaced by a modified relation using a boundary layer correlation model that accounts for both the intensity 
-and the misorientation of the liquid velocity with respect to the growth direction of the dendrites \citep{gandin_boundary_2003}. 
-The main parameters for this growth kinetics models are the Gibbs Thomson coefficient, $\Gamma_{\text{GT}}$, and the diffusion 
-coefficient for Ga in In, $\Dl$.
-%
-\subsubsection{Solidification path}
-The CA model gives the presence of the grains in the liquid as well as its growth undercooling. 
-For coupling with macroscopic scale modelling, the fraction of phases needs to be fed back to the 
-FE model. This is now done by accounting for the information provided by the CA model. Thus, the 
-fraction of solid is no longer the consequence of a simple conversion of the temperature and 
-composition assuming thermodynamic equilibrium. It also includes the solidification delay due to 
-the kinetics of the development of the grains as detailed elsewhere in the work of \citet{carozzani_direct_2013}.
-%
-\subsubsection{Numerical method}
-Both the finite element mesh and the cellular automaton grid play a role in predicting freckles inasmuch as 
-this type of defect originate from interplays between hydrodynamic instabilities on the scale of the dendrites 
-and macroscopic flows defined by the geometry of the experimental cell \citep{shevchenko_chimney_2013}. One has to 
-respect a small maximum FE mesh size, comparable to the dendrite arm spacing. With such an element size, composition gradients giving 
-rise to solutal buoyancy forces can be captured. This limits consequently the CA cell size, as a minimum number 
-of cells is required in each finite element. In the array of simulations that will be presented in the next section, 
-the value of $\sdas$ was considered. We have chosen a fixed mesh element size of 2$\sdas$ and a CA cell size of $\sdas/2$. 
-An average of 4 CA cells per unit length of a finite element is enough to accurately compute the development of the 
-grain envelopes together with the solutal, thermal and mechanical interactions.
-%--------------------
-%
-\subsection{Configuration}
-%----------------
-%
-%--------------------------------
-\begin{table}
-\centering
-\caption{Summary of the simulations and and the corresponding parameters for the CAFE cases, coupling macroscopic model with the grain structure model.
-Parameters are varied from (G1) low to (G2) high gradient, (R1) low to (R2) high cooling 
-rate and (L0) no, (L1) low and (L2) high lateral cooling.}
-\label{table:simulation_InGa_cafe}
-\resizebox{\columnwidth}{!}{%
-{\tabulinesep=1.1mm \begin{tabu}{C{3cm} C{3cm} C{3cm} C{3.0cm} C{3.5cm} C{3.2cm}}
-\tabucline[1pt]{-}
-\textbf{Case}  & Vertical gradient & Cooling rate & Lateral cooling & Initial temperature  & Nucleation  \\
-			  &     G 			  & 	R		 & 			L \quad ($\hext$, $\Text$)	& ($T_{top}$, $T_{bottom}$) & ($n_\text{max}$, $\Delta T_N$, $\Delta T_\sigma$) \\
- 			  & [\si{\ugradT}] & [\si{\uCR}] & [\si{\uhconvec}, \si{\udegC}] & [\si{\udegC}] & [\si{\per \uarea}, \si{\udegC}, \si{\udegC}] \\\tabucline[1pt]{-}
-%-----------------------------
-CAFE-G2R1L1  & G2:1.5 & R1:-0.01 & L1:(20,0) & (58.25, 25.25)  & (\num{e6}, 1, \num{0.2}) \\ 
-CAFE-G1R1L1  & G1:0.2 & R1:-0.01 & L1:(20,0) & (29.75, 25.25)  & (\num{e6}, 1, \num{0.2}) \\ 
-CAFE-G1R1L2  & G1:0.2 & R1:-0.01 & L2:(500,0) & (29.75, 25.25) & (\num{e6}, 1, \num{0.2}) \\ 
-CAFE-G2R2L1  & G1:0.2 & R2:-0.05 & L1:(20,0) & (29.75, 25.25)  & (\num{e6}, 1, \num{0.2}) \\\tabucline[1pt]{-}
-%-----------------------------
-\end{tabu}}
-}
-\end{table}
-%--------------------------------
-%
-%=====================================BIG LANDSCAPE FIGURE =====================================
-\begin{landscape}
-\begin{figureth}
-{1.15}
-{Chapter3/Graphics/freckle_cafe/planche_cafe.pdf}
-{Simulation results for case CAFE-G2R1L1 showing maps of the average composition in gallium,
-the solid fraction, the superficial velocity field (vertical component) and the temperature, 
-on a cut plane at the center of the cell at 500 s, 1000 s and 1500 s.}
-\label{fig:planche_cafe}
-%\thispagestyle{headings}
-\end{figureth}
-\end{landscape}
-%=====================================BIG LANDSCAPE FIGURE =====================================
-%
-%-----------------------
-\begin{figureth}
-{0.6}
-{Chapter3/Graphics/freckle_cafe/planche_composition_grain.pdf}
-{Simulation results the predicted of mushy grain structure with the corresponding composition maps.}
-\label{fig:planche_composition_grain}
-\end{figureth}
-%-----------------------
-%
-Knowing that the configuration in FE-G2R1L1 produces segregated channels, the same set of parameters is first used 
-for case CAFE-G2R1L1 by adding the effect of the grain structure using the CAFE model. Results are accessible 
-in \cref{fig:planche_cafe} for comparison with \cref{fig:planche_fe}. A striking difference is seen: the composition maps become more 
-perturbed as shown by the formation of numerous plumes when coupling with grain structure is active. The growing 
-front displayed on the grain structure at the right most column of \cref{fig:planche_cafe} dictates the leading position of the 
-mushy zone shown in the third column. Note that each color corresponds to one grain, with 17 grains having nucleated 
-at the cell’s bottom surface. However, comparison of the solid fraction maps between \cref{fig:planche_fe} and \cref{fig:planche_cafe} at the 
-same times reveals a delay in the growing front position. 
-
-Values of the nucleation parameters in \cref{table:simulation_InGa_cafe} are such 
-that few grains rapidly form below the nominal liquidus isotherm. The delay is therefore not due to the nucleation 
-undercooling but to the growth undercooling of the dendrite tips. It should be noticed that, the growth front driven 
-by undercooling in \cref{fig:planche_cafe} also forms with a higher initial solid fraction and hence larger solute segregation occurs 
-at the front. This effect, together with instabilities of the composition field, is caused by a more perturbed fluid flow 
-and more plumes as observed in CAFE-G2R1L1 compared to FE-G2R1L1. Such observations fit to the complicated fluid and solute 
-flow patterns typically occurring in the experiments as shown in \cref{fig:experimental_freckles_gradients}. 
-
-It becomes obvious that the consideration of grain 
-structure and growth undercooling are vital to accurately simulate segregated channels formation in these experiments. The reasons for the 
-instabilities are discussed hereinafter. 
-
-In the present 3D CAFE simulation, each grain shown in \cref{fig:planche_composition_grain} 
-is associated with a crystallographic orientation. 
-The growth kinetics is only given for the $\avg{100}$ crystallographic directions at the grain boundaries with the liquid. The CA growth model 
-is based on the hypothesis that, in a quiescent liquid of uniform temperature distribution and composition, the grain envelop should 
-reproduce an octahedral grain shape with main directions given by the six $\avg{100}$ directions. In the present situation where complicated 
-fields are present for temperature, composition and liquid velocity, each grain envelope with different crystallographic orientation 
-adapts differently to its local environment. Thus, the local undercooling of the front varies everywhere. Such variations are within 
-few degrees here, but this is sufficient to create irregularities on the growth front, as seen on the grain structure in \cref{fig:planche_composition_grain}. 
-Apart from that, these variations are linked to the position of the instabilities for the chemical and liquid velocity fields, thus 
-demonstrating the full coupling between the CA and FE models.
-%
-%
-%-----------------
-\begin{figure}[htbp]
-\centering
-  %------------
-  \begin{subfigure}{0.4\textwidth}
-    \centering
-	\includegraphics[width=\textwidth]{Chapter3/Graphics/freckle_exp/lowgrad.png}
-	\caption{}
-    \label{fig:exp_lowgrad}
-  \end{subfigure}
-   %------------------------------
-  %\vskip\baselineskip
-  %------------------------------
-  \begin{subfigure}{0.4\textwidth}
-    \centering
-	\includegraphics[width=\textwidth]{Chapter3/Graphics/freckle_exp/highgrad.png}
-	\caption{}
-    \label{fig:exp_highgrad}
-  \end{subfigure}
-   %------------
-\caption{Snapshots of dendritic structure and composition field 
-obtained from two solidification experiments at a cooling rate 
-R=\SI{-0.01}{\uCR} and temperature gradients of (a) G=\SI{1.1}{\ugradT} and (b) G=\SI{1.3}{\ugradT}} 
-\label{fig:experimental_freckles_gradients}
-\end{figure}
-%-----------------
-%
-%
-\subsection{Effect of vertical temperature gradient}
-
-The influence of diverse process parameters can now be considered in context of the grain structure. 
-The effect of the vertical temperature gradient is shown by comparing the previous case CAFE-G2R1L1 
-with case CAFE-G1R1L1. The temperature gradient is decreased about 7 times here, from G2=\SI{1.5}{\ugradT}
-to G1=\SI{0.2}{\ugradT}. In fact, both cases share almost all traits with respect to flow patterns and velocity
-magnitude in the bulk. Main differences are yet seen regarding the dynamics of the plumes shown in 
-\cref{fig:cafe_G1G2}. 
-
-In the case of a low temperature gradient (G1), the solidification front cannot maintain a 
-shape as smooth as for the case of a large temperature gradient (G2): the solute gradient in the 
-liquid of the mushy zone (basically following the lever rule approximation for a given temperature) 
-decreases, leading to a lower gradient of the solutal buoyancy force. In turn, more solute accumulates 
-close to the front and locally reduces the growth velocity, thus creating larger “valleys” or steps 
-with higher solute content. The irregular geometry of the front is also influenced by the dendrite tip 
-growth kinetics model. The velocity of the isotherms is the ratio of the cooling rate, R, to the 
-temperature gradient, G. Consequently, the isotherm velocity in case G1 is larger than in G2, since 
-cooling rate, R1, is the same in both cases. Moreover, because the dendrite tip velocity is a monotonously 
-increasing function with the undercooling \citep{gandin_boundary_2003}, the latter for CAFE-G1R1L1 is larger 
-than for CAFE-G2R1L1. Height differences of the growth front are proportional to the variations of the 
-undercooling by the temperature gradient. Therefore, this forms larger steps on the growth front for case 
-G1 compared to G2. 
-
-The chimney extends deeper in the mushy zone when the temperature gradient increases. 
-This is confirmed by both the simulation results shown in \cref{fig:cafe_G1G2} as well as the experimental observations. 
-Another remarkable phenomenon is also observed in the low gradient case: a “pulsing” mechanism in CAFE-G1R1L1 
-where a series of solute rich liquid pockets are observed one above the other. This corresponds to a repeated
-and localized strong spatial variation of the liquid velocity field outside the mushy zone, regularly thrusting 
-away small plumes. These pulses are roughly similar to each other in size and exit speed, creating thus a very 
-regular pattern during some time. 
-%
-%-----------------
-\begin{figure}[htbp]
-\centering
-  %------------
-  \begin{subfigure}{0.4\textwidth}
-    \centering
-	\includegraphics[height=5cm]{Chapter3/Graphics/freckle_cafe/cafe_VG1_composition.png}
-	\caption{}
-    \label{fig:cafe_VG1}
-  \end{subfigure}
-  %\hfill
-  \begin{subfigure}{0.01\textwidth}
-    \centering
-	\includegraphics[height=5cm]{Chapter3/Graphics/freckle_cafe/cafe_VG_colorbar_annot.png}
-	%\caption{}
-    \label{} % Do not delete or comment this line to preserve alignment
-  \end{subfigure}
-  \hspace{2mm}
-   \begin{subfigure}{0.4\textwidth}
-    \centering
-	\includegraphics[height=5cm]{Chapter3/Graphics/freckle_cafe/cafe_VG2_composition.png}
-	\caption{}
-    \label{fig:cafe_VG2}
-  \end{subfigure}
-   %------------
-\caption{Average composition maps for CAFE-G1R1L1 at time 1060 s and CAFE-G2R1L1 at time 1845 s.} 
-\label{fig:cafe_G1G2}
-\end{figure}
-%-----------------
-%
-%=====================================ANIMATION FIGURE =====================================
-\begin{figure}[htbp]
-\centering
-%
-\ifthenelse{\boolean{enable_animations}}%
-	{% then
-		%\animategraphics[options]{fps}{filename_without_number}{1}{N}
-		%-------
-		\animategraphics{10}{Chapter3/Graphics/freckle_cafe/anim_pulsing/img}{1}{11}
-		\caption{Animation of the pusling mechanism coming from a groove shape in the mushy.}
-		%-------
-	}
-	{% else 
-		%-------
-		\includegraphics[height=5cm]{Chapter3/Graphics/freckle_cafe/anim_pulsing/img2.png}
-		\caption{Snapshot of the pusling mechanism coming from a groove shape in the mushy (check animation in the PDF file).} 
-		%-------
-	}
-\label{fig:animate_cafeVG1}
-\end{figure}
-%=====================================ANIMATION FIGURE =====================================
-%
-In the case of a high temperature gradient (case CAFE-G2R1L1) this phenomenon is 
-barely seen. In fact, the pattern shown in \cref{fig:cafe_G1G2} is more typical, with continuous plume rising from the mushy 
-zone and reaching the top of the domain. However, such regular plume is the initial and final pattern seen for low 
-gradient before the pulsing regime. Similar observations have been made in the experiments too. \Cref{fig:exp_pulsing} displays 
-the phenomenon of the “pulsing” plumes, which could be explained by the following mechanisms. The permeability of the 
-mushy zone and the narrow gap of the solidification cell obstruct the feeding of the plumes by solute. A critical solute 
-concentration has to be accumulated at a specific location in order to trigger the formation of a rising plume. An interim 
-drop of the solute concentration below such a threshold would interrupt the plume. Flow instabilities can be another reason 
-for the peculiar shape of the plumes. \Cref{fig:exp_continuous} shows a pronounced continuous plume. The same plume can be seen a few seconds 
-later in \cref{fig:exp_instability}. The plume structure becomes unstable; one can observe an indentation of streamlines followed by a mixing of 
-rising solute-rich liquid with descending In-rich fluid. This mechanism also causes a non-continuous structure of the plumes.
-%
-%-----------------
-\begin{figure}[htbp]
-\centering
-  %------------
-  \begin{subfigure}{0.3\textwidth}
-    \centering
-	\includegraphics[width=\textwidth]{Chapter3/Graphics/freckle_exp/exp_pulsing.png}
-	\caption{}
-    \label{fig:exp_pulsing}
-  \end{subfigure}
-   %----------------
-  \begin{subfigure}{0.3\textwidth}
-    \centering
-	\includegraphics[width=\textwidth]{Chapter3/Graphics/freckle_exp/exp_continuous.png}
-	\caption{}
-    \label{fig:exp_continuous}
-  \end{subfigure}
-   %------------
-   \begin{subfigure}{0.3\textwidth}
-    \centering
-	\includegraphics[width=\textwidth]{Chapter3/Graphics/freckle_exp/exp_instability.png}
-	\caption{}
-    \label{fig:exp_instability}
-  \end{subfigure}
-   %------------
-\caption{Snapshots of dendrite structure and composition field from two 
-solidification experiments conducted at a cooling rate 
-R=\SI{-0.01}{\uCR} and a temperature gradient =\SI{1}{\ugradT}: (a) “pulsing” plumes, 
-(b) continuous plume, (c) upcoming plume instability.} 
-\label{fig:experimental_freckles_regimes}
-\end{figure}
-%-----------------
-%
-%
-\subsection{Effect of cooling rate}
-The next parameter studied is the cooling rate, corresponding to case CAFE-G1R2L1. A snapshot of the composition map 
-and the corresponding vertical component of the velocity field are given in \cref{fig:cafe_R1R2}. We see a similarity 
-with case CAFE-G1R1L1 in \cref{fig:cafe_VG1} with respect to the buckled interface between the liquid and the mushy 
-zone as well a plume pulsing effect when a low temperature gradient is applied. On the other hand, segregation inside 
-the mush is more irregular with more pronounced patterns reaching a larger depth. One could distinguish alternating V  
-and A shapes patterns in the mushy zone. As for case CAFE-G1R1L1, these patterns are created by a network of pulsing 
-plumes formed by the steps created on the delocalized growth front due to the low temperature gradient. However, these 
-considerations are not sufficient to explain the shape of the growth front. The reason for the protuberances created at 
-the tips of the V shape is the presence of a descending bulk liquid with a low composition seen by the growth front. It 
-infers that favorable growth conditions are created for a higher working temperature since the dendrite tip undercooling 
-decreases for facing liquid flow and a lower composition; the growth rate is given by the isotherm velocity. The growth 
-front thus adjusts its position to catch up with the corresponding isotherm, the latter being located at the tips of the 
-V shape, i.e. the outmost advanced position of the growth front. It also means that the V shape angle depends on the size 
-and intensity of the convection loops above the front. When the steps are formed on the growth front, the plumes exiting 
-the mushy zone follow a direction normal to the front. They are inclined towards each other above the V shape. As a result, 
-they may join and form a larger plume as seen in CAFE-G1R1L1 (\cref{fig:cafe_VG1}), thus forming larger and more stable segregated channels. 
-The other observation in \cref{fig:cafe_R1R2} is the existence of stable regions of the growth front. For instance, this is seen 
-in between the two V shape forming or on the right hand side of the cell. 
-%
-%-----------------------
-\begin{figureth}
-{0.8}
-{Chapter3/Graphics/freckle_cafe/planche_CR.pdf}
-{Average fields inside the cell for case CAFE-G1R2L1 at 350 s. 
-The white contour identifies the zero velocity limit for the vertical component of the velocity field}
-\label{fig:cafe_R1R2}
-\end{figureth}
-%-----------------------
-%
-The reason for this stability is the inversion of 
-the composition gradient located ahead. Animation shows that solute coming from the top of the cell is responsible for this 
-accumulation, creating a layering that provides a stabilization effect above the mushy zone. This is verified by the vertical 
-component of the average velocity also made available in \cref{fig:cafe_R1R2}. It is negative outside the path of the plumes. A resulting 
-concurrent effect is the formation of the A shape segregates in between the V shape patterns seen in \cref{fig:cafe_R1R2}. Finally, it can 
-be observed that these patterns are sustained longer compared to \cref{fig:cafe_G1G2} CAFE-G1R1L1 because, at high cooling rate, 
-the flow in the mushy zone is decreased due to a faster solidification. This is the same effect as described for the large gradient 
-configuration in CAFE-G2R1L1 (\cref{fig:cafe_VG2}).
-It is not clear how these observations could be compared with the A  and V  shapes segregates reported for steel ingots 
-\citep{pickering_macrosegregation_2013}. Despite the fact that macrosegregation is the main phenomenon leading to these 
-patterns, there has not been a clear explanation yet in the literature for their formation. However, for steel casting, 
-the A and V patterns are believed to form concomitantly. Further investigations would thus be required to quantify the 
-consequences of thermosolutal instabilities simulated here for an \bin{In}{75}{Ga} alloy and check their possible correlation 
-with experimental observations in steel casting.
-%
-\subsection{Effect of lateral temperature gradient}
-The previous simulations show the effect of cooling rate and temperature gradient on the survival of segregation patterns deep 
-in the mushy zone. Another simulation is performed by increasing the cooling rate using higher heat flux extracted from the 
-vertical side boundaries. This is achieved in case CAFE-G1R1L2 where the heat transfer coefficient reaches \SI{500}{\uhconvec}. 
-As a consequence of the large cooling from the sides, the temperature gradient is no longer vertical. A distinct flow due to 
-thermal buoyancy is created, driving a cold liquid downwards near the sides of the cell. Under the influence of these 2 main 
-convection loops, all segregation plumes tend to regroup in the middle of the domain, forming a larger central plume, as seen in 
-the composition map at 450 s in \cref{fig:planche_LG}. However, this regime occurs at times earlier than 500 s, where the effect of thermally 
-induced buoyancy forces is prevailing, feeding the convection loops. Approximately 500 s later, the mushy zone has extended, favouring 
-the segregation mechanical forces i.e.  $\rhoref \brac{1-\betawl \Delta \wl} \gravity$, rather than the thermal mechanical forces, $\rhoref \brac{1-\betaT \Delta T} \gravity$. 
-%
-%-----------------------
-\begin{figureth}
-{1.0}
-{Chapter3/Graphics/freckle_cafe/planche_LG.pdf}
-{2D cut plane of the average composition inside the cell for case CAFE-G1R1L2 at the 
-following time increments: 450 s, 1000 s and 1500 s.}
-\label{fig:planche_LG}
-\end{figureth}
-%-----------------------
-%
-\Cref{fig:planche_LG} shows the corresponding composition maps with stable chimneys at about 1000 s that also remain at 1500 s. The solidification 
-front then tends to form a concave shape at the center of the cell, thus partially revealing the form of the isotherms toward the cell 
-center. The stable pattern in the center is similar to the plateau seen at the center, between the A-shapes in \cref{fig:cafe_G1G2} and \cref{fig:cafe_R1R2}. 
-As stated before, it is an inactive region with respect to plume initiation due to the inversion of the solute composition gradient.
-In other words, the high gallium concentration at the top of cell causes indium, which is the heavier species, to accumulate and be partially 
-trapped between the mushy walls, thus creating a stable flow configuration.
-Outside of the plateau, 2 plumes are observed from the prominent instabilities of the growth front, adopting diverging directions. 
-This is also observed at the center of the cell in \cref{fig:cafe_R1R2} on each side of the A-shape segregate. 
-These plumes in \cref{fig:planche_LG} lead to the formation of two stable channels. 
-The corresponding situation in the experiment is shown in \cref{fig:exp_G1R1}. The chimneys on both sides and the plateau in between can be clearly 
-recognised. The additional cooling at the side walls produces two flow vortices between the side wall and the strong convective plumes above the 
-chimneys. The central part of the sample remains almost unaffected by the additionally driven thermal convection. This area is characterised by 
-the occurrence of a number of smaller convective plumes.  
-%
-%-----------------------
-\begin{figureth}
-{0.6}
-{Chapter3/Graphics/freckle_exp/exp_G1R1.png}
-{Snapshot of dendritic structure and composition field from a 
-solidification experiment recorded at 1000 s for a cooling rate R=\SI{-0.01}{\uCR} and a temperature gradient G=\SI{-1}{\ugradT}.}
-\label{fig:exp_G1R1}
-\end{figureth}
-%-----------------------
-%
-\subsection{Mono-grain freckles}
-All CAFE simulations were performed considering a normal classic heterogeneous nucleation at 
-the surface of the mould where the metal is cooled down. However, as the number of grains is
-not negligible, the subsequent fluid-structure interaction between dendrites, simply represented by an isotropic permeability 
-and the interdendritic flow cannot be easily interpreted. Therefore, one may consider simpler solidification cases 
-like a mono-grain growth. This ideal situation is not always experimentally viable: either the mould surface is not 
-perfectly smooth, and therefore nucleation can be triggered by a wetting mechanism, or the metal contains a certain level of impurity
-which can trigger nucleation heterogeneously in the liquid bulk. 
-Regardless of this experimental limitation, this type of simulations allows simpler understanding as the grain growth is not 
-disturbed by another neighbouring grain, it grows while exclusively interacting with the liquid phase.
-%----------------------------
-\ifthenelse{\boolean{enable_animations}}%
-	{% then
-		%-------
-		\begin{figure}[htbp]
-		\centering %
-		\begin{animateinline}{6}%
- 			%\multiframe{nb_frames}{i=start_nb+inc_nb}{%
- 			 \multiframe{108}{i=25+1}{%  		
-     		\includegraphics[height=6cm]{Chapter3/Graphics/freckle_cafe/anim_monograin_upright/img\zeropad{1234}{\i}.png}%
-	  		\hspace{1mm}%
-      		\includegraphics[height=6cm]{Chapter3/Graphics/freckle_cafe/cafe_VG_colorbar_annot.png}%
-	  		\hspace{1mm}%      
-      		\includegraphics[height=6cm]{Chapter3/Graphics/freckle_cafe/anim_monograin_tilted/img\zeropad{1234}{\i}.png}%
-  		}%
-		\end{animateinline}%
-		\caption{Animations of mono-grain solidification showing the average composition in gallium predicted by the CAFE approach. 
- 		Two orientation scenarios are considered where a) the grain is upright with a Euler angle of \orient{90}{0}{0} 
- 		or b) the grain is tilted with a Euler angle of \orient{90}{30}{0}.}
-		%-------		
-		\label{fig:animate_monograin}
-		\end{figure}
-	}
-	{% else 
-	\begin{figure}[htbp]
-	%\centering
- 	 %------------
- 			\begin{subfigure}[t]{0.35\textwidth}
-    		%\centering
-			\includegraphics[height=6cm]{Chapter3/Graphics/freckle_cafe/anim_monograin_upright/img0133.png}%
-			\caption{}
-  			\end{subfigure}
-   			%-----
-   			\hspace{10mm}
-   			\begin{subfigure}[t]{0.15\textwidth}
-    		\centering
-			\includegraphics[height=6cm]{Chapter3/Graphics/freckle_cafe/cafe_VG_colorbar_annot.png}%
-			%\caption{}
-  			\end{subfigure}
-   			%-----
-   			%\hspace{1mm}
-   			\begin{subfigure}[t]{0.35\textwidth}
-    		\centering
-			\includegraphics[height=6cm]{Chapter3/Graphics/freckle_cafe/anim_monograin_tilted/img0133.png}%
-			\caption{}
-  			\end{subfigure}
-   			%-----
-      		\caption{Snapshots of mono-grain solidification showing the average composition in gallium predicted by the CAFE approach. 
- 			Two orientation scenarios are considered where a) the grain is upright with a Euler angle of \orient{90}{0}{0} 
- 			or b) the grain is tilted with a Euler angle of \orient{90}{30}{0} (check animation in the PDF file).}
-			%-------
-			\label{fig:animate_monograin}
-			\end{figure}
-	}
-%--------------
-%===================================== ANIMATION FIGURE with \animage =====================================
-% \begin{figure}[htbp]
-% \centering
-  %------------
-  % \begin{subfigure}{0.45\textwidth}
-	% \centering
-	% \animage{height=6cm}{6}{Chapter3/Graphics/freckle_cafe/anim_monograin_upright/img0}{030}{133}{.png} % 0000 to 0139
-	% \caption{}
-    % \label{fig:mono_upright}
-  % \end{subfigure}  
-  %------------
-	% \hfill %\hspace{1mm}  
-	 % \begin{subfigure}{0.05\textwidth}
-	% \centering
-	% \includegraphics[height=6cm]{Chapter3/Graphics/freckle_cafe/cafe_VG_colorbar_annot.png}
-	% \caption{}
-    % \label{} % Do not delete or comment this line to preserve alignment
-  % \end{subfigure}
-	% \hfill %\hspace{1mm}  
-  %------------
-  % \begin{subfigure}{0.45\textwidth}
-    % \centering
-    % \animage{height=6cm}{6}{Chapter3/Graphics/freckle_cafe/anim_monograin_tilted/img0}{030}{133}{.png} % 0000 to 0133
-	% \caption{}
-    % \label{fig:mono_tilted}
-  % \end{subfigure}
-%-------
-% \caption{Animations of mono-grain solidification showing the average composition in gallium predicted by the CAFE approach. 
-% Two orientation scenarios are considered where a) the grain is upright with a Euler angle of \orient{90}{0}{0} 
-% or b) the grain is tilted with a Euler angle of \orient{90}{30}{0}.}
-% \label{fig:animate_monograin}
-% \end{figure}
-%===================================== ANIMATION FIGURE =====================================

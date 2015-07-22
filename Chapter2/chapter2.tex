@@ -1,1238 +1,1289 @@
-\chapter{Energy balance with thermodynamic tabulations}
-%\chaptermark{Energy Balance with thermodynamic tabulations}
+\chapter{Modelling Review}
 \begin{nolinkcolors} 
 \minitoc
 \end{nolinkcolors}
 \newpage
-%
-%
-%=====================================
-\section{State of the art}
-%=====================================
-When speaking about macrosegregation, one needs to know that the problem involves phase change.
-For that, a minimum of four conservation equations are necessary:
-conservation  of  mass, momentum,  chemical  species and  energy. The  phase  change
-literature  contains a  wealth of numerical methods to solve energy conservation
-in solidifying alloys. A comprehensive overview of these methods is given by \citet{swaminathan._enthalpy_1993}.
 
-The corresponding equation associates the total average enthalpy to the
-temperature  via  intrinsic  alloy  properties, such  as the heat  capacity of  the
-phases and the latent  heat associated with the phase transformations. However, in the course
-of solidification and while macrosegregation is taking place, these  properties change because the average
-composition may  vary  significantly: the  transformation paths are thus modified, as well as
-the phases' composition and heat capacity. Similarly, the latent heat of phase  transformations
-is not a mere constant that could be distributed as a function of the phase fractions
-assuming only temperature-dependent phases' properties, as often found in the literature \citep{bellet_call_2009}.
-It is thus impossible to establish a priori the dependence of the enthalpy with respect
-to temperature when macrosegregation alters the average composition, even in the case of full thermodynamic equilibrium
-between phases. 
-
-In this chapter, we discuss a suitable numerical scheme based on an enthalpy method,
-already used in the literature  to  alleviate this macrosegregation-related problem \citep{swaminathan._enthalpy_1993,
-carozzani_direct_2013}. Later on, we introduce a modified formulation, using the effective heat capacity method that 
-increases the original scheme's efficiency. 
-The introduced method uses tabulated thermodynamic quantities (solidification paths, phases' enthalpy  and composition) 
-in a range of average compositions and temperatures as found in the literature 
-\citep{dore_modelling_2000,thuinet_prediction_2004,du_modeling_2007}, 
-with the aim of evaluating the total average enthalpy as well as the effective heat capacity. 
-The novelty of the modified method resides in the use of thermodynamic tabulations without losing 
-the advantages of the previous method, thus yielding faster computation times while maintaining a 
-good accuracy.
+%***********************************************
+\section{Modelling macrosegreation}
+%***********************************************
 %
+%***********************************************
+\subsubsection{Microsegregation models}
+%***********************************************
+Solid formation depends greatly on the ability of chemicals species to diffuse within each of 
+the solid and liquid phases, but also across the solid-liquid interface. Furthermore, chemical diffusion like all other 
+diffusional processes, is a time-dependent phenomenon. One can thus conclude that two factors
+influence the amount of solid formation: cooling rate and diffusion coefficients. However, 
+convection and other mechanical mixing sources, homogenise the composition much faster than atomic diffusion. 
+As such, \emph{complete mixing} in the liquid is always an acceptable assumption, regardless of the 
+solidification time. We may speak of infinite diffusion in the liquid. Nevertheless, diffusion in the solid, 
+also known as \emph{back diffusion}, is the only transport mechanism with very low diffusion coefficients. 
+Therefore, chemical species require a long time, i.e. low cooling rate, to completely diffuse within the solid.
+The difference in diffusional behaviour at the scale of a secondary dendrite arm, is summarized by two limiting 
+segregation models of perfect equilibrium  and nonequilibrium, which are the lever rule and Gulliver-Scheil models, respectively. 
+Afterwards, models with finite back diffusion are presented. 
+%------------
 %
-%=====================================
-\section{Thermodynamic considerations}
-%=====================================
-%
-%-----------------------------
-\subsection{Volume averaging} 
-%-----------------------------
-The volume averaging technique, presented in \cref{sec:volumeavg}, is the first thing consider
-when solving the energy equation in the presence of macrosegregation. The reason is that phase
-quantities that vary with the average composition, have a great impact on the thermal properties,
-hence on the overall heat transfer in the system. We recall the basic equation:
-%%-------------
+%***********************************************
+\subsubsection*{Lever rule}
+%***********************************************
+The lever rule considers an ideal equilibrium in all phases, i.e. solidification is extremely slow, hence phase compositions are 
+homogeneous ($ \Clstar = \Cl$ and $ \Csstar = \Cs$ ) at all times as a consequence of complete mixing. 
+These compositions are given by:
+%----------------------
 \begin{align}
-\label{eq:volume_average_psi}
-& \avg{\psi} = \sum_\phi \gphi \avg{\psi}^{\phi}
+\label{eq:leverrule}
+& \Cl= \Clstar = \k^{-1} \Csstar = \k^{-1} \Cs \\
+& \Cs= \Csstar = \frac{\k \Cnominal}{\k\fs + (1-\fs)}
 \end{align}
-%%-------------
-where $g^\phi$ denotes the volume fraction of phase $\phi$ in the RVE. 
-It should be emphasized that the averaging technique applies to virtually all thermodynamic variables (enthalpy, density $\dots$). 
-Among these variables, the temperature is also considered to be uniform in the RVE. 
-Applying the volume averaging technique to the energy 
-conservation principle along with interfacial balances between the phases, results in the following averaged equation \citep{rappaz_numerical_2003}:
-%%-------------
-\begin{align}
-\label{eq:averaged_energy_eqn}
-& \frac{\d \rh}{\d t} + \nabla \cdot \rhv = \nabla \cdot \brac{\avg{\kappa} \nabvec T} + \avg{\dot{Q}_V}
-\end{align}
-%%-------------
-where $\rho$ stands for the density, $h$ the mass enthalpy, $\vec{v}$ the velocity field, $\kappa$ the thermal conductivity, $T$ the temperature 
-and $\dot{Q}_V$ a possible volume heat source. 
-\Cref{eq:averaged_energy_eqn} is the standard averaged form of the energy conservation equation used in non-stationary phase 
-change problems. 
-%\comment{ I could elaborate more in this paragraph by showing the possible equations for the explicit formulation and maybe a figure to show the AlSi7
-%computation that i did with a v small time step }
- 
-Once the variational form has been discretised in space and time, two possible resolution schemes emerge: the first is an 
-explicit forward Euler scheme which gives rise to a linear equation where the temperature is known at time $t$, $T^t$. This requires very small 
-time steps in the current context, which limits the solver's usability at the scale of industrial applications. The second scheme is the 
-backward Euler or full implicit discretisation where terms are function of $T^{t+\Delta t}$. It leads to a nonlinear equation with 2 interdependent 
-unknowns, $\rh^{t+\Delta t}$ and  $T^{t+\Delta t}$. It is clear that the nature of the temperature-enthalpy relationship plays a central 
-role when formulating the resolution strategy of this nonlinear equation. Generally, it is admitted that, depending on the resolution strategy, 
-it is necessary to express enthalpy as a function of temperature or vice-versa, together with associated partial derivatives, 
-$\frac{d \rh}{dT}$ or $\frac{dT }{d \rh}$.
-
-\subsection{The temperature-enthalpy relationship} 
-In solidification problems, additional variables are involved in \cref{eq:volume_average_psi} and \cref{eq:averaged_energy_eqn}, 
-like the transformation path that defines the history of the phase fractions, as well as the average chemical composition $\wi$, 
-i being the index of the chemical species (only the solutes are considered). The temperature-enthalpy relation averaged over the 
-phases in a given RVE writes:
-%%-------------
-\begin{align}
-\label{eq:volume_average_enthalpy}
-& \rh = \sum_\phi \gphi_{\brac{T, \wi \dots}} \rphi_{\brac{T, \wi^{\phi} \dots}} \hphi_{\brac{T, \wi^{\phi} \dots}}
-\end{align}
-%%-------------
-Note that the volume average enthalpy is approximated by the product $\avg{\rho h}^{\phi}=\avg{\rho}^{\phi}\avg{h}^{\phi}$ in the current work. As stated 
-in the introduction, it becomes clear from \cref{eq:volume_average_enthalpy} that phase properties, i.e. average phase density, , \rphi and enthalpy, \hphi, 
-are temperature and composition dependent. This equation is the key to convert the average volume enthalpy to temperature (through a procedure named \emph{H2T}) 
-or vice-versa (\emph{T2H}). The values of the different phase fractions $\gphi$ (solidification path) and phase enthalpies $\rh^{\phi}$ are thus needed 
-to close the relation.
-
-\subsection{Tabulation of properties}
-The complexity of performing a thermodynamic conversion is directly linked 
-to the simplicity of determining the alloy properties, namely the phase fractions 
-and phase enthalpies. In the case of binary alloys and with several assumptions 
-with respect to the system (e.g., linear mono-variant temperature composition 
-relationships, constant heat capacity of phases and constant latent heat of transformations, 
-equilibrium approximations between phases) analytical calculations are often used to determine 
-the properties. Nevertheless, analytical relations are more complex or even impossible to derive 
-in the case of multicomponent alloys ($i>1$). To overcome this problem, one can resort to 
-thermodynamic databases and phase equilibrium calculations to tabulate the transformation paths 
-and the phase enthalpies for a given range of temperatures and average compositions. It is a handy 
-solution for two main reasons: first, the conversion is merely a binary search in a table; secondly, 
-it is a simple solution for coupling with macrosegregation. In this way, phase fractions $\gphi$ are 
-tabulated as functions of temperature and average composition, while for each phase $\phi$ the mass 
-enthalpy, $\hphi$, and the density, $\rphi$, are tabulated as functions of temperature and phase 
-intrinsic average compositions $\wiphi$, as well as other possible parameters. \Cref{table:t2h_data} summarizes the 
-steps in order to perform a temperature-to-enthalpy (\emph{T2H}) conversion using the predefined tabulation 
-approach. In step 1, the transformation path is acquired for each average composition and temperature 
-to determine the list of phases, their volume fractions $\gphi$ and their intrinsic compositions $\wi^{\phi}$. 
-In step 2, the phase enthalpy $\hphi$  and density $\rphi$ are determined by searching for the temperature and 
-the already known phase composition $\wi^{\phi}$. In step 3, the average volume enthalpy is computed from the 
-volume fraction, density and mass enthalpy of phases using \cref{eq:volume_average_enthalpy}.
+%----------------------
+At the end of solidification, the composition of the solid phase is equal to the nominal composition, $\Cs = \Cnominal$
+%------------
 %
-%---------------------------
-% this table did not work when using custom tabulate env. because of the call to \cref ?
-\begin{table}[htbp]
+%***********************************************
+\subsubsection*{Gulliver-Scheil}
+%***********************************************
+The other limiting case is the absence of diffusion in the solid. That includes also the diffusion at the interface, 
+so nothing diffuses in or out. The consequence is a steady increase of the homogeneous liquid composition while the solid composition remains non-uniform.
+Compared to a full equilibrium approach, higher fractions of liquid will remain until eutectic composition is reached, 
+triggering a eutectic solidification. The phase compositions are given by:
+%----------------------
+\begin{align}
+\label{eq:scheil}
+& \Cl= \Clstar = \k^{-1} \Csstar \\
+& \Csstar= \k \Cnominal (1-\fs)^{\k-1}
+\end{align}
+%------------
+%
+%***********************************************
+\subsubsection*{Finite back diffusion}
+%***********************************************
+It has been concluded that the assumption of a negligeable back diffusion overestimates the liquid composition
+and the resulting eutectic fraction. Therefore, many models studied the limited diffusion in the solid. 
+One of the earliest models is the Brody-Flemings models \citep{khan_influence_2014} that is a based on a differential solute balance equation for a parabolic growth rate, as follows:
+%----------------------
+\begin{align}
+\label{eq:brodyflemings}
+& \Cl= \Clstar = \k^{-1}  \Csstar \\
+& \Csstar= \k \Cnominal \crochet{ 1 - \brac{ 1 - 2 \Fos \k } \fs }^{\frac{\k-1}{1 - 2 \Fos \k }}
+\end{align}
+%------------
+where $\Fos$ is the dimensionless \emph{Fourier number} for diffusion in the solid \citep{dantzig_solidification_2009}. It depends on the 
+solid diffusion coefficient $\Ds$, solidification time $\tsolidif$ and the secondary dendrite arm spacing, as follows: 
+%----------------------
+\begin{align}
+\label{eq:fouriersolid}
+& \Fos = \frac{\Ds \tsolidif}{\brac{\sdas / 2}^2}
+\end{align}
+%------------
+Several other models were since suggested and used. The interested reader is referred to the following non 
+exhaustive list of publications: \citet{clyne_solute_1981,kobayashi_solute_1988,ni_volume-averaged_1991,wang_multiphase_1993,
+combeau_modeling_1996,martorano_solutal_2003,tourret_generalized_2009}. It is noted that some of these publications consider 
+also a finite diffusion in the liquid phase.
+%------------------------------------
+%
+%
+%***********************************************
+\subsection{Macroscopic solidification model: monodomain} \label{sec:monodomain}
+%***********************************************
+In this section, we will present the macroscopic conservations equations that enable us to predict 
+macrosegregation in the metal when the latter is the only domain in the system.
+%-------------
+%
+%***********************************************
+\subsubsection{Volume averaging} \label{sec:volumeavg}
+%***********************************************
+It is crucial for a solidification model to represent phenomena on the microscale, then scale up to predict 
+macrscopic phenomena. Nevertheless, the characteristic length of a small scale in solidification may represent a dendrite arm spacing, for instance the mushy zone permeability, as it may also represent an atomic distance if one is interested, for instance, in the growth competition between diffusion and surface energy of the solid-liquid interface. Modelling infinitely small-scale phenomena could be prohibitively expensive in computation time, if we target industrial scales. 
+
+The volume averaging is a technique that allows bypassing this barrier by averaging
+small-scale variations on a so-called \emph{representative volume element} (RVE) \citep{dantzig_solidification_2009} of volume \rev, with the 
+following dimensional constraints:
+the element should be large enough to "see" and average microscopic fluctuations whilst being smaller than the scale of macroscopic variations.
+Solid and liquid may exist simultaneously in the RVE, but no gas phase is considered (volume saturation: $\Vs+\Vl=\rev$). 
+Moreover, temperature is assumed uniform and equal for all the phases.
+The formalism, introduced by \citet{ni_volume-averaged_1991}, is summarized by the following equations for any physical quantity $\psi$:
+%----------------------
+\begin{align}
+\label{eq:volumeaveraging1}
+& \avg{\psi} = \frac{1}{\rev} \integral{\rev}{\psi}{\Omega} = \avg{\psi^s} + \avg{\psi^l}
+\end{align}
+%------------
+where $\psis$ and $\psil$ are phase averages of $\psi$. Then, for any phase $\phi$, one can introduce the \emph{phase intrinsic average} of $\psi$, denoted $\avg{\psi}^\phi$, by writing:
+%----------------------
+\begin{align}
+\label{eq:volumeaveraging2}
+& \avg{\psi^\phi} = \frac{1}{\rev} \integral{\Vphi}{\psi}{\Omega} = \gphi \avg{\psi}^\phi
+\end{align}
+%------------
+where $\gphi$ is the volume fraction of phase $\phi$ with $\gphi=V_\phi/\rev$. To finalize, the averaging is applied to temporal and spatial derivation operators:
+%\citep{rivaux_simulation_2011}:
+\begin{align}
+\label{eq:volumeaveraging3}
+& \avg{ \frac{\partial \psi}{\partial t} ^\phi } = \frac{\partial \avg{\psi^\phi}}{\partial t} - \integral{\gammastar}{\psi^\phi \vstar \cdot \vec{n^\phi}}{A} \\
+\label{eq:volumeaveraging4}
+& \avg{ \nabvec \psi^\phi } = \nabvec \avg{\psi^\phi} + \integral{\gammastar}{\psi^\phi \vec{n^\phi}}{A}
+\end{align}
+%------------
+where $\vstar$ is the local relative interface velocity and $\gammastar$ is the solid-liquid interface, 
+while $n^\phi$ is the normal to $\gammastar$, directed outwards. The surface integral terms in 
+\cref{eq:volumeaveraging3,eq:volumeaveraging4} are \emph{interfacial averages} 
+that express exchanges between the phases across the interface. The previous equations will 
+be used to derive a set macroscopic conservation equations. 
+It is noted that the intrinsic average $\avg{\psi}^\phi$ may be replaced by ${\psi}^\phi$ 
+for notation simplicity, whenever the averaging technique applies.
+%
+%
+%***********************************************
+\subsubsection{Macroscopic equations}
+%***********************************************
+A monodomain macroscopic model relies on four main conservation equations to predict 
+macrosegregation in a single alloy, i.e. the latter is considered without 
+any interaction with another alloy or ambient air. The general form of an averaged conservation 
+equation of any physical quantity $\psi$ is given by: %\citep{rappaz_numerical_2003}
+%-------
+\begin{align}
+\label{eq:conservationequation}
+& \tempup{\avg{\psi}} + \nabla \cdot \avg{\psi \vec{v}} + \nabla \cdot \avg{\vec{j_{\psi}}} = \avg{Q_{\psi}}
+\end{align}
+%-------
+The first LHS term in \cref{eq:conservationequation} represents the time variation of $\psi$, 
+the second term accounts for transport by advection while the third is the diffusive transport
+and the RHS term represents a volume source. The considered equations are mass, energy, species conservation 
+and momentum, all summarized in \cref{tab:conservationeqs}. The latter equation is averaged only for the liquid phase,
+ as we assume a fixed and rigid solid phase ($\vs=\vec{0}$), thus the corresponding equation vanishes.
+%-----
+\begin{tableth}
 \centering
-\caption{Tabulation processing for a \emph{T2H} procedure}
-\label{table:t2h_data}
-{\tabulinesep=1.0mm
-\begin{tabu}{|c|c|c|c|}
+\caption{Summary of conservation equations with their variables.}
+\label{tab:conservationeqs}
+{\tabulinesep=1.5mm
+\begin{tabu}{ p{5cm} p{1cm} p{1cm} p{1cm}}
 \tabucline[1pt]{-}
-\textbf{Step Number} 	& 	\textbf{1}	& \textbf{2}	& 	\textbf{3} 				\\\tabucline[1pt]{-}
-\textbf{Inputs} 		&  ${T,\wi}$	& ${T,\wiphi}$	&	${\gphi, \rphi \hphi}$ \\
-\textbf{Outputs} 		&  ${\gphi,\wiphi}$	& ${\rphi,\hphi}$	&	${\avg{\rho h}}$ (\cref{eq:volume_average_enthalpy})
-				\\\tabucline[1pt]{-}
+Conservation Equation & $\psi$ & $\vec{j_{\psi}}$ & $Q_{\psi}$ \\\tabucline[1pt]{-}
+%-----------------------------
+Mass				& 	$\rho$  		& $-$ 						& $-$		\\
+Energy				& 	$\rho h$  		& $\vec{q}$ 				& $-$		\\
+Species				& 	$\rho w_i$  	& $\vec{j_i}$ 				& $-$		\\
+Liquid momentum		&	$\rhol \vl$  	& $-\sigmal$ 				& $\Fv$		\\\tabucline[1pt]{-} %\vec{\Gamma}^{l}
+%-----------------------------
 \end{tabu}}
-\end{table}
-%---------------------------
-%
-The methodology to build the tabulations is straightforward. It is based on two main scans. On the one hand, intervals for the variation of the 
-average composition $\wi$ are chosen from the known alloy composition. These variations have to cover the extreme values adopted during the 
-simulation, which are not known a priori. An interval is also selected for the variation of temperature. The latter is easier to determine as it
-usually starts from the initial melt temperature and goes down to the room temperature in a standard casting simulation. For each mapping of
-composition and temperature, a thermodynamic equilibrium state is computed. The outputs are the 
-number of phases encountered, together with their fraction and intrinsic compositions. The minimum and maximum intrinsic composition for each phase 
-could then be determined. On the other hand, for each phase, a scan of the intrinsic composition and temperature is made to compute the intrinsic 
-properties. The same temperature interval and step as defined earlier are used.
-Regarding the enthalpy-to-temperature conversion (\emph{H2T}), a backward iterative \emph{T2H} search is performed. 
-For a known composition $\wi$, denoting $\brent$ the iteration index to convert the enthalpy 
-$H_{\text{input}}$, we start with an initial guess for temperature $T^{\brentzero}$ then convert it to an 
-enthalpy $H^{\brentzero}$ with the \emph{T2H} conversion. Using an appropriate nonlinear algorithm (Brent is the most versatile 
-in our case), we aim at minimizing the following scalar residual: $R_{H} = \abval{H_{\text{input}} - H^\brent }$. 
-Once the algorithm has converged, the temperature $T^\brent$ is the result of the \emph{H2T} conversion. It is 
-inferred that the first conversion (\emph{T2H}) is a direct one whereas the latter (\emph{H2T}) is indirect and requires 
-a series of iterative steps; each step being a single \emph{T2H} resolution. In other words, a \emph{H2T} conversion is a 
-backward search for a temperature, hence it is slower. This conversion's speed lag is exacerbated when tabulations 
-increase in size (e.g. large number of temperature and composition steps) and complexity (e.g., multicomponent 
-industrial alloys used in casting), since the search gets more complicated with the increasing number of input 
-columns (one column for each alloying element).
-%
-%
-%-------------------------------------------------------------------------------------
-\begin{figure}[htbp]
-\newlength{\rightcol}
-\setlength{\largeur}{9cm}
-\setlength{\llargeur}{4.2cm}
-\setlength{\rightcol}{4cm}
-\centering
-\begin{tikzpicture}[node distance=0.4cm]
+\end{tableth}
+%-----
+We develop the ingredients of these equations using the averaging technique, as follows:
+%-------
+\begin{align}
+\label{eq:mainingredients1}
+& \avg{\rho} = \gl \rhol + \gs \rhos \\
+\label{eq:mainingredients2}
+& \avg{\rho \vec{v}} = \gl \rhol \vl + \cancel{\gs \rhos \vs} \\
+\label{eq:mainingredients3}
+& \avg{\rho h} = \gl \rhol \hl + \gs \rhos \hs \\
+\label{eq:mainingredients4}
+& \avg{\rho h \vec{v}} = \gl \rhol \hl \vl + \cancel{\gs \rhos \hs \vs} \\
+\label{eq:mainingredients5}
+& \avg{\rho w_i} = \gl \rhol \wil + \gs \rhos \wis \\
+\label{eq:mainingredients6}
+& \avg{\rho w_i \vec{v}} = \gl \rhol \wil \vl + \cancel{\gs \rhos \wis \vs} \\
+\label{eq:mainingredients7}
+& \avg{\rhol \vl} = \avg{\rhol \vl}^l = \gl \rhol \vl \\
+\label{eq:mainingredients8}
+& \avg{\rhol \vl \times \vec{v}} = \gl \rhol \vl \times \vl + \cancel{\gs \rhos \vl \times \vs}
+\end{align}
+%-------
+% $\mat{\sigma}$ 
+%-------
+Next, we define the average diffusive fluxes, $\vec{q}$ for energy and $\vec{j_i}$ for solutes, 
+using Fourier's conduction law and Fick's first law, respectively \citep{rappaz_numerical_2003}:
+%------
+\begin{align}
+\label{eq:fourierlaw}
+& \avg{\vec{q}} = - \gl \kl \nabvec T -  \gs \ks \nabvec T = -\avg{\kappa} \nabvec T \\
+\label{eq:ficklaw}
+& \avg{\vec{j_i}} = - \gl \rhol \Dl \nabvec \wil - \cancel{\gs \rhos \Ds \nabvec \wis}
+\end{align}
+%------------
+In \cref{eq:ficklaw}, the macroscopic diffusion coefficient in the solid is neglected, 
+by considering that for macroscopic scales, the average composition of the alloy is much more influenced by advective 
+and diffusive transport in the liquid.
+In \cref{eq:fourierlaw}, we assume that phases are at thermal equilibrium, that is, temperature is uniform in the RVE.
 
-\tikzstyle{rect}=[rectangle,draw,text=black]
-\tikzstyle{whiterect}=[rectangle,text=black]
-\tikzstyle{test}=[diamond,aspect=3,draw,text=black]
-\tikzstyle{fleche}=[->,>=stealth]
-\tikzstyle{trait}=[]
-\setlength{\rlargeur}{\largeur}
-\addtolength{\rlargeur}{-2.\tabcolsep}
-\addtolength{\rlargeur}{-1.\llargeur}
-
-
-\node[rect] (init) at (0cm,5cm)
-{
-	\begin{tabular}{@{}p{\llargeur}p{\rightcol}@{}}
-		\textbf{Initialisation} \\
-		Temperature 	& $\Tj$ \\
-		Average composition & $\wi_j$ \\
-	\end{tabular}
-};
-
-\node[rect,below=of init] (microseg)
-{
-	\begin{tabular}{@{}p{\llargeur}p{\rightcol}@{}}
-		\textbf{Microsegregation law} \\		
-		Phase fractions		& $(\Tj,\wi_j) \rightarrow g^\phi_j$ \\
-		Phase compositions 	& $(\Tj,\wi_j) \rightarrow \wiphi_j$ \\
-		Phase enthalpy 		& $(\Tj,\wiphi_j) \rightarrow \hphi_j$ \\
-	\end{tabular}
-};
-\draw[trait] (init) -- (microseg);
-
-\node[rect,below=of microseg] (solve)
-{
-	\begin{tabular}{@{}p{\llargeur}p{\rightcol}@{}}
-		\textbf{Total enthalpy} &	$ \rhoh_j=\sum_\phi \crochet{g^\phi_j \rphi_j \hphi_j}_{\Tj}$ \\
-								&	(\cref{eq:volume_average_enthalpy})
-	\end{tabular}
-};
-\draw[trait] (microseg) -- (solve);
-
-\end{tikzpicture}
-\caption{Algorithm for a single temperature to enthalpy (\emph{T2H}) conversion.}
-\label{fig:algorithm_t2h}
-\end{figure}
-%-------------------------------------------------------------------------------------
-%
-%
-
-%-------------------------------------------------------------------------------------
-\begin{figure}[htbp]
-\setlength{\largeur}{9cm}
-\setlength{\llargeur}{4.2cm}
-\setlength{\rightcol}{5cm}
-\newcommand\Tjbrent{\ensuremath{T_j^\brent}}
-\newcommand\Hjbrent{\ensuremath{\rhoh_j^\brent}}
-\centering
-\begin{tikzpicture}[node distance=0.5cm]
-
-\tikzstyle{rect}=[rectangle,draw,text=black]
-\tikzstyle{whiterect}=[rectangle,text=black]
-\tikzstyle{test}=[diamond,aspect=3,draw,text=black]
-\tikzstyle{fleche}=[->,>=stealth]
-\tikzstyle{trait}=[]
-\setlength{\rlargeur}{\largeur}
-\addtolength{\rlargeur}{-2.\tabcolsep}
-\addtolength{\rlargeur}{-1.\llargeur}
-
-
-\node[rect] (init) at (0cm,5cm)
-{
-	\begin{tabular}{@{}p{\llargeur}p{\rightcol}@{}}
-		\textbf{Initialisation} \\
-		Enthalpy			& $\rhoh_j$ \\
-		Old temperature 	& $\Tjtminus$ \\
-		Average composition & $\wi_j$ \\
-	\end{tabular}
-};
-
-\node[rect, below=of init] (brent_init)
-{
-	\begin{tabular}{@{}p{\llargeur}p{\rightcol}@{}}
-		\textbf{Brent's initialisation} \\
-		Iteration &	$\brentzero$ \\
-		Temperature & $T^\brentzero = \Tjtminus$
-	\end{tabular}
-};
-\draw[trait] (init) -- (brent_init);
-
-\node[rect,below=of brent_init] (microseg)
-{
-	\begin{tabular}{@{}p{\llargeur}p{\rightcol}@{}}
-		\textbf{Microsegregation law} \\		
-		Phase fractions		& $(\Tjbrent,\wi_j) \rightarrow \crochet{g^\phi_j}^\brent$ \\
-		Phase compositions 	& $(\Tjbrent,\wi_j) \rightarrow \crochet{\wiphi_j}^\brent$ \\
-		Phase enthalpy 		& $(\Tjbrent,\wiphi_j) \rightarrow \crochet{\hphi_j}^\brent$ \\
-	\end{tabular}
-};
-\draw[trait] (brent_init) -- (microseg);
-
-\node[rect,below=of microseg] (TtoH)
-{
-	\begin{tabular}{@{}p{\llargeur}p{\rightcol}@{}}
-		\textbf{\emph{T2H} conversion} & $\Tjbrent \rightarrow \Hjbrent $ \quad (\cref{fig:algorithm_t2h})
-	\end{tabular}
-};
-\draw[trait] (microseg) -- (TtoH);
-
-\node[rect,below=of TtoH] (residual)
-{
-	\begin{tabular}{@{}p{\llargeur}p{\rightcol}@{}}
-		\textbf{Enthalpy residual} & $R_\text{Brent}^\brentplus = \abval{\rhoh_j - \Hjbrent }$
-	\end{tabular}
-};
-\draw[trait] (TtoH) -- (residual);
-
-\node[test,below=of residual] (test)
-{
-	$R_\text{Brent}^\brentplus < \varepsilon_\text{Brent}$
-};
-\draw[trait] (residual) -- (test);
-
-\node[rect,below=of test] (update)
-{
-	\begin{tabular}{@{}p{\llargeur}p{\rightcol}@{}}
-		\textbf{Conversion} & $T_j = \Tjbrent$
-	\end{tabular}
-};
-\draw[trait] (test) -- (update);
+Now that the main conservation equations ingredients are properly defined, we may write each averaged conservation
+equation as the sum of two local conservation equations for each phase in the RVE, hence introducing also interfacial average terms.
+For instance, the local mass balance in each phase is given by:
 %----
-\coordinate[shift={(-3mm,0mm)}] (microsegwest) at (microseg.west);
-\draw[fleche] (test.west) -| (microsegwest) -- (microseg);
-\node[anchor=south east] (No) 	at (test.west) {No};
-\node[anchor=north east] (iterate) at (test.west) {$\brent \leftarrow \brentplus$};
-
-\end{tikzpicture}
-\caption{Algorithm for a single enthalpy to temperature (\emph{H2T}) conversion.}
-\label{fig:algorithm_h2t}
-\end{figure}
-%-------------------------------------------------------------------------------------
-%==================
-\section{Numerical method}
-%==================
-%
-The finite element method is used to solve the energy conservation as expressed by \cref{eq:averaged_energy_eqn}. 
-A test function $\test$ belonging to the Hilbertian Sobolev space $\hilbert(\OhmE)$ of continuous integrable test functions 
-is used to formulate the integral variational form of \cref{eq:averaged_energy_eqn} \citep{suli_lecture_2000}. 
-A Fourier boundary condition is considered on the domain boundary $\partial \OhmE$. The domain $\Ohm$
-is discretised using first-order linear simplexes, $\OhmE$, defined by their number of local nodes (denoted “NbLoc”): triangles 
-in 2D with NbLoc=3 and tetrahedra in 3D with  NbLoc=4. The outcome is a residual that we aim to minimize so that the 
-conservation principle is satisfied. Therefore, the weak form writes:
-%----------------------
+\begin{subequations}
+\begin{align}
+\label{eq:mass_liquid}
+& \temp{\gl \rhol} + \nabla \cdot \brac{\gl \rhol \vl} = S_V \langle \rhol \vlstar \cdot \vec{n} \rangle^* - S_V \langle \rhol \vstar \cdot \vec{n} \rangle^* \\
+\label{eq:mass_solid}
+& \temp{\gs \rhos} + \nabla \cdot \brac{\gs \rhos \vs} = - S_V \langle \rhos \vsstar \cdot \vec{n} \rangle^* + S_V \langle \rhos \vstar \cdot \vec{n} \rangle^*
+\end{align}
+\end{subequations}
+%----
+where $S_V= A_{sl}/\rev$ is the specific surface area, $\vec{v}^{l^*}$ and $\vec{v}^{s^*}$ are respectively, the liquid 
+and solid phase velocity at the interface and $\vec{v}^*$ is the previously introduced solid-liquid interface velocity. 
+For instance, the first interfacial exchange term in the RHS of \cref{eq:mass_liquid} is expanded as follows \citep{dantzig_solidification_2009}:
+%----
+\begin{subequations}
+\begin{align}
+S_V \langle \rhol \vlstar \cdot \vec{n} \rangle^*
+&= \frac{A_{sl}}{\rev} \brac{ \frac{1}{A_{sl}} \integral{A_{sl}}{\rhol \vlstar \cdot \vec{n}}{A}} \\
+&= \frac{1}{\rev}  \integral{A_{sl}}{\rhol \vlstar \cdot \vec{n}}{A}
+\end{align}
+\end{subequations}
+%----
+Summing equations \eqref{eq:mass_liquid} and \eqref{eq:mass_solid}, results in the overall mass balance
+in the RVE:
+%----
 \begin{multline}
-\label{eq:weak_energy}
-\forall \test \in M=\curly{u \in \hilbert(\OhmE)} \\
-\integral{\OhmE}{\test \tempup{\rhoh}}{V} 
- + \integral{\OhmE}{\test \vit \cdot \nabvec \brac{\rhol \hl}}{V}
- - \integral{\OhmE}{\test \diff{\avg{\kappa}}{T} }{V}
- - \integral{\OhmE}{\test \source }{V}
- = 0
+\label{eq:conservation_mass_local}
+ \temp{\gl \rhol + \gs \rhos}  +  \nabla \cdot \brac{\gl \rhol \vl + \gs \rhos \vs} = \\  
+	  S_V \avg{\rhol \brac{\vlstar-\vstar} \cdot \vec{n}}^*  
+   -  S_V \avg{\rhos \brac{\vsstar-\vstar} \cdot \vec{n}}^*
 \end{multline}
-%------------
-where we assumed a static solid phase and an incompressible liquid phase, which allowed recasting the second term of 
-\cref{eq:averaged_energy_eqn} into $\vit \cdot \nabvec \brac{\rhol \hl}$. 
-The steps for discretizing in time and space the previous equation are well detailed in  
-some book references like \citet{rappaz_numerical_2003,dantzig_solidification_2009}. 
-As for enthalpy and temperature, they are spatially discretised in each simplex 
-using interpolations functions $\interp$, thus defining the nodal values $H_j$ and $T_j$, respectively: 
-%----------------------
+%----
+where the RHS cancels to zero as shown by \citet{ni_volume-averaged_1991}. Moreover, the authors show that with their averaging technique, 
+interfacial exchanges for energy, chemical species and momentum cancel out as they are equal in absolute value but opposite in sign. 
+Using \cref{eq:mainingredients1,eq:mainingredients2,eq:mainingredients3,eq:mainingredients4,eq:mainingredients5,eq:mainingredients6,eq:mainingredients7,eq:mainingredients8,eq:fourierlaw,eq:ficklaw}
+and following the same procedure done in \cref{eq:conservation_mass_local}, the averaged mass balance hence writes:
+%------
 \begin{align}
-\label{eq:discretise_H}
-\rhoh 	&= \sum_{j=1}^{\text{NbLoc}}  \interp_j   \Hj \\ 
-\label{eq:discretise_T}
-T		&= \sum_{j=1}^{\text{NbLoc}}  \interp_j   \Tj
+\label{eq:conservation_mass}
+& \frac{\partial \avg{\rho}}{\partial t} + \nabla \cdot \avg{\rho \vec{v}} = 0
 \end{align}
 %------------
-Note that $H_j$ is a volumetric enthalpy. The Galerkin formulation gives the following 
-expression for the residual contribution at a mesh node $i$ (PS: here $i$ is not the usual solute index)
-for time step $t$ in a local element $\element$:
-%----------------------
+whereas the averaged energy balance writes:
+%------
 \begin{align}
-\begin{split}
-\label{eq:discretise_residual_local}
-& \brac{R_i^E}^t = \Mij^E \brac{\Hjt - \Hjtminus} + \Aij^E \Tjt + \brac{\Kija^E + \Kijb^E}-\Fi^E - \Qi^E=0 \\
-& i,j:1 \rightarrow \text{NbLoc}
-\end{split}
+\label{eq:conservation_energy_init}
+& \frac{\partial \avg{\rho h}}{\partial t} + \nabla \cdot \avg{\rho h \vec{v}} - \nabla \cdot \brac{\avg{\kappa} \nabvec T} = 0
 \end{align}
 %------------
-where the volumetric contributions are detailed as follows:
-%----------------------
+and finally the species balance writes:
+%------
 \begin{align}
-& \textit{transient term:} \quad  \Mij^E = \integral{\OhmE}{\frac{1}{\dt} \interp_i \interp_j }{V} \\ 
-& \textit{advection term:} \quad  \Aij^E = \integral{\OhmE}{\rhol \cpl \interp_i \vit \cdot \nabvec \interp_j}{V} \\ 
-& \textit{diffusion term:} \quad  \Kija^E = \integral{\OhmE}{\avg{\kappa} \nabvec \interp_i\nabvec \interp_j}{V} \\ 
-& \textit{source term:} \quad  \Qi^E = \integral{\OhmE}{\interp_i \source}{V}
+\label{eq:conservation_solute_init}
+& \frac{\partial \avg{\rho w_i}}{\partial t} + \nabla \cdot \avg{\rho w_i \vec{v}} - \nabla \cdot \brac{\gl \rhol \Dl \nabvec \wil}= 0
 \end{align}
 %------------
-while the surface boundary contributions are given by:
-%-------
+As stated previously, the momentum balance in the solid phase is not taken into consideration, hence we do not sum the corresponding 
+local conservation equations. This has consequences on the advection terms in energy and species conservation, and later on we will show
+the consequences on the momentum conservation in the liquid. First, the advection terms in \cref{eq:conservation_energy_init,eq:conservation_solute_init}
+shall be redefined by considering that the fluid is incompressible $\brac{\nabla \cdot \vit = 0}$, which yields:
+%------
 \begin{align}
-& \textit{boundary condition term 1:}	\quad  \Kijb^E = \integral{\dOhmE}{\hext \interp_i \interp_j}{S} \\ 
-& \textit{boundary condition term 2:}	\quad	\Fi^E = \integral{\dOhmE}{\hext \Text \interp_i}{S} \\
-\end{align}
-%-------
-%
-The surface integrals $\Kijb^E$ and $\Fi^E$ are related to a Fourier-type boundary condition, 
-with $\hext$ as a coefficient of heat exchange and $\Text$ as the external temperature far from the 
-boundary. The energy conservation principle is satisfied when the sum of the residual contributions 
-coming from all the mesh elements is zero. In other words, the following global residual defined by 
-the assembly of these contributions, should be minimized: 
-%----------------------
-\begin{align}
-\begin{split}
-\label{eq:discretise_residual_global}
-& \brac{R_i}^t = \Mij \brac{\Hjt - \Hjtminus} + \Aij \Tjt + \brac{\Kija + \Kijb}\Tjt -\Fi - \Qi=0 \\
-& i,j:1 \rightarrow \text{NbGlob}
-\end{split}
+\label{eq:advection_no_solid}
+& \nabla \cdot \avg{\rho h \vec{v}} = \vit \cdot \nabvec \brac{\rhol \hl} \\
+& \nabla \cdot \avg{\rho w_i \vec{v}} = \vit \cdot \nabvec \brac{\rhol \wil}
 \end{align}
 %------------
-where the global tensors $\Mij$, $\Aij$, $\Kija$ , $\Kijb$ , $\Fi$ and $\Qi$ contain respectively, after an assembly step, 
-the contributions of the local matrices $\Mij^E$, $\Aij^E$, $\Kija^E$ , $\Kijb^E$ , $\Fi^E$ and $\Qi^E$ from each discretised 
-element in the domain $\Ohm$. Accordingly, the indices $i$ and $j$ refer to global node numbers, where the total number of nodes is 
-denoted by "NbGlob". It is clear that the global residual inherits the dependence between enthalpy and temperature. 
-This is shown in \cref{eq:discretise_residual_global} where the average volume enthalpy is a function of the temperature. It infers that this residual 
-is a non-linear function; therefore minimizing it requires an iterative non-linear algorithm. Our choice settles on the 
-Newton-Raphson method, known for its quadratic convergence speed. A solidification problem can induce severe non-linearities 
-from the release of the latent heat (which itself is temperature-composition dependent) and the variations of the thermophysical 
-properties of the alloy with respect to temperature and average composition. This algorithm could thus treat such variations. 
-Considering the link between enthalpy and temperature, \cref{eq:discretise_residual_global} may be solved either for enthalpy 
-or for temperature as a nodal unknown; hence both formulations are presented hereafter.
-%
-%
-%---------------
-\subsection{Enthalpy-based approach }
-%---------------
-The residual is re-written using a Taylor series expansion to the first order for a nonlinear iteration $\iter$ :
-%-----------------
+As for the liquid momentum balance, we write:
+%------
 \begin{align}
-\label{eq:Hsolver_residual}
-& \brac{R_i}^\iterplus = \brac{R_i}^\iter + \brac{\dRdH}^{\iter}_{ij} \Delta \Hj^\iter + \order\brac{\Hj^2}
+\label{eq:conservation_momentumliq_init}
+& \temp{ \rhol \gl \vl } + \nabvec \cdot \brac{\rhol \gl \vl \times \vl} = 
+	\nabvec \cdot \brac{\gl \sigmal} +\gl \Fv + \vec{\Gamma}^{l}
 \end{align}
 %------------
-Neglecting the second order terms, the suggested correction at each iteration in view of cancelling 
-the residual and giving the new value $\Hj^\iter$, is given by the linear system in \cref{eq:Hsolver_residual_linear}
-relative to what we call a \emph{Hsolver}:
-%-----------------
+where $\Fv$ is the vector of external body forces exerted on the liquid phase. In our case, it accounts for the fluid's weight:
+%------
 \begin{align}
-\label{eq:Hsolver_residual_linear}
-& \brac{\dRdH}^{\iter}_{ij} \brac{\Hj^\iterplus - \Hj^\iter} = -R_i^\iter
+\label{eq:fluid_weight}
+& \Fv = \rhol \gravity
 \end{align}
 %------------
-where $\dRdH$ is a global tangent matrix yielding the variations of the residual with respect to the enthalpy 
-in the last iteration, $\Hj^\iter$. If \cref{eq:discretise_residual_local} is considered, then the contribution of an element $\OhmE$ writes:
-%-----------------
-\begin{align}
-\label{eq:dRdH}
-& \brac{\dRdH}^{\iter E}_{ij} 
-= \Mij^E 
-+ \underbrace{\Aij^E \brac{\dTdH}^{\iter}_{j}}_{\nosum}
-+ \underbrace{\brac{\Kija^E + \Kijb^E} \brac{\dTdH}^{\iter}_{j}}_{\nosum}
-\end{align}
+The interfacial momentum transfer between the solid and liquid phases in \cref{eq:conservation_momentumliq_init} is modelled 
+by a momentum flux vector $\vec{\Gamma}^{l}$, consisting of hydrostatic and deviatoric parts, such that:
 %------------
-\Cref{eq:dRdH} is the core of the enthalpy-based solver. The resolution of \cref{eq:Hsolver_residual_linear} 
-then yields a new estimate of the vector of nodal enthalpies $H^\iterplus$, which are the only unknowns to be solved for. 
-Once determined at iteration $\iter$, convergence tests are performed (refer to section %TODO ).
-%
-%
-%---------------
-\subsection{Temperature-based approach }
-%---------------
-Similarly to the Hsolver, the local residual is recast for a nonlinear iteration $\iter$, 
-leading this time to an iterative temperature correction:
-%-----------------
+%\begin{subequations}
 \begin{align}
-\label{eq:Tsolver_residual_linear}
-& \brac{\dRdT}^\iter_{ij} \brac{\Tj^\iterplus - \Tj^\iter} = -R_i^\iter
+	\label{eq:interfacial_momentum_total}
+	& \vec{\Gamma}^{l} =  \vec{\Gamma}_{p}^{l} + \vec{\Gamma}_{\mathbb{S}}^{l}	\\
+	\label{eq:interfacial_momentum_hydrostatic}
+	& \vec{\Gamma}_{p}^{l} = p^{l^{*}} \nabvec g^{l} = p^{l} \nabvec g^{l}		\\
+	\label{eq:interfacial_momentum_deviatoric}
+	& \vec{\Gamma}_{\mathbb{S}}^{l} = - \gl^2 \mul \K^{-1} \brac{ \vl - \cancel{\vs} }  
 \end{align}
+%\end{subequations}
 %------------
-where $\dRdT$ is a global tangent matrix yielding the variations of the residual with respect to temperature $\Tj^\iter$ at the previous iteration. 
-This solver will be referred to as \emph{Tsolver}.
-The contribution of an element $\OhmE$ to this tangent matrix is evaluated as:
-%-----------------
+where $p^{l^{*}}$ is the pressure at the interface, considered to be equal to the liquid hydrostatic 
+pressure $\pl$, $\K$ is a permeability scalar (isotropic) computed using \cref{eq:darcy} and $\mul$ is the liquid's 
+dynamic viscosity. The general form of the Cauchy liquid stress tensor in \cref{eq:conservation_momentumliq_init} 
+is decomposed as follows: 
+%------------
+%\begin{subequations} 
 \begin{align}
-\label{eq:dRdT}
-& \crochet{\dRdTijk}^E
-= \underbrace{\Mij^E \brac{\dHdT}^{\iter}_{j}}_{\nosum}
-+ \Aij^E
-+ \brac{\Kija^E + \Kijb^E}
+\label{eq:stress_liq}
+& \avg{\sigmal} = \gl \sigmal = - \brac{\avg{\pl} -\lambda \nabla \cdot \vit} \I + \avg{\mat{\mathbb{S}}^{l}}
 \end{align}
+%\end{subequations}
 %------------
-In contrast to the previous solver, \cref{eq:dRdT} is the core of the temperature-based solver. The resolution of \cref{eq:Tsolver_residual_linear} 
-then yields a new estimate of the vector of nodal temperatures $T^\iterplus$, which are the only unknowns to be solved for. 
-Once updated for iteration $\iter$, convergence tests are performed (refer to section %TODO ).
-%
-%
-%-------------------
-\subsection{Convergence}
-%
-The previous two sections described the iterative resolution of the same discretised energy 
-conservation by both Tsolver and Hsolver. However, in \cref{eq:dRdH,eq:dRdT}, an important 
-term emerges from the tangent matrix evaluation describing the variations between temperature 
-and enthalpy: $\dHdT$ (or $\dTdH$). This term invokes the previously mentioned temperature-enthalpy 
-tabulations which depend on the alloy composition. Consequently,  $\dHdT$ (or $\dTdH$)
-has a great influence on the convergence of the Tsolver (respectively the Hsolver). 
-When \cref{eq:Hsolver_residual_linear} or \cref{eq:Tsolver_residual_linear} is solved at iteration $\iter$, this term is written using a finite difference:
-%-----------------
+where $\lambda$ is a dilatational viscosity \citep{dantzig_solidification_2009} and $\mat{\mathbb{S}}^{l}$ is the
+liquid strain deviator tensor. In the literature, the coefficient $\lambda$ is taken proportional to the 
+viscosity: $\lambda = \frac{2}{3} \mu^l $. However, as we consider an incompressible flow, the divergence 
+term vanishes, thus rewriting \cref{eq:stress_liq} as follows:
+%------------
+\begin{subequations} 
 \begin{align}
-\label{eq:finite_difference_Tsolver}
-& \textbf{Tsolver} \qquad \brac{\dHdT}^{\iterplus}_{j} = \frac{\rhoh_j^\iterplus - \rhoh_j^\iter}{T_j^\iterplus - T_j^\iter} \\
-\label{eq:finite_difference_Hsolver}
-& \textbf{Hsolver} \qquad \brac{\dTdH}^{\iterplus}_{j} = \frac{T_j^\iterplus - T_j^\iter}{\rhoh_j^\iterplus - \rhoh_j^\iter}
+\label{eq:stress_liq_incompressible1}
+& \avg{\sigmal} = - \avg{\pl} \I + \avg{\mat{\mathbb{S}}^{l}} \\
+\label{eq:stress_liq_incompressible2}
+& \avg{\sigmal} = - \avg{\pl} \I + 2 \mul \strainrateliq 
 \end{align}
+\end{subequations}
 %------------
-For the Tsolver, the enthalpy $\rhoh_j^\iter$ is needed to evaluate \cref{eq:finite_difference_Tsolver}. 
-In contrast, the Hsolver requires the value of $T_j^\iter$ to evaluate the corresponding \cref{eq:finite_difference_Hsolver}.
-In both cases, the unknown is determined by the temperature-enthalpy relation. The indices next to the mentioned unknowns
-indicate that this relation is used for each iteration $\iter$ at each mesh node $j$, hence affecting the global resolution time 
-between the two solvers. The Hsolver needs a \emph{H2T} to evaluate $\dTdH$, whereas the Tsolver needs a \emph{T2H} to evaluate $\dHdT$.
-It can be seen that Tsolver uses solely \emph{T2H} procedure (flowchart in \cref{fig:algorithm_t2h}) and the thermodynamic tabulations to determine the enthalpy, 
-hence the term $\dHdT$. On the other hand, Hsolver repeats the same procedure a finite number of times in order to 
-determine a temperature output through \emph{H2T} (flowchart in \cref{fig:algorithm_h2t}) and use it to compute $\dTdH$. This algorithmic difference leverages the 
-Tsolver in terms of computation time providing the same numerical accuracy while conserving the total system energy. 
-
-Convergence tests are necessary at the end of each iteration of the energy solver to determine 
-the convergence status of the algorithm. In the context of the Tsolver for instance, the residual 
-is re-evaluated with the newly determined temperature $\Tj^\iterplus$ and enthalpy $\Hj^\iterplus$ so \cref{eq:discretise_residual_global} rewrites:
-%-----------------
+where the transition from \cref{eq:stress_liq_incompressible1} to \cref{eq:stress_liq_incompressible2} is made
+possible by assuming a Newtonian behaviour for the liquid phase. The strain rate tensor, $\strainrateliq$, depends on 
+the average liquid velocity:
+%------------
 \begin{align}
-\begin{split}
-\label{eq:discretise_residual_global_new}
-& \brac{R_i}^\iterplus = \Mij \brac{\Hj^\iterplus) - \Hjtminus} + \Aij \Tj^\iterplus + \brac{\Kija + \Kijb}\Tj^\iterplus -\Fi - \Qi \\
-& i,j:1 \rightarrow \text{NbGlob}
-\end{split}
+\label{eq:tensor_strainrate}
+\strainrateliq = \frac{1}{2} \brac{\nabmat \vit  +  \nabmattransp \vit}
 \end{align}
+%-------------------------------------------------------------------------------------------
+Finally, we obtain the final form of momentum conservation in the liquid phase coupled with the averaged mass balance, by injecting \cref{eq:fluid_weight,eq:interfacial_momentum_hydrostatic,eq:interfacial_momentum_deviatoric,eq:stress_liq_incompressible2,eq:tensor_strainrate}
+in \cref{eq:conservation_momentumliq_init}:
+%------
+% \begin{align}
+\begin{multline}
+\label{eq:conservation_momentumliq}
+ \temp{ \rhol \vit } + \frac{1}{\gl} \nabvec \cdot \brac{\rhol \vit \times \vit} = \\
+	  - \gl\nabvec \pl - 2 \mul \nabvec \cdot \brac{\nabmat \vit + \nabmattransp \vit}
+	  - \gl \mul \K^{-1} \vit + \gl \rhol \gravity
+\end{multline}
+% \end{align}
 %------------
-The norm of the current residual, $\norm{R^\iterplus}$, is compared to a fixed small 
-value $\varepsilon_R \approx \crochet{\num{d-5};\num{d-4}}$. The resulting temperature variation, 
-$\abval{\Tj^\iter-\Tj^\iterminus}$, should also respond to similar criterion between two consecutive 
-iterations. For that purpose, we compare it to another fixed value $\varepsilon_T \approx \crochet{\num{d-3};\num{d-2}}$.
-Convergence is ultimately achieved when the following criteria are simultaneously met:
+where we intentionally employed the \emph{superficial velocity}, $\vit = \gl \vl$, as the main unknown, together with the liquid pressure $\pl$.
+This system, when modelled in 3D, has a total of 4 unknowns (velocity vector and pressure) and 3 equations ($X$,$Y$ and $Z$ projections for the velocity vector).
+A fourth equation provided by the mass balance (\cref{eq:conservation_mass})is therefore added for closure, giving the following system of equations :
 %------
 \begin{equation}
-\label{eq:energy_convergence_criteria}
+\label{eq:Navier-Stokes1}
    \left\{
    \begin{aligned}
-      & \norm{R^\iterplus} < \varepsilon_R \\
-	  & \text{Max}_{j:1 \rightarrow \text{NbGlob}} \abval{\Tj^\iterplus-\Tj^\iter} < \varepsilon_T
+      & \temp{ \rhol \vit } + \frac{1}{\gl} \nabvec \cdot \brac{\rhol \vit \times \vit} = \\
+	  &- \gl\nabvec \pl - 2 \mul \nabvec \cdot \brac{\nabmat \vit + \nabmattransp \vit}
+	  - \gl \mul \K^{-1} \vit + \gl \rhol \gravity\\ \\
+      & \nabla \cdot \vit =0
     \end{aligned}
     \right.
 \end{equation}
 %------------
-A comparison of both solver formulations is done in the hereafter test cases section.
-%
-%
-%
+Last, the Boussinesq approximation allows taking a constant density in the inertial terms of \cref{eq:Navier-Stokes1} while the variations responsible for buoyancy forces can be computed
+using \cref{eq:rholiq}, if the system is incompressible. Hence, the final set of equations is better known as the incompressible \emph{Navier-Stokes} equations, applied to a solidifying melt:
+%------
+\begin{equation}
+\label{eq:Navier-Stokes2}
+   \left\{
+   \begin{aligned}
+      & \rholref \brac{\tempup{ \vit } + \frac{1}{\gl} \nabvec \cdot \brac{\vit \times \vit}} = \\
+	  &- \gl\nabvec \pl - 2 \mul \nabvec \cdot \brac{\nabmat \vit + \nabmattransp \vit}
+	  - \gl \mul \K^{-1} \vit + \gl \rhol \gravity\\ \\
+      & \nabla \cdot \vit =0
+    \end{aligned}
+    \right.
+\end{equation}
+%------------
+Since all conservation equations were presented and simplified by the main assumption of a static solid phase, 
+we may include them in a graphical summary in \cref{fig:algo_monodomain}
+%---------------
 \begin{figure}[htbp]
-%\newlength{\largeur}	% defined in chapter2
-%\newlength{\llargeur}	% defined in chapter2
-%\newlength{\rlargeur}	% defined in chapter2
-
-\setlength{\largeur}{13.5cm}
-\setlength{\llargeur}{3.8cm}
+\label{fig:algo_monodomain}
+%=========
+\setlength{\largeur}{2cm}
+\setlength{\llargeur}{11cm}
+\setlength{\llargeurOut}{1.8cm}
+\setlength{\rlargeurOut}{0.25cm}
 \centering
-\begin{tikzpicture}[node distance=0.3cm]
+%=========
+\begin{tikzpicture}[node distance=0.5cm]
 
-\tikzstyle{rect}=[rectangle,draw,text=black]
-\tikzstyle{whiterect}=[rectangle,text=black]
-\tikzstyle{test}=[diamond,aspect=3,draw,text=black]
+\tikzstyle{rect}=[rectangle,draw,text=black, fill=red!10, minimum height=0.01cm, rounded corners] % drop shadow % rounded corners
+\tikzstyle{output}=[rectangle,draw,text=black, fill=blue!15, minimum height=0.01cm, rounded corners] % drop shadow % rounded corners
+\tikzstyle{test}=[diamond,aspect=3,draw,text=black,fill=red!10, rounded corners] % drop shadow % rounded corners
 \tikzstyle{fleche}=[->,>=stealth]
 \tikzstyle{trait}=[]
-
+%=========
 \setlength{\rlargeur}{\largeur}
-\addtolength{\rlargeur}{-2.\tabcolsep}
+\addtolength{\rlargeur}{-1.\tabcolsep}
 \addtolength{\rlargeur}{-1.\llargeur}
-
-
-\node[rect] (init) at (0cm,5cm)
+%=========
+\node[rect] (energy)
 {
-	\begin{tabular}{@{}p{\llargeur}p{\rlargeur}@{}}
-		\textbf{Initialisation} \\
-		Time stepping 	& $t$, $\Delta t$ \\
-		Nodal values	& $\Hjt$, $\Tjt$, $\dHdTjt$ %, $\avg{w}^t$, $\avg{v^l}^t$
+	\begin{tabular}{p{\llargeur}}
+	\textbf{Conservation of energy (Nonlinear Heat Transfer)} 
+	\begin{equation}
+	\label{eq:diag_energy}
+		 \frac{\partial \avg{\rho h}}{\partial t} + \vit \cdot \nabla \brac{\rhol \hl} - \nabla \cdot \brac{\avg{\kappa} \nabvec T} = 0
+	\end{equation}
 	\end{tabular}
 };
-
-\node[rect,below=of init] (init_iter)
+%==========
+\node[rect,below=of energy] (microseg)
 {
-	\begin{tabular}{@{}p{\llargeur}p{\rlargeur}@{}}
-		\textbf{Newton-Raphson} \\		
-		Iteration step	& $\iter=0$ \\
-		Nodal values 	& $\Hjk=\Hjt$, \\ 
-						& $\Tjk=\Tjt$, \\
-						& $\dHdTjk=\dHdTjt$ %, $\avg{w}^t$, $\avg{v^l}^t$
-	\end{tabular}
-};
-	
-\node[rect,below=of init_iter] (local_contrib)
-{
-	\begin{tabular}{@{}p{\llargeur}p{\rlargeur}@{}}
-		\textbf{Local contributions} \\
-		& $\crochet{A_{ij}^\iter}^E=\crochet{\dRdTijk}^E$  \quad (\cref{eq:dRdT}) \\
-		& $\crochet{b_{j}^\iter}^E=\crochet{\dRdTijk}^E \Tjk - \Rjk$	\quad (\cref{eq:discretise_residual_local})
-	\end{tabular}
-};
-
-\node[rect,below=of local_contrib] (assembly)
-{
-	\begin{tabular}{@{}p{\llargeur}p{\rlargeur}@{}}
-	\textbf{Matrices assembly}\\
-		Global matrices & 	$\crochet{A^\iter} \leftarrow \crochet{A^\iter}^E$, $\crochet{b^\iter} \leftarrow \crochet{b^\iter}^E$, $\forall E \in \Ohm$ \\
-		Residual norm	&	$\norm{R^\iter} = \norm{A^\iter \Tk - b^\iter}$ \\ 
-	\end{tabular}
-};
-
-\node[rect,below=of assembly] (solve)
-{
-	\begin{tabular}{@{}p{\llargeur}p{\rlargeur}@{}}
-	\textbf{Solve linear system} &	$ \Tkplus= (A^\iter)^{-1} b^\iter$ \\
-	\end{tabular}
-};
-
-
-\node[rect,below=of solve] (microseg)
-{
-	\begin{tabular}{@{}p{\llargeur}p{\rlargeur}@{}}
+	\begin{tabular}{p{5.5cm}p{5.2cm}}
 	\textbf{Microsegregation} \\
-	Tabulation (\emph{T2H}) 	&	$ \Tkplus \rightarrow \rhoh^\iterplus$ \\
-	Update				& 	$\dHdTjkplus=f(\Tjkplus,\rhoh^\iterplus)$ (\cref{fig:algorithm_t2h})\\
+	\vspace{1mm} \\
+	%Discrete thermodynamic mapping: \\
+		\multicolumn{2}{l}{Full thermodynamic mapping: }\\
+		\quad \emph{Phase fraction}		& $(T,\wi) \rightarrow \gphi$ \\
+		\quad \emph{Phase composition} 	& $(T,\wi) \rightarrow \wiphi$ \\
+		\quad \emph{Phase enthalpy} 	& $(T,\wiphi) \rightarrow \hphi$ \\
+	\vspace{1mm} \\
+	\multicolumn{2}{l}{Segregation model (SM) + partial thermodynamic mapping:} \\ 
+		\quad \emph{Phase fraction/composition}		& $ (T,\wi) \xrightarrow{\text{SM}} (\gphi, \wiphi)$ \\
+  		\quad \emph{Enthalpy mapping}				& $(T,\wiphi) \xrightarrow[]{} \hphi$ \\
 	\end{tabular}
 };
-
-\node[rect,below=of microseg] (reassembly)
+%==========
+\node[test,below=of microseg] (cvg)
 {
-	\begin{tabular}{@{}p{\llargeur}p{\rlargeur}@{}}
-	\textbf{Matrices reassembly}\\
-		Global matrices & 	$\crochet{A^\iterplus} \leftarrow \crochet{A^\iterplus}^E$, $\crochet{b^\iterplus} \leftarrow \crochet{b^\iterplus}^E$, $\forall E \in \Ohm$ \\
-		Residual norm	&	$\norm{R^\iterplus} =  \norm{A^\iterplus \Tkplus - b^\iterplus}$ \\ 
+	Convergence
+};
+%==========
+\node[rect,below=of cvg] (macroseg)
+{
+	\begin{tabular}{p{\llargeur}}
+	\textbf{Conservation of chemical species (Macrosegregation)} 
+	\begin{equation}
+	\label{eq:diag_solute}
+		\frac{\partial \avg{\rho w_i}}{\partial t} + \vit \cdot \nabla \brac{\rhol \wil} - \nabla \cdot \brac{\gl \rhol \Dl \nabvec \wil}= 0
+	\end{equation}
 	\end{tabular}
 };
-
-\node[test,below=of reassembly,shift={(-3.7cm,0mm)}] (convergence_res)
+%==========
+\node[rect, below=of macroseg] (mecaflu)
 {
-	\begin{tabu}{c}
-	$\norm{R^\iterplus} < \varepsilon_R $ \\
-	%Max $\Delta T_j < \varepsilon_T$ \\
-	(\cref{eq:energy_convergence_criteria})
-	\end{tabu}
-};
-
-
-\node[test,right=of convergence_res,shift={(0.2cm,0mm)}] (convergence_temp)
-{
-	\begin{tabu}{c}
-	%$\norm{R^\iterplus} < \varepsilon_R $ \\
-	Max $\Delta T_j < \varepsilon_T$ \\
-	(\cref{eq:energy_convergence_criteria})
-	\end{tabu}
-};
-
-
-\node[rect,below=of reassembly,shift={(0.0cm,-3cm)}] (update)
-{
-	\begin{tabular}{@{}p{\llargeur}p{\rlargeur}@{}}
-	\textbf{Update} &	\\
-	Nodal values	& $\Hjtplus=\Hjkplus$, $\Tjtplus=\Tjkplus$ \\
+	\begin{tabular}{p{\llargeur}}
+	\textbf{Conservation of liquid momentum (Navier-Stokes)}
+	\begin{equation}
+	\label{eq:diag_navierstokes}
+   \left\{
+   \begin{aligned}
+      & \rholref \brac{\tempup{ \vit } + \frac{1}{\gl} \nabvec \cdot \brac{\vit \times \vit}} = \\
+	  &- \gl\nabvec \pl - 2 \mul \nabvec \cdot \brac{\nabmat \vit + \nabmattransp \vit}
+	  - \gl \mul \K^{-1} \vit + \gl \rhol \gravity\\ \\
+      & \nabla \cdot \vit =0
+    \end{aligned}
+    \right.
+\end{equation}
 	\end{tabular}
 };
-
-\node[test,below=of update, aspect=4] (test_end)
+%%%%%% OUTPUT NODES %%%%%%%%%%%%%%%%
+\node[output,right=of energy] (energyOut)
 {
-	$t+\dt=t_{end}$
-};
-
-
-
-\node[rect,right=of test_end] (end)
-{
-	End
-};
-
-\draw[trait] (init) -- (init_iter);
-\draw[trait] (init_iter) -- (local_contrib);
-\draw[trait] (local_contrib) -- (assembly);
-\draw[trait] (assembly) -- (solve);
-\draw[trait] (solve) -- (microseg);
-\draw[trait] (microseg) -- (reassembly);
-%\draw[trait] (reassembly.south) -- (convergence_res.north);
-\draw[trait] (convergence_res) -- (convergence_temp);
-%\draw[trait] (convergence_temp.south) -- (update.north);
-\draw[trait] (update) -- (test_end);
-\draw[trait] (test_end) -- (end);
-
-\coordinate[shift={(0mm,-2mm)}] (convsouth) at (convergence_res.south);
-\coordinate[shift={(-8mm,0mm)}] (contribwest) at (local_contrib.west);
-\draw[fleche] (convergence_res.south) -- (convsouth) -| (contribwest) -- (local_contrib.west);
-
-\coordinate[shift={(0mm,-2mm)}] (reassemblysouth) at (reassembly.south);
-\draw[trait] (reassembly.south) -- (reassemblysouth) -| (convergence_res);
-
-\coordinate[shift={(0mm,-2mm)}] (convergence_tempsouth) at (convergence_temp.south);
-\coordinate[shift={(-8mm,0mm)}] (contribwest_bis) at (local_contrib.west);
-\draw[trait] (convergence_temp.south) -- (convergence_tempsouth) -- (convsouth);
-
-\coordinate[shift={(2mm,0mm)}] (convergence_tempeast) at (convergence_temp.east);
-\coordinate[shift={(0mm,2mm)}] (updatenorth) at (update.north);
-\draw[trait] (convergence_temp.east) -- (convergence_tempeast) |- (updatenorth) -- (update);
-
-\coordinate[shift={(-12mm,0mm)}] (initwest) at (init.west);
-\draw[fleche] (test_end.west) -| (initwest) -- (init);
-
-%%-------------
-\coordinate[shift={(6mm,0mm)}] (convsouth_no) at (convsouth.east);
-\node[anchor=south west] (convres_no) at (convsouth_no.east) {No};
-\coordinate[shift={(6mm,0mm)}] (convsouthtemp_no) at (convergence_tempsouth.east);
-\node[anchor=south west] (convtemp_no) at (convsouthtemp_no.east) {No};
-\coordinate[shift={(-1.2cm,0mm)}] (convsouth_process) at (convsouth.west);
-\node[anchor=south east] (conv_no_process) at (convsouth_process.west) {$\iter \leftarrow \iterplus$};
-%%-------------
-\node[anchor=south east] (test_end_no) at (test_end.west) {No};
-\node[anchor=north east] (test_end_process) at (test_end.west) {$t \leftarrow t+\dt$};
-%%-------------
-
-\end{tikzpicture}
-
-\caption{Resolution algorithm of the temperature-based solver.}
-
-\end{figure}
-%
-%
-%
-%
-%
-\begin{figure}[htbp]
-
-\setlength{\largeur}{13.5cm}
-\setlength{\llargeur}{3.8cm}
-\centering
-\begin{tikzpicture}[node distance=0.3cm]
-
-\tikzstyle{rect}=[rectangle,draw,text=black]
-\tikzstyle{whiterect}=[rectangle,text=black]
-\tikzstyle{test}=[diamond,aspect=3,draw,text=black]
-\tikzstyle{fleche}=[->,>=stealth]
-\tikzstyle{trait}=[]
-
-\setlength{\rlargeur}{\largeur}
-\addtolength{\rlargeur}{-2.\tabcolsep}
-\addtolength{\rlargeur}{-1.\llargeur}
-
-\node[rect] (init) at (0cm,5cm)
-{
-	\begin{tabular}{@{}p{\llargeur}p{\rlargeur}@{}}
-		\textbf{Initialisation} \\
-		Time stepping 	& $t$, $\Delta t$ \\
-		Nodal values	& $\Hjt$, $\Tjt$, $\dTdHjt$ %, $\avg{w}^t$, $\avg{v^l}^t$
+	\begin{tabular}{p{\llargeurOut}}
+	\begin{equation*}
+		 T^t
+	\end{equation*}
 	\end{tabular}
 };
-
-\node[rect,below=of init] (init_iter)
+%==========
+\node[output,right=of mecaflu] (mecafluOut)
 {
-	\begin{tabular}{@{}p{\llargeur}p{\rlargeur}@{}}
-		\textbf{Newton-Raphson} \\		
-		Iteration step	& $\iter=0$ \\
-		Nodal values 	& $\Hjk=\Hjt$, \\ 
-						& $\Tjk=\Tjt$, \\
-						& $\dTdHjk=\dTdHjt$ %, $\avg{w}^t$, $\avg{v^l}^t$
+	\begin{tabular}{p{\llargeurOut}}
+	\begin{equation*}
+		 \vit^t , (\pl)^t
+	\end{equation*}
 	\end{tabular}
 };
+%==========
+\node[output,right=of macroseg] (macrosegOut)
+{
+	\begin{tabular}{p{\llargeurOut}}
+	\begin{equation*}
+		 \avg{\rho w_i}^t
+	\end{equation*}
+	\end{tabular}
+};
+%==========
+\node[output,right=of microseg] (microsegOut)
+{
+	\begin{tabular}{p{\llargeurOut}}
 	
-\node[rect,below=of init_iter] (local_contrib)
-{
-	\begin{tabular}{@{}p{\llargeur}p{\rlargeur}@{}}
-		\textbf{Local contributions} \\
-		& $\crochet{A_{ij}^\iter}^E=\crochet{\dRdHijk}^E$  \quad (\cref{eq:dRdH}) \\
-		& $\crochet{b_{j}^\iter}^E= \Rjk$	\quad (\cref{eq:discretise_residual_local})
+	\begin{equation*}
+		\avg{\rho h}^t
+	\end{equation*}
+	%\begin{equation*}
+   	%	\left.
+	%	\begin{aligned}	   
+ 	%		& (\gphi)^t  \\
+  	%		& (\wil)^t , (\wis)^t
+	%	\end{aligned}
+	%	\right.
+	%\end{equation*}
 	\end{tabular}
 };
+%==========
+%Connectivity
+\draw[trait] (energy) -- (microseg);
+\draw[trait] (microseg) -- (cvg);
+\draw[trait] (cvg) -- (macroseg);
+\draw[trait] (macroseg) -- (mecaflu);
+%-----
+\draw[trait] (energy) -- (energyOut);
+\draw[trait] (mecaflu) -- (mecafluOut);
+\draw[trait] (macroseg) -- (macrosegOut);
+\draw[trait] (microseg) -- (microsegOut);
 
-\node[rect,below=of local_contrib] (assembly)
-{
-	\begin{tabular}{@{}p{\llargeur}p{\rlargeur}@{}}
-	\textbf{Matrices assembly}\\
-		Global matrices & 	$\crochet{A^\iter} \leftarrow \crochet{A^\iter}^E$, $\crochet{b^\iter} \leftarrow \crochet{b^\iter}^E$, $\forall E \in \Ohm$ \\
-		Residual norm	&	$\norm{R^\iter} =  \norm{A^\iter \deltaHk - b^\iter}$ \\ 
-	\end{tabular}
-};
-
-\node[rect,below=of assembly] (solve)
-{
-	\begin{tabular}{@{}p{\llargeur}p{\rlargeur}@{}}
-	\textbf{Solve linear system} &	$ \Delta \Hkplus= (A^\iter)^{-1} b^\iter$ \\
-	\textbf{Update iterate} &	$ \Hjkplus = \Delta \Hjkplus + \Hjk$ \\
-	\end{tabular}
-};
-
-
-\node[rect,below=of solve] (microseg)
-{
-	\begin{tabu}{@{}p{\llargeur}p{\rlargeur}@{}}
-	\textbf{Microsegregation} \\
-	Tabulation (\emph{H2T})	&	$ \rhoh^\iterplus \rightarrow \Tkplus$ \quad (\cref{fig:algorithm_h2t}) \\
-	Update				& 	$\dTdHjkplus=f(\Tjkplus,\rhoh^\iterplus)$ (\cref{eq:finite_difference_Hsolver})\\
-	\end{tabu}
-};
-
-\node[rect,below=of microseg] (reassembly)
-{
-	\begin{tabular}{@{}p{\llargeur}p{\rlargeur}@{}}
-	\textbf{Matrices reassembly}\\
-		Global matrices & 	$\crochet{A^\iterplus} \leftarrow \crochet{A^\iterplus}^E$, $\crochet{b^\iterplus} \leftarrow \crochet{b^\iterplus}^E$, $\forall E \in \Ohm$ \\
-		Residual norm	&	$\norm{R^\iterplus} =  \norm{A^\iterplus \deltaHkplus - b^\iterplus}$ \\ 
-	\end{tabular}
-};
-
-\node[test,below=of reassembly,shift={(-3.7cm,0mm)}] (convergence_res)
-{
-	\begin{tabu}{c}
-	$\norm{R^\iterplus} < \varepsilon_R $ \\
-	%Max $\Delta T_j < \varepsilon_T$ \\
-	(\cref{eq:energy_convergence_criteria})
-	\end{tabu}
-};
-
-
-\node[test,right=of convergence_res,shift={(0.2cm,0mm)}] (convergence_temp)
-{
-	\begin{tabu}{c}
-	%$\norm{R^\iterplus} < \varepsilon_R $ \\
-	Max $\Delta T_j < \varepsilon_T$ \\
-	(\cref{eq:energy_convergence_criteria})
-	\end{tabu}
-};
-
-
-\node[rect,below=of reassembly,shift={(0.0cm,-3cm)}] (update)
-{
-	\begin{tabular}{@{}p{\llargeur}p{\rlargeur}@{}}
-	\textbf{Update} &	\\
-	Nodal values	& $\Hjtplus=\Hjkplus$, $\Tjtplus=\Tjkplus$ \\
-	\end{tabular}
-};
-
-\node[test,below=of update, aspect=4] (test_end)
-{
-	$t+\dt=t_{end}$
-};
-
-
-
-\node[rect,right=of test_end] (end)
-{
-	End
-};
-
-\draw[trait] (init) -- (init_iter);
-\draw[trait] (init_iter) -- (local_contrib);
-\draw[trait] (local_contrib) -- (assembly);
-\draw[trait] (assembly) -- (solve);
-\draw[trait] (solve) -- (microseg);
-\draw[trait] (microseg) -- (reassembly);
-%\draw[trait] (reassembly.south) -- (convergence_res.north);
-\draw[trait] (convergence_res) -- (convergence_temp);
-%\draw[trait] (convergence_temp.south) -- (update.north);
-\draw[trait] (update) -- (test_end);
-\draw[trait] (test_end) -- (end);
-
-\coordinate[shift={(0mm,-2mm)}] (convsouth) at (convergence_res.south);
-\coordinate[shift={(-8mm,0mm)}] (contribwest) at (local_contrib.west);
-\draw[fleche] (convergence_res.south) -- (convsouth) -| (contribwest) -- (local_contrib.west);
-
-\coordinate[shift={(0mm,-2mm)}] (reassemblysouth) at (reassembly.south);
-\draw[trait] (reassembly.south) -- (reassemblysouth) -| (convergence_res);
-
-\coordinate[shift={(0mm,-2mm)}] (convergence_tempsouth) at (convergence_temp.south);
-\coordinate[shift={(-8mm,0mm)}] (contribwest_bis) at (local_contrib.west);
-\draw[trait] (convergence_temp.south) -- (convergence_tempsouth) -- (convsouth);
-
-\coordinate[shift={(2mm,0mm)}] (convergence_tempeast) at (convergence_temp.east);
-\coordinate[shift={(0mm,2mm)}] (updatenorth) at (update.north);
-\draw[trait] (convergence_temp.east) -- (convergence_tempeast) |- (updatenorth) -- (update);
-
-\coordinate[shift={(-12mm,0mm)}] (initwest) at (init.west);
-\draw[fleche] (test_end.west) -| (initwest) -- (init);
-
-%%-------------
-\coordinate[shift={(6mm,0mm)}] (convsouth_no) at (convsouth.east);
-\node[anchor=south west] (convres_no) at (convsouth_no.east) {No};
-\coordinate[shift={(6mm,0mm)}] (convsouthtemp_no) at (convergence_tempsouth.east);
-\node[anchor=south west] (convtemp_no) at (convsouthtemp_no.east) {No};
-\coordinate[shift={(-1.2cm,0mm)}] (convsouth_process) at (convsouth.west);
-\node[anchor=south east] (conv_no_process) at (convsouth_process.west) {$\iter \leftarrow \iterplus$};
-%%-------------
-\node[anchor=south east] (test_end_no) at (test_end.west) {No};
-\node[anchor=north east] (test_end_process) at (test_end.west) {$t \leftarrow t+\dt$};
-%%-------------
-
+\coordinate[shift={(-3mm,0mm)}] (energywest) at (energy.west);
+\draw[fleche] (cvg.west) -| (energywest) -- (energy);
+\node[anchor=south east] (No) 	at (cvg.west) {No};
+%==========
 \end{tikzpicture}
-
-\caption{Resolution algorithm of the enthalpy-based solver.}
-
+\caption{Graphical resolution algorithm of the conservation equations used in a 
+monodomain macroscopic model to predict macrosegregation for a time inrement $t$. 
+The blue boxes represent the output of each equation.}
 \end{figure}
+%%------------------------------------------------------------------------------------------
+%%------------------------------------------------------------------------------------------
+%%------------------------------------------------------------------------------------------
+\comment{* Macro models: Rivaux ? Gu beckermann 1999 ? \\ 
+* Micro macro: Tommy Carozzani2013, 
+guo  beckermann 2003,  Combeau 2009, Miha Zaloznik 2010 (indirect), 
+P. Thévoz, J.-L. Desbiolles, M. Rappaz, Metallurgical and Materials TransactionsA 20 (2) (1989) 311–322 \\ 
+* end by talking about taking air into account and the need for an interface capturing method}
+%***********************************************
+\section{Eulerian and Lagrangian motion description}
+%%***********************************************
 %
+%***********************************************
+\subsection{Overview}
+%***********************************************
+In mechanics, it is possible to describe motion using two well-known motion description: Eulerian and Lagrangian descriptions.
+To start with the latter, it describes the motion of a particle by attributing a reference frame that moves with the particle.
+In other words, the particle itself is the center of a reference frame moving at the same speed during time. 
+The position vector, denoted by $\vec{x}$, is hence updated as follows:
+%------
+\begin{align}
+\label{eq:lagrangian}
+& \vec{x}^{(t+1)}  = \vec{x}^{(t)} + \vec{v} \Delta t
+\end{align}
+%------------
+As such, the total variation of any physical quantity $\psi$ related to the particle 
+can be found by deriving with respect to time, $\frac{\mathrm{d} \psi}{\mathrm{d} t}$.
 %
-%
+In contrast to the Lagrangian description, the Eulerian description considers a 
+fixed reference frame and independent of the particle's trajectory. The total variation of $\psi$
+cannot be simply described by a temporal derivative, since the particle's velocity is not known to 
+the reference frame, and thus the velocity effect, namely the advective transport of $\psi$, should also be considered as follows:
+%------
+\begin{align}
+\label{eq:eulerian}
+& \frac{\mathrm{d} \psi}{\mathrm{d} t} = \frac{\partial \psi}{\partial t} 
+   + \underbrace{\vec{v} \cdot \nabvec \psi}_{\substack{\text{Advective} \\ \text{Transport}}}  
+\end{align}
+%------------
+In this case, the LHS term is also known as \emph{total} or \emph{material derivative}.
+The importance of these motion descriptions is essential to solve mechanics, whether for 
+fluids or solids, using a numerical method like the finite element method (FEM). One of 
+the main steps of this method is to spatially discretise a continuum into a grid of points 
+(nodes, vertices ...), where any physical field shall be accordingly discretised. Now, if 
+we focus on a node where velocity has a non zero value and following the previously made 
+analysis, two outcomes are possible: either the node would be fixed (Eulerian) or it would 
+move by a distance proportional to the prescribed velocity (Lagrangian). In the latter case,
+points located on the boundaries constantly require an update of the imposed boundary conditions.
 
-\section{Validation}
-%==================
+From these explanations, one can deduce that an Eulerian framework is suited for fluid mechanics problems where 
+velocities are high and may distort the mesh points, whereas the Lagrangian framework is better suited for solid mechanics 
+problems where deformation velocities are relatively low and should well behave when predicting strains.
+
+Another motion description has emerged some decades ago, \citet{hirt_arbitrary_1971} call it the Arbitrary Langrangian-Eulerian (ALE) method. 
+ALE combines advantages from both previous descriptions as it dictates a Lagrangian behaviour at "solid" nodes where solid is deforming, and
+an Eulerian behaviour at "fluid" nodes.
 %
-%------------------------------
-\subsection{Pure diffusion}
-%------------------------------
-The two solvers are first tested in a purely diffusive case for a one-dimensional solidification configuration. 
-Predictions with a 1D front tracking model \citep{gandin_constrained_2000} is used as a benchmark. It provides 
-solutions for the temperature and solid fraction during directional solidification of a 10 cm long \bin{Al}{7}{Si}
-ingot. The melt, with initial uniform temperature, is cooled with a heat exchange coefficient (assuming a Fourier 
-boundary condition) from one side, the other side being adiabatic. All values for alloy properties, initial and 
-boundary conditions and numerical parameters are listed in \cref{table:data_case_alsi7}. For this simple test case, 
-we use linear temperature dependence of the intrinsic phase enthalpies, that is $\rh^s= \rcp T$ and $\rh^l= \rcp T + \rho L$, 
-where $\rcp$ is the heat capacity per unit volume and $\rho L$ is the latent heat per unit volume. Values for $\rcp$ 
-and $\rho L$, as well as for the thermal conductivities, $\kappa = \kl = \ks$, are taken constant. Moreover, a 
-Gulliver Scheil approximation is used to compute a single temperature – fraction of solid relationship in the 
-absence of macrosegregation. This is done assuming a linear binary phase diagram and thus requires using the 
-properties listed in \cref{table:data_case_alsi7}, i.e. the segregation coefficient, $k$, the liquidus slope, $m_L$, the 
-liquidus temperature, $T_L$, and the eutectic temperature, $T_E$. \Cref{fig:validation_diffusion} show the comparison with 
-the Hsolver and Tsolver. The cooling curves and liquid fraction results are found superimposed to the front tacking solution, 
-thus giving validation of the implementation as well as the iterative schemes presented above to solve the energy conservation 
-%------------------------
-\begin{tabulate}
-% caption 
-{Parameters for the pure diffusion test case with an \bin{Al}{7}{Si} alloy presented in \cref{fig:validation_diffusion}}
+%
+%***********************************************
+\subsection{Interface capturing}
+%***********************************************
+As no solid deformation is considered in this work, the Eulerian framework is a convenient choice. Solidification shrinkage is 
+to be considered in our current scope, so it will deform the alloy's outer surface in contact with the air.
+We intend to track this interface and its motion over time via a numerical method. A wide variety of methods accomplish this 
+task while they yield different advantages and disadvantages. Such methods fall into two main classes, either interface tracking
+or interface capturing, among which we cite: marker-and-cell (MAC) \citep{harlow_numerical_1965}, volume of fluid (VOF) \citep{hirt_volume_1981}, 
+phase field methods (PF), level set method (LSM) \citep{osher_fronts_1988}, coupled level set - VOF method and others. 
+The interested reader may refer to quick references by \citet{prosperetti_navier-stokes_2002,maitre_review_2006} about these methods.
+
+In the past years, the level set method received a considerable attention in many computational fields, specifically in solidification.
+For this reason, we will focus on this method henceforth, giving a brief literature review and technical details in the next sections.
+%
+%***********************************************
+\section{Solidification models with level set}
+%***********************************************
+In classic solidification problems, the need to track an interface occurs usually at the solid-liquid interface, that is why the phase field
+method \citep{karma_phase-field_1996,boettinger_phase-field_2002} and the level set method \citep{chen_simple_1997,gibou_level_2003,tan_level_2007} 
+were applied at a microscale to follow mainly the dendritic growth of a single crystal in an undercooled melt.
+In our case however, when we mention "solidification models using LSM", we 
+do not mean the solid-liquid interface inside the alloy, but it is the alloy(liquid)-air interface that we intend to track, assuming that microscale
+phenomena between the phases within the alloy, are averaged using the previously defined technique in \cref{sec:volumeavg}.
+
+Very few models were found in the literature, combining solidification and level set as stated previously. 
+\citet{du_simulating_2001} applied it to track the interface between two molten alloys in a double casting technique. 
+Welding research, on another hand, has been more active adapting the level set methodology to corresponding applications. 
+In CEMEF, two projects made use of the metal-air level set methodology in welding simulations and showed promising results. 
+\citet{desmaison_level_2014} employed this methodolody to simulate a hybrid arc and laser beam welding 
+used in high thickness steel sheet welding. Later, \citet{chen_three_2014} applied it to gas metal arc welding (GMAW) to predict 
+the grain structure in the heat affected zone essentially.
+More recently, \citet{courtois_complete_2014} used the same methodology but this time to predict keyhole defect formation
+in spot laser welding. The tracked interface in this case was that between the molten alloy and the corresponding vapor phase.
+%----------------------------------
+%
+%
+%***********************************************
+\section{The level set method}
+%%***********************************************
+Firstly introduced by \citet{osher_fronts_1988}, this method became very popular in studying multiphase flows.
+It is reminded that the term \emph{multiphase} in computational domains usually refers to multiple fluids, and thus
+should not be mixed with definition of a phase in the current solidification context. For disambiguation, we shall
+use \emph{multifluid flow} when needed.
+The great advantage lies in the way the interface between two fluids, $F_1$ and $F_2$ is implicitly captured, unlike 
+other methods where the exact interface position is needed. In a discrete domain, the concept is to assign for each 
+mesh node of position vector$\vec{x}$, the minimum distance $d_\Gamma(\vec{x})$ separating it from an interface $\Gamma$. 
+The distance function, denoted $\alpha$ and defined in \cref{eq:levelset_defintion}, is then signed positive or negative, based on the fluid or domain 
+to which the node belongs.
+%------------
+\begin{align}
+\label{eq:levelset_defintion}
+\levelsetx = 
+\begin{cases}
+  d_\Gamma(\vec{x}) 		& \text{ if } \vec{x} \in F_1 \\ 
+ -d_\Gamma(\vec{x})			& \text{ if } \vec{x} \in F_2 \\ 
+  0 						& \text{ if } \vec{x} \in \Gamma_{F1, F2} 
+\end{cases}
+\end{align}
+%------------
+%----------------------
+\begin{figureth}
+% textwidth 
+{0.5}
+%path 
+{Chapter1/Graphics/distancefunction.pdf}
+% caption
+{Schematic of the interface $\Gamma$ (thick black line) of a rising air bubble ($\Omega$) in water. The other contours represent isovalues
+of the distance function around and inside the interface contour. Those outside are signed negative whereas inside they are signed
+positive.}
 % label
-{table:data_case_alsi7}
-% line separation (e.g. 1.5mm)
-{1.0mm}
-% column justification-number (e.g. |c|ll|)
-{llll}
-% header titles (should use the & sign to switch columns)
-{\textbf{Parameter} & \textbf{Symbol} & \textbf{Value} & \textbf{Unit}}
-% cells content (should use the & and // to switch columns and rows)
-{Nominal composition 	& $\avg{w}_0$ 	& \num{7} 		& \si{\ucomposition} \\ 
-Liquidus temperature 	& $T_l$ 		& \num{618} 	& \si{\udegC} \\ 
-Eutectic temperature 	& $T_E$ 		& \num{577}	 	& \si{\udegC} \\  
-Segregation coefficient & $k$ 			& \num{0.13} 	& $-$  \\  
-Liquidus slope 						& $m_l$ 		& \num{-6.5} 	& \si{\uslope} \\ 
-Heat capacity (liquid and solid) 	& $\rho C_p$ 	& \num{2.6e6} 	& \si{\uvolumecapacity} \\  
-Enthalpy of fusion 				 	& $\rho L$ 		& \num{9.5e8} 	& \si{\uvolumeenergy} \\ 
-Thermal conductivity 
-(liquid and solid) 					& $\kappa$ 		& \num{70} 		& \si{\uconductivity}	\\
-\hline  
-Heat transfer coefficient 		& $\hext$ 	& \num{500} & \si{\uhconvec} \\ 
-External temperature 			& $\Text$ 	& \num{100} & \si{\udegC} \\ 
-Initial temperature 			& $T_0$ 	& \num{800} & \si{\udegC} \\ 
-Ingot length 					&  			& \num{0.1} & \si{\metre} \\ 	
-\hline 
-FE mesh size 						&  					& \num{e-3} & \si{\metre} \\ 
-Time step 							& $\dt$ 			& \num{0.1} & \si{\second} \\ 
-Convergence criterion (residual) 	& $\varepsilon_R$	& \num{e-6} & $-$ \\ 
-Convergence criterion (temperature) & $\varepsilon_T$ 	& \num{e-2} & \si{\udegK}}
+\label{fig:distance_function}
+\end{figureth}
+%-----------------------------------
 %
-\end{tabulate}
-%------------------------
+%***********************************************
+\subsection{Diffuse interface}
+\label{sec:heaviside}
+%***********************************************
+The level set has many attractive properties that allows seamless implementation in 2D and 3D models. 
+It is a continuously differentiable $C^1$-function. 
+%For instance, a \emph{Heaviside} function, denoted $\heaviside$, can be obtained by first order derivation of the level set function. 
+The Heaviside function is also continuous but non differentiable, with an abrupt transition from $0$ to $1$ 
+across the sharp interface, as follows:
+%----------
+\begin{align}
+\label{eq:no_smoothing}
+\heaviside = \heaviside \brac{\levelsetx} = 
+\begin{cases}
+	0  & \text{ if } \levelsetx < 0 \\
+    1  & \text{ if } \levelsetx \geqslant 0 \\  
+\end{cases}
+\end{align}
+%----------
+With the help of \cref{eq:no_smoothing}, we can define the geometric 
+"presence" of a domain with respect to the interface. As such, material properties 
+depend upon this function, which will be discussed later in \cref{sec:mixinglaws}.
+It is established that a steep transition can lead to numerical problems, 
+so the Heaviside function should be smoothed in a volume of fixed thickness around the interface.
+Sinusoidal smoothing in \cref{eq:sinusoidal_smoothing} is widely used with level set formulations.
+%------------
+\begin{align}
+\label{eq:sinusoidal_smoothing}
+\heaviside= 
+\begin{cases}
+	0  & \text{ if } \levelsetx < -\varepsilon \\
+    1  & \text{ if } \levelsetx > \varepsilon \\  
+    \frac{1}{2} \brac{1+ \frac{\levelsetx}{\varepsilon} 
+    + \frac{1}{\pi}\sin \brac{\frac{\pi \levelsetx}{\varepsilon }} } & \text{ if } - \varepsilon \leq \levelsetx \leq \varepsilon
+\end{cases}
+\end{align}
+%-----------
+where the interval $\crochet{-\varepsilon; +\varepsilon}$ is an artificial interface thickness around the zero distance.
+Defining a diffuse interface rather than a sharp one, is also a common approach 
+in phase field methods \citep{beckermann_modeling_1999,sun_diffuse_2004}.
+It is emphasized that the latter methods give physically meaningful 
+analysis of a diffuse interface and the optimal thickness by thoroughly studying the 
+intricate phenomena happening at the scale of the interface. However, for level set methods, 
+there has not been a formal work leading the same type of analysis. For this reason, 
+many aspects of the level set method lack physical meanings but remain computationally useful.
+In a recent paper by \citet{gada_derivation_2009}, the authors respond partially to this problem 
+by analysing and deriving conservation equations using a level set in a more meaningful way, but 
+do not discuss the diffuse interface aspect.
+
+The Dirac delta function is also an important property to convert surface integrals to volume terms, which could
+turn useful when modelling surface tension effects for instance, using 
+the \emph{continuum surface force} method (CSF) \citep{brackbill_continuum_1992}.
+The Dirac function, plotted in \cref{fig:heaviside_dirac} along with the Heaviside function within an interface thickness 
+of $\crochet{-\varepsilon;+\varepsilon}$, is derived from the Heaviside as follows:
+%--- --------------
+\begin{align}
+\label{eq:dirac}
+\dirac = \delta \brac{\levelsetx} = \frac{\partial \heaviside  }{\partial \levelsetx}=
+\begin{cases}
+\frac{1}{2\varepsilon} \brac{ 1 + \cos \brac{\frac{\pi \levelsetx}{\varepsilon }} }  & \text{ if } \abval{\levelsetx} \leqslant  \varepsilon \\
+    0  & \text{ if } \abval{\levelsetx} > \varepsilon
+\end{cases}
+\end{align}
+%-------------
+The Heaviside and delta Dirac functions can be readily processed to obtain other geometric properties from the level set,
+which are extremely useful. We mention the most relevant ones \citep{peng_pde-based_1999}:
+%------------
+\begin{align}
+\label{eq:levelset_normal}
+\text{normal vector}: \vec{n} &= \frac{\nabvec \levelset}{\norm{\nabvec \levelset} } \\
+%
+\label{eq:levelset_curvature}
+\text{curvature}: \zeta &= - \nabla \cdot \vec{n} \\
+%
+\label{eq:levelset_interface}
+\text{surface area of the air-metal interface }: A^\Gamma &= \integral{\Omega}{\dirac \norm{\nabvec \levelset}}{\Omega} \\
+%
+\label{eq:levelset_volume}
+\text{metal volume}: V^M &= \integral{\Omega}{\heaviside^M}{\Omega}
+%
+\end{align}
+%-----------
+where, for the last two equations, we consider a three-dimensional domain $\Omega$ 
+containing two subdomains, metal and air, seperated by an interface $\Gamma$.
+It is reminded that for a 2D case, \cref{eq:levelset_interface} evaluates a length 
+instead of the area while \cref{eq:levelset_volume} gives the area instead of volume.
+Finally, within the diffuse interface, fluids properties 
+may vary linearly or not, depending on the mixing law, which is presented in the next section.
+%----------------------
+\begin{figureth}
+% textwidth 
+{0.6}
+%path 
+{Chapter1/Graphics/HeavisideDirac.pdf}
+% caption
+{Schematic of two level properties inside the diffuse interface: Heaviside (lower x-axis) and Dirac delta (upper x-axis) functions.
+Note that the peak of the Dirac function depends on the interface thickness to ensure a unity integral of the delta function over $\Omega$. }
+%In this example, the interface thickness is 800 $\mu m$.
+% label
+\label{fig:heaviside_dirac}
+\end{figureth}
+%-----------------------------------
+%
+%***********************************************
+\subsection{Mixing Laws} 
+\label{sec:mixinglaws}
+%**********************************************
+A \emph{monolithic} resolution style, as opposed to a \emph{partitioned} resolution, is based on solving a single set of equations
+for both fluids separated by an interface, as if a single fluid were considered. 
+Level set is one among many methods that use the monolithic style to derive a single set of conservation equations
+for both fluids. The switch from one material to the other is implicitly taken care of by using the Heaviside function as well as mixing laws. 
+These laws are crucial to define how properties vary across the diffuse interface in view of a more accurate resolution.
+The most frequently used mixing law in the literature is the arithmetic law. Other transitions are less known such as 
+the harmonic and logarithmic mixing. The first law is maybe the most intuitive and most used for properties mixture as it emanates
+from VOF-based methods. If we consider any property $\psi$ (for instance the fluid's dynamic viscosity $\mu$) then the arithmetic 
+law will give a mixed property $\mix{\psi}$ as follows:
+%---
+\begin{align}
+\label{eq:arithmetic}
+\mix{\psi} = \heaviside^{F_1} \psi^{F_1} + \heaviside^{F_2} \psi^{F_2}
+\end{align}
+%---
+Basically, the result is an average property that follows the same trend as the Heaviside function. As for the harmonic law, it writes:
+%---
+\begin{align}
+\label{eq:harmonic}
+\mix{\psi} = \brac{\frac{\heaviside^{F_1}}{\psi^{F_1}} + \frac{\heaviside^{F_2}}{\psi^{F_2}} }^{-1}
+\end{align}
+%---
+and last, the logarithmic law writes:
+%---
+\begin{align}
+\label{eq:logarithmic}
+\mix{\psi} =  n^{\brac{\heaviside^{F_1} \log_n \psi^{F_1} + \heaviside^{F_2} \log_n \psi^{F_2}}}
+\end{align}
+%---
+where $n$ is any real number serving as a logarithm base, which often is either the exponential $e$ or $10$.
+The mixture result with this law is the same, regardless of the value of $n$.
+By looking to \cref{fig:mixinglaws}, we clearly see that the difference between all three approaches is the property weight given to each side 
+of the level set in the mixture. The arithmetic law, being symmetric, has equal weights, $\psi^{F_1}$ and $\psi^{F_2}$, in the final mixture. 
+Nevertheless, the asymmetric harmonic mixing varies inside the diffuse interface with a dominant weight of one property 
+over the other. As for the logarithmic mixture, it can be seen as an intermediate transition between the preceding laws.
+%----------------------
+\begin{figureth}
+% textwidth 
+{0.6}
+%path
+{Chapter1/Graphics/mixinglaws.pdf}
+% caption
+{Three mixing laws, arithmetic, logarithmic and harmonic commonly used in monolithic formulations.}
+% label
+\label{fig:mixinglaws}
+\end{figureth}
+%-----------------------------------
+As long as the interface thickness is small enough, the choice of a mixing law should not drastically change the result, 
+inasmuch as it depends on the discretisation resolution of the interface. This fact made the arithmetic mixing
+the most applied one, because it is symmetric and easy to implement (no handling of potential division problems like harmonic laws for instance). 
+However, \citet{strotos_numerical_2008} claim that the harmonic law proves to conserve better diffusive fluxes at the interface.
+More recently, an interesting study made by \citet{ettrich_modelling_2014} focused on mixing thermal properties using a phase field method.
+They define a diffuse interface in which they separately mix the thermal conductivity, $\kappa$, and the heat capacity, $\cp$,
+then compute the thermal diffusivity as the ratio of these properties. Later, the authors compare the temperature field obtained by diffusion
+to a reference case in order to decide which combination of mixing laws gives the best result. Despite not being directly related to a level set 
+method, this work gives an insight of the mixture possibilities and their effect on a pure thermal diffusion.
+Otherwise, little work has been found in the literature on the broad effects of mixture types on simulation results in a level set context.
+%----------------------------------
+%
+%*****************************************
+\section{Interface motion} % reinitialisation % regularisation
+%****************************************
+When a physical interface needs to have topology changes because
+of fluid structure interaction or surface tension for instance, the level set model 
+can follow these changes by a transport step. The idea is to advect the signed distance
+function, its zero isovalue representing the interface and all other distant isovalues, with the
+velocity field as input. The motion of the interface is thus expressed by:
+%------
+\begin{align}
+\label{eq:transport_strong}
+& \frac{d \levelset}{d t}  = \frac{\partial \levelset}{\partial t} + \vec{v} \cdot \nabvec \levelset = 0
+\end{align}
+%------------
+%\comment{Associated boundary conditions}
+%
+%
+\subsection{Level set transport}
+The finite element method gives the fully discretised weak form of \cref{eq:transport_strong} 
+by using a convenient set of test functions $\levelsettest$ belonging the Hilbertian \emph{Sobolev} space:
+%-----------
+\begin{align}
+\label{eq:transport_weak1}
+&  \integral{\Omega}{\levelsettest \frac{\partial \levelset}{\partial t} }{\Omega} 
++ \integral{\Omega}{\levelsettest \vec{v} \cdot \nabvec \levelset}{\Omega} 
+= 0
+\qquad \forall \levelsettest \in \hilbert \brac{\Omega}   
+\end{align}
+%------------
+The spatial discretisation of $\levelset$ assigns, for each of the total $N$ nodes of a simplex, the following values:
+%-----------
+\begin{align}
+\label{eq:transport_weak2}
+&  \levelset = \sum_N  P_j \levelset_j
+\end{align}
+%------------
+Furthermore, with the standard Galerkin method, we replace test functions by the interpolation functions $P_j$, 
+then we apply a temporal discretisation for the main unknowns by a forward (implicit) finite difference in time.
+Consequently, \cref{eq:transport_weak1} can be recast as follows:\\ \\
+%-----------
+$i,j:1 \rightarrow$ Nnodes
+\begin{subequations}
+\begin{align}
+\label{eq:transport_weak3}
+ \frac{1}{\dt} \brac{\levelset_j^t - \levelset_j^{t-\dt}}  \integral{\Omega}{P_i P_j}{\Omega} 
+	+ \levelset_j^t   \integral{\Omega}{\vec{v^t} \cdot \nabvec P_j }{\Omega} &=  0 \\
+\crochet{\frac{1}{\dt} \integral{\Omega}{P_i P_j }{\Omega} + \integral{\Omega}{\vec{v^t} \cdot \nabvec P_j }{\Omega}} \levelset_j^t &= 
+\frac{1}{\dt}  \integral{\Omega}{ \levelset^{t-\dt} P_i }{\Omega} \\
+\label{eq:weakform_transport}
+\crochet{\Mij+\Aij} \levelset_j^t &= \Fi
+\end{align}
+\end{subequations}
+%------------
+where $\Mij$ and $\Aij$ are respectively the mass (or capacity) matrix and advection matrix, both written within a local 
+finite element, whereas $\Fi$ is a local vector of known quantities from the previous time step. The solution of the linear
+system in \cref{eq:weakform_transport} is the transported distance function.
+
+When the convection regime becomes more dominant diffusion (for high Reynolds number), the standard Galerkin method may lead to instabilities in
+the solution. In this case, stabilisation is crucial to avoid these oscillations, unless very fine remeshing is done "such that
+convection no longer dominates on an element level", as stated by \citet{brooks_streamline_1982}.
+The authors give a brief explanation of how numerically a convection-dominated equation can lead to oscillatory solutions with
+the standard Galerkin approximation.
+They proposed a stabilisation scheme, the Streamline Upwind Petrov-Galerkin, better known as SUPG, to stabilise advection dominated
+Navier-Stokes equations. However, their technique applies to any convection-diffusion equation.
+The SUPG method consists of modifying the test functions (like a classical Petrov-Galerkin method) by adding artificial
+diffusion in the flow direction. The modified test function writes:
+%------
+\begin{align}
+\label{eq:testfuntion_supg}
+\levelsetSUPG = \levelsettest + \underbrace{C^E_{SUPG} \brac{\vec{v}_\text{transport} \cdot \nabvec \levelsettest}}_{\text{Upwind contribution}}
+\end{align}
+%------------
+where the upwind contribution for each finite element $E$ depends on a stabilisation parameter $C^E_{SUPG}$ that is expressed as follows:
+%------
+\begin{align}
+\label{eq:supg_constant}
+C^E_{SUPG} = \frac{h^E}{v^E_\text{flow}}
+\end{align}
+%------------
+\Cref{eq:supg_constant} shows that the SUPG parameter represents a time 
+constant relative to an element mesh size, $h^E$, and an average velocity
+that should represent the magnitude in the flow direction.
+In the present work, all convection-diffusion equations are stabilised with the SUPG method, 
+namely the conservation of mass, energy, momentum and chemical species as well as the level set transport.
+%
+%==============================
+\subsection{Level set regularisation}
+%==============================
+%
+Upon transport the distance function field, a crucial property of the level set may be partially or totally 
+lost over the domain, which is:
+%------
+\begin{align}
+\label{eq:transport_property}
+\begin{cases}
+\norm{\nabvec \levelset} = 1 \\ 
+\levelset (x,t) = 0 	\qquad  \text{ if } x \in \Gamma(t)
+\end{cases}
+\end{align}
+%------------
+The closer this $L^2$-norm to one, the more regular the level set. An irregular distance function induces 
+cumulative numerical errors while transporting distance values far from the interface,
+resulting in wrong distance information, and loss of properties that make up a "distance function".
+To show one the benefit of level set regularisation, \citet{basset_simulation_2006} states 
+after showing several tests of distance function transport, that
+regularised distance functions transported with a standard Galerkin method (i.e. without any stabilisation) 
+show better "quality" globally in the domain, compared to initially non-regularised ones.
+When the transport equation in \cref{eq:transport_strong} is discretised in time then solved, a \emph{regularisation} 
+(also known as \emph{reinitialisation}) is necessary to conserve as much as 
+possible the property in \cref{eq:transport_property}.
+
+\Cref{fig:reinit_influence} shows the need of regularisation in two different 
+simulations of the same phenomenon: rising air bubble inside
+water. The importance of this well studied case \citep{sussman_level_1994,hysing_quantitative_2009}
+is that the interface between two fluids is highly deformable
+as the bubble rises because of buoyancy, and therefore the task of tracking the 
+dynamic interface while maintaining an accurate distance function
+is a considerable numerical task. In the first simulation, the distance contours 
+are squeezed against the zero-distance contour marked by the 
+thick black line. A closer look to the interface reveals undesired distortions, with a 
+"wavy" shape at some points. This effect is evidently an artefact
+of a level set transport lacking subsequent reinitialisation, inasmuch 
+as the surface tension tends to minimise the total surface area and make it as smooth
+as possible. Nevertheless, the second simulation unveils much better results, especially 
+how the interface shows no sign of destabilisation. We also note the regular spacing between contours,
+which is a consequence of conserving the property defined in \cref{eq:transport_property}.
+This improvement is attributed to the regularization done at each time step after the transport.
+In the forthcoming sections, we present three regularisation methods, then show their strong and weak points.
+%----------------------
+\begin{figureth}
+% textwidth 
+{0.6}
+%path 
+{Chapter1/Graphics/regularization.pdf}
+% caption
+{Schematic of the influence of level set regularisation on the distance function at the same time frame: 
+a) without any regularisation step, the isovalue contours are distorted in the wake of the rising air 
+bubble while being squeezed ahead of it, 
+b) in contrast to regularising the distance function, where the contours maintain their spacing and geometric 
+properties with respect to the tracked interface.}
+% label
+\label{fig:reinit_influence}
+\end{figureth}
+%-----------------------------------
+%
+%---------------------------------------------------------------------
+\subsubsection{Classic Hamilton-Jacobi reinitialisation}
+%
+In order to repair a distance function impaired by convective transport, \citet{sussman_level_1994} proposed 
+solving a classic \emph{Hamilton-Jacobi} equation, given in its most general form:
+%\citep{vigneaux_methodes_2007}:
+%------
+\begin{align}
+\label{eq:hamilton_jacobi}
+& \frac{\partial \levelset}{\partial t} + \mathbb{H} \brac{\levelset,x,t} = 0 \qquad x \in \Omega, t>0
+\end{align}
+%------------
+where $\levelset (x,t=0) = \levelset _0$ is the initial value of the distance function. 
+The term $\mathbb{H}$ is known as the \emph{Hamiltonian}. When the sign of the level set and its metric 
+property ($\norm{\nabvec \levelset}=1$) are considered, \cref{eq:hamilton_jacobi} reduces to:
+%------
+\begin{align}
+\label{eq:reinit_classic}
+& \frac{\partial \levelset}{\partial t}  + S(\levelset) \brac{\norm{\nabvec \levelset} - 1} = 0
+\end{align}
+%------------
+where $S(\levelset)$ is a step function giving the sign of the level set as follows:
+%------------
+\begin{align}
+\label{eq:levelset_sign}
+& S(\levelset) = \frac{\levelset}{\abval{\levelset}} = 
+\begin{cases}
+ -1 	& \text{ if } \levelset < 0 \\ 
+ 0	 	& \text{ if } \levelset = 0 \\ 
+ +1 	& \text{ if } \levelset > 0 
+\end{cases}
+\end{align}
+%------------
+The sign function defined in \cref{eq:levelset_sign} is often smoothed to avoid numerical problems, 
+as proposed for instance by \citet{sussman_level_1994}:
+%------
+\begin{align}
+\label{eq:levelset_sign_smoothed}
+& S(\levelset) = S_\varepsilon (\levelset) = \frac{\levelset}{\sqrt{\levelset^2 + \varepsilon^2}}
+\end{align}
+%------------
+where $\varepsilon$ is a smoothing parameter that depends on the mesh size around the interface. 
+However, one should be aware that within the smoothing thickness, the regularised function may suffer 
+from local oscillations because of the reciprocal reinitialisation taking place at each side of the level 
+set. \citet{peng_pde-based_1999} states that this problem is more likely to happen if the initial level set
+shows very weak or very steep gradients, and therefore is not regular enough. The authors eventually propose
+a new sign function which would reinitialise the distance function, as close as possible to the interface
+without modifying the latter, as follows:
+%------
+\begin{align}
+\label{eq:levelset_sign_smoothed2}
+& S(\levelset) = S_\varepsilon (\levelset) = \frac{\levelset}{\sqrt{\levelset^2 + \norm{\nabvec \levelset}^2 \varepsilon^2}}
+\end{align}
+%------------
+%
+\subsubsection{Convective reinitialization}
+%
+A recent work by \citet{ville_convected_2011} introduced another concept for reinialisation 
+called the \emph{convective reinitialisation}. The idea lies in combining both level set advection 
+and regularisation in a single equation, saving resolution time. The key components of their method
+starts by defining a pseudo time step, $\Delta \tau$, that is linked to the main time variable through
+a numerical parameter $\lambda_\tau$, as follows:
+%------
+\begin{align}
+\label{eq:pseudotimestep}
+& \lambda_\tau = \frac{\partial \tau}{ \partial t}
+\end{align}
+%------------
+The order of magnitude of $\lambda_\tau$, which can be seen as a relaxation parameter \citep[see][89]{vigneaux_methodes_2007}, 
+is close to the ratio $h/\dt$. Then, the classic Hamilton-Jacobi 
+\cref{eq:hamilton_jacobi} is combined into the convection step by writing:
+%------
+\begin{align}
+\label{eq:leveller}
+& \frac{\partial \levelset}{ \partial t} + \brac{\vec{v} + \lambda_\tau \vec{U}} \cdot \nabvec \levelset = \lambda_\tau S(\levelset)
+\end{align}
+%------------
+where $\vec{U}$ is a velocity vector in the normal direction to the interface, defined by $\vec{U}= S(\levelset) \vec{n}$.
+the normal vector $\vec{n}$ being previously defined in \cref{eq:levelset_normal}.
+The obvious shortcoming of convective reinitialisation is that it depends on a numerical parameter $\lambda_\tau$.
+Another limitation of the method is the use of a sinusoidal filter to modify the distance function by truncating
+its values beyond a thickness threshold, which is also another parameter to calibrate the resolution. The drawback
+of truncating the level set is the loss of information far from the interface and the inability to fully reconstruct
+the distance function.
+If we denote this threshold by $E$ and the modified level set by $\widetilde\levelset$ inside the thickness, 
+then \cref{eq:leveller} is recast as:
+%------
+\begin{align}
+\label{eq:leveller_s}
+& \frac{\partial \levelset}{ \partial t} + \brac{\vec{v} + 
+\lambda_\tau \vec{U}} \cdot \nabvec \levelset = \lambda_\tau S(\levelset)
+\sqrt{1-\brac{\frac{\pi}{2 E} \widetilde\levelset}^2}
+\end{align}
+%------------
+\Cref{eq:leveller_s} describes the transport and partial reconstruction of the distance function $\levelset$,
+knowing its value $\widetilde\levelset$ inside the thickness $E$. 
+%----------------------------------------
+%
+%-----------------------------------------
+\subsubsection{Geometric reinitialization}
+%
+This category of methods go from the level set's basic geometric principle to construct a distance function,
+instead of solving a partial differential system of equations as in the classic Hamilton-Jacobi reinitialisation.
+A widely known instance of this category is the \emph{fast marching method} developed by \citet{sethian_fast_1996}
+and influenced by the \citet{dijkstra_note_1959}'s method to compute the shortest path in a network of nodes. 
+The method aims to solve the eikonal equation in \cref{eq:transport_property} to propagate the distance function in a 
+single direction by \emph{upwinding}, i.e. going from low to high values of the distance function, 
+while preserving a unitary distance gradient.
+
+\emph{Direct reinitialisation} is another interesting method in the geometric reinitialise category. However,
+it has not gained noticeable attention in the literature given the terrible cost in terms of computation time and efficiency if not optimised.
+The main idea is very simple: reconstruct the distance function over $\Omega$ ar a subset of $\Omega$, by computing the 
+minimum distance between each mesh node and the interface. It means that, for any point $\vec{x} \in \Omega$, the following 
+constraint should be satisfied \citet{osher_signed_2003}:
+%------
+\begin{align}
+\label{eq:min_distance}
+& d_\Gamma(\vec{x}) = \min \norm{\vec{x}-\vec{x_\Gamma}} \qquad \forall \vec{x_\Gamma} \in \partial \Omega = \Gamma,
+\end{align}
+%------------
+A efficient and optimised implementation of this method is done by \citet{shakoor_efficient_2015} making use of \emph{k-d} trees
+to limit the search operations of elements and the subsequent distance evaluations in each of these elements.
+Moreover, the authors give a comparison of the previously stated methods on 2D and 3D cases, showing the great 
+performance of direction reinitialisation when used with k-d trees algorithm, hence we use it in the present work.
+%
+%--------------------------------------
+\section{Mesh adaptation}
+
+\subsection{Metrics and anisotropy}
+
+The key to reduce spatial discretisation errors and obtain better results is a fine mesh. The optimal mesh resolution
+depends on the equations being discretised and solved on the FE grid, which consists of an array of structured triangles (\cref{fig:mesh_iso_homo_struct}), 
+in the most basic situation. However, the potential of the Finite Element Method 
+over other methods like the Finite Volume Method (FVM) 
+is the use of unstructured grids. The easiest meshing solution one can 
+choose is to create unstructured homogeneous and isotropic grid 
+(\cref{fig:mesh_iso_homo_unstruct}), while respecting some constraints regarding the time step (temporal
+discretisation) stemming from physical or numerical conditions, e.g. diffusion shock constraint in diffusional transient equations
+or Courant–Friedrichs–Lewy (CFL) condition in transient advective equations. 
+In such a case, errors due to interpolation are minimised,
+which guaranties good results but with expensive time cost. 
+
+Heterogeneous meshes (\cref{fig:mesh_iso_hetero_unstruct}) that consist of fine isotropic elements
+in areas of interest along with coarser isotropic elements in other areas, may reduce the needed time to solver each conservation
+equation. Although this is an interesting alternative, it is less powerful than anisotropic meshing. 
+In the latter (\cref{fig:mesh_aniso_hetero_unstruct}),
+elements adapt to a physical quantity, such as enthalpy or velocity, 
+reducing the elemental length in the direction where the gradient is higher, 
+while stretching the element in the orthogonal direction. This allows more accurate 
+resolution with less elements than needed by isotropic meshing. Moreover, this type of 
+meshing is well adapted to the context of this thesis 
+as it allows getting a fine mesh in the normal direction to the interface, that is
+in its transport direction, while reducing the number of elements in other directions.
+Regions undergoing solidification are also important to remesh since microsegregation 
+starts in the mushy zone, i.e. between the liquidus and solidus temperatures given by a local average
+composition, where fluid flow may transport species, leading eventually to macrosegregation.
+
 %
 %-----------------
 \begin{figure}[htbp]
 \centering
    %------------
-  \begin{subfigure}[t]{0.7\textwidth}
+  \begin{subfigure}[t]{0.25\textwidth}
     \centering
-	\includegraphics[width=\textwidth]{Chapter2/Graphics/diffusion/diffusion_CC.pdf}
+	\includegraphics[width=\textwidth]{Chapter1/Graphics/mesh_iso_homo_struct.png}
 	\caption{}
-    \label{fig:validation_diffusion_CC}
+    \label{fig:mesh_iso_homo_struct}
   \end{subfigure}
-  %------------------------------
+   %------------
+   %\hspace{1cm}
+   \begin{subfigure}[t]{0.25\textwidth}
+    \centering
+	\includegraphics[width=\textwidth]{Chapter1/Graphics/mesh_iso_homo_unstruct.png}
+	\caption{}
+    \label{fig:mesh_iso_homo_unstruct}
+  \end{subfigure}
+  %--------
   \vskip\baselineskip
-  %------------------------------
-  \begin{subfigure}[t]{0.7\textwidth}
+   %------------
+  \begin{subfigure}[t]{0.25\textwidth}
     \centering
-	\includegraphics[width=\textwidth]{Chapter2/Graphics/diffusion/diffusion_LF.pdf}
+	\includegraphics[width=\textwidth]{Chapter1/Graphics/mesh_iso_hetero_unstruct.png}
 	\caption{}
-    \label{fig:validation_diffusion_LF}
+    \label{fig:mesh_iso_hetero_unstruct}
   \end{subfigure}
    %------------
-\caption{Computed unidirectional heat diffusion during solidification of an \bin{Al}{7}{Si} alloy 
-using (orange) the enthalpy method and (black) the temperature method, comparison being made 
-for (a) cooling curves  and (b) the liquid fraction history. 
-Each curve corresponds to a position along the sample, from 0 cm (cooling 
-side) to 10 cm (insulated side), with 2 cm spacing between the positions.} 
-\label{fig:validation_diffusion}
-\end{figure}
-%------------------
-%
-\subsection{Convection and diffusion}
-To validate the Tsolver with fluid flow, we consider the following set of equations
-already defined in the flowchart of \cref{fig:algo_monodomain}. Moreover, an assumption 
-of a static and non deformable solid phase is made. Consequently, the mechanical model is 
-reduced to the conservation of momentum in the liquid phase. This assumption also yields 
-some other consequences on the mass balance and the liquid momentum conservation. In the 
-latter, a Darcy term is added to take into account the dissipative interfacial stress in 
-the porous-like mushy zone. Its main parameter is the permeability of the mushy zone, $K$. 
-It is considered isotropic, hence reducing to a scalar which is given by the Carman-Kozeny 
-relation, based on the secondary dendrite arm spacing $\lambda_2: K= \frac{g^{l^3}  \lambda_2^{2}
- }{180\brac{1-g^l}^2}$. The liquid density being taken constant, its spatial variations 
-as a function of temperature and average composition are still needed to compute thermosolutal 
-convection forces. For that purpose, the Boussinesq approximation (\cref{eq:boussinesq}) is used, 
-considering the thermal $\betaT$ and solutal $\betawl$) expansion coefficients 
-and a reference density, $\rref$, defined at a reference temperature $\Tref$ and reference 
-composition $\wlref$. Values for the references are taken at the liquidus temperature and the nominal 
-composition of the alloy, $\w_0$ \citep{carozzani_direct_2013}. More details about the FE formulation can be found in 
-the PhD work of \citet{rivaux_simulation_2011, carozzani_developpement_2012}.
-%
-%----------------------
-\begin{figureth}
-% textwidth 
-{0.85}
-%path 
-{Chapter2/Graphics/convection_diffusion/smacs_CC.pdf}
-% caption
-{Experimental cooling curves overlap with the results of the 3D FE convection-diffusion simulation.
-The left (LHE) and right (RHE) heat exchangers impose the boundary temperature in the experiment.}
-% label
-\label{fig:validation_convectiondiffusion}
-\end{figureth}
-%-----------------------------------
-%
-The Tsolver’s ability to be coupled with various physical phenomena like macrosegregation and fluid flow 
-in porous medium is displayed in this test case. Details about fluid flow resolution will not be given 
-in this section, but rather in the next chapter. It consists of a solidification benchmark where a \SI{10}{\centi \metre}
-width $\times$ \SI{6}{\centi \metre} height $\times$ \SI{1}{\centi \metre} thick cavity containing 
-a \bin{Sn}{3}{Pb} melt is cooled down from its two 
-narrowest vertical sides using heat exchangers (LHE: left heat exchanger, RHE: right heat exchanger). The 
-experiment, inspired by \citet{hebditch_observations_1974} similar set up, has been 
-revisited by \citet{hachani_experimental_2012} who performed the solidification with better 
-controlled conditions and using an increased number of samples for composition analysis. Recently, a successful 
-attempt to simulate the experiment was carried out by \citet{carozzani_direct_2013} relying on an enthalpy resolution. 
-All details regarding geometry, finite element discretization, material properties 
-and boundary conditions can be found in the latter reference. 
-For this computation, solidification paths, phase compositions and phase enthalpies were determined by a thermodynamic 
-module dedicated to equilibrium calculations for binary alloys. The 3D simulation results in \cref{fig:validation_convectiondiffusion}
-show a satisfactory agreement with the experimental temperature measurements recorded at mid heights of the cavity and uniformly 
-distributed along its width \citep{carozzani_direct_2013}. In fact, simulation results with the Tsolver and the Hsolver were 
-found to be almost superimposed, as shows \cref{fig:validation_convectiondiffusion}. 
-Further comparison is made between both solvers, as shows \cref{fig:planche_HvsT}, where the average
-composition, liquid fraction and temperature fields are extracted from a cut plane halfway through the ingot. On the same figure,
-if we compare the composition, we notice that the solidified part (right side) has basically the same segregation pattern, while
-in the convected liquid has a slightly different solute distribution. As for the extent of the mushy zone, we observe that liquid
-fraction contours are very close, indicating that temperature distributions and interdendritic segregation are also close between 
-both solvers predictions.
-Regarding the computation, the Tsolver resolution proves to be 
-faster than the Hsolver used by \citet{carozzani_direct_2013}: a process time of 7000s required a computation time of 90 hours 
-13 minutes compared to 114 hours 21 minutes spent by the enthalpy resolution with 32 cores on the same cluster. The gain factor 
-is about 20\%.
-%
-%----------------------
-\begin{figureth}
-% textwidth 
-{0.85}
-%path 
-{Chapter2/Graphics/convection_diffusion/planche_HvsT.pdf}
-% caption
-{Comparison of 3D simulation results: average composition, liquid fraction and temperature at t=3000 s for Tsolver and Hsolver.}
-% label
-\label{fig:planche_HvsT}
-\end{figureth}
-%-----------------------------------
-%
-\section{Application: multicomponent alloy solidification}
-%==================
-%
-We have shown that the efficiency of the temperature-based resolution resides in its performance when combined with 
-thermodynamic tabulations. A multicomponent alloy consists of at least two solute elements, and 
-therefore the tabulation size increases, hence the number of search operations also increases. 
-To demonstrate the speed-up ability of the temperature-based approach while predicting all phase 
-transformations during macrosegregation caused solely by mass diffusion, we consider the solidification of a ternary alloy, \tern{Fe}{2}{C}{30}{Cr}.
-In order to neglect fluid flow resolution, we assume that solidification in this case is so slow that no forces are generated inside the melt, while
-additionally all buoyancy forces are also neglected, so no momentum conservation is solved in this section.
-As illustrated in \cref{fig:mutlicomponent_geo}, the alloy domain has a cylinder shape close to 3-inch height $\times$ 1-inch diameter. 
-Exact values are reported in \cref{table:ternary_data_case} with all material properties, initial and boundary conditions, 
-as well as numerical parameters for the simulations. The melt steel is initially at \SI{1395}{\udegC}. The 
-temperature of the bottom surface is imposed with a constant decreasing rate of \SI{0.1}{\uCR} starting 
-with \SI{1380}{\udegC}, i.e. \SI{40}{\udegC} higher than the nominal liquidus temperature, as shown 
-in \cref{fig:mutlicomponent_bc}. The other surfaces are kept adiabatic. The cylinder is held in a vertical position. 
-\cref{fig:ternary_nominalpath} also provides the transformation path of the alloy at nominal composition, i.e. assuming no macrosegregation and full 
-thermodynamic equilibrium as computed with ThermoCalc and the TCFE6 database \citep{tcfe6_tcfe6:_2010, andersson_thermo-calc_2002}. 
-A total of 5 phases need to be handled, the characteristic temperature for their formation being reported 
-in \cref{fig:mutlicomponent_bc}.
-%
-%----------------------
-\begin{figureth}
-% textwidth 
-{0.8}
-%path 
-{Chapter2/Graphics/multicomponent/SP_nominal.pdf}
-% caption
-{Thermodynamic mapping \citep{tcfe6_tcfe6:_2010, andersson_thermo-calc_2002} of the transformation path for the \tern{Fe}{2}{C}{30}{Cr} at nominal composition.}
-% label
-\label{fig:ternary_nominalpath}
-\end{figureth}
-%-----------------------------------
-%
-\subsection{Tabulations}
-Full thermodynamic equilibrium is considered in the present case. Due to macrosegregation, 
-the average composition is expected to continuously vary in time and space during casting. 
-Transformation paths are thus determined a priori for a set of average compositions around 
-the nominal value. Hence, carbon content varies in the interval [\SI{1.8}{\ucomposition}, \SI{2.2}{\ucomposition}] 
-while chromium content variation is in the interval [\SI{27}{\ucomposition}, \SI{33}{\ucomposition}]. The offset of $\pm$ 10\%  with 
-respect to the nominal composition value allows tabulating relatively small composition steps
-to ensure a fairly accurate mapping when compared to the corresponding ternary phase diagram. The average 
-composition step is \SI{0.04}{\ucomposition} for carbon and \SI{0.6}{\ucomposition} for chromium, thus representing 2\% 
-intervals with respect to the nominal composition. The temperature varies in the interval 
-[\SI{100}{\udegC}, \SI{1600}{\udegC}] by \SI{5}{\udegC} steps. For each triplet (carbon content 
-in \si{\ucomposition} C, $\wC_0$ , chromium content in \si{\ucomposition} Cr,  $\wCR_0$, temperature in \si{\udegK}) 
-corresponds a phase fraction $g^\phi$ and a pair of intrinsic phase composition ($\wCR^\phi$,$\wCR^\phi$). For the 5 
-phases listed in \cref{fig:ternary_nominalpath} (LIQ$\equiv$liquid, BCC$\equiv$ferrite, FCC$\equiv$austenite, 
-$\carbide \equiv$carbide, CEM$\equiv$cementite), the enthalpy $h^\phi$ and density $\rho^\phi$, are tabulated 
-as functions of temperature and phase intrinsic composition. If this latter input lies between two tabulated 
-values, a linear interpolation is performed to determine the output, i.e. phase enthalpy and density. With 
-the advancement of solidification, the liquid is enriched with solute by macrosegregation, which enables new 
-solidification paths. It means that the primary solidifying phase is not necessarily the same as when considering 
-the nominal composition. For this reason, the tabulation approach is interesting inasmuch as it provides phase 
-transformation paths and values of phase properties that are compatible with the system’s actual composition. 
-\Cref{fig:ternary_tabulations} summarizes the tabulated thermodynamic data for two sets of average composition for the considered 
-ternary system. Note that in the present test case, phase densities are taken constant ($\rhos=\rhol=$ \SI{6725}{\udensity}). 
-Therefore they are not tabulated. With this assumption, no shrinkage occurs upon phase change.
-%
-%-----------------
-\begin{figure}[htbp]
-\centering
-   %------------
-  \begin{subfigure}[t]{0.3\textwidth}
+   %\hspace{1cm}
+   \begin{subfigure}[t]{0.25\textwidth}
     \centering
-	\includegraphics[height=6cm]{Chapter2/Graphics/multicomponent/geo_bc/Cylinder_nocolor_annotate.pdf}
+	\includegraphics[width=\textwidth]{Chapter1/Graphics/mesh_aniso_hetero_unstruct.png}
 	\caption{}
-    \label{fig:mutlicomponent_geo}
+    \label{fig:mesh_aniso_hetero_unstruct}
   \end{subfigure}
-   %------------
-   \hspace{1mm}%\quad
-   \begin{subfigure}[t]{0.5\textwidth}
-    \centering
-	\includegraphics[height=6cm]{Chapter2/Graphics/multicomponent/geo_bc/BC.pdf}
-	\caption{}
-    \label{fig:mutlicomponent_bc}
-  \end{subfigure}
-  %------------------------------
-\caption{Configurations for directional casting of (a) a 1 inch diameter $\times$ 3 inches height cylindrical domain for which
-(b) temperature-time conditions are imposed at its bottom surface.} 
-\label{fig:mutlicomponent_geobc}
+  %-------- 
+\caption{Alternatives for initial finite element grid generation: (a) structured homogeneous, (b) unstructured homogeneous isotropic,
+(c) unstructured heterogeneous isotropic and (d) unstructured heterogeneous anisotropic meshes.} 
+\label{fig:premeshing_options}
 \end{figure}
 %-----------------
 %
-%
-%=====================================BIG LANDSCAPE FIGURE =====================================
-%\begin{landscape}
-%\begin{figure}[htbp]
-%\centering
-%	\includegraphics[width=1.5\textwidth]{Chapter2/Graphics/multicomponent/tabulations/planche_tabulations.pdf}
-%\caption{Tabulated thermodynamic data for the ternary system Fe-C-Cr alloy with software Thermo-Calc \citep{andersson_thermo-calc_2002}  with database TCFE6 %\citep{tcfe6_tcfe6:_2010}.}
-%\label{fig:planche_tabulations}
-%\end{figure}
-%\end{landscape}
-%=====================================BIG LANDSCAPE FIGURE =====================================
-%
-%
-%=====================================BIG PORTRAIT FIGURE =====================================
-\begin{figureth}
-% textwidth 
-{0.75}
-%path 
-{Chapter2/Graphics/multicomponent/tabulations/planche_tabulations_portrait.pdf}
-% caption
-{Tabulated thermodynamic data for the ternary system Fe-C-Cr alloy with software 
-Thermo-Calc \citep{andersson_thermo-calc_2002}  with database TCFE6 \citep{tcfe6_tcfe6:_2010}.
-The two columns represent two values of nominal average composition, for a) low carbon and chromium content
-and b) high carbon and chromium content.
-The effect of their variation on transformation paths, phase compositions and phase enthalpies is shown in the corresponding graphs.}
-% label
-\label{fig:ternary_tabulations}
-%\thispagestyle{headings}
-\end{figureth}
-%=====================================BIG PORTRAIT FIGURE =====================================
-%
-%----------------
-\begin{tabulate}
-%
-% caption 
-{Solidification parameters for the \tern{Fe}{2}{C}{30}{Cr} alloy.}
-% label
-{table:ternary_data_case}
-% line separation (e.g. 1.5mm)
-{0.6mm}
-% column justification-number (e.g. |c|ll|)
-{llll}
-% header titles (should use the & sign to switch columns)
-{\textbf{Parameter} & \textbf{Symbol} & \textbf{Value} & \textbf{Unit}}
-% cells content (should use the & and // to switch columns and rows)
-{
-Nominal composition 			& $\wC_0$ 				& 2 					& \si{\ucomposition} 	\\ 
-                    			& $\wCR_0$ 				& 30 					& \si{\ucomposition} 	\\ 
-Characteristic temperatures 	& $T_\text{bottom}$ 	& \cref{fig:mutlicomponent_bc}	 & \si{\udegC} \\ 
-Phase fraction 					& $g^\phi$ 				& Tabulations \cref{fig:ternary_tabulations}	& $-$ 					\\ 
-Phase enthalpy 					& $\h^\phi$ 			& Tabulations \cref{fig:ternary_tabulations}	& $-$ 					\\ 
-Phase composition 				& $\wC^\phi$ 			& Tabulations \cref{fig:ternary_tabulations}	& \si{\ucomposition}  	\\ 
-Phase composition               & $\wCR^\phi$ 			& Tabulations \cref{fig:ternary_tabulations}	& \si{\ucomposition}  	\\ 
-Diffusion coefficients 			& $\avg{D_\text{C}}^l$ 	& \num{15e-10} 	& \si{\udiffusivity}  	\\ 
-                        		& $\avg{D_\text{Cr}}^l$	 & \num{15e-10} 	& \si{\udiffusivity}  	\\ 
-Dynamic viscosity  				& $\mul$ 					& \num{2e-3} 		& \si{\uviscosity}  	\\ 
-Thermal expansion coefficient 	& \betaT 					& \num{8.96e-5} 	& \si{\ubetaT}  		\\ 
-Solutal expansion coefficient 	& $\betawlC$ 				& \num{1.54e-3} 	& \si{\ubetawl}  		\\  
-                              	& $\betawlCR$ 				& \num{1.72e-2} 	& \si{\ubetawl}  		\\ 
-Thermal conductivity in the solid & $\ks$ 					& \num{40} 			& \si{\uconductivity}  	\\ 
-Thermal conductivity in the liquid & $\kl$ 					& \num{28} 			& \si{\uconductivity}  	\\ 
-Dendrite arm spacing 			& $\lambda$ 				& \num{60e-6} 		& \si{\metre}  			\\ 
-Density 						& $\rholref$ 						& \num{6725} 	& \si{\udensity}  		\\ 
-Reference composition (carbon)	&$\avg{w_\text{C}}_\text{ref}^l$	& \num{2} 		& \si{\ucomposition}  	\\
-Reference composition (chromium)&$\avg{w_\text{Cr}}_\text{ref}^l$	& \num{30} 		& \si{\ucomposition}  	\\
-Reference temperature 			&$\avg{w_\text{C}}_\text{ref}^l$	& \num{1377} 	& \si{\udegC}  	\\
-\hline 
-Initial temperature 	& $T_0$ & \num{1395}	& \si{\udegC}  \\ 
-Ingot diameter 			&   	& \num{25e-3} 	& \si{\metre}  \\ 
-Ingot length 			&   	& \num{75e-3} 	& \si{\metre}  \\ 
-\hline 
-FE mesh size 			&  		& \num{e-3} 	& \si{\metre}  \\ 
-Time step 				& $\dt$ & \num{0.1} 	& \si{\second}  \\ 
-Convergence criterion (residual) 	& $\varepsilon_R$ & \num{e-6} & $-$ \\ 
-Convergence criterion (temperature) & $\varepsilon_T$ & \num{e-2} & \si{\udegK} 
-}
-%
-\end{tabulate}
-%-----------------
-%
-\subsection{Discussion}
-%-----------------------
-A first case is considered without macrosegregation, that is, all mechanical driving forces are bypassed, leading to a static melt. 
-This is achieved by nullifying the thermal and solutal expansion coefficients, which is equivalent to a constant density in space 
-and time, i.e. no Boussinesq force is considered. This way, the average composition may only vary due to diffusion in the liquid 
-phase according to \cref{eq:diag_solute} where the convection term is neglected. Diffusion is significantly small in the present case and can be 
-neglected too. In such a case, the composition distribution maintains a homogeneous aspect throughout the sample during the entire 
-cooling sequence. The phase transformations then are necessarily expected to follow the unique path shown in \cref{fig:ternary_nominalpath}. After 407 s 
-of cooling, the liquidus isotherm enters the bottom surface of the geometry and starts its upward propagation, marking the solidification 
-onset. \Cref{fig:planche_nomacroseg} presents the simulation results at 3 successive times for the distribution of the solute species and the temperature, as 
-well as for the fraction of phases listed in \cref{fig:ternary_nominalpath}. At 600 s, a fully liquid region is still largely present while the mushy zone is 
-made of liquid plus the primary solid phase (ferrite). At \num{10560} s, the sample is full solid, with fractions of ferrite and cementite that 
-corresponds to the values read in \cref{fig:ternary_nominalpath} at low temperature. At the selected intermediate time, the presence of 4 phases is found. The 
-solid region at the bottom of the cylinder is made of ferrite, austenite plus carbide, the temperature being still too high to permit the 
-cementite to form. The mushy zone above the solid region is characterized by the presence of 3 phases due to a peritectic reaction taking 
-place that progressively transform ferrite into austenite in the presence of liquid. It can be noticed that the phase fraction isovalues 
-in \cref{fig:planche_nomacroseg} (at 600 s) are horizontal, owing this to two factors: the first is the temperature field, which varies unidirectionally from 
-bottom to top, controlled by thermal diffusion, while the second is the uniform average composition throughout the sample due to the absence 
-of convection. In fact both factors are consequences of the flow absence, which would transport heat and solute by advection, thus inevitably 
-changing the phase distribution. The succeeding phase change is a solid-state transformation where $\alpha$-ferrite and the carbide $\carbide$ react to form 
-cementite at \SI{490}{\udegC} at nominal composition, as shown in \cref{fig:mutlicomponent_bc}. The reaction is relatively slow, ending with 28\% 
-of cementite and 72\% of $\alpha$-ferrite.
-%
-%=====================================BIG LANDSCAPE FIGURE =====================================
-\begin{landscape}
-\begin{figureth}
-{1.15}
-{Chapter2/Graphics/multicomponent/planche_nomacroseg.pdf}
-{: Upward solidification of a cylinder rod with a static liquid at 
-3 stages in a \tern{Fe}{2}{C}{30}{Cr}. The left columns show the average 
-composition and temperature distribution, while the right columns show the phase fractions.}
-\label{fig:planche_nomacroseg}
-%\thispagestyle{headings}
-\end{figureth}
-\end{landscape}
-%=====================================BIG LANDSCAPE FIGURE =====================================
-%
+
+Since mesh adaptation involves advanced mathematical notions, readers interested 
+in the basics are referred to the following references:
+\citep{coupez_grandes_1991,coupez_generation_2000,gruau_3d_2005,jannoun_space-time_2014}.
+In this study, we show and compare different remeshing methods relevant to macrosegregation prediction, and based on previous work
+done at CEMEF. These techniques rely on metric tensors, and some of them belong to
+\emph{a posteriori} error estimators category. A metric or a metric tensor $\mathcal{M}$, 
+also known as \emph{Riemannian} metric, is a positive symmetric definite matrix that relates 
+to an element's size in $\mathbb{R}^3$ via:
+%------
+\begin{align}
+\label{eq:metric}
+& \mathcal{M} = 
+\begin{pmatrix}
+M_{11} & M_{12} & M_{13} \\
+M_{12} & M_{22} & M_{23} \\
+M_{13} & M_{23} & M_{33}
+\end{pmatrix}
+=
+\mathcal{R} 
+\begin{pmatrix}
+1/{h_x^2} & 0 & 0 \\
+0 & 1/{h_y^2} & 0 \\
+0 & 0 & 1/{h_z^2}
+\end{pmatrix}
+\mathcal{R}^T
+\end{align}
+%------------ 
+where $\mathcal{R}$ is a rotation matrix and $h_x$, $h_y$ and $h_z$ are the respective 
+dilatation scalars defined by the metric in the $\brac{x,y,z}$ space, describing
+a three-dimensional anisotropy.
+The metric information is then passed to a mesh generation tool, called \emph{MTC},
+which is based on an iterative procedure of local topology optimisations. We focus hereafter
+on two adaptive remeshing techniques, then discuss the functional details and show some examples.
+
+\subsection{\emph{Remesh2}: Interface remeshing}
+\label{sec:remesh2_params}
+
+\emph{Remesh2} is an explicit method to compute an anisotropic metric around the zero surface of a distance function.
+The idea is, as mentioned previously, to reduce the elements cost in the tangential directions to level set by
+stretching the elements, leaving small element lengths in the normal direction, where the level set gradient is the greatest.
+This method is not based on error estimators, but rather on explicit input from the user who chooses the mesh size in
+normal and tangential directions to the interface, as well as in the positive and negative regions delimited by the level set.
+The following parameters are used as input data to determine the final node-wise metric:
+%------------------------------------
+\begin{tabbing}
+\hspace{1cm}\=\kill
+$h_{\vec{n}}$ \> mesh size in the normal direction of the level set\\ 
+$h_{\vec{\tau}}$ \> mesh size in the tangential directions of the level set\\ 
+$h_M$ \>  mesh size in the metal \\
+$h_A$ \>  mesh size in the air  \\
+$\levelset$ \> distance function (level set) \\
+$\varepsilon$ \>  level set mixing thickness \\
+$\vec{V}$ \> arbitrary vector
+\end{tabbing} 
+%------------------------------------
+\begin{algorithm}[H]
+ \KwData{$\vec{n}\quad h_M \quad h_A \quad h_{\vec{n}} \quad h_{\vec{\tau}} \quad \levelset$ }
+ \KwResult{$\mathcal{M}_2$ }
+ Initialise node index: $j=0$\;
+ \While{$j \leq j_\text{end}$}{
+  \eIf{$\levelset_j < \varepsilon$}{
+    Compute normal direction to level set: $\vec{n} ={\nabvec \levelset }/{\norm{\nabvec \levelset }}$\;
+    Compute the first tangential direction: $\vec{\tau_1} = \vec{V} - \brac{\vec{V} \cdot \vec{n}}\cdot \vec{n}$\;
+    Deduce the second tangential direction: $\vec{\tau_2} = \vec{n} \wedge \vec{\tau_1}$\;
+    Compute rotation matrix and its transpose: $\mathcal{R}_j$ and $\mathcal{R}_j^{-1}$\;
+    Deduce P1 metric at node $j$: $\brac{\mathcal{M}_2}_j = \mathcal{R}_j \Lambda \mathcal{R}_j^{-1}$
+   }{
+   go back to the beginning of current section\;
+  	}
+  Increment $j$ \;	
+  }  
+ \caption{\emph{Remesh2} metric construction}
+\end{algorithm}
+
+
+\subsection{\emph{Remesh4}: Multi-criteria remeshing}
+It is a metric construction method based on edge-based error distribution
+%--------------------------------------
+
+What i concluded from Z-FAST-SMACS cases A and B, where remesh4 was used in two different ways (LS and velocity/100  ,  LS and ConcentrationPosNeg)
+is that for diffuse interface thickness less than 2e-4 m, mass conservation gets all sorts of problems, because of low element resolution 
+around interface while higher resolution at the tips of the transition region
+
+
+\section*{To do ?}
+\comment{Interface Remeshing: Importance when using a static level set and more importantly when LS is transported,
+influence of mixing area \emph{thickness} and \emph{resolution} (i.e. nb of nodes with the area),
+Isotropic or anisotropic ? the first is more important to composition calculation while the second
+is more relevant if we mean do thermohydraulics without macrosegregation}
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
