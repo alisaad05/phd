@@ -1718,7 +1718,7 @@ in the segregation profile, which should normally say below the nominal value ne
 	mark repeat	= {142},
 	cycle list name=exotic,
 ]
-	\addplot table [x=arc_length, y=Concentration] {Chapter5/Data/1d_alsi7_composition/ModifyVitLiq_ModifyDiffSoluteAir.csv}; %\closedcycle ;
+	\addplot table [x=arc_length, y=Concentration] {Chapter5/Data/1d_alsi7_composition/NewSolute.csv}; %\closedcycle ;
 	%\addplot table [x=arc_length, y=Concentration] {Chapter5/Data/1d_alsi7_composition/ModifyVitLiq_ModifyDiffSoluteAir_NoSolute.csv}; %\closedcycle ;
 	%\addplot[thick, samples=50, smooth,magenta, name path=ls] coordinates {(0.09268,\pgfkeysvalueof{/pgfplots/ymin})(0.09268,\pgfkeysvalueof{/pgfplots/ymax})};
 	\draw[thick, magenta,  opacity=0.5] (axis cs:0.0926,\pgfkeysvalueof{/pgfplots/ymin}) -- (axis cs:0.0926,\pgfkeysvalueof{/pgfplots/ymax});
