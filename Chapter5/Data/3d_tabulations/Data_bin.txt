@@ -1,0 +1,87 @@
+//	Base de donnée Thermocalc
+// 	Thermocalc data base
+
+DATABASE	FEC_4PHASES.GES5
+
+//	Systeme d'unités
+//	System of units
+
+TEMPUNIT	C	//K//C		//Kelvin//Celsius
+
+COMPUNIT	W	//M//W		//Molar//Weight
+
+FRACTUNIT	W	//M//W//V	//Molar//Weight//Volume
+
+ENERGUNIT	W	//W//V		//Weight//Volume
+
+//	Nombre d'éléments total
+
+NUMBERELTS	2
+
+//	Element majoritaire
+//	Main element
+
+MAINELT		Fe
+
+//	Nom des éléments d'alliages d'addition selectionnés et
+// 	Composition des éléments (in %) hors element majoritaire
+//	Names of selected added alloy elements and
+//	Mass composition of elements (in %) except main element
+// 	Les noms basculeront ensuite en écriture majuscules en sortie fichier
+// 	Names will be given in capital letters in output files
+
+// 	Element 1 symbol / min / max / nval
+// 	Element 2 symbol / min / max / nval	...
+
+COMPOSITION	C	0.01	1	21
+
+// 	Nombre de phases sélectionnées
+//	Number of selected phases
+
+NUMBERPHS	4
+
+// 	Nombre et noms des phases sélectionnées
+//	Number and names of selected phases
+
+PHASES	LIQUID	CEMENTITE FCC_A1 BCC_A2
+
+//	Gamme de température parcourue
+//	Temperature range selected
+//	Tmax	Tmin
+
+TEMPERATURE	20	1620	1601	
+
+// 	Chemin de solidification
+//	Solidification path
+
+PATH	LEVERRULE
+
+
+//	Choix d'une transformation peritectique
+
+PERITECTIQUE	Yes
+
+
+// Redaction du fichier cimlib
+
+MTCWRITE	Yes
+
+// Nom du fichier mtc
+
+MTCNAME		Microsegregation.mtc	// Fichier de type mtc créé
+
+// Nombre de zones
+
+MTCZONES	2	z0	z1
+
+// Nombre de structures dans les différentes zones / Nom des structures
+
+MTCSTRUCTURES	1	sz0
+		1	sz1
+
+// Nombre des phases dans les différentes structures / Nom des phases
+
+MTCPHASES	1	LIQUID		
+		4	LIQUID	CEMENTITE FCC_A1 BCC_A2
+
+

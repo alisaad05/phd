@@ -1,0 +1,5 @@
+tabulation		size(MB)   	Computation Time (s)		Nb Tabulated lines
+Bin				4.37			37882.2						 185010
+Tern			10.18			64453.5						 220250
+Quatern			66.89			65822						1101250 
+QuaternLite		20.93			65621.4						 326014
