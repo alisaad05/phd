@@ -2167,13 +2167,22 @@ More interesting results are obtained in case H3G0 where the heat coefficient is
 higher than that in the first case. The high solidification rate allows the mushy front 
 to capture liquid nodes before deformation occurs by gravity. We see a global deformation which is qualitatively comparable to the experimental 
 results: an ellipsoid form with a longer vertical axis with respect to the initial shape, while the horizontal axis decreases compared to the original
-sample diameter. 
-The last case for the 
+sample diameter. Finally, we observe the same deformation tendency if we compare cases H3G0 and H4G0. However, the latter shows less deformation
+on the sides, which is the direct result of the fast cooling rate.
 
-%--------------------------------------
+In order to have a clear idea on the effect varying the cooling rate parameter on mass conservation, we plot in \cref{fig:mass_parametricH}
+the mass variation versus time for all four cases. We can notice that mass variation for case H4G0 occurs between 2\% and -1\% near the solidification end,
+recording the least variations compared to other cases. On the other hand, cases H1G0 and H2G0 show an important mass loss before solidification comes to end,
+reaching-11\%. We are particularly interested in case H3G0, which shows a good compromise between the deformation magnitude and mass loss, the latter being at -3\% of mass metal.
+
+%----------------
+%
 \begin{figure}[htbp]
 \centering
-\begin{tikzpicture}%[spy using outlines={draw, blue, magnification=2, connect spies}]
+%\begin{minipage}{.5\textwidth}
+  \begin{subfigure}[t]{0.45\textwidth}
+   \raggedleft
+  \begin{tikzpicture}%[spy using outlines={draw, blue, magnification=2, connect spies}]
  \pgfkeys{%
     /pgf/number format/set thousands separator = {}}
 %================================================
@@ -2189,11 +2198,11 @@ The last case for the
 	ylabel=$m^M_\%$ (\%),
 	xticklabel style={/pgf/number format/fixed},
 	xtick={0,3,6,9,12,15},
-	%ytick={-0.1,0,0.1,0.2},
+	ytick={-8,-4,0,2},
 	%x tick label style={rotate=45,anchor=east},
-	width=0.9\textwidth,
-	height=4cm,	
-	%ymin=-0.1, ymax=0.2,
+	width=\textwidth,
+	height=5cm,	
+	ymin=-10, ymax=2,
 	mark repeat	= {50},
 	cycle list name=exotic,
 ]
@@ -2201,14 +2210,73 @@ The last case for the
 \addplot table [x=Temps, y expr=100*(\thisrow{mM}-0.00022585082)/0.00022585082] {Chapter5/Data/3d_parametric/H2G0.txt};
 \addplot table [x=Temps, y expr=100*(\thisrow{mM}-0.00022585082)/0.00022585082] {Chapter5/Data/3d_parametric/H3G0.txt};
 \addplot table [x=Temps, y expr=100*(\thisrow{mM}-0.00022585082)/0.00022585082] {Chapter5/Data/3d_parametric/H4G0.txt};
-
 \legend{H1G0,H2G0,H3G0,H4G0}
 \end{axis}
 \end{tikzpicture}
-\caption{Mass conservation analysis for cases HxG0 (x=1,2,3,4).}
+\caption{}
 \label{fig:mass_parametricH}
+  \end{subfigure}
+  %----------------------------
+  \hfill
+  %----------------------------
+  \begin{subfigure}[t]{0.45\textwidth}
+   \raggedright
+   \begin{tikzpicture}%[spy using outlines={draw, blue, magnification=2, connect spies}]
+ \pgfkeys{%
+    /pgf/number format/set thousands separator = {}}
+%================================================
+\begin{axis}
+[	name=mass curves,
+	%title= mass conservation,
+	scale only axis,
+	table/col sep=tab,
+	enlarge x limits=false,
+	legend pos=south west,
+	scaled ticks=true,
+	xlabel=Time (s),
+	ylabel={},
+	xticklabel style={/pgf/number format/fixed},
+	xtick={0,3,6,9,12,15},
+	ytick={-8,-4,0,2},
+	yticklabels={,,},
+	%x tick label style={rotate=45,anchor=east},
+	width=\textwidth,
+	height=5cm,	
+	ymin=-10, ymax=2,
+	mark repeat	= {50},
+	cycle list name=exotic,
+]
+\addplot table [x=Temps, y expr=100*(\thisrow{mM}-0.000229326)/0.000229326] {Chapter5/Data/3d_parametric/H0G1.txt};
+\addplot table [x=Temps, y expr=100*(\thisrow{mM}-0.000229326)/0.000229326] {Chapter5/Data/3d_parametric/H0G2.txt};
+\addplot table [x=Temps, y expr=100*(\thisrow{mM}-0.000229326)/0.000229326] {Chapter5/Data/3d_parametric/H0G3.txt};
+\addplot table [x=Temps, y expr=100*(\thisrow{mM}-0.000229326)/0.000229326] {Chapter5/Data/3d_parametric/H0G4.txt};
+\legend{H0G1,H0G2,H0G3,H0G4}
+\end{axis}
+\end{tikzpicture}
+\caption{}
+\label{fig:mass_parametricG}
+  \end{subfigure}
+  %
+\caption{Mass conservation analysis for (a) cases HxG0 (x=1,2,3,4) and (b) cases H0Gx (x=1,2,3,4).}
+\label{fig:mass_parametric_texus}
 \end{figure}
-%--------------------------------------
+%
+%---------------------
+
+Now, we study the effect of varying the gravity parameter and its influence on the final deformation. 
+We observe first the results for case H0G1 where gravity magnitude is about four orders less than the Earth gravity at zero altitude.
+While the base solidifies, the remaining part falls down
+deforming severely by its weight and leading to a non-converging level set transport. The last recorded time is 1.75 s.
+For case H0G2, the droplet is less solicited by its weight, and therefore solidifies while having a vertically elongated shape.
+It should be reminded that in the current global numerical model does not account for the metal's surface tension, whicy may
+clearly have a drastic influence on the final shape, especially at higher gravity magnitudes, such as for cases H0G1 and H0G2.
+Moving on to cases H0G3 and H0G4, the weight driving force becomes negligible compared to the shrinkage driving force. Therefore,
+the sample shows significant lateral deformation, while in the central vertical plane of the droplet, the droplet has shrunk when 
+compared to the initial profile. This is more visible in case H0G4, where the final shape is overall smaller than the initial volume,
+which is not the same as found in cases H3G0 and H4G0. The mass conservation analysis corresponding to the gravity magnitude variation
+are plotted in \cref{fig:mass_parametricG}. The plots show, as expected, better mass conservation for decreasing gravity acceleration, i.e.
+from case H0G1 to H0G4. We think however that surface tension would change this analysis, and non-convergence obtained in case H0G1
+may be prevented.
 
 
 %--------------
@@ -2243,23 +2311,10 @@ The gravity vector points downwards.}
 %--------------
 
 
-
-
-
-
-
-
-
-
-
-
-
-\subsubsection{Mesh influence}
-Adaptive iso versus adaptive aniso on mass conservation
-
 \subsection{Texus binary alloy}
 
 Now that the optimal computational configuration is known, we proceed to simulate the solidification of the binary alloy given previously in \cref{table:texus_b1}. \\
+
 
 Draw table of tabulation size on disk and computation time. Stress on the fact that shrinkage results from binary to quaternay are much more different because
 the tabulation is more reliable in terms of resolution. For the others the deformation may be spurious, driven by an unprecise solidification paths.
