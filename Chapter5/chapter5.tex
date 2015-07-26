@@ -2322,7 +2322,7 @@ which is the main input of solidification shrinkage. Therefore, less accurate ma
 
 Using the initial and boundary conditions defined earlier, 15 seconds of simulation give the final shrinkage profile given in \cref{fig:bin_vs_exp}.
 We notice that the predicted overall deformation of the droplet is in a good agreement with the experimental shape after solidification.This agreement is
-still not perfect as some key input parameters are still missing in the model, namely the real gravity acceleration onboard the parabolic flight (which should
+still not perfect as some key input parameters are still missing in the model, namely the real gravity acceleration on-board the parabolic flight (which should
 be much greater than value used in the simulation), and the correct heat flux between the sample and the substrate. It is emphasized that for higher gravity
 accelerations, surface tension is of central importance since it counters the gravitational force by stabilising the air-metal interface.
 
@@ -2333,40 +2333,65 @@ accelerations, surface tension is of central importance since it counters the gr
 %path 
 {Chapter5/Graphics/3d/bin/bin_vs_exp.pdf}
 % caption
-{Comparison of experimental and numerical shrinkage profiles, compared to their respective initial shapes. A vector image processing algorithm is used
-to extract the droplet outlines from the experimental images. The experimental deformation shows a slight non-symmetricity which cannot be reproduced by the numerical model.}
+{Comparison of experimental (\blue{blue}) and numerical (\red{red}) shrinkage profiles, compared to their respective initial shapes (\green{green}). 
+A vector image processing algorithm is used to extract the droplet outlines from the experimental images. 
+The experimental displacement at the top of the droplet was estimated by scaling 
+the initial numerical profile to the experimental one, and then comparing the final profiles.
+The direction of the gravitational fields points downwards, depicted
+  by the arrow (note that the vector length is not scaled to its magnitude).}
 % label
 \label{fig:bin_vs_exp}
 \end{figureth}
 %--------------
 
 Three solid phases are considered for the binary steel, a primary BCC phase, a peritectic FCC phase and a cementite phase. The latter can be obtained by cooling
-the sample at low temperatures to achieve solid-state transformation. In our simulations, this transformation cannot be seen as the cooling time is limited
-to primary and peritectic solidification.
+the sample at low temperatures to achieve solid-state transformation.
+The next point to discuss is segregation and fluid flow. With the chosen gravity acceleration, the liquid metal moves in the downward direction when the
+ceramic substrate comes from above the droplet. As soon as solidification takes place right after the metal-substrate contact, a BCC-rich mushy zone 
+forms near the contact surface. The abrupt phase change imposes a fast shrinkage rate, which tend to straighten the interface near the substrate, as also visible in \cref{fig:bin_vs_exp}. 
+A part of the flow thus deviates towards the solid front 
+to compensate for the density increase, as shown in \cref{eq:darcy_modif}. 
 
-Draw table of tabulation size on disk and computation time. Stress on the fact that shrinkage results from binary to quaternay are much more different because
-the tabulation is more reliable in terms of resolution. For the others the deformation may be spurious, driven by an unprecise solidification paths.
+%--------------
+\begin{figureth}
+% textwidth 
+{1.0}
+%path 
+{Chapter5/Graphics/3d/bin/inverse_seg.pdf}
+% caption
+{Flow deviation towards the solidification front, contributing in solute transport in its direction.}
+% label
+\label{fig:texus_inverse_seg}
+\end{figureth}
+%--------------
+
+This flow contributes to a slight enrichment at the contact surface.
+The BCC phase fraction is soon decreased by the peritectic reaction to form the first FCC phase at about 0.75 s. 
+
+%--------------
+\begin{figureth}
+% textwidth 
+{1.0}
+%path 
+{Chapter5/Graphics/3d/bin/mesosegregation.pdf}
+% caption
+{Evolution of the average composition versus time.}
+% label
+\label{fig:texus_mesoseg}
+\end{figureth}
+%--------------
+
+
+
 
 \subsection{Texus ternary alloy}
 
 \subsection{Texus quaternary alloy}
  
- \subsection{TODO}
- %--------------
-\begin{figureth}
-% textwidth 
-{1.0}
-%path 
-{Chapter5/Graphics/3d/simu_exp.pdf}
-% caption
-{Comparison between experimental (TEMPUS) and numerical (TEXUS) results showing the initial profile in both cases in \green{green}, while the final deformed profile
-  is the \blue{blue} line obtained experimentally, the \red{red} line predicted numerically. The direction of the gravitational fields points downwards, depicted
-  by the arrow (note that the vector length is not scaled to its magnitude).}
-% label
-\label{fig:simu_exp}
-\end{figureth}
-%--------------
+\subsection{TODO}
 
+Draw table of tabulation size on disk and computation time. Stress on the fact that shrinkage results from binary to quaternay are much more different because
+the tabulation is more reliable in terms of resolution. For the others the deformation may be spurious, driven by an unprecise solidification paths. \\
 Compare mass conservation between anisotropic mesh (up to 20\% loss) and isotropic fixed (up to 3\% only) \\
 Compare results of binary, ternary and quaternary tabulations then simplified quaternary \\
  
