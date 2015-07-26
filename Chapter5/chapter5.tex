@@ -2314,7 +2314,35 @@ The gravity vector points downwards.}
 \subsection{Texus binary alloy}
 
 Now that the optimal computational configuration is known, we proceed to simulate the solidification of the binary alloy given previously in \cref{table:texus_b1}. \\
+The nominal composition for this alloy is \bin{Fe}{0.105}{C}. In order to obtain accurate segregation results, a fine resolution mapping was performed
+from equilibrium calculations, using 21 values of composition between a minimum of \SI{0.01}{\ucomposition} and \SI{1}{\ucomposition}. This is 
+equivalent for a composition step of \SI{0.0495}{\ucomposition}, with a temperature step of \SI{1}{\udegC} varying in the interval [\SI{20}{\udegC};\SI{1600}{\udegC}].
+The importance of choosing small steps in composition and temperature is to predict accurate solidification paths during mesosegregation (segregation length is limited to the droplet scale), 
+which is the main input of solidification shrinkage. Therefore, less accurate mappings may result in false shrinkage profile prediction. 
 
+Using the initial and boundary conditions defined earlier, 15 seconds of simulation give the final shrinkage profile given in \cref{fig:bin_vs_exp}.
+We notice that the predicted overall deformation of the droplet is in a good agreement with the experimental shape after solidification.This agreement is
+still not perfect as some key input parameters are still missing in the model, namely the real gravity acceleration onboard the parabolic flight (which should
+be much greater than value used in the simulation), and the correct heat flux between the sample and the substrate. It is emphasized that for higher gravity
+accelerations, surface tension is of central importance since it counters the gravitational force by stabilising the air-metal interface.
+
+%--------------
+\begin{figureth}
+% textwidth 
+{1.0}
+%path 
+{Chapter5/Graphics/3d/bin/bin_vs_exp.pdf}
+% caption
+{Comparison of experimental and numerical shrinkage profiles, compared to their respective initial shapes. A vector image processing algorithm is used
+to extract the droplet outlines from the experimental images. The experimental deformation shows a slight non-symmetricity which cannot be reproduced by the numerical model.}
+% label
+\label{fig:bin_vs_exp}
+\end{figureth}
+%--------------
+
+Three solid phases are considered for the binary steel, a primary BCC phase, a peritectic FCC phase and a cementite phase. The latter can be obtained by cooling
+the sample at low temperatures to achieve solid-state transformation. In our simulations, this transformation cannot be seen as the cooling time is limited
+to primary and peritectic solidification.
 
 Draw table of tabulation size on disk and computation time. Stress on the fact that shrinkage results from binary to quaternay are much more different because
 the tabulation is more reliable in terms of resolution. For the others the deformation may be spurious, driven by an unprecise solidification paths.
