@@ -2348,25 +2348,60 @@ Three solid phases are considered for the binary steel, a primary BCC phase, a p
 the sample at low temperatures to achieve solid-state transformation.
 The next point to discuss is segregation and fluid flow. With the chosen gravity acceleration, the liquid metal moves in the downward direction when the
 ceramic substrate comes from above the droplet. As soon as solidification takes place right after the metal-substrate contact, a BCC-rich mushy zone 
-forms near the contact surface. The abrupt phase change imposes a fast shrinkage rate, which tend to straighten the interface near the substrate, as also visible in \cref{fig:bin_vs_exp}. 
+forms near the contact surface. The abrupt phase change imposes a fast shrinkage rate, which tend to straighten the interface near the substrate, as we can observe in \cref{fig:bin_vs_exp}. 
 A part of the flow thus deviates towards the solid front 
-to compensate for the density increase, as shown in \cref{eq:darcy_modif}. 
+to compensate for the density increase, as shown in \cref{fig:texus_flow}. 
+This flow pattern in the sample shows distinct regions show at 0.25 s and 1 s in the previous figure: 
+upward flow driven by solidification shrinkage contributes to a slight enrichment by inverse segregation,
+while a downward flow driven by gravity redistributes species in the containerless melt. Upon completely 
+solidifying, the droplet forms a rigid and fixed solid, surrounded by natural argon flow. 
 
 %--------------
 \begin{figureth}
 % textwidth 
-{1.0}
+{0.85}
 %path 
-{Chapter5/Graphics/3d/bin/inverse_seg.pdf}
+{Chapter5/Graphics/3d/bin/flow.pdf}
 % caption
-{Flow deviation towards the solidification front, contributing in solute transport in its direction.}
+{Flow patterns in reduced-gravity solidification with shrinkage: 
+deviation towards the solidification front at 0.25 s and 1 s, contributing to solute transport in gravity's opposite direction.
+At 8 sec, the mushy zone reaches the droplet vertex marking a flow pattern change. 
+At 20 s, the argon flows freely in the domain around the completely solidified and rigid sample.
+Please note that the scale of latter snapshot has a maximum magnitude of \SI{e-6}{\uvelocity}, not shown
+for illustrative simplicity.}
 % label
-\label{fig:texus_inverse_seg}
+\label{fig:texus_flow}
 \end{figureth}
 %--------------
 
-This flow contributes to a slight enrichment at the contact surface.
-The BCC phase fraction is soon decreased by the peritectic reaction to form the first FCC phase at about 0.75 s. 
+The fluid flow is behind the reduced-gravity segregation shown at different stages in \cref{fig:texus_mesoseg}.
+We may call it mesosegregation, as the droplet is small and considered as a laboratory-scale sample.
+As earlier mentioned, a restricted region of positive segregation settles at the contact area with the substrate,
+from the first second after the contact.Later, between 2 s and 8 s, the solid front advances in the melt, creating 
+a noticeable negatively segregated area, about 4\% less than the nominal composition, just below the positive segregation zone.
+Normally, we would expect that the composition decreases gradually once the solid front advances in time, as confirm the 1D segregation
+profiles in \cref{fig:1dalsi7_wVSlength}. To interpret this unusual observation, we refer to the fluid flow shown earlier in \cref{fig:texus_flow}.
+At 0.25 s, a velocity zero-level isovolume (i.e. depicting a volume with null velocity magnitude) forms between the two distinct regions
+of upward and downward flow. The strong negative divergence that settles in this area results in solute depletion in the two directions
+and due to the various driving forces. 
+
+However, at 1 s, the zero isovolume clearly shrinks in a matter of only 0.75 s. That is
+because the initial temperature gradient is the highest during the process, then it decreases gradually. 
+Since a higher temperature gradient produces a greater cooling flux according to the Fourier model, solidification is faster
+in the beginning and the volume shrinkage is fast, hence the shrinkage flow coexists with the gravity flow. As the transformation
+progresses, shrinkage flow becomes insignificant compared to the latter, therefore the negative segregation intensity decreases gradually from 2.2 mm
+to 4.3 mm from the chill, corresponding to the first seconds of contact (t<8 s).
+This result is also shown in \cref{fig:texus_segreg_profile} where we plot the relative segregation profile along the vertical rotation axis of the droplet.
+At 8 s, \cref{fig:texus_flow} shows the zero-velocity isovolume moved down the vertical revolution axis by following
+the solidification front, then vanishing at about 10 s. It means that from this point in time, the flow is so dissipated by the mushy zone's low permeability,
+hence the low-magnitude shrinkage flow dominates again.
+We may correlate this flow pattern once again to the segregation profile in \cref{fig:texus_segreg_profile}:
+As of 4.3 mm and down to the tip of the deformed sample, we observe a steady rise in solute content caused 
+by the shrinkage-dominated flow between dendrites compensating for density differences. 
+This rise in solute content is however not strictly correct, says the species mass conservation study, shown in FIG.
+
+
+The volume fraction of the BCC phase soon decreases by the peritectic reaction to form the first FCC phase at about 0.75 s. 
 
 %--------------
 \begin{figureth}
@@ -2375,18 +2410,110 @@ The BCC phase fraction is soon decreased by the peritectic reaction to form the 
 %path 
 {Chapter5/Graphics/3d/bin/mesosegregation.pdf}
 % caption
-{Evolution of the average composition versus time.}
+{Evolution of the average composition with solidification time, showing evidence of mesosegregation and shape deformation between 0s and 20s.}
 % label
 \label{fig:texus_mesoseg}
 \end{figureth}
 %--------------
 
+%--------------------------------------
+\shorthandoff{;:?!} %http://tex.stackexchange.com/questions/74860/unexpected-clash-between-babel-and-pgf-spy
+\begin{figure}[htbp]
+\centering
+%-------
+\begin{tikzpicture}%[spy using outlines={rectangle, magnification=3, width=1cm, height=6cm, connect spies}]
+%[spy using outlines={circle, magnification=3, connect spies}]
+%-------------------
+ \begin{axis}
+  [	name=whatever,
+	%title= (c),
+	scale only axis,
+	table/col sep=tab,  % comma % tab
+	enlarge x limits=false,
+	%legend pos=north east,
+	scaled ticks=true,
+	ylabel style={align=center},
+	ylabel= Relative mesosegregation (\%), %\\$(\avg{w}-\avg{w_0})/\avg{w_0}$ (\%),
+	xlabel=Distance from the chill (mm),
+	%xticklabel style={/pgf/number format/fixed},
+	yticklabel style={/pgf/number format/fixed},
+	xtick={0,1,...,6},
+	xticklabels={0,1,...,6},
+	ytick={1,0,...,-4},
+	yticklabels={1,0,...,-4},
+	%x tick label style={rotate=45,anchor=east},
+	width=0.8\textwidth,
+	height=6cm,	
+	ymin=-4.5, ymax=1.5,
+	xmin=0, xmax=6,
+	mark repeat	= {50},
+	cycle list name=exotic,
+	axis y line*=left,
+]
+	\addplot table [x expr=\thisrow{arc_length}*1000, y expr=100*(\thisrow{Concentration_M}-0.105)/0.105] {Chapter5/Data/3d_segregation/z_axis.txt};
+	\draw[thick, dashed, black, opacity=0.5] (axis cs:\pgfkeysvalueof{/pgfplots/xmin},0.0) -- (axis cs:\pgfkeysvalueof{/pgfplots/xmax},0.0);
+	\legend{$\avg{w}$}  	
+  	\end{axis}
+  	%-------------------
+  	%-------------------
+  	\begin{axis}
+  [	name=whatever,
+	%title= (c),
+	scale only axis,
+	table/col sep=tab,  % comma % tab
+	scaled ticks=true,
+	ylabel= Phase fraction (-),
+	yticklabel style={/pgf/number format/fixed},
+	%ytick={0,0.2,...,1},
+	%yticklabels={0,0.2,...,1},
+	width=0.8\textwidth,
+	height=6cm,	
+	ymin=0, ymax=1.05,
+	xmin=0, xmax=6,
+	mark repeat	= {50},
+	%cycle list name=exotic,
+	axis y line*=right,
+	axis x line=none,
+]
+	\addplot table [x expr=\thisrow{arc_length}*1000, y=FractionBCC_c] {Chapter5/Data/3d_segregation/z_axis.txt};
+	\addplot table [x expr=\thisrow{arc_length}*1000, y=FractionFCC_c] {Chapter5/Data/3d_segregation/z_axis.txt};
+	\addplot table [x expr=\thisrow{arc_length}*1000, y=FractionCEM_c] {Chapter5/Data/3d_segregation/z_axis.txt};
+	%\draw[thick, dashed, black, opacity=0.5] (axis cs:\pgfkeysvalueof{/pgfplots/xmin},0.0) -- (axis cs:\pgfkeysvalueof{/pgfplots/xmax},0.0);
+	\legend{BCC,FCC,CEM}
+  	\end{axis}
+\end{tikzpicture}
+%-------
+\caption{Segregation profile in percent with respect to the nominal composition, along the vertical axis of the droplet.}
+\label{fig:texus_segreg_profile}
+\end{figure}
+%--------------------------------------
+\shorthandon{;:?!} %http://tex.stackexchange.com/questions/74860/unexpected-clash-between-babel-and-pgf-spy
+
+%--------------
+\begin{figureth}
+% textwidth 
+{0.9}
+%path 
+{Chapter5/Graphics/3d/bin/phase_distrib.pdf}
+% caption
+{Solidification progress at 5, 10, 15 and 20 s showing the effect of segregation on the transformation paths, from liquid to solid and solid-state.}
+% label
+\label{fig:texus_phase_distrib}
+\end{figureth}
+%--------------
 
 
 
-\subsection{Texus ternary alloy}
+\subsection{Texus ternary and quaternary alloys}
+In this section, we apply the thermodynamic-database-compatible energy solver to extend the previous binary alloy to a multicomponent alloy.
+we are mainly interested in showing that:
+\begin{itemize}
+\itemsep0em
+\item  the transformation path changes with the alloy, hence the shrinkage kinetics also,
+\item  the mapping resolution in composition and temperature is important to get accurate shrinkage predictions, and
+\item  that 
+\end{itemize}  
 
-\subsection{Texus quaternary alloy}
  
 \subsection{TODO}
 
