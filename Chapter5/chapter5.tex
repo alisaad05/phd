@@ -2514,7 +2514,36 @@ Each column depicts a definite time with temperature and phase distribution.
 
 
 \subsection{Texus ternary and quaternary alloys}
-In this section, we apply the thermodynamic-database-compatible energy solver to extend the previous binary alloy to a multicomponent alloy.
+We have presented earlier in this book how we predict macrosegregation in a Fe-C-Cr ternary alloy using the thermodynamic tabulation approach.
+In this section, we simulate reduced-gravity solidification of the \emph{b1} alloy, where the latter is considered as a ternary and then as a quaternary (cf \cref{table:texus_b1})
+alloy. For simplicity, we refer to them respectively by \emph{b1T} and \emph{b1Q}.
+The aim is to show on the one hand, we are able to scale our model to fit any multicomponent alloy (even if only assuming full or partial equilibrium), while
+on the other hand study how solidification paths vary by adding additional components, hence changing the shrinkage kinetics.
+By introducing additional chemical species, silicon for \emph{b1T}	then silicon and magnesium \emph{b1Q}, a new carbide phase may appear, the M$_7$C$_3$.
+ 
+After 15 seconds of chill contact, the \emph{b1T} and \emph{b1Q} alloys have more volume fraction of liquid than the previous binary computation as shown in 
+\cref{fig:multicomp_liquid}, meaning that
+solidification in slower. The reason could be attributed to the different solidification paths created by the system composition, but also it is possible that phase enthalpies
+are higher than for the binary system. Regardless of its cause, slower solidification means that the final predicted shape is different, as shown earlier in the parametric study.
+The latter showed that slower cooling rates result in more elongated droplet shapes due to weight force, whereas shrinkage would tend to do the opposite.
+
+%--------------
+\begin{figureth}
+% textwidth 
+{0.7}
+%path 
+{Misc/dummy.pdf}
+% caption
+{Snapshots showing the volume fraction of liquid remaining in each sample of the binary, ternary and quaternary \emph{b1} alloy.}
+% label
+\label{fig:multicomp_liquid}
+\end{figureth}
+%--------------
+% {Chapter5/Graphics/3d/nonbin/phase_distrib.pdf}
+
+
+\subsection{TODO}
+
 we are mainly interested in showing that:
 \begin{itemize}
 \itemsep0em
@@ -2523,8 +2552,6 @@ we are mainly interested in showing that:
 \item  that 
 \end{itemize}  
 
- 
-\subsection{TODO}
 
 Draw table of tabulation size on disk and computation time. Stress on the fact that shrinkage results from binary to quaternay are much more different because
 the tabulation is more reliable in terms of resolution. For the others the deformation may be spurious, driven by an unprecise solidification paths. \\
