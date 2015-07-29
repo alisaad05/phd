@@ -2173,7 +2173,7 @@ on the sides, which is the direct result of the fast cooling rate.
 In order to have a clear idea on the effect varying the cooling rate parameter on mass conservation, we plot in \cref{fig:mass_parametricH}
 the mass variation versus time for all four cases. We can notice that mass variation for case H4G0 occurs between 2\% and -1\% near the solidification end,
 recording the least variations compared to other cases. On the other hand, cases H1G0 and H2G0 show an important mass loss before solidification comes to end,
-reaching-11\%. We are particularly interested in case H3G0, which shows a good compromise between the deformation magnitude and mass loss, the latter being at -3\% of mass metal.
+reaching -11\%. We are particularly interested in case H3G0, which shows a good compromise between the deformation magnitude and mass loss, the latter being at -3\% of mass metal.
 
 %----------------
 %
@@ -2400,8 +2400,11 @@ As of 4.3 mm and down to the tip of the deformed sample, we observe a steady ris
 by the shrinkage-dominated flow between dendrites compensating for density differences. 
 This rise in solute content is however not strictly correct, says the species mass conservation study, shown in FIG.
 
-
-The volume fraction of the BCC phase soon decreases by the peritectic reaction to form the first FCC phase at about 0.75 s. 
+In \cref{fig:texus_segreg_profile}, the final phase distribution along the vertical revolution axis is plotted .
+The plots show that in the upper part of the droplet close to the chill, a eutectoid product (we may not speak of eutectoid microstructure as the current approach is only macroscopic, without
+information on the smaller scale) that results from the hypoeutectoid composition, consisting of 98\% of $\alpha$-BCC phase together and 2\% of CEM between 0 and 2.9 mm away from the substrate.
+Beyond this point, the austenitic $\gamma$-FCC phase is gradually replaced by $\alpha$-BCC, which represents the proeutectoid $\alpha$ phase, taking place before temperature
+reaches the eutectoid isotherm at \SI{727}{\udegC}.
 
 %--------------
 \begin{figureth}
@@ -2443,7 +2446,7 @@ The volume fraction of the BCC phase soon decreases by the peritectic reaction t
 	yticklabels={1,0,...,-4},
 	%x tick label style={rotate=45,anchor=east},
 	width=0.8\textwidth,
-	height=6cm,	
+	height=8cm,	
 	ymin=-4.5, ymax=1.5,
 	xmin=0, xmax=6,
 	mark repeat	= {50},
@@ -2467,7 +2470,7 @@ The volume fraction of the BCC phase soon decreases by the peritectic reaction t
 	%ytick={0,0.2,...,1},
 	%yticklabels={0,0.2,...,1},
 	width=0.8\textwidth,
-	height=6cm,	
+	height=8cm,	
 	ymin=0, ymax=1.05,
 	xmin=0, xmax=6,
 	mark repeat	= {50},
@@ -2488,6 +2491,12 @@ The volume fraction of the BCC phase soon decreases by the peritectic reaction t
 \end{figure}
 %--------------------------------------
 \shorthandon{;:?!} %http://tex.stackexchange.com/questions/74860/unexpected-clash-between-babel-and-pgf-spy
+
+
+
+A better global visualisation of the transformation is given in \cref{fig:texus_phase_distrib}, at different time stages.
+Each column depicts a definite time with temperature and phase distribution. 
+
 
 %--------------
 \begin{figureth}
