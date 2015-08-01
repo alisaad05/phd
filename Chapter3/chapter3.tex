@@ -12,7 +12,7 @@
 To model macrosegregation during solidification, a minimum of four conservation equations are necessary:
 conservation  of  mass, momentum,  chemical  species and  energy. The  phase  change
 literature  contains a  wealth of numerical methods to solve energy conservation
-in solidifying alloys. A comprehensive overview of these methods is given by \citet{swaminathan._enthalpy_1993}.
+in solidifying alloys. A comprehensive overview of these methods is given by \citet{swaminathan_enthalpy_1993}.
 
 The corresponding equation associates the total average enthalpy to the
 temperature  via  intrinsic  alloy  properties, such  as the heat  capacity of  the
@@ -27,7 +27,7 @@ to temperature when macrosegregation alters the average composition, even in the
 between phases. 
 
 In this chapter, we discuss a suitable numerical scheme based on an enthalpy method,
-already used in the literature  to  alleviate this macrosegregation-related problem \citep{swaminathan._enthalpy_1993,
+already used in the literature  to  alleviate this macrosegregation-related problem \citep{swaminathan_enthalpy_1993,
 carozzani_direct_2013}. Later on, we introduce a modified formulation, using the effective heat capacity method that 
 increases the original scheme's efficiency. 
 
@@ -465,7 +465,8 @@ relative to what we call a \emph{Hsolver}:
 \end{align}
 %------------
 where $\dRdH$ is a global tangent matrix yielding the variations of the residual with respect to the volumetric enthalpy 
-in the previous iteration, $\Hj^\iter$. If \cref{eq:discretise_residual_local} is considered, then the contribution of an element $\OhmE$ writes:
+in the previous iteration, $\Hj^\iter$. The detailed flow chart for the \emph{Hsolver} is given in \cref{fig:flowchart_hsolver}.
+If \cref{eq:discretise_residual_local} is considered, then the contribution of an element $\OhmE$ writes:
 %-----------------
 \begin{align}
 \label{eq:dRdH}
@@ -493,7 +494,7 @@ leading this time to an iterative temperature correction:
 \end{align}
 %------------
 where $\dRdT$ is a global tangent matrix yielding the variations of the residual with respect to temperature $\Tj^\iter$ at the previous iteration. 
-This solver will be referred to as \emph{Tsolver}.
+This solver will be referred to as \emph{Tsolver}. The corresponding flow chart is given in \cref{fig:flowchart_tsolver}.
 The contribution of an element $\OhmE$ to this tangent matrix is evaluated as:
 %-----------------
 \begin{align}
@@ -506,7 +507,7 @@ The contribution of an element $\OhmE$ to this tangent matrix is evaluated as:
 %------------
 In contrast to the previous solver, \cref{eq:dRdT} is the core of the temperature-based solver. The resolution of \cref{eq:Tsolver_residual_linear} 
 then yields a new estimate of the vector of nodal temperatures $T^\iterplus$, which are the only unknowns to be solved for. 
-Once updated for iteration $\iter$, convergence tests are performed (refer to section %TODO ).
+Once updated for iteration $\iter$, convergence tests are performed.
 %
 %
 %-------------------
@@ -740,6 +741,7 @@ A comparison of both solver formulations is done in the hereafter test cases sec
 %%-------------
 
 \end{tikzpicture}
+\label{fig:flowchart_hsolver}
 \caption{Resolution algorithm of the enthalpy-based solver.}
 \end{figure}
 %----------------------------------------------------------------------------------
@@ -911,6 +913,7 @@ A comparison of both solver formulations is done in the hereafter test cases sec
 %%-------------
 
 \end{tikzpicture}
+\label{fig:flowchart_tsolver}
 \caption{Resolution algorithm of the temperature-based solver.}
 \end{figure}
 %----------------------------------------------------------------------------------
@@ -934,7 +937,7 @@ we use linear temperature dependence of the intrinsic phase enthalpies, that is 
 where $\rho$ is the alloy density, $C_p$ is the heat capacity per unit mass and $L$ is the latent heat per unit mass. 
 Values for $\rho$, $C_p$ and $L$, as well as for the thermal conductivities, $\kappa = \kl = \ks$, are taken constant. 
 
-A Gulliver-Scheil approximation is used to compute a single relationship between temperature and volume solid fraction, $\gs$ in the 
+A Gulliver-Scheil approximation is used to compute a single relationship between temperature and volume solid fraction, $\gs$, in the 
 absence of macrosegregation. This is done assuming a linear binary phase diagram and thus requires using the 
 properties listed in \cref{table:data_case_alsi7}, i.e. the segregation coefficient, $k$, the liquidus slope, $m_L$, the 
 liquidus temperature, $T_L$, and the eutectic temperature, $T_E$. \Cref{fig:validation_diffusion} show the comparison with 
