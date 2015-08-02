@@ -340,8 +340,99 @@ The final matrix definition of the weak form of \cref{eq:vms_strong} is given by
 %
 Using P1 linear elements implies a P2 integration ? what are the advantages (time) and limitations ?
 
+
+
+
+
 %-------------------------------------------------------------
 \section{Application to multicomponent alloys}
+%-------------------------------------------------------------
+
+\subsection{\emph{Tsolver} validation with fluid flow}
+
+To validate the \emph{Tsolver} with fluid flow, we consider the following set of equations
+already defined in the flowchart of \cref{fig:algo_monodomain}. Moreover, an assumption 
+of a static and non deformable solid phase is made. Consequently, the mechanical model is 
+reduced to the conservation of momentum in the liquid phase. 
+
+% This assumption also yields 
+% some other consequences on the mass balance and the liquid momentum conservation. In the 
+% latter, a Darcy term is added to take into account the dissipative interfacial stress in 
+% the porous-like mushy zone. Its main parameter is the permeability of the mushy zone, $K$. 
+% It is considered isotropic, hence reducing to a scalar which is given by the Carman-Kozeny 
+% relation, based on the secondary dendrite arm spacing $\lambda_2: K= \frac{g^{l^3}  \lambda_2^{2}
+%  }{180\brac{1-g^l}^2}$. The liquid density being taken constant, its spatial variations 
+% as a function of temperature and average composition are still needed to compute thermosolutal 
+% convection forces. For that purpose, the Boussinesq approximation (\cref{eq:boussinesq}) is used, 
+% considering the thermal $\betaT$ and solutal $\betawl$) expansion coefficients 
+% and a reference density, $\rref$, defined at a reference temperature $\Tref$ and reference 
+% composition $\wlref$. 
+% Values for the references are taken at the liquidus temperature and the nominal 
+% composition of the alloy, $\w_0$ \citep{carozzani_direct_2013}. More details about the FE formulation can be found in 
+% the PhD work of \citet{rivaux_simulation_2011, carozzani_developpement_2012}.
+%
+
+The Tsolver’s ability to be coupled with various physical phenomena like macrosegregation and fluid flow 
+in porous medium is validated using an experimental solidification benchmark. 
+The validation case consists of a \SI{10}{\centi \metre}
+width $\times$ \SI{6}{\centi \metre} height $\times$ \SI{1}{\centi \metre} thick crucible containing 
+a \bin{Sn}{3}{Pb} melt. The alloy is cooled down from its two 
+narrowest vertical sides using heat exchangers (LHE: left heat exchanger, RHE: right heat exchanger). The 
+experiment, inspired by \citet{hebditch_observations_1974} similar set up, has been 
+revisited by \citet{hachani_experimental_2012} who performed the solidification with better 
+controlled conditions and using an increased number of samples for composition analysis. Recently, a successful 
+attempt to simulate the experiment was carried out by \citet{carozzani_direct_2013} relying on an enthalpy resolution. 
+All details regarding geometry, finite element discretization, material properties 
+and boundary conditions can be found in the latter reference. 
+
+For this computation, solidification paths, phase compositions and phase enthalpies were determined by a thermodynamic 
+module dedicated to equilibrium calculations for binary alloys. 
+The 3D simulation results in \cref{fig:validation_convectiondiffusion}
+show a satisfactory agreement with the experimental temperature measurements recorded at mid-heights of the cavity and uniformly 
+distributed along its width. 
+
+%----------------------
+\begin{figureth}
+% textwidth 
+{0.75}
+%path 
+{Chapter3/Graphics/convection_diffusion/smacs_CC.pdf}
+% caption
+{Results of the 3D FE convection-diffusion simulation, overlapping with the experimental cooling curves.
+The left (LHE) and right (RHE) heat exchangers impose the boundary temperature in the experiment.}
+% label
+\label{fig:validation_convectiondiffusion}
+\end{figureth}
+%-----------------------------------
+
+Furthermore, simulation results with the \emph{Tsolver} and the \emph{Hsolver} 
+previously obtained by \citet{carozzani_direct_2013} were 
+found to be almost superimposed. This is confirmed by a comparison made between both solvers, as shows \cref{fig:planche_HvsT}, 
+where the average
+composition, liquid fraction and temperature fields are extracted from a cut plane halfway through the ingot. On the same figure,
+if we compare the composition, we notice that the solidified part on the RHE side has basically the same segregation pattern, while
+the convected liquid has a slightly different solute distribution. As for the extent of the mushy zone, we observe that liquid
+fraction contours are very close, indicating that temperature distributions and interdendritic segregation are also close between 
+both solvers predictions.
+
+Regarding the computation, the \emph{Tsolver} resolution proves to be 
+faster than the \emph{Hsolver} used by \citet{carozzani_direct_2013}: a process time of 7000s required a computation time of 90 hours 
+13 minutes compared to 114 hours 21 minutes spent by the enthalpy resolution with 32 cores on the same cluster. The gain factor 
+is about 20\%.
+
+%------------------------------------------------------
+\begin{figureth}
+% textwidth 
+{1.0}
+%path 
+{Chapter3/Graphics/convection_diffusion/planche_HvsT.pdf}
+% caption
+{Comparison of 3D simulation results: average composition, liquid fraction and temperature at t=3000 s for \emph{Tsolver} and \emph{Hsolver}.}
+% label
+\label{fig:planche_HvsT}
+\end{figureth}
+%------------------------------------------------------
+
 In the previous chapter, we have considered a static melt upon solidification of multicomponent alloy. 
 The artificial consideration of a still flow is dropped in this chapter, hence taking into account macrosegregation 
 caused by fluid motion, using realistic values of the expansion coefficients given in \cref{table:ternary_data_case}.
@@ -354,27 +445,18 @@ controlled so as to prevent any freckle-type defect to exist in the as-cast stat
 In this section, we consider the same simulation parameters defined in \cref{table:ternary_data_case} as well the geometry and thermal boundary conditions
 previously defined in \cref{fig:mutlicomponent_geobc}. Moreover, we solve the liquid momentum conservation equation, with non-slip boundary conditions
 on all external sides of the cylinder.
-%
-%=====================================BIG LANDSCAPE FIGURE =====================================
-\begin{landscape}
-\begin{figureth}
-{1.15}
-{Chapter4/Graphics/multicomponent/planche_macroseg.pdf}
-{: Upward solidification of a cylinder rod  at 3 stages showing the metallurgical consequences 
-of macrosegregation \tern{Fe}{2}{C}{30}{Cr}. The left columns show the average 
-composition and temperature distribution, while the right columns show the phase fractions.}
-\label{fig:planche_withmacroseg}
-%\thispagestyle{headings}
-\end{figureth}
-\end{landscape}
-%=====================================BIG LANDSCAPE FIGURE =====================================
-%
+
+%----------------------
 \subsection{Results}
+%----------------------
+
 Solidification starts at 407 s when the cylinder’s bottom base temperature 
 reaches the liquidus temperature of the alloy. 
 In fact, the solidification onset is the same as in the pure diffusion case in \cref{fig:planche_nomacroseg}, 
 since the average composition remains unchanged for an entirely liquid domain (assuming an initially infinite 
-solute mixing in the melt). As shown in \cref{fig:planche_withmacroseg} at 600 s, the first solid phase to form 
+solute mixing in the melt). 
+
+As shown in \cref{fig:planche_withmacroseg} at 600 s, the first solid phase to form 
 remains ferrite. We can also see solute-rich channels forming in the mushy zone and solute 
 plumes rising in the melt above the mushy zone due to a subsequent upward flow. It is actually 
 caused by the thermosolutal buoyancy force created by the carbon and chromium solutes. Such 
@@ -384,8 +466,9 @@ As solidification proceeds, the liquid becomes more enriched with solute and the
 reaction forming the austenite phase is reached. However, for very large enriched melt, it can 
 also be observed that primary solidification proceeds with the austenite phase rather than the 
 ferrite phase. The carbide phase can also form with the austenite phase at some locations. These 
-observations correspond to a simulation time of \num{2000} s in \cref{fig:planche_withmacroseg}. Solidification ends at 
-around \num{2475} s, the last liquid solidifying at the cylinder’s top surface, where the average composition 
+observations correspond to a simulation time of \num{2000} s in \cref{fig:planche_withmacroseg}. 
+
+Solidification ends at around \num{2475} s, the last liquid solidifying at the cylinder’s top surface, where the average composition 
 reaches a maximum of \tern{Fe}{2.151}{C}{30.633}{Cr}, i.e. a relative positive macrosegregation, 
 $\brac{\wi-\wi_0}/\wi_0$, of 7.5\% for carbon and 2.1\% for chromium. The fact that the maximum average 
 composition is observed at the top, is verified in \cref{fig:final_interior_ZZ_FF} which shows the composition map in a 2D 
@@ -393,10 +476,28 @@ vertical slice through the longitudinal axis of the cylinder. We can also see it
 relative composition profile are plotted at the end of the cooling process along the longitudinal cylinder 
 axis Z-Z’ and along the axis of the segregated channel, F-F’. The negative segregation up to 1 cm from the chill corresponds 
 to the solute depletion caused by the first solid formation. The subsequent solidification enriches further the 
-liquid; hence the solid composition also increases. The composition evolution trend for both solutes is similar: 
+liquid; hence the solid composition also increases. 
+
+The composition evolution trend for both solutes is similar: 
 an overall rise until positive segregation is achieved above \SI{5}{\centi\metre} from the chill. The positive macrosegregation 
 intensifies when the profile is chosen at the center of the segregated channel, negative segregation then becoming less pronounced.
-%
+
+
+%=====================================BIG LANDSCAPE FIGURE =====================================
+\begin{landscape}
+\begin{figureth}
+{1.2}
+{Chapter4/Graphics/multicomponent/planche_macroseg.pdf}
+{Upward solidification of a cylinder rod  at 3 stages showing the metallurgical consequences 
+of macrosegregation \tern{Fe}{2}{C}{30}{Cr}. The left columns show the average 
+composition and temperature distribution, while the right columns show the phase fractions.}
+\label{fig:planche_withmacroseg}
+%\thispagestyle{headings}
+\end{figureth}
+\end{landscape}
+%=====================================BIG LANDSCAPE FIGURE =====================================
+
+
 %-----------------
 \begin{figure}[htbp]
 \centering
@@ -434,7 +535,8 @@ the final macrosegregation pattern, hence the final phase distribution. This is 
 center of the bottom and top surfaces of the cylinder in \cref{fig:tp_macroseg_influence}. With no macrosegregation, in 
 \cref{fig:tp_nomacroseg}, the final distribution of the phases is the same at time \num{12000} s, while with macrosegregation, 
 in \cref{fig:tp_withmacroseg}, variations of the cementite and ferrite are revealed. 
-The segregated channels inside the cylinder and on the boundary, are often termed "freckles" when they consist of visible equiaxed grains \citep{copley_origin_1970}.
+The segregated channels inside the cylinder and on the boundary, are often termed \emph{freckles} 
+when they consist of visible equiaxed grains \citep{copley_origin_1970}.
 This defect is marked by a noticeable gradient of composition and phase fractions, possibly changing the mechanical 
 properties in the channels, hence the overall mechanical behaviour of the alloy . The coupling of the Tsolver with 
 thermodynamic tabulations is thus demonstrated. It shows the ability to predict complex solidification paths, even if 
@@ -754,12 +856,14 @@ In \cref{sec:intro_freckle}, we have introduced some successful attempts of frec
 The authors tackled the problem from an qualitative perspective. 
 To our knowledge, the closest work to quantitative freckling analysis in solidification literature was done by \citet{ramirez_evaluation_2003}.
 They attempted to draw a correlation (freckling criterion) between the process parameters and the occurrence of freckles, 
-(without any size or shape constraints, i.e. any flow instability that may appear and form the smallest freckle is considered). 
+without any size or shape constraints, i.e. any flow instability that may appear and form the smallest freckle is considered. 
+
 To accomplish this, they took a number of experiments done independently by \citet{pollock_breakdown_1996} and \citet{auburtin_freckle_2000} 
 where the casting parameters vary one at a time: casting speed (R), thermal gradient (G), angle ($\theta$) with respect to vertical 
 orientation and nominal composition ($\avg{w_0}$), giving a database for 6 different superalloys. The experimental results were 
 compared to a modified Rayleigh number that accounts for the various parameters. It allowed them to define a threshold for freckle 
 formation in Nickel-base superalloys, as well as Pb-Sn alloys.
+
 Other contributions by \citet{yuan_new_2012} (Pb-Sn alloy) and  \citet{karagadde_3-d_2014} (In-Ga alloy) relied on a Cellular Automata Finite Difference
 (CAFD) model developed by \citet{lee_modeling_2002}, which  solves the dendrite tip growth kinetics at 
 the solid-liquid interface together with macroscopic conservation equations. 
@@ -769,15 +873,19 @@ therefore limited as far as to predict the liquid behaviour outside the mushy zo
 On another hand, experimental observations reveal a great deal of information 
 regarding solute redistribution, first in the chimneys that wash the dendrites in their 
 way and then convective plumes that expel chemical species outside the mush, resulting in a global complex phenomenon.
+
 In order to capture simultaneously the interaction between the mushy zone and the free liquid, we use 
 the Cellular Automata Finite Element (CAFE) method to combine the macroscopic and mesoscopic length scales
 and predict more realistic channel segregation.
-%
+
 %-----------------------------------------------
 \section{Meso-Macro prediction of channel segregates}
-%
+%-----------------------------------------------
+
+%-----------------------------------------------
 \subsection{Numerical method}
-%
+%-----------------------------------------------
+
 \subsubsection{Microscopic scale}
 The CAFE model introduces a grid of regular and structured cubic cells, with a constant size 
 in all space directions, referred to as the cellular automaton (CA) grid. It is different from 
@@ -1260,3 +1368,5 @@ disturbed by another neighbouring grain, it grows while exclusively interacting 
 % \label{fig:animate_monograin}
 % \end{figure}
 %===================================== ANIMATION FIGURE =====================================
+
+\input{Chapter4/recap4} % resume francais

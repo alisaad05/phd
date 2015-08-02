@@ -1,0 +1,30 @@
+\clearpage
+\section*{Résumé chapitre 3}
+
+Ce chapitre reprend les détails du solveur pour la conservation d'énergie avec changement de phase utilisé au CEMEF.
+Celui-ci est basé sur une méthode enthalpique, dénommée \emph{Hsolver}, dont la variable principale est l'enthalpie
+moyenne volumique du système, $\avg{\rho h}$. Ce solveur est aussi compatible avec des données tabulées provenant de bases de données
+thermodynamiques, fournissant des valeurs précises pour chaque phase $\phi$ présente au moment de la transformation: 
+fraction $\gphi$, composition intrinsèque $\wiphi$, enthalpie massique $\hphi$ et densité $\rphi$. 
+Avec ces données, l'équation de conservation de l'énergie est résolue dans son état nonlinéaire 
+provenant de la dépendance de $\rho h$ par rapport aux propriétés citées précédemment, sachant que celles-ci varient
+aussi en fonction de la composition moyenne du volume élémentaire représentatif.
+
+
+Cependant, la résolution \emph{Hsolver} nécessite une lourde recherche itérative à chaque pas de temps, consistant à convertir
+$\avg{\rho h}$ en température $T$ pour évaluer le résidu du système nonlinéaire. Cette conversion est dénommée \emph{H2T} et elle est
+compliquée du fait que les bases thermodynamiques fournissent la température comme donnée d'entrée, ce qui nous oblige de faire 
+la recherche inverse itérative.
+
+
+Dans ce chapitre, on propose de remplacer la conversion \emph{H2T} par une autre, \emph{T2H}. Comme son nom l'indique,
+on part de l'idée que la température soit la variable principale du système et on devrait alors trouver l'enthalpie moyenne volumique
+à chaque pas de temps. Avec ce changement, on propose donc une nouvelle formulation éléments finis, \emph{Tsolver}, mettant en évidence les principales
+différences algorithmiques des deux résolutions.
+
+
+Nous validons la formulation \emph{Tsolver} dans un cas purement diffusif et comparé à des calculs faits avec la méthode \emph{Hsolver}, 
+ainsi qu'une comparaison avec une solution numérique obtenue par une méthode de suivi de front \citep{gandin_constrained_2000}.
+Enfin, nous montrons une application de solidification dirigée d'un système ternaire, \tern{Fe}{0.2}{C}{30}{Cr}, en régime diffusif.
+
+% avec une analyse de la ségrégation en peau et en coeur de la pièce.
