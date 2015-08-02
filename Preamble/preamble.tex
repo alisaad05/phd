@@ -39,16 +39,14 @@
 \ExecuteBibliographyOptions{hyperref=true,
 							backref=true,
 							firstinits=true, 
-							isbn=false, 
+							isbn=false,
 							eprint=false,
-							url=true, 
-							doi=false, 
-							minnames=1, 
-							sorting=anyt, %name year title alphabetical(label)
-							maxalphanames=1, % nb of names to take into account in the label when sorting
-							labelalpha,
-							maxcitenames=1, % in text citations, allows suffix a,b ...
-							maxbibnames=5,
+							url=true,
+							doi=false,
+							%sorting=anyt, %name year title alphabetical(label)
+							minnames=1,
+							maxnames=2,
+							maxbibnames=99,
 							alldates=short, 
 							punctfont=true, 
 							autopunct=false, 
@@ -58,7 +56,7 @@
 %\addbibresource{References/auto_references.bib}
 
 % Spacing
-\setlength{\bibitemsep}{10pt} %vertical spacing
+\setlength{\bibitemsep}{6pt} %vertical spacing
 \setlength{\bibhang}{1cm} %label alignment (0 for perfect align)
 
 % Disable URL dates
@@ -104,9 +102,31 @@
   \let\bibcloseparen=\bibclosebracket}
 \makeatother
 
-%define label before reference in list	
-\renewbibmacro{begentry}{%
-\textbf{[\printnames[][-\value{liststop}]{labelname}~\printfield{labelyear}\printfield{extrayear}}]\\}
+%define label before reference in list	(deprecated)
+%\renewbibmacro{begentry}{%
+%\textbf{[\printnames[][-\value{liststop}]{labelname}~\printfield{labelyear}\printfield{extrayear}}]\\}
+
+%define label before reference in list	(keeps coherency between labels and citation keys)
+% http://tex.stackexchange.com/questions/258223/biblatex-matching-reference-citations-and-labels
+% http://tex.stackexchange.com/questions/11827/adding-an-authoryear-block-at-the-beginning-of-bibliography-entries
+\newcounter{mymaxcitenames}
+\AtBeginDocument{%
+  \setcounter{mymaxcitenames}{\value{maxnames}}%
+}
+
+\renewbibmacro*{begentry}{%
+  \textbf{\printtext[brackets]{%
+    \begingroup
+    \defcounter{maxnames}{\value{mymaxcitenames}}%
+    \printnames{labelname}%
+    \setunit{\nameyeardelim}%
+    \begin{nolinkcolors}
+    \usebibmacro{cite:labelyear+extrayear}\end{nolinkcolors}%
+    \endgroup
+    }%
+	}
+   \newline %\newline % \quad  or \addspace
+}
 
 %define full hyperlink for textcite and parencite
 % http://tex.stackexchange.com/questions/15951/hyperlink-name-with-biblatex-authoryear-biblatex-1-4b
