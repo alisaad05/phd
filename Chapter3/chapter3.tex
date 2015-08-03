@@ -52,19 +52,19 @@ good accuracy.
 The volume averaging technique, presented in \cref{sec:volumeavg}, is considered
 when solving the energy equation in the presence of macrosegregation. The reason is that phase
 properties and distributions varying with the average composition, have a great impact on the average thermal properties,
-and hence on the overall heat transfer in the system. We recall the basic equation:
+and hence on the overall heat transfer in the system. We recall the basic expression of the volume averaged value of a field $\psi$, by writing:
 %%-------------
 \begin{align}
 \label{eq:volume_average_psi}
 & \avg{\psi} = \sum_\phi \gphi \avg{\psi}^{\phi}
 \end{align}
 %%-------------
-where $g^\phi$ denotes the volume fraction of phase $\phi$ in the RVE. 
+where $g^\phi$ denotes the volume fraction of phase $\phi$ in the RVE, and $\psi^\phi$ is the intrinsic average of the quantity $\psi$ in the RVE. 
 It should be emphasized that the averaging technique applies to virtually all thermodynamic volumetric variables (enthalpy, density $\dots$). 
 Among these variables, the temperature is also considered to be uniform in the RVE. 
 
 Applying the volume averaging technique to the energy 
-conservation principle along with interfacial balances between the phases, results in the following averaged equation \citep{rappaz_numerical_2003}:
+conservation equation along with interfacial balances between the phases, results in the following averaged equation \citep{rappaz_numerical_2003}:
 %%-------------
 \begin{align}
 \label{eq:averaged_energy_eqn}
@@ -81,7 +81,7 @@ change problems.
 It is clear that the nature of the temperature-enthalpy relationship plays a central 
 role when formulating the resolution strategy of this nonlinear equation. Generally, it is admitted that, depending on the resolution strategy, 
 it is necessary to express enthalpy as a function of temperature or vice-versa, together with associated partial derivatives, 
-$\frac{d \rh}{dT}$ or $\frac{dT }{d \rh}$.
+$\frac{\partial \rh}{\partial T}$ or $\frac{\partial T }{\partial \rh}$.
 
 It is noted that in the FEM context, the RVE is represented by a node in a finite element, so for instance the temperature in a RVE
 is denoted $\Tj$ henceforth, where $j$ represents the index of the node localising the RVE.
@@ -175,8 +175,8 @@ in our case), we aim at minimizing the following scalar residual: $R_{H} = \abva
 Once the algorithm has converged, the temperature $T^\brent$ is the result of the \emph{H2T} conversion. It is 
 inferred that the first conversion (\emph{T2H}) is a direct one whereas the latter (\emph{H2T}) is indirect and requires 
 a series of iterative steps; each step being a single \emph{T2H} resolution. In other words, a \emph{H2T} conversion is a 
-backward search for a temperature, hence it is slower. This conversion's speed lag is exacerbated when tabulations 
-increase in size (e.g. large number of temperature and composition steps) and complexity (e.g., multicomponent 
+backward search for a temperature, hence it is slower. It is important to realise that this conversion's speed lag is exacerbated 
+when tabulations increase in size (e.g. large number of temperature and composition steps) and complexity (e.g., multicomponent 
 industrial alloys used in casting), since the search gets more complicated with the increasing number of input 
 columns (one column for each alloying element).
 
@@ -359,7 +359,7 @@ conservation principle is satisfied. Therefore, the weak form writes:
 \end{multline}
 %------------
 where $H=\rho h$ is the volumetric enthalpy, introduced to simplify notations in the following. 
-Furthermore, we assumed a static solid phase and an incompressible liquid phase, which allowed recasting the second term of 
+Furthermore, we assume a static solid phase and an incompressible liquid phase, which allows recasting the second term of 
 \cref{eq:averaged_energy_eqn} into $\vit \cdot \nabvec \avg{\rho h}^l$. 
 $\avg{\rho h}^l = \rhol \hl$ is not main variable of the energy conservation equation's weak form, \cref{eq:weak_energy}.
 Therefore we express it as a function of temperature, which is related to the main variable
@@ -458,7 +458,7 @@ The residual is re-written using a Taylor series expansion to the first order fo
 
 Neglecting the second order terms, the suggested correction at each iteration in view of cancelling 
 the residual and giving the new value $\Hj^\iter$, is given by the linear system in \cref{eq:Hsolver_residual_linear}
-relative to what we call a \emph{Hsolver}:
+relative to what we call the \emph{Hsolver}:
 %-----------------
 \begin{align}
 \label{eq:Hsolver_residual_linear}
@@ -495,7 +495,7 @@ leading this time to an iterative temperature correction:
 \end{align}
 %------------
 where $\dRdT$ is a global tangent matrix yielding the variations of the residual with respect to temperature $\Tj^\iter$ at the previous iteration. 
-This solver will be referred to as \emph{Tsolver}. The corresponding flow chart is given in \cref{fig:TsolverSteps}.
+This solver will be referred to as the \emph{Tsolver}. The corresponding flow chart is given in \cref{fig:TsolverSteps}.
 The contribution of an element $\OhmE$ to this tangent matrix is evaluated as:
 %-----------------
 \begin{align}
@@ -934,8 +934,8 @@ A comparison of both solver formulations is done in the hereafter test cases sec
 %------------------------------
 
 The two solvers are tested in a purely diffusive case for a one-dimensional solidification configuration. 
-Predictions with a 1D front tracking model \citep{gandin_constrained_2000} is used as a benchmark. It provides 
-solutions for the temperature and solid fraction during directional solidification of a 10 cm long ingot. Its nominal
+Predictions with a 1D front tracking model \citep{gandin_constrained_2000} are used as a benchmark. They provides 
+solutions for the temperature and solid fraction during directional solidification of a 10 cm long ingot. The nominal
 composition, $w_0$, is \bin{Al}{7}{Si}. 
 The melt having a uniform initial temperature, $T_0$, is cooled with a heat exchange coefficient, $\hext$,
 with a fixed external temperature, $\Text$ (assuming a Fourier 
@@ -1040,7 +1040,7 @@ additionally all buoyancy forces are also neglected, so no momentum conservation
 
 As illustrated in \cref{fig:mutlicomponent_geo}, the alloy domain has a cylinder shape close to 3-inch height $\times$ 1-inch diameter. 
 Exact values are reported in \cref{table:ternary_data_case} with all material properties, initial and boundary conditions, 
-as well as numerical parameters for the simulations. The melt steel is initially at \SI{1395}{\udegC}. The 
+as well as numerical parameters for the simulations. The steel melt is initially at \SI{1395}{\udegC}. The 
 temperature of the bottom surface is imposed with a constant decreasing rate of \SI{0.1}{\uCR} starting 
 with \SI{1380}{\udegC} as shown in \cref{fig:mutlicomponent_bc}, i.e. \SI{40}{\udegC} higher than the nominal liquidus temperature as shown 
 in \cref{fig:ternary_nominalpath}. The other surfaces are kept adiabatic. 
@@ -1076,7 +1076,7 @@ in \cref{fig:mutlicomponent_bc}.
 (b) temperature-time conditions are imposed at its bottom surface.} 
 \label{fig:mutlicomponent_geobc}
 \end{figure}
-%-----------------
+%-----------------melt
 
 %-------------------------
 \subsection{Tabulations}
@@ -1094,7 +1094,7 @@ The average composition step is \SI{0.04}{\ucomposition} for carbon and \SI{0.6}
 intervals with respect to the nominal composition. The temperature varies in the interval 
 [\SI{100}{\udegC}, \SI{1600}{\udegC}] by \SI{5}{\udegC} steps. For each triplet (carbon content 
 in \si{\ucomposition} C, ${w_\text{C}}_0$ , chromium content in \si{\ucomposition} Cr,  ${w_\text{Cr}}_0$, temperature in \si{\udegK}) 
-corresponds a phase fraction $g^\phi$ and a pair of intrinsic phase composition ($\wC^\phi$,$\wCR^\phi$). For the 5 
+corresponds a phase fraction $g^\phi$ and a pair of intrinsic phase composition ($\wC^\phi$,$\wCR^\phi$), $\phi$ representing a phase. For the 5 
 phases listed in \cref{fig:ternary_nominalpath} (LIQ$\equiv$liquid, BCC$\equiv$ferrite, FCC$\equiv$austenite, 
 $\carbide \equiv$carbide, CEM$\equiv$cementite), the enthalpy $\hphi$ and density $\rphi$, are tabulated 
 as functions of temperature and phase intrinsic composition. If this latter input lies between two tabulated 
@@ -1214,7 +1214,7 @@ made of liquid plus the primary solid phase (ferrite). At \num{10560} s, the sam
 corresponds to the values read in \cref{fig:ternary_nominalpath} at low temperature. At the selected intermediate time, the presence of 4 phases is found. The 
 solid region at the bottom of the cylinder is made of ferrite, austenite plus carbide, the temperature being still too high to permit the 
 cementite to form. The mushy zone above the solid region is characterized by the presence of 3 phases due to a peritectic reaction taking 
-place that progressively transform ferrite into austenite in the presence of liquid. 
+place that progressively transforms ferrite into austenite in the presence of liquid. 
 
 It can be noticed that the phase fraction isovalues 
 in \cref{fig:planche_nomacroseg} (at 600 s) are horizontal, owing this to two factors: the first is the temperature field, which varies unidirectionally from 
@@ -1237,5 +1237,37 @@ composition and temperature distribution, while the right columns show the phase
 \end{figureth}
 \end{landscape}
 %=====================================BIG LANDSCAPE FIGURE =====================================
+
+\section{Limitations}
+
+The \emph{Tsolver} method is well suited for 
+solidification problems with macrosegregation. In this chapter, only pure diffusion cases were simulated. 
+The next chapter discusses the details of solving Navier-Stokes equations while predicting macrosegregation, 
+showing thus the advantage of using the thermodynamic tabulation approach with the \emph{Tsolver}.
+However, some limitations are still present and need to be explained.
+
+First, we address the technical difficulties inherent to the solver. The previously shown algorithm in \cref{fig:TsolverSteps},
+showed that the Newton-Raphson method is used to linearise the energy equation then iterate on the value of the nonlinear
+term $\dHdT$. The initial value of this term is crucial to achieve a good convergence rate, and therefore it is only manually set equal 
+to initial phases volume heat capacity. This should evolve into an automatic initialisation based on a first evaluation given by the tabulation,
+making the appraoch more general. 
+
+The second point is the number of iterations needed by the method to converge.
+Although the Newton-Raphson algorithm is known for its quadratic convergence speed, imposing low convergence thresholds (\cref{eq:energy_convergence_criteria}) 
+may easily raise the number of iterations to an average of 5 iterations before convergence can be achieved. In situations without
+phase change but only variable slope of enthalpy versus temperature, from 1 to 2 iterations are needed to converge.
+A possible solution is to implement a line search method which is called at each iteration, whenever the residual of the nonlinear
+system increases insteading of steadily decreasing. Moreover, since $\dHdT$ is a derivative which is based on ratio of finite differences for
+ averaged volumetic enthalpy and temperature, \red{continue...}
+
+
+Regarding the thermodynamic tabulations, they are only obtained by assuming full equilibrium for macrosegregation calculations. 
+For many binary alloys, little differences are usually seen when the macrosegregation is induced by a full equlibrium and a non equilibrium solidification
+It is clear however that this approximation remains limiting for multicomponent alloys. 
+For steels, a third type of approximation is even required, named partial equilibrium, that considers equal chemical potential 
+of interstitial elements in all phases (e.g., C), while substitutional species in the solid phases (e.g., Cr) are frozen \citep{koshikawa_computation_2014}. 
+
+
+
 
 \input{Chapter3/recap3} % resume francais

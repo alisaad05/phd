@@ -16,7 +16,7 @@ In casting processes, such as continuous casting (\cref{fig:casting}) and ingot 
 the intricate phenomena leading to macrosegregation. Its influence on intermediate processing steps (e.g. forging, coating, welding,...)
 to reach a manufactured product, also needs to be understood.
 In this introductory chapter, we give a quick overview of solidification phenomena and microstructure, then present the factors which
-promote segregation, on both microscopic and macroscopic scales. Aside from macrosegregation, others defects are also briefly presented.
+promote segregation, on both microscopic and macroscopic scales. Aside from macrosegregation, other defects are also briefly presented.
 
 %-----------------
 \begin{figure}[htbp]
@@ -48,7 +48,7 @@ When a slab enters through these rolls after exiting the open copper mold, it co
 as the slab edges solidify earlier than the centre, the enriched liquid accumulates halfway in thickness, forming a centreline macrosegregation
 as shown in \cref{fig:macroseg_centreline}.  
 
-Other types of segregation patterns can be encountered while casting heavy ingots, as schematised in \cref{fig:ingot_casting}: 
+Other types of segregation patterns can be encountered while casting heavy ingots, as schematised in \cref{fig:macrosegregation_ingot}: 
 \begin{itemize}
 \itemsep0em 
 \item a negative segregation cone promoted by the sedimentation of 
@@ -202,7 +202,8 @@ and (b) equiaxed microstructure during solidification of \bin{Al}{10}{Cu} alloy 
 The dendritic geometry is crucial in solidification theory as it exhibits lower solid fraction compared to a microstructure formed by planar growth.
 This fact has consequences on the fluid-structure interaction in the mushy zone, namely the liquid flow through dendrites. At the chill surface,
 the solid  grows gradually from dispersed growing nuclei to a permeable solid skeleton, until grains have fully grown at the end of phase change.
-In the intermediate state, the liquid flow in and out of the mushy zone through the network of dendrites is a key phenomenon from a rheological perspective.
+In the intermediate state, the liquid flow in and out of the mushy zone through the network of dendrites is a key phenomenon from various perspectives, 
+especially the rheological perspective .
 %By defining a \emph{coherency temperature} $\Tcoh$, one can distinguish two behaviors. 
 %For temperatures below $\Tcoh$ (usually at low solid fractions), the liquid flow is characterized by an intrinsic velocity. 
 %As for temperature above $\Tcoh$,
@@ -251,21 +252,18 @@ Failure to prevent it, may lead to a substantial decline in the alloy's mechanic
 Experimental investigations of macrosegregation in steels were the subject of numerous studies in the past and until now, 
 like the work of \citet{suzuki_mechanism_1973,shah_effect_1989,lesoult_macrosegregation_2005}. They were mainly motivated
 by industrial research that aimed at reducing defective production caused by macrosegregation.
-However, steels were not the only alloys that were investigated, probably because of their high melting point. 
+However, steels were not the only alloys that were investigated for segregation defects. 
 Many studies relied on other metallic alloys as a replacement recourse, for their low
 melting points and well-known physical and mechanical properties. Examples are aluminium-based alloys 
 (aluminium-copper or aluminium-silicon) \citep{lesoult_equi-axed_2001,ferreira_macrosegregation_2004,ferreira_modeling_2009} and lead-tin/tin-lead alloys\citep{hebditch_observations_1974,prescott_convective_1994,hachani_experimental_2012}. Investigating macrosegregation 
-was not only limited to metallic alloys, but also to organic compounds like the well-known 
-sodium chloride %\citep{wanqi_formation_1989,sarazin_studies_1992,ludwig_advanced_2012}.
-%--------------------------------------------------------
-%
-%
+is also common in organic compounds like the well-known 
+sodium chloride \citep{wanqi_formation_1989,sarazin_studies_1992,ludwig_advanced_2012}, which have the advantage of being transparent.
+
 %\subsection{Causes}
 
 Four main factors can (simultaneously) cause fluid flow leading to macrosegregation:
 thermosolutal convection in the liquid, solidification shrinkage, solutal and thermal contraction,
 movement and sedimentation of equiaxed crystals and finally solid deformation.
-%
 
 \subsection{Liquid thermosolutal convection}
 During solidification, the liquid density undergoes changes due to temperature gradients.
@@ -541,7 +539,8 @@ Steel production has continuously increased over the years to meet the industria
 \Cref{fig:steel_production} shows this increase between 1980 and 2013 with a 
 clear rise of the Chinese production. Quality constraints have also increased where specific 
 grades of steel are needed in critical applications such as mega-structures
-in construction and  heavy machinery. Therefore, alloys with defects are considered vulnerable 
+in construction and  heavy machinery. Other domains like the nuclear, are good examples showing the relevance of macrosegregation
+studies in developing nuclear components for the new generation Evolutionary Power Reactor, manufactured by Areva. Therefore, alloys with defects are considered vulnerable 
 and should be avoided as much as possible during the casting process. As such, steelmakers have been investing
 in research, with the aim of understanding better the phenomena leading to casting problems, 
 and improve the processes when possible.
@@ -685,7 +684,7 @@ giving the interface position.
 %
 \subsubsection{Numerical tools}
 The current thesis developments are done using C++ language as a part of the
-in-house code, known as \cimlib \citep{mesri_advanced_2009}. It's a finite element library with an object-oriented hierarchy
+in-house code, known as \cimlib \citep{digonnet_cimlib:_2007,mesri_advanced_2009}. It's a finite element library with an object-oriented hierarchy
 consisting of global finite element solvers for physical differential equations, also point-wise and element-wise solvers for 
 preprocessing and postprocessing the finite element solution. It is also highly parallelised with MPICH2, which makes it possible
 to handle large meshes with heavy operations like mesh partitioning and adaptation. Side utilities for plotting and analysis
@@ -694,7 +693,7 @@ are also developed, using python language.
 \subsubsection{Content outline}
 This manuscript consists of 5 chapters. In \textbf{chapter 2}, a short review introduces the state-of-art in the literature of 
 macroscopic modelling of solidification with transport of energy, species, mass and momentum. \textbf{Chapter 3} provides details
-of the energy conservation equation then introduces a new temperature-based solver compatible with thermodynamic databases,
+of the energy conservation equation and introduces a new temperature-based solver compatible with thermodynamic databases,
 % to predict, at equilibrium, variable solidification paths during macrosegregation.
 \textbf{Chapter 4} focuses on the mass and momentum conservation equations 
 and their derivation in the context of a single metallic domain (i.e. without 
@@ -703,7 +702,7 @@ application, this chapter shows a breakthrough comparison between purely macrosc
 and mesoscopic-macroscopic approaches in predicting the hydrodynamic instabilities 
 that lead to channel segregation.
 The derived energy, mass and momentum equations for the monodomain model are revisited 
-in \textbf{chapter 5} in the context of the level set method to predict solidification shrinkage.
+in \textbf{chapter 5} in the context of the level set method to take into account solidification shrinkage.
 The influence of shrinkage on macrosegregation is then studied in two different applications.
 
 % --------------------------------------------------------------------
