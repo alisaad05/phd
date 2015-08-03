@@ -47,7 +47,7 @@ and solid mechanics for many years at CEMEF.
 {0.75}
 {Chapter4/Graphics/minielement/minielement.pdf}
 {Schematic of 2D and 3D stable P1+/P1 finite elements, respectively triangle and tetrahedron, with velocity and pressure fields interpolation order.
-The dots represent the nodes while the squares represent the bubbles.}
+The dots represent the nodes while the squares represent the additional degrees, the \emph{bubbles}. }
 \label{fig:minielement}
 \end{figureth}
 %--------------------------------------------------------
@@ -535,8 +535,8 @@ the final macrosegregation pattern, hence the final phase distribution. This is 
 center of the bottom and top surfaces of the cylinder in \cref{fig:tp_macroseg_influence}. With no macrosegregation, in 
 \cref{fig:tp_nomacroseg}, the final distribution of the phases is the same at time \num{12000} s, while with macrosegregation, 
 in \cref{fig:tp_withmacroseg}, variations of the cementite and ferrite are revealed. 
-The segregated channels inside the cylinder and on the boundary, are often termed \emph{freckles} 
-when they consist of visible equiaxed grains \citep{copley_origin_1970}.
+The segregated channels inside the cylinder and on the boundary, often lead to \emph{freckles}, 
+where they consist of visible equiaxed grains \citep{copley_origin_1970}.
 This defect is marked by a noticeable gradient of composition and phase fractions, possibly changing the mechanical 
 properties in the channels, hence the overall mechanical behaviour of the alloy . The coupling of the Tsolver with 
 thermodynamic tabulations is thus demonstrated. It shows the ability to predict complex solidification paths, even if 
@@ -587,7 +587,7 @@ crystals, thus referring to the term “freckle”. In large steel ingots, these
 \citep{pickering_macrosegregation_2013}. 
 
 Considering a binary alloy with a partition coefficient less than unity and having a negative liquidus slope, 
-freckles may form by the following mechanisms: i) solute partitioning occurs at the scale of dendrite arms and 
+channel segregates may form by the following mechanisms: i) solute partitioning occurs at the scale of dendrite arms and 
 solute is rejected in the melt, ii) local composition gradients are intensified resulting in an increase of the 
 solutal buoyancy force in the mushy zone, iii) solute-rich pools are formed, causing segregation chimneys and convective plumes in the melt, 
 iv) which lead to partial remelting and transport of dendrites, continuous solute feeding and locally delayed solidification,
@@ -608,7 +608,7 @@ little regard to the microstructural features. Considering the spatial resolutio
 order of the primary dendrite arm spacing, a fluid flow computation in the 3D casting part is also very demanding and not 
 common in the literature. 
 Among  other criteria, the dimensionless Rayleigh number has been identified as a good indicator 
-for  the occurrence of segregation channels or a subsequent freckle defect. The dependence of freckling tendency on the 
+for  the occurrence of segregation channels and freckle defects. The dependence of freckling tendency on the 
 Rayleigh number has been studied numerically 
 and compared to experimental observations, as done by \citep{ramirez_evaluation_2003}.
 %--------------------------
@@ -771,25 +771,31 @@ Time step 				& $\dt$ & \num{0.1} 	& \si{\second}
 \end{tabulate}
 %-----------------
 %
+
+% -----------------------
 \subsubsection{Results}
+% -----------------------
+
 The first case labeled FE-G1R1L0 is a reference case that features a low gradient (G1), low cooling rate (R1), 
 and without any lateral cooling (L0), ensuring that isotherms retain a planar shape. These simulation parameters 
 defined in \cref{table:data_case_InGa}, result in a negligible fluid flow reaching a maximum velocity of \SI{4d-8}{\milli\uvelocity} in the bulk. 
 Accordingly, the solidification front remains stable and follows the planar isotherms; no chimneys are observed. 
 The average composition field is thus only little modified in the mushy zone as shown in \cref{fig:freckles_fe} (mind the values of the scale limits). 
+
 It is concluded that velocity in the bulk is not high enough to initiate instabilities. In the next case, FE-G1R1L1, 
 a cooling flux with a constant and very low value of the heat transfer coefficient is imposed on both vertical lateral 
-surfaces to initiate a downward fluid flow by thermal buoyancy. Once solidification starts, solute-rich regions start 
+surfaces to initiate a downward fluid flow due to thermal buoyancy. Once solidification starts, solute-rich regions start 
 to appear on the sides of the domain. Despite the visible concentration difference between these lateral regions and 
 the central mush seen in \cref{fig:freckles_fe}, their diffuse and uniform aspect indicates no resemblance to segregated channels. We keep the 
 same configuration but increase the vertical gradient from \SI{0.2}{\ugradT} (G1) to \SI{1.5}{\ugradT} (G2) in the case FE-G2R1L1. 
+
 The isotherms become closer to each over hence reducing the depth of the mushy zone for the same time increment compared 
 to the preceding case. The rejected gallium solute locally accumulates at several different positions in the mushy zone, 
 stemming from the base of the cell, with a maximum of \SI{0.7}{\ucomposition}Ga above nominal composition. 
 This is the consequence of segregation of gallium rich liquid being lighter than the above liquid bulk and creating an 
-upward buoyancy force. The positive segregation and subsequent Ga-rich chimneys then rise up with an upward velocity 
+upward buoyancy force. A positive segregation and subsequent Ga-rich chimneys then rise up with an upward velocity 
 component slightly greater than \SI{1}{\milli\uvelocity}.
-%
+
 %-----------------
 \begin{figure}[htbp]
 \centering
@@ -824,7 +830,7 @@ process parameters on the freckling tendency. The black line represents the liqu
 \label{fig:freckles_fe}
 \end{figure}
 %-----------------
-%
+
 \Cref{fig:planche_fe} gives a series of snapshots for case FE-G2R1L1 at three different times. Among the two clear distinct 
 plumes that are visible at \SI{250}{\utime} in \cref{fig:freckles_fe}, only one has led to a channel formation,
 that remains in \cref{fig:planche_fe} at \SI{500}{\utime}. 

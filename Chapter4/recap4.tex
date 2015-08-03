@@ -1,3 +1,26 @@
 \clearpage
 \section*{Résumé chapitre 4}
 
+Ce 4$^\circ$ chapitre est dédié à la macroségrgation induite par le mouvement de la phase liquide par convection thermosolutale,
+à solide fixe et en absence de retrait à la solidification ($\rhos=\rhol$).
+Pour cela, nous introduisons dans un premier temps les principaux schémas de résolution des équations Navier-Stokes selon la façon
+dont ils répondent aux critères de stabilité de Babuška-Brezzi: les éléments finis
+mixtes et la méthode mutli-échelles variationelle (Variational MultiScale). 
+
+En choisissant la seconde méthode, nous donnons les détails de la formulation éléments finis correspondante qui régit les écoulements dans la phase liquide
+loin du front de solidification, ainsi qu'au sein de la zone dendritique pâteuse. Le principal moteur de mouvement liquide est la convection thermosolutale.
+Celle-ci est générée par la densité du liquide qui varie à la fois avec la température et la composition intrinsèque de la phase liquide, contribuant ainsi 
+à la redistribution des éléments d'alliage.  
+On s'intéresse à ce type de méso-macroségrégation en montrant une application de solidification dirigée, traitée dans le chapitre 3 en diffusion pure. 
+Nous montrons qu'en fin de solidification, les écoulements créent des canaux à forte ségrégation positive en peau et dans le coeur de la pièce. 
+
+L'investigation de ce défaut fait ensuite l'objet d'une confrontation qualitative entre la simulation et une expérience de solidification. Cette dernière consite en un 
+banc de solidification dirigée d'un alliage d'indium-gallium à bas point de fusion. Un suivi en caméra rapide permet de suivre la formation de la microstructure
+en fonction du temps. Par le biais de la simulation, on teste d'abord la performance du modèle purement macroscopique, i.e. avec suivi indirect 
+des structures et phases via leur fraction volumique. Les résultats montrent que les canaux de ségrégation sont visibles mais sont moins nombreux et moins
+stables que l'on prédit expérimentalement. 
+
+Ensuite, on rajoute au modèle précedent une couche de modélisation à l'échelle mésoscopique pour suivre directement
+les enveloppes des grains. Cette fois, la comparaison avec l'exprience montre que nous prédisons mieux qualitativement l'interaction complexe entre 
+structure de solidification, l'écoulement au sein de la zone pâteuse et la ségrégation conséquente. Une étude paramétrique permet après d'étudier la sensibilité
+de l'occurence et la forme des canaux ségrégés par rapport aux différents paramètres de contrôle du procédé.
