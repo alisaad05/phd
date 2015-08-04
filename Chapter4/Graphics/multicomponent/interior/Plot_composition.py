@@ -1,5 +1,5 @@
 # check http://matplotlib.org/users/customizing.html
-sz=20
+sz=17
 import numpy as np
 import matplotlib.pyplot as plt
 from matplotlib import rc
@@ -8,8 +8,10 @@ rc('text', usetex=True)
 rc('axes', labelsize=sz)
 rc('xtick', labelsize=sz)
 rc('ytick', labelsize=sz)
-rc('legend', fontsize=16)
-
+rc('legend', fontsize=13)
+rc('axes', titlesize=sz)
+rc('grid', alpha=0.5)
+plt.rcParams['text.latex.preamble']=[r"\usepackage{utopia}"]
 
 dataZZ = np.genfromtxt('data_268_ZZ.csv', delimiter=",", 
 			skip_header=0, skip_footer=0, names=True , 
@@ -44,7 +46,7 @@ xCr_rel2 = (xCr2-30.0)*100/30.0
 #ax1.tick_params(axis='y', left='off', right='off', labelbottom='off')
 ax1.set_ylabel('Distance from chill [m]')
 #ax1.tick_params(axis='x', which='both', bottom='off', top='off', labelbottom='off')
-ax1.set_xlabel(r'$\left( \langle  w_i \rangle - \langle  w_i \rangle_0 \right) / \langle  w_i \rangle_0$')
+ax1.set_xlabel('Relative segregation'+r'$\frac{\langle  w_i \rangle - \langle  w_i \rangle_0 }{\langle  w_i \rangle_0 }$ [\%]' )
 ax1.set_xlim(-8,8)
 ax1.set_ylim(ymin=-0.005, ymax=0.08)
 ax1.plot(xC_rel1,y1 , color= c1, linestyle= lstyle1, marker= 's', markersize=ms, linewidth=width1,   markevery=NbMarker, alpha=alphaT,   label= "carbon - ZZ'"   )
@@ -58,5 +60,5 @@ legend = ax1.legend(loc='best', fancybox=True, shadow=True)
 ax1.grid(True)
 
 # plt.show()
-plt.savefig('final_segregation_ZZ_FF.png', dpi=300, bbox_inches='tight')
+# plt.savefig('final_segregation_ZZ_FF.png', dpi=300, bbox_inches='tight')
 plt.savefig('final_segregation_ZZ_FF.pdf', bbox_inches='tight')

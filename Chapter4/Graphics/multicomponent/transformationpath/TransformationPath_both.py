@@ -9,9 +9,9 @@ rc('axes', labelsize=sz)
 rc('xtick', labelsize=sz)
 rc('ytick', labelsize=sz)
 rc('legend', fontsize=13)
-rc('axes', titlesize=20)
+rc('axes', titlesize=sz)
 rc('grid', alpha=0.5)
-# http://matplotlib.org/users/customizing.html
+plt.rcParams['text.latex.preamble']=[r"\usepackage{utopia}"]
 
 #####################
 ########## NO  MACRO
@@ -51,7 +51,7 @@ ax1.plot(x, y3, color= c3, linestyle= ls_dashed, marker= m3, markersize=ms, line
 ax1.plot(x, y4, color= c4, linestyle= ls_dashed, marker= m4, markersize=ms, linewidth=width1,   markevery=NbMarker, alpha=alphaT, label="M7C3"  )
 ax1.plot(x, y5, color= c5, linestyle= ls_dashed, marker= m5, markersize=ms, linewidth=width1,   markevery=NbMarker, alpha=alphaT, label="CEM"  )
 
-ax1.set_title('(a)')
+ax1.set_title('(a) Without macrosegregation')
 ax1.set_ylabel("Phase fraction [-]")
 # ax1.set_xlabel('Time (sec)')
 ax1.set_xlim(xmax=12000)
@@ -78,7 +78,7 @@ ax2.plot(x, y3, color= c3, linestyle= ls_dashed, marker= m3, markersize=ms, line
 ax2.plot(x, y4, color= c4, linestyle= ls_dashed, marker= m4, markersize=ms, linewidth=width1,   markevery=NbMarker, alpha=alphaT, label="M7C3"  )
 ax2.plot(x, y5, color= c5, linestyle= ls_dashed, marker= m5, markersize=ms, linewidth=width1,   markevery=NbMarker, alpha=alphaT, label="CEM"  )
 
-ax2.set_title('(b)')
+ax2.set_title('(b) With macrosegregation')
 ax2.set_ylabel("Phase fraction [-]")
 ax2.set_xlabel('Time (sec)')
 ax2.set_xlim(xmax=12000)
