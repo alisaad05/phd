@@ -294,12 +294,12 @@ In the literature, no substantial references were found to backup the formulatio
 be used in the current work though. It is worth mentioning that \citet{zabaras_stabilized_2004} has invoked the necessity
 to stabilise Darcy terms in a generalised Navier-Stokes/Darcy P1/P1 formulation, 
 and introduced what they call Darcy-Stabilising/Petrov-Galerkin (DSPG), using local non-dimensional numbers of Darcy ($Da$) and
-Prandtl ($Pr$) numbers expressing respectively the ratio of local permeability to a characteristic length $L$ and the ratio of
+Prandtl ($Pr$) numbers expressing respectively the ratio of local permeability to a characteristic length $L_c$ and the ratio of
 momentum diffusivity, $\nu^l$, to heat diffusivity in the liquid, $\alpha^l$:
  %----------------
 \begin{align}
 \label{eq:supg_darcy}
-& \tau_\text{darcy} = \frac{Da}{Pr} \brac{\frac{\gl}{1-\gl}}^2= \frac{\alpha^l \K}{\nu^l L^2} \brac{\frac{\gl}{1-\gl}}^2
+& \tau_\text{darcy} = \frac{Da}{Pr} \brac{\frac{\gl}{1-\gl}}^2= \frac{\alpha^l \K}{\nu^l L_c^2} \brac{\frac{\gl}{1-\gl}}^2
 \end{align}
 %----------------
 Last, the definitions of the remaining stabilisation parameters are given as follows:
@@ -418,7 +418,7 @@ fraction contours are very close, indicating that temperature distributions and 
 both solvers predictions. 
 
 Regarding the computation, the \emph{Tsolver} resolution proves to be 
-faster than the \emph{Hsolver} used by \citet{carozzani_direct_2013}: a process time of 7000s required a computation time of 90 hours 
+faster than the \emph{Hsolver} used by \citet{carozzani_direct_2013}: a process time of 7000 s required a computation time of 90 hours 
 13 minutes compared to 114 hours 21 minutes spent by the enthalpy resolution with 32 cores on the same cluster. The gain factor 
 is about 20\%.
 
@@ -672,7 +672,7 @@ to the experimental hardware, procedure and data analysis can be found in \citep
 \begin{figure}[htbp]
 \centering
   %------------
-  \begin{subfigure}{0.5\textwidth}
+  \begin{subfigure}{0.7\textwidth}
     \centering
 	\includegraphics[width=\textwidth]{Chapter4/Graphics/freckle_exp/setup.pdf}
 	\caption{}
@@ -691,12 +691,12 @@ to the experimental hardware, procedure and data analysis can be found in \citep
   %------------------------------
   %\vskip\baselineskip
   %------------------------------
-  \begin{subfigure}{0.5\textwidth}
-    \centering
-	\includegraphics[width=\textwidth]{Chapter4/Graphics/freckle_fe/config.pdf}
-	\caption{}
-    \label{fig:simulation_domain}
-  \end{subfigure}
+ %  \begin{subfigure}{0.5\textwidth}
+ %    \centering
+	% \includegraphics[width=\textwidth]{Chapter4/Graphics/freckle_fe/config.pdf}
+	% \caption{}
+ %    \label{fig:simulation_domain}
+ %  \end{subfigure}
    %------------
 \caption{Illustration of the benchmark experiments for in-situ observation of segregated channels
 formation using X-Ray radiography with (a) a schematic of the cell and (b) a typical image 
@@ -704,7 +704,6 @@ of the microstructure formed during directional solidification of an \bin{In}{75
 \label{fig:experimental_freckles}
 \end{figure}
 %-----------------
-
 %--------------------------
 \subsection{Macroscopic scale simulations}
 %--------------------------
@@ -718,11 +717,33 @@ remains.
 
 To qualitatively replicate this effect while simplifying the cell geometry, a \SI{22 x 22 x 1}{\milli \uvolume}  
 cuboid cell is considered with small cooling fluxes on its lateral vertical side surfaces computed using a constant heat transfer 
-coefficient, $\hext$, and a constant environment temperature, $\Text$. Temperatures at the bottom and top surfaces, 
-respectively $\Ttop$  and $\Tbottom$, are imposed in a way to maintain a constant vertical gradient, $\vec{G}$, thus linearly 
-decreasing over time with the same cooling rate R. Both square faces of the geometry, having an area of \SI{22 x 22}{\milli \uarea}, 
+coefficient, $\hext$, and a constant environment temperature, $\Text$, as shown in \cref{fig:freckle_simu_bc}. On the same figure, 
+temperatures at the bottom and top surfaces, respectively $\Ttop$  and $\Tbottom$, are imposed in a way to maintain a 
+constant vertical gradient, $\vec{G}$, thus linearly 
+decreasing over time with the same cooling rate $R$. Both square faces of the geometry, having an area of \SI{22 x 22}{\milli \uarea}, 
 are adiabatic. In spite of taking cell dimensions similar to benchmark experiments presented above, the cell thickness 
-is increased from \SI{150}{\micro \metre} to \SI{1}{\milli \metre}. This facilitates the computation and will later be subject to discussion. 
+is increased from \SI{150}{\micro \metre} to \SI{1}{\milli \metre}. One of the main obstacles of simulating a \SI{150}{\micro \metre}-thick
+cell is the number of elements in the thickness. An insufficient number may lead to incorrect velocity computation in the cell thickness,
+resulting in inaccurate channel segregation prediction. In general, a number around 5 to 8 elements is needed to get a better representation of the fluid motion.
+When the domain thickness is \SI{150}{\micro \metre}, imposing 8 elements in the thickness results in a huge homogeneous isotropic mesh containing
+about \num{e9} elements, the mesh size being equal to \SI{0.018}{\milli \metre}. % 0.01875
+For now, this would only lead to slower simulations 
+and therefore more complicated analysis with the large data files. Instead, we choose to keep the same number of thickness elements,
+but increase the thickness instead. That way, the resulting isotropic mesh would reduce to \num{2.5e4} elements. Therefore, we keep the latter
+thickness as the current study is limited to qualitative comparisons, but the mesh size is imposed to about $2\sdas$=\SI{140}{\micro \metre}, and 
+the fixed finite element grid contains around \num{2e6} elements and \num{3e5} degrees of freedom. 
+
+%-----------------
+\begin{figure}[htbp]
+\centering
+\includegraphics[width=0.5\textwidth]{Chapter4/Graphics/freckle_fe/config.pdf}
+\captionsetup{singlelinecheck=off}
+\caption[.]{Computational geometry used for simulating channel segregation phenomena, along with top and bottom imposed boundary temperatures, $\Ttop$
+and $\Tbottom$, and lateral Fourier cooling fluxes using a heat transfer coefficient and an external temperature, $\hext$ and $\Text$. 
+The resulting temperature gradient, $\vec{G}$, is parallel to the vertical z-axis.}
+\label{fig:freckle_simu_bc}
+\end{figure}
+%----------------- 
 
 %--------------------------------
 \begin{table}[htbp]
@@ -733,9 +754,9 @@ Parameters are varied from (G1) low to (G2) high gradient and (L0) no, to (L1) l
 \resizebox{\columnwidth}{!}{%
 {\tabulinesep=1.1mm \begin{tabu}{C{2cm} C{3cm} C{2.5cm} C{3cm} C{4.5cm}}
 \tabucline[1pt]{-}
-\textbf{Case} & Vertical gradient & Cooling rate & Lateral cooling & Initial temperature \\
-			  &     G 			  & 	R		 & 			L \quad ($\hext$, $\Text$)	& ($T_{top}$, $T_{bottom}$) \\
- 			  & [\si{\ugradT}] & [\si{\uCR}] &  [\si{\uhconvec}, \si{\udegC}] &  [\si{\udegC}]\\\tabucline[1pt]{-}
+\textbf{Case} & 	Vertical gradient 		 & Cooling rate & Lateral cooling 				& Initial temperature \\
+			  &     $\norm{\vec{G}}$         & 	$R$		 	& L \quad ($\hext$, $\Text$)	& ($T_{top}$, $T_{bottom}$) \\
+ 			  & [\si{\ugradT}] 				& [\si{\uCR}] 	&  [\si{\uhconvec}, \si{\udegC}] &  [\si{\udegC}]\\\tabucline[1pt]{-}
 %-----------------------------
 FE-G1R1L0 & G1:0.2 & R1:-0.01 & L0:(0,0) & (29.75, 25.25)  \\ 
 FE-G1R1L1  & G1:0.2 & R1:-0.01 & L1:(20,0) & (29.75, 25.25)  \\ 
@@ -749,7 +770,7 @@ FE-G2R1L1  & G2:1.5 & R1:-0.01 & L1:(20,0) & (58.25, 25.25)  \\\tabucline[1pt]{-
 
 Materials properties are provided in \cref{table:data_case_InGa} while initial and boundary conditions are given in \cref{table:simulation_InGa_fe}. 
 A series of computations is performed to understand the influence of process parameters on the final macrosegregation pattern. 
-In directional growth, the main parameters are the vertical temperature gradient, $\vec{G}$, and the cooling rate, R, since they control the isotherms 
+In directional growth, the main parameters are the vertical temperature gradient, $\vec{G}$, and the cooling rate, $R$, since they control the isotherms 
 speed. However, the effect of a higher lateral cooling is also considered below by increasing the heat transfer coefficient,
 $\hext$. Finally, the grain structure is another crucial parameter that drastically changes the analysis inasmuch as growth 
 undercooling is fundamental to determine the onset of solidification. 
@@ -929,7 +950,7 @@ They attempted to draw a correlation (freckling criterion) between the process p
 without any size or shape constraints, i.e. any flow instability that may appear and form the smallest freckle is considered. 
 
 To accomplish this, they took a number of experiments done independently by \citet{pollock_breakdown_1996} and \citet{auburtin_freckle_2000} 
-where the casting parameters vary one at a time: casting speed (R), thermal gradient ($\vec{G}$), angle ($\theta$) with respect to vertical 
+where the casting parameters vary one at a time: casting speed ($R$), thermal gradient ($\vec{G}$), angle ($\theta$) with respect to vertical 
 orientation and nominal composition ($\avg{w_0}$), giving a database for 6 different superalloys. The experimental results were 
 compared to a modified Rayleigh number that accounts for the various parameters. It allowed them to define a threshold for freckle 
 formation in Nickel-base superalloys, as well as Pb-Sn alloys.
@@ -1058,7 +1079,7 @@ rate and (L0) no, (L1) low and (L2) high lateral cooling.}
 {\tabulinesep=1.1mm \begin{tabu}{C{3cm} C{3cm} C{3cm} C{3.0cm} C{3.5cm} C{3.2cm}}
 \tabucline[1pt]{-}
 \textbf{Case}  & Vertical gradient & Cooling rate & Lateral cooling & Initial temperature  & Nucleation  \\
-			  &     G 			  & 	R		 & 			L \quad ($\hext$, $\Text$)	& ($T_{top}$, $T_{bottom}$) & ($n_\text{max}$, $\Delta T_N$, $\Delta T_\sigma$) \\
+			  &     $\norm{\vec{G}}$ 	   & 	$R$		 & 			L \quad ($\hext$, $\Text$)	& ($T_{top}$, $T_{bottom}$) & ($n_\text{max}$, $\Delta T_N$, $\Delta T_\sigma$) \\
  			  & [\si{\ugradT}] & [\si{\uCR}] & [\si{\uhconvec}, \si{\udegC}] & [\si{\udegC}] & [\si{\per \uarea}, \si{\udegC}, \si{\udegC}] \\\tabucline[1pt]{-}
 %-----------------------------
 CAFE-G2R1L1  & G2:1.5 & R1:-0.01 & L1:(20,0) & (58.25, 25.25)  & (\num{e6}, 1, \num{0.2}) \\ 
@@ -1117,9 +1138,10 @@ on a cut plane at the center of the cell at 500 s, 1000 s and 1500 s.}
     \label{fig:exp_highgrad}
   \end{subfigure}
    %------------
-\caption{Snapshots of dendritic structure and composition field 
+\captionsetup{singlelinecheck=off}
+\caption[.]{Snapshots of dendritic structure and composition field 
 obtained from two solidification experiments at a cooling rate 
-R=\SI{-0.01}{\uCR} and temperature gradients of (a) G=\SI{1.1}{\ugradT} and (b) G=\SI{1.3}{\ugradT}} 
+$R$=\SI{-0.01}{\uCR} and temperature gradients of (a) $\norm{\vec{G}}$=\SI{1.1}{\ugradT} and (b) $\norm{\vec{G}}$=\SI{1.3}{\ugradT}.} 
 \label{fig:experimental_freckles_gradients}
 \end{figure}
 %-----------------
@@ -1142,7 +1164,7 @@ liquid of the mushy zone (basically following the lever rule approximation for a
 decreases, leading to a lower gradient of the solutal buoyancy force. In turn, more solute accumulates 
 close to the front and locally reduces the growth velocity, thus creating larger “valleys” or steps 
 with higher solute content. The irregular geometry of the front is also influenced by the dendrite tip 
-growth kinetics model. The velocity of the isotherms is the ratio of the cooling rate, R, to the 
+growth kinetics model. The velocity of the isotherms is the ratio of the cooling rate, $R$, to the 
 temperature gradient, $\vec{G}$. Consequently, the isotherm velocity in case G1 is larger than in G2, since 
 cooling rate, R1, is the same in both cases. Moreover, because the dendrite tip velocity is a monotonously 
 increasing function with the undercooling \citep{gandin_boundary_2003}, the latter for CAFE-G1R1L1 is larger 
@@ -1247,9 +1269,10 @@ rising solute-rich liquid with descending In-rich fluid. This mechanism also cau
     \label{fig:exp_instability}
   \end{subfigure}
    %------------
-\caption{Snapshots of dendrite structure and composition field from two 
+\captionsetup{singlelinecheck=off}
+\caption[.]{Snapshots of dendrite structure and composition field from two 
 solidification experiments conducted at a cooling rate 
-R=\SI{-0.01}{\uCR} and a temperature gradient =\SI{1}{\ugradT}: (a) “pulsing” plumes, 
+$R$=\SI{-0.01}{\uCR} and a temperature gradient $\norm{\vec{G}}$=\SI{1}{\ugradT}: (a) “pulsing” plumes, 
 (b) continuous plume, (c) upcoming plume instability.} 
 \label{fig:experimental_freckles_regimes}
 \end{figure}
@@ -1349,17 +1372,22 @@ following time increments: 450 s, 1000 s and 1500 s.}
 \end{figureth}
 %----------------------
 
-%-----------------------
-\begin{figureth}
-{0.6}
-{Chapter4/Graphics/freckle_exp/exp_G1R1.png}
-{Snapshot of dendritic structure and composition field from a 
-solidification experiment recorded at 1000 s for a cooling rate R=\SI{-0.01}{\uCR} and a temperature gradient G=\SI{-1}{\ugradT}.}
+%-----------------
+\begin{figure}[htbp]
+\centering
+\includegraphics[width=0.6\textwidth]{Chapter4/Graphics/freckle_exp/exp_G1R1.png}
+\captionsetup{singlelinecheck=off}
+\caption[.]{Snapshot of dendritic structure and composition field from a 
+solidification experiment recorded at 1000 s for a cooling rate $R$=\SI{-0.01}{\uCR} and a temperature gradient $\norm{\vec{G}}$=\SI{-1}{\ugradT}.}
 \label{fig:exp_G1R1}
-\end{figureth}
-%-----------------------
+\end{figure}
+%----------------- 
 
+
+%--------------------------------
 \subsection{Mono-grain freckles}
+%--------------------------------
+
 All CAFE simulations were performed considering a normal classic heterogeneous nucleation at 
 the surface of the mould where the metal is cooled down. However, as the number of grains is
 not negligible, the subsequent fluid-structure interaction between dendrites, simply represented by an isotropic permeability 
@@ -1369,6 +1397,7 @@ perfectly smooth, and therefore nucleation can be triggered by a wetting mechani
 which can trigger nucleation heterogeneously in the liquid bulk. 
 Regardless of this experimental limitation, this type of simulations allows simpler understanding as the grain growth is not 
 disturbed by another neighbouring grain, it grows while exclusively interacting with the liquid phase.
+
 %----------------------------
 \ifthenelse{\boolean{enable_animations}}%
 	{% then
