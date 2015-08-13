@@ -333,28 +333,45 @@ Re_{\Ohm_E} = \frac{\norm{\vit_{\Ohm_E}} h_\text{stream}}{2 \nu^l}
 %------------
 %------------------------------------------
 \subsection{Implementation}
-The final matrix definition of the weak form of \cref{eq:vms_strong} is given by:
-%----------------
-\begin{align}
-\label{eq:matrix_form}
-\begin{pmatrix}
- A_{vv} & A_{vp}\\ 
- A_{pv} & A_{pp} 
-\end{pmatrix}
-\begin{pmatrix}  \vit\\  \pl \end{pmatrix}
-= \binom{B_{v}}{B_{p}}
-\end{align}
+% The final matrix definition of the weak form of \cref{eq:vms_strong} is given by:
+% %----------------
+% \begin{align}
+% \label{eq:matrix_form}
+% \begin{pmatrix}
+%  A_{vv} & A_{vp}\\ 
+%  A_{pv} & A_{pp} 
+% \end{pmatrix}
+% \begin{pmatrix}  \vit\\  \pl \end{pmatrix}
+% = \binom{B_{v}}{B_{p}}
+% \end{align}
 %----------------
 %
+
 %--------------------------------------------------
-\subsubsection{CFL condition}
-%
+\subsubsection{Time step}
+%--------------------------------------------------
+
+One solving a convective transport problem, the time step may lead to a transport inaccuracy
+if the so-called Courant–Friedrichs–Lewy (CFL) condition is not satisfied. The latter imposes that
+the optimal time step value be determined from the mesh size, $h$, and the velocity, $\vit$, over the domain as follows:
+
+\begin{align}
+\label{eq:cfl_condition}
+\Delta t \leq \Delta t_\text{CFL} = \text{min}_\Omega \frac{h}{\vit}
+\end{align}
+
+In this work, we chose to compute an initial optimal time step using \cref{eq:cfl_condition}, but keep it
+constant for all simulations.
+
+%--------------------------------------------------
 \subsubsection{Integration order}
-%
-Using P1 linear elements implies a P2 integration ? what are the advantages (time) and limitations ?
+%--------------------------------------------------
 
-
-
+The integrals terms in \cref{eq:weakform_after} are interpolated at predefined integration points.
+The number of these points needed to evaluate the integrals depends on the form of finite elements
+as well as on the polynomial degree that we want to integrate. The higher the degree, the more points 
+are needed to get the most accurate results. Therefore special care should be given choosing an integrator
+degree to solve the previous Navier-Stokes system
 
 
 %-------------------------------------------------------------
