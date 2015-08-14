@@ -367,11 +367,11 @@ constant for all simulations.
 \subsubsection{Integration order}
 %--------------------------------------------------
 
-The integrals terms in \cref{eq:weakform_after} are interpolated at predefined integration points.
+The quadratic integrals terms in \cref{eq:weakform_after} are interpolated at predefined integration points.
 The number of these points needed to evaluate the integrals depends on the form of finite elements
 as well as on the polynomial degree that we want to integrate. The higher the degree, the more points 
 are needed to get the most accurate results. Therefore special care should be given choosing an integrator
-degree to solve the previous Navier-Stokes system
+degree to solve the previous Navier-Stokes system.
 
 
 %-------------------------------------------------------------
@@ -412,7 +412,7 @@ experiment, inspired by \citet{hebditch_observations_1974} similar set up, has b
 revisited by \citet{hachani_experimental_2012} who performed the solidification with better 
 controlled conditions and using an increased number of samples for composition analysis. Recently, a successful 
 attempt to simulate the experiment was carried out by \citet{carozzani_direct_2013} relying on an enthalpy resolution. 
-All details regarding geometry, finite element discretization, material properties 
+All details regarding geometry, finite element discretisation, material properties 
 and boundary conditions can be found in the latter reference. 
 
 For this computation, solidification paths, phase compositions and phase enthalpies were determined by a thermodynamic 
@@ -507,7 +507,7 @@ Solidification ends at around \num{2475} s, the last liquid solidifying at the c
 reaches a maximum of \tern{Fe}{2.151}{C}{30.633}{Cr}, i.e. a relative positive macrosegregation, 
 $\brac{\wi-\wi_0}/\wi_0$, of 7.5\% for carbon and 2.1\% for chromium. The fact that the maximum average 
 composition is observed at the top, is verified in \cref{fig:final_interior_ZZ_FF} which shows the composition map in a 2D 
-vertical slice through the longitudinal axis of the cylinder. We can also see it in \cref{fig:final_segregation_ZZ_FF} where the 
+vertical slice through the longitudinal axis of the cylinder. We can also see it in \cref{fig:segregation_profile_ZZ} where the 
 relative composition profile are plotted at the end of the cooling process along the longitudinal cylinder 
 axis Z-Z’ and along the axis of the segregated channel, F-F’. 
 Segregation becomes more and more negative up to 1 cm from the chill, corresponding 
@@ -516,10 +516,19 @@ liquid; hence the solid composition also increases.
 
 The composition evolution trend for both solutes is similar: 
 an overall rise until positive segregation is achieved above \SI{5}{\centi\metre} from the 
-chill on ZZ' in \cref{fig:final_segregation_ZZ_FF}. 
+chill on ZZ' in \cref{fig:segregation_profile_ZZ}. 
 The positive macrosegregation intensifies when the profile is chosen at the center of 
 the segregated channel, negative segregation then becoming less pronounced.
 
+%--------------------------------
+\begin{figureth}
+{0.5}
+{Chapter4/Graphics/multicomponent/interior/final_interior_ZZ_FF.pdf}
+{Average composition map on a vertical section inside the sample, along two vertical lines: the cylinder revolution axis
+and another axis parallel to the latter but passing through a segregated solidified channel.}
+\label{fig:final_interior_ZZ_FF}
+\end{figureth}
+%--------------------------------
 
 %=====================================BIG LANDSCAPE FIGURE =====================================
 \begin{landscape}
@@ -535,33 +544,15 @@ composition and temperature distribution, while the right columns show the phase
 \end{landscape}
 %=====================================BIG LANDSCAPE FIGURE =====================================
 
+%--------------------------------
+\begin{figureth}
+{0.8}
+{Chapter4/Graphics/multicomponent/interior/final_segregation_ZZ_FF.pdf}
+{Relative macrosegregation profiles along the vertical revolution axis.}
+\label{fig:segregation_profile_ZZ}
+\end{figureth}
+%--------------------------------
 
-%-----------------
-\begin{figure}[htbp]
-\centering
-   %------------
-  \begin{subfigure}[t]{0.4\textwidth}
-    \centering
-	\includegraphics[width=1.0\textwidth]{Chapter4/Graphics/multicomponent/interior/final_interior_ZZ_FF.pdf}
-	\caption{}
-    \label{fig:final_interior_ZZ_FF}
-  \end{subfigure}
-  %------------------------------
-	\hfill  
-   %------------------------------
-  \begin{subfigure}[t]{0.55\textwidth}
-    \centering
-	\includegraphics[width=1.0\textwidth]{Chapter4/Graphics/multicomponent/interior/final_segregation_ZZ_FF.pdf}
-	\caption{}
-    \label{fig:final_segregation_ZZ_FF}
-  \end{subfigure}
-   %------------
-\caption{(a) average composition map on a vertical section inside the sample, with
- (b) relative macrosegregation profiles on the vertical revolution axis.} 
-\label{fig:final_ZZ_FF}
-\end{figure}
-%------------------
-%
 Beyond \num{2475} seconds, no variations of the average composition maps are observed since solidification is complete. 
 Nonetheless, as temperature decreases, solid-state transformations are 
 still possible as for the case with no macrosegregation. The formation of a cementite phase begins at the 
@@ -571,8 +562,9 @@ temperature between the bottom and top surfaces is due macrosegregation. Macrose
 variation in the cementite content. The solid state transformation ends shortly before \num{10500} s. The influence of the solidification process is clear on 
 the final macrosegregation pattern, hence the final phase distribution. This is better illustrated by drawing the time evolution of phase fractions at the 
 center of the bottom and top surfaces of the cylinder in \cref{fig:tp_macroseg_influence}. With no macrosegregation, in 
-\cref{fig:tp_nomacroseg}, the final distribution of the phases is the same at time \num{12000} s, while with macrosegregation, 
-in \cref{fig:tp_withmacroseg}, variations of the cementite and ferrite are revealed. 
+\cref{fig:tp_macroseg_influence}a, the final distribution of the phases is the same at time \num{12000} s, while in
+the presence of macrosegregation, 
+as shown in \cref{fig:tp_macroseg_influence}b, variations of the cementite and ferrite are revealed. 
 The segregated channels inside the cylinder and on the boundary, often lead to \emph{freckles}, 
 where they consist of visible equiaxed grains \citep{copley_origin_1970}.
 This defect is marked by a noticeable gradient of composition and phase fractions, possibly changing the mechanical 
@@ -581,35 +573,6 @@ thermodynamic tabulations is thus demonstrated. It shows the ability to predict 
 only at equilibrium. As for the computation time, the \emph{Tsolver} resolution performed better: 500 seconds of solidification 
 required 6 hours 14 minutes compared to 8 hours 6 minutes spent by the enthalpy resolution with 12 cores on the same machine. 
 The gain factor is about 22\%.
-%
-% %-----------------
-% \begin{figure}[htbp]
-% \centering
-%    %------------
-%   \begin{subfigure}[t]{0.6\textwidth}
-%     \centering
-% 	\includegraphics[width=\textwidth]{Chapter4/Graphics/multicomponent/transformationpath/TP_nomacro.pdf}
-% 	\caption{}
-%     \label{fig:tp_nomacroseg}
-%   \end{subfigure}
-%   %------------------------------
-%   \vskip\baselineskip
-%   %------------------------------
-%   \begin{subfigure}[t]{0.6\textwidth}
-%     \centering
-% 	\includegraphics[width=\textwidth]{Chapter4/Graphics/multicomponent/transformationpath/TP_macro.pdf}
-% 	\caption{}
-%     \label{fig:tp_withmacroseg}
-%   \end{subfigure}
-%    %------------
-% \caption{History of phase fraction (a) without macrosegregation and (b) with 
-% macrosegregation at the center of the (plain) bottom and (dashed) top surfaces 
-% of the cylinder surfaces, extracted from simulations displayed in (a) \cref{fig:planche_nomacroseg}
-% and (b) \cref{fig:planche_withmacroseg}.} 
-% \label{fig:tp_macroseg_influence}
-% \end{figure}
-% %------------------
-
 
 %=====================================BIG LANDSCAPE FIGURE =====================================
 \begin{landscape}
@@ -721,6 +684,19 @@ of the microstructure formed during directional solidification of an \bin{In}{75
 \label{fig:experimental_freckles}
 \end{figure}
 %-----------------
+
+%-----------------
+\begin{figure}[htbp]
+\centering
+\includegraphics[width=0.5\textwidth]{Chapter4/Graphics/freckle_fe/config.pdf}
+\captionsetup{singlelinecheck=off}
+\caption[.]{Computational geometry used for simulating channel segregation phenomena, along with top and bottom imposed boundary temperatures, $\Ttop$
+and $\Tbottom$, and lateral Fourier cooling fluxes using a heat transfer coefficient and an external temperature, $\hext$ and $\Text$. 
+The resulting temperature gradient, $\vec{G}$, is parallel to the vertical z-axis.}
+\label{fig:freckle_simu_bc}
+\end{figure}
+%----------------- 
+
 %--------------------------
 \subsection{Macroscopic scale simulations}
 %--------------------------
@@ -732,9 +708,9 @@ bending of the isotherm surfaces as shown in the experiment. The metallic coolin
 partly compensate for this effect. However, a residual horizontal component of the temperature gradient 
 remains. 
 
-To qualitatively replicate this effect while simplifying the cell geometry, a \SI{22 x 22 x 1}{\milli \uvolume}  
-cuboid cell is considered with small cooling fluxes on its lateral vertical side surfaces computed using a constant heat transfer 
-coefficient, $\hext$, and a constant environment temperature, $\Text$, as shown in \cref{fig:freckle_simu_bc}. On the same figure, 
+To qualitatively replicate this effect while simplifying the cell geometry, a cuboid cell measuring \SI{22 x 22 x 1}{\milli \uvolume}  
+is considered. On the lateral vertical side surfaces, small cooling fluxes are imposed, after being computed from a constant heat transfer 
+coefficient, $\hext$, and a constant external temperature, $\Text$, as shown in \cref{fig:freckle_simu_bc}. On the same figure, 
 temperatures at the bottom and top surfaces, respectively $\Ttop$  and $\Tbottom$, are imposed in a way to maintain a 
 constant vertical gradient, $\vec{G}$, thus linearly 
 decreasing over time with the same cooling rate $R$. Both square faces of the geometry, having an area of \SI{22 x 22}{\milli \uarea}, 
@@ -750,17 +726,6 @@ but increase the thickness instead. That way, the resulting isotropic mesh would
 thickness as the current study is limited to qualitative comparisons, but the mesh size is imposed to about $2\sdas$=\SI{140}{\micro \metre}, and 
 the fixed finite element grid contains around \num{2e6} elements and \num{3e5} degrees of freedom. 
 
-%-----------------
-\begin{figure}[htbp]
-\centering
-\includegraphics[width=0.5\textwidth]{Chapter4/Graphics/freckle_fe/config.pdf}
-\captionsetup{singlelinecheck=off}
-\caption[.]{Computational geometry used for simulating channel segregation phenomena, along with top and bottom imposed boundary temperatures, $\Ttop$
-and $\Tbottom$, and lateral Fourier cooling fluxes using a heat transfer coefficient and an external temperature, $\hext$ and $\Text$. 
-The resulting temperature gradient, $\vec{G}$, is parallel to the vertical z-axis.}
-\label{fig:freckle_simu_bc}
-\end{figure}
-%----------------- 
 
 %--------------------------------
 \begin{table}[htbp]
@@ -843,8 +808,8 @@ Liquidus temperature			& $T_l$ 				& \num{25.25} 			& \si{\udegC} 			\\
 Segregation coefficient			& $\k$					& \num{0.0165}			& \si{\ucomposition \per \ucomposition} \\
 Liquidus slope					& $m_l$					& \num{-2.73}			& \si{\udegK \per \ucomposition} \\
 \hline
-Gibbs-Thomson coefficient			&$\Gamma_{\text{GT}}$	&\num{2e-7}			& \si{\udegK \per \metre} 		\\ 	
-Heat capacity (liquid and solid)	&$C_p$ 					&\num{380.74}		& \si{\umasscapacity} 		\\ 	
+Gibbs-Thomson coefficient		&$\Gamma_{\text{GT}}$	&\num{2e-7}			& \si{\udegK \per \metre} 		\\ 	
+Heat capacity					&$C_p$ 					&\num{380.74}		& \si{\umasscapacity} 		\\ 	
 Enthalpy of fusion					&$L$ 					&\num{8.02d-4}		& \si{\umassenergy} 	\\ 	
 Diffusion coefficient of Ga in liquid In 		& $\Dl$ 	& \num{1.525d-9} 	& \si{\udiffusivity}  	\\ 
 Dynamic viscosity  				& $\mul$ 					& \num{2e-3} 		& \si{\uviscosity}  	\\ 
@@ -861,7 +826,7 @@ Reference temperature 			&$\Tref$					& \num{25.25} 		& \si{\udegC}  			\\
 %Ingot diameter 			&   	& \num{25e-3} 	& \si{\metre}  \\ 
 %Ingot length 			&   	& \num{75e-3} 	& \si{\metre}  \\ 
 \hline 
-CA cell size			&		& \num{30e-6}		& \si{\metre}  \\ 
+CA cell size			&		& \num{30e-6}	& \si{\metre}  \\ 
 FE mesh size 			&  		& \num{140e-6} 	& \si{\metre}  \\ 
 Time step 				& $\dt$ & \num{0.1} 	& \si{\second}
 }
@@ -1016,7 +981,7 @@ frame to the $\avg{100}$ directions that define the main growth axes of the dend
 selection is therefore solely controlled by growth competition.
 
 \subsubsection{Growth}
-Dendrite growth is driven by the chemical supersaturation $\Omega_\textbf{saturation}$, which is a 
+Dendrite growth is driven by the chemical supersaturation, $\Omega_\text{sat}$, which is a 
 dimensionless number proportional to the difference between the liquid composition at the dendrite 
 tip and the melt composition far away from the tip. The higher the supersaturation, the faster the 
 dendrite tip velocity. However, in the presence of a convective fluid, the chemical supersaturation 
