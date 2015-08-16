@@ -1819,9 +1819,13 @@ hence the generated flow is only due to the difference between solid and liquid 
 
 
 
+% ---------------------------------
 \section{3D application: reduced-gravity solidification}
+% ---------------------------------
 
+% ---------------------------------
 %\subsection{Introduction}
+% ---------------------------------
 As presented in the introductory chapter, the aim of the CCEMLCC project is to "reach a better
 understanding of surface defects formed during processing of steels from the liquid state" \citep{gandin_project_2014}.
 Among the several scientific topics being studied, the interaction between skin macrosegregation 
@@ -1838,9 +1842,14 @@ The current application is therefore compared to chill cooling experiments perfo
 with reduced gravitational forces ($\norm{\gravity} \in \crochet{10^{-1};10^{-5}}$\si{\uacceleration}).
 
 
+% ---------------------------------
 \subsection{Previous work}
+% ---------------------------------
 
+% ---------------------------------
 \subsubsection{TEMPUS experiment on parabolic flight}
+% ---------------------------------
+
 The TEMPUS experiment came as a first alternative for EML experiments in which accurate thermophysical and rheological characterisation were difficult to achieve.
 The flight consists of several cycles of free fall, a reduced-gravity environment is hence created, 
 allowing to use only a single RF coil to stabilise the position of the droplet, while the substrate comes into contact with the molten sample
@@ -1849,13 +1858,17 @@ Also, a high-speed camera records the solidification process, producing frames a
 This is useful to measure the front growth speed. 
 Each parabola cycle lasts for 50 s, offering an effective low gravity ($\norm{\gravity}\approx$\SI{e-1}{\uacceleration}) for about 20 s.
 
+% ---------------------------------
 \subsubsection{TEXUS sounding rocket}
+% ---------------------------------
+
 TEXUS-46 is the name of the sounding rocket mission that carries the experimental setup, 
 but for simplicity we will refer to the latter as being the TEXUS experiment. The setup is shown in \cref{fig:texus_exp}.
 The main difference with respect to parabolic flight experiments,
 TEXUS features solidification in near-zero gravitational fields and for extended periods of time (3 minutes). 
 We do not have an exact measurement of the gravitational field magnitude, but it is several orders
 less than Earth's gravity magnitude ($\norm{\gravity} \in \crochet{10^{-5};10^{-8}}$\si{\uacceleration}).
+
 %--------------
 \begin{figureth}
 % textwidth 
@@ -1901,7 +1914,10 @@ opening of the sample holder facing the camera.}
 \end{figureth}
 %--------------
 
+% --------------------------------------
 \subsubsection{Numerical contribution}
+% --------------------------------------
+
 A former numerical contribution was done by \citet{rivaux_simulation_2011} at CEMEF, as mentioned in the first chapter. 
 His model considered both the steel droplet and the ceramic chill in a Lagrangian formulation, i.e. each object is
 modelled using a separate deformable mesh. Conservation equations of mass, energy,
@@ -1910,9 +1926,10 @@ conservation was the sole equation solved on the chill mesh. The mechanical prob
 into two parts: fluid and mechanics and solid mechanics. For the first part, the momentum conservation in the liquid phase was solved using an
 incompressible P1/P1 SUPG-PSPG formulation of Navier-Stokes equations, i.e. 
 without any contraction for the liquid phase neither solidification shrinkage at the solid-liquid interface.
-The second part, solid mechanics,
-was solved using P1+/P1 formulation to predict solid deformation caused by the solid's thermal contraction as well as solidification shrinkage, 
+The second part, solid mechanics, was solved using P1+/P1 formulation to predict solid deformation caused by the 
+solid's thermal contraction as well as solidification shrinkage, 
 using an elastic-viscoplastic behaviour. 
+
 The simulation results showed that the total droplet deformation that has been
 observed in the experiments is not primarily due to solid deformation. The density jump
 between the solid and liquid phases at the solidification front is actually predominant. High
@@ -1922,8 +1939,14 @@ contact point. Another interesting point to comment is the computation of solidi
 shrinkage in the solid resolution, although this type of shrinkage does not generate stresses 
 in the solidifying alloy, compared to thermal shrinkage for instance.
 
+% --------------------------------------
 \subsection{Computational configuration}
+% --------------------------------------
+
+% --------------------------------------
 \subsubsection{Geometry and mesh}
+% --------------------------------------
+
 The simulation considers only 1/4 of the droplet-substrate-gas system, given the axial symmetry of the problem.
 Furthermore, the substrate is implicitly taken into account via a boundary condition, explained in the next section. 
 This is sufficient in the current context, because we are only interested in the energy transfer from the droplet to the substrate. 
@@ -1974,8 +1997,10 @@ $h_A$  									&	\num{6e-4} 		\\\tabucline[1pt]{-}
 %--------------------------------
 
 
-
+% -----------------------------------------------
 \subsubsection{Initial and boundary conditions}
+% -----------------------------------------------
+
 The thermal boundary conditions are set as follows: Heat loss by radiation is experimentally avoided, 
 therefore it is not considered in our model, hence all boundaries are considered adiabatic, except for the metal-substrate contact area,
 as previously mentioned. This surface is modelled by a Fourier condition with $\Text$=\SI{25}{\udegC} 
@@ -2071,33 +2096,41 @@ the transported zero-level of the distance.}
 %--------------------------------
 \begin{table}[htbp]
 \centering
-\caption{Nominal composition (\si{\ucomposition}) of the experimental \emph{b1} steel and its simulation equivalent alloys.}
+\caption{Nominal composition (\si{\ucomposition}) of the experimental \emph{b1} steel and its simulation equivalent binary, ternary and quaternary alloys, 
+respectively \emph{b1Bin}, \emph{b1Tern} and \emph{b1Quat}. }
 \label{table:texus_b1}
 {\tabulinesep=1.0mm \begin{tabu}{lcccccc}
 \tabucline[1pt]{-}
 \textbf{Alloy} & \textbf{C} & \textbf{Si} & \textbf{Mn} & \textbf{Al} & \textbf{S} & \textbf{P} \\\tabucline[1pt]{-}
 %-----------------------------
 \emph{b1}				&	0.105 	& 		0.268	&	0.636	&	\num{0.0067} 	&		0.009		&	0.0189		\\
-Binary \emph{b1}		&	0.105 	&		-		&	 -		&		-			&		-			&		-		\\
-Ternary \emph{b1}		&	0.105 	& 		0.268	&	 -		&		-			&		-			&	 	-		\\		
-Quaternary \emph{b1}	&	0.105 	& 		0.268	&	0.636 	&		-			&		-			& 		- 		\\\tabucline[1pt]{-}
+\emph{b1Bin}		&	0.105 	&		    -		&	 -		&		-			&		-			&		-		\\
+\emph{b1Tern}		&	0.105 	& 		0.268	&	 -		&		-			&		-			&	 	-		\\		
+\emph{b1Quat}	  &	0.105 	& 		0.268	&	0.636 	&		-			&		-			& 		- 		\\\tabucline[1pt]{-}
 %-----------------------------
 \end{tabu}}
 \end{table}
 %--------------------------------
+
+% -------------------------------
 \subsubsection{Choice of alloy}
+% -------------------------------
+
 Various steel grades were considered in the CCEMLCC projet. Each grade was assigned to a specific experiment. 
 We limit our study to the steel assigned for TEXUS missions, the grade is designated as "\emph{b1}" alloy. Its nominal 
 composition is given in \cref{table:texus_b1}. As our approach relies on therymodynamic tabulations, we show in 
 the next section that we can take into account the multicomponent alloy to predict segregation, by considering 
-first only one species, hence a binary Fe-C alloy. In a later step, we consider a ternary Fe-C-Si alloy. Finally, we consider
-a quaternary Fe-C-Mn-Si alloy. 
+first only one species, hence a binary Fe-C alloy, refer to as \emph{b1Bin} alloy. In a later step, we consider a ternary Fe-C-Si alloy, \emph{b1Tern}. 
+Finally, we consider a quaternary Fe-C-Mn-Si alloy, \emph{b1Quat}. 
 
 By performing the same reduced-gravity simulation while varying the alloy from binary to quaternary, we can study 
 how the varying solidification paths (as a consequence of macrosegregation) may affect the final droplet shape, 
 as the shrinkage profile is directly related to the solid fraction and its evolution with time.
 
+% -------------------------------
 \subsubsection{Parametric study: final shape prediction}
+% -------------------------------
+
 In this subsection, we focus on obtaining a comparable finale shape of the droplet between the experiment and simulation.
 To do so, we vary 2 main important parameters: first, the heat transfer coefficient of the metal-substrate contact surface
 controls the heat extraction and hence the solidification rate. Second parameter is the magnitude if the gravitational field,
@@ -2311,10 +2344,13 @@ The gravity vector points downwards.}
 %--------------
 
 
+% --------------------------------
 \subsection{Texus binary alloy}
+% --------------------------------
 
-Now that the optimal computational configuration is known, we proceed to simulate the solidification of the binary alloy given previously in \cref{table:texus_b1}. \\
-The nominal composition for this alloy is \bin{Fe}{0.105}{C}. In order to obtain accurate segregation results, a fine resolution mapping was performed
+The optimal computational configuration is now known, thus we proceed to simulate the solidification of the binary alloy given previously in \cref{table:texus_b1}.
+The nominal composition for this alloy is \bin{Fe}{0.105}{C}. In order to obtain accurate segregation results, 
+a fine resolution mapping was performed
 from equilibrium calculations, using 21 values of composition between a minimum of \SI{0.01}{\ucomposition} and \SI{1}{\ucomposition}. This is 
 equivalent for a composition step of \SI{0.0495}{\ucomposition}, with a temperature step of \SI{1}{\udegC} varying in the interval [\SI{20}{\udegC};\SI{1600}{\udegC}].
 The importance of choosing small steps in composition and temperature is to predict accurate solidification paths during mesosegregation (segregation length is limited to the droplet scale), 
@@ -2344,8 +2380,8 @@ The direction of the gravitational fields points downwards, depicted
 \end{figureth}
 %--------------
 
-Three solid phases are considered for the binary steel, a primary BCC phase, a peritectic FCC phase and a cementite phase. The latter can be obtained by cooling
-the sample at low temperatures to achieve solid-state transformation.
+Three solid phases are considered for the \emph{b1Bin} alloy: a primary BCC phase, a peritectic FCC phase and a cementite phase. 
+The latter can be obtained by cooling the sample at low temperatures to achieve solid-state transformation.
 The next point to discuss is segregation and fluid flow. With the chosen gravity acceleration, the liquid metal moves in the downward direction when the
 ceramic substrate comes from above the droplet. As soon as solidification takes place right after the metal-substrate contact, a BCC-rich mushy zone 
 forms near the contact surface. The abrupt phase change imposes a fast shrinkage rate, which tend to straighten the interface near the substrate, as we can observe in \cref{fig:bin_vs_exp}. 
@@ -2512,34 +2548,35 @@ Each column depicts a definite time with temperature and phase distribution.
 %--------------
 
 
-
+% ------------------------------------------------------
 \subsection{Texus ternary and quaternary alloys}
-We have presented earlier in this book how we predict macrosegregation in a Fe-C-Cr ternary alloy using the thermodynamic tabulation approach.
-In this section, we simulate reduced-gravity solidification of the \emph{b1} alloy, where the latter is considered as a ternary and then as a quaternary (cf \cref{table:texus_b1})
-alloy. For simplicity, we refer to them respectively by \emph{b1T} and \emph{b1Q}.
-The aim is to show on the one hand, we are able to scale our model to fit any multicomponent alloy (even if only assuming full or partial equilibrium), while
-on the other hand study how solidification paths vary by adding additional components, hence changing the shrinkage kinetics.
-By introducing additional chemical species, silicon for \emph{b1T}	then silicon and magnesium \emph{b1Q}, a new carbide phase may appear, the M$_7$C$_3$.
+% ------------------------------------------------------
+
+In this section, the aim is to predict mesosegregation in reduced-gravity solidification of the \emph{b1} alloy, the latter being considered 
+as a ternary and then as a quaternary alloy (cf \cref{table:texus_b1}). 
+%For simplicity, we refer to these alloys respectively by \emph{b1T} and \emph{b1Q}.
+We want to show that, on the one hand we are able to scale our model to fit any multicomponent alloy (based on equilibrium equilibrium conditions), while
+on the other hand, study how solidification paths vary by adding additional components, hence changing the shrinkage kinetics, and the final shape of the sample.
+By introducing additional chemical species, silicon for \emph{b1Tern}, silicon and magnesium for \emph{b1Quat}, a new carbide phase may appear, the M$_7$C$_3$.
  
-After 15 seconds of chill contact, the \emph{b1T} and \emph{b1Q} alloys have more volume fraction of liquid than the previous binary computation as shown in 
-\cref{fig:multicomp_liquid}, meaning that
-solidification in slower. The reason could be attributed to the different solidification paths created by the system composition, but also it is possible that phase enthalpies
-are higher than for the binary system. Regardless of its cause, slower solidification means that the final predicted shape is different, as shown earlier in the parametric study.
-The latter showed that slower cooling rates result in more elongated droplet shapes due to weight force, whereas shrinkage would tend to do the opposite.
+After 15 seconds of chill contact, the \emph{b1Tern} and \emph{b1Quat} alloys have more volume fraction of liquid than \emph{b1Bin} computation as shown in 
+\cref{fig:multicomp_liquid}, meaning that solidification in these samples is slower. 
+The reason can be attributed to new solidification paths created by the more complex system composition compared  to the binary sample. 
+Slower solidification means that the final predicted shape is different, as shown earlier in the parametric study.
+The latter showed that slower cooling rates result in more elongated droplet shapes due to weight force, whereas shrinkage forces tend to counter this effect.
 
 %--------------
 \begin{figureth}
 % textwidth 
-{0.7}
+{0.9}
 %path 
-{Misc/dummy.pdf}
+{Chapter5/Graphics/3d/tern_quatern/gl15s.pdf}
 % caption
-{Snapshots showing the volume fraction of liquid remaining in each sample of the binary, ternary and quaternary \emph{b1} alloy.}
+{Snapshots showing the remaining volume fraction of liquid at 15 s in each sample of the binary, ternary and quaternary \emph{b1} alloy.}
 % label
 \label{fig:multicomp_liquid}
 \end{figureth}
 %--------------
-% {Chapter5/Graphics/3d/nonbin/phase_distrib.pdf}
 
 
 \subsection{TODO}

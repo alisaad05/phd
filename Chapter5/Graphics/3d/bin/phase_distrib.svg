@@ -15,8 +15,8 @@
    inkscape:version="0.48.1 "
    version="1.1"
    id="svg2"
-   height="4065.5684"
-   width="2544.3738">
+   height="3922.7109"
+   width="2501.4304">
   <sodipodi:namedview
      id="base"
      pagecolor="#ffffff"
@@ -25,8 +25,8 @@
      inkscape:pageopacity="0.0"
      inkscape:pageshadow="2"
      inkscape:zoom="0.12374369"
-     inkscape:cx="2109.3653"
-     inkscape:cy="1426.4438"
+     inkscape:cx="3447.0296"
+     inkscape:cy="2529.8534"
      inkscape:document-units="px"
      inkscape:current-layer="layer1"
      showgrid="false"
@@ -335,7 +335,35 @@
      inkscape:label="Layer 1"
      inkscape:groupmode="layer"
      id="layer1"
-     transform="translate(1810.1099,-1727.6674)">
+     transform="translate(1767.1665,-1870.5245)">
+    <rect
+       y="1870.5245"
+       x="-1433.3293"
+       height="91.932343"
+       width="541.44177"
+       id="rect4686"
+       style="fill:#d90000;fill-opacity:0.15686275;stroke:none" />
+    <rect
+       y="1870.8047"
+       x="-349.37482"
+       height="91.932343"
+       width="541.44177"
+       id="rect4682"
+       style="fill:#58bd00;fill-opacity:0.15686275;stroke:none" />
+    <rect
+       style="fill:#d9bd00;fill-opacity:0.19607843;stroke:none"
+       id="rect4680"
+       width="541.44177"
+       height="91.932343"
+       x="-891.92841"
+       y="1870.5245" />
+    <rect
+       style="fill:#2d8bff;fill-opacity:0.15686275;stroke:none"
+       id="rect4684"
+       width="541.44177"
+       height="91.932343"
+       x="192.82204"
+       y="1870.8047" />
     <image
        width="445"
        height="693"
@@ -469,20 +497,6 @@
        id="image4678"
        x="241.04285"
        y="2052.217" />
-    <rect
-       y="1727.6674"
-       x="-1433.3293"
-       height="234.35542"
-       width="541.44177"
-       id="rect4686"
-       style="fill:#d90000;fill-opacity:0.15686275;stroke:none" />
-    <rect
-       y="1728.3816"
-       x="-349.37482"
-       height="234.35542"
-       width="541.44177"
-       id="rect4682"
-       style="fill:#58bd00;fill-opacity:0.15686275;stroke:none" />
     <rect
        style="fill:#d9bd00;fill-opacity:0.07843137;stroke:none"
        id="rect4450"
@@ -793,7 +807,7 @@
        font-style="normal"
        stroke-miterlimit="10.433"
        xml:space="preserve"
-       transform="matrix(9.3188193,0,0,-9.3188193,-2786.6216,8475.8904)"
+       transform="matrix(8.0735831,0,0,-8.0735831,-2500.0296,7652.5851)"
        id="g4604">
 <path
    id="path4606"
@@ -823,7 +837,7 @@
        font-style="normal"
        stroke-miterlimit="10.433"
        xml:space="preserve"
-       transform="matrix(9.3188193,0,0,-9.3188193,-1698.0506,8476.6047)"
+       transform="matrix(8.0735831,0,0,-8.0735831,-1428.3485,7652.5851)"
        id="g4612">
 <path
    id="path4614"
@@ -842,7 +856,7 @@
    style="fill:#000000;stroke-width:0" />
 </g>    <g
        id="g4620"
-       transform="matrix(9.3188193,0,0,-9.3188193,-2207.9452,8476.6047)"
+       transform="matrix(8.0735831,0,0,-8.0735831,-1938.6794,7652.5851)"
        xml:space="preserve"
        stroke-miterlimit="10.433"
        font-style="normal"
@@ -883,7 +897,7 @@
        font-style="normal"
        stroke-miterlimit="10.433"
        xml:space="preserve"
-       transform="matrix(9.3188193,0,0,-9.3188193,-3299.1958,8475.3313)"
+       transform="matrix(8.0735831,0,0,-8.0735831,-3029.8249,7652.1007)"
        id="g4628">
 <path
    id="path4630"
@@ -944,20 +958,6 @@
        height="3830.4985"
        x="-1433.5387"
        y="1962.0228" />
-    <rect
-       style="fill:#d9bd00;fill-opacity:0.19607843;stroke:none"
-       id="rect4680"
-       width="541.44177"
-       height="234.35542"
-       x="-891.92841"
-       y="1727.6674" />
-    <rect
-       style="fill:#2d8bff;fill-opacity:0.15686275;stroke:none"
-       id="rect4684"
-       width="541.44177"
-       height="234.35542"
-       x="192.82204"
-       y="1728.3816" />
     <image
        y="979.65302"
        x="-976.39471"
@@ -999,7 +999,7 @@
        font-style="normal"
        stroke-miterlimit="10.433"
        xml:space="preserve"
-       transform="matrix(0,-9.9255377,-9.9255377,0,5307.7413,4698.4967)"
+       transform="matrix(0,-8.5992282,-8.5992282,0,4379.555,4367.6534)"
        id="content">
 <path
    id="path5127"
@@ -1028,7 +1028,7 @@
    style="fill:#000000;stroke-width:0" />
 </g>    <g
        id="g5632"
-       transform="matrix(9.9255377,0,0,-9.9255377,-3935.6513,9710.8643)"
+       transform="matrix(8.5992282,0,0,-8.5992282,-3628.6804,8735.9529)"
        xml:space="preserve"
        stroke-miterlimit="10.433"
        font-style="normal"
@@ -1074,7 +1074,7 @@
        font-style="normal"
        stroke-miterlimit="10.433"
        xml:space="preserve"
-       transform="matrix(9.9255377,0,0,-9.9255377,-3926.0518,9094.6811)"
+       transform="matrix(8.5992282,0,0,-8.5992282,-3620.3637,8159.2506)"
        id="g6137">
 <path
    id="path6139"
@@ -1098,7 +1098,7 @@
    style="fill:#000000;stroke-width:0" />
 </g>    <g
        id="g8096"
-       transform="matrix(9.9255377,0,0,-9.9255377,-3852.8797,10500.293)"
+       transform="matrix(8.5992282,0,0,-8.5992282,-3551.255,9554.1792)"
        xml:space="preserve"
        stroke-miterlimit="10.433"
        font-style="normal"
@@ -1129,7 +1129,7 @@
        font-style="normal"
        stroke-miterlimit="10.433"
        xml:space="preserve"
-       transform="matrix(9.9255377,0,0,-9.9255377,-3849.2802,9912.1097)"
+       transform="matrix(8.5992282,0,0,-8.5992282,-3542.4222,8987.4495)"
        id="g8533">
 <path
    id="path8535"
@@ -1138,14 +1138,14 @@
    style="fill:#000000;stroke-width:0" />
 </g>    <image
        y="2925.3201"
-       x="-1641.6072"
+       x="-1619.0358"
        id="image8760"
        xlink:href="data:image/png;base64,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 QmCC "
        height="469.4873"
-       width="68.182747" />
+       width="39.61132" />
     <g
        id="g8781"
-       transform="matrix(0,-9.9255377,-9.9255377,0,5307.7413,6251.8021)"
+       transform="matrix(0,-8.5992282,-8.5992282,0,4399.555,5979.1112)"
        xml:space="preserve"
        stroke-miterlimit="10.433"
        font-style="normal"
@@ -1184,7 +1184,7 @@
    inkscape:connector-curvature="0"
    style="fill:#000000;stroke-width:0" />
 <polygon
-   points="255.31,709.25 255.31,708.55 257.75,708.55 257.75,709.25 "
+   points="257.75,709.25 255.31,709.25 255.31,708.55 257.75,708.55 "
    id="polygon8793"
    style="fill:#000000;stroke-width:0" />
 <path
@@ -1192,100 +1192,20 @@
    id="path8795"
    inkscape:connector-curvature="0"
    style="fill:#000000;stroke-width:0" />
-</g>    <g
-       style="font-style:normal;font-variant:normal;font-weight:normal;font-stretch:normal;letter-spacing:normal;word-spacing:normal;text-anchor:start;fill:none;stroke:#000000;stroke-linecap:butt;stroke-linejoin:miter;stroke-miterlimit:10.43299961;stroke-opacity:1;stroke-dasharray:none;stroke-dashoffset:0"
-       ns0:preamble="C:\\Users\\RASPI\\Desktop\\THESIS DOCUMENTS\\Thesis Writing\\phd\\Misc\\textext_preamble.tex"
-       ns0:text="0"
-       word-spacing="normal"
-       letter-spacing="normal"
-       font-size-adjust="none"
-       font-stretch="normal"
-       font-weight="normal"
-       font-variant="normal"
-       font-style="normal"
-       stroke-miterlimit="10.433"
-       xml:space="preserve"
-       transform="matrix(9.9255377,0,0,-9.9255377,-3852.8797,11226.008)"
-       id="g8797">
-<path
-   id="path8799"
-   d="m 226.07,713.9 v -0.35 c 0.95,0 1.22,-1.48 1.22,-3.1 0,-1.62 -0.27,-3.1 -1.22,-3.1 -0.94,0 -1.21,1.48 -1.21,3.1 0,1.62 0.27,3.1 1.21,3.1 h 0 v 0.35 c -1.64,0 -2.23,-1.46 -2.23,-3.45 0,-1.99 0.59,-3.45 2.23,-3.45 1.65,0 2.23,1.46 2.23,3.45 0,1.99 -0.58,3.45 -2.23,3.45 z"
-   inkscape:connector-curvature="0"
-   style="fill:#000000;stroke-width:0" />
-</g>    <g
-       id="g8801"
-       transform="matrix(9.9255377,0,0,-9.9255377,-3849.2802,10645.824)"
-       xml:space="preserve"
-       stroke-miterlimit="10.433"
-       font-style="normal"
-       font-variant="normal"
-       font-weight="normal"
-       font-stretch="normal"
-       font-size-adjust="none"
-       letter-spacing="normal"
-       word-spacing="normal"
-       ns0:text="1"
-       ns0:preamble="C:\\Users\\RASPI\\Desktop\\THESIS DOCUMENTS\\Thesis Writing\\phd\\Misc\\textext_preamble.tex"
-       style="font-style:normal;font-variant:normal;font-weight:normal;font-stretch:normal;letter-spacing:normal;word-spacing:normal;text-anchor:start;fill:none;stroke:#000000;stroke-linecap:butt;stroke-linejoin:miter;stroke-miterlimit:10.43299961;stroke-opacity:1;stroke-dasharray:none;stroke-dashoffset:0">
-<path
-   style="fill:#000000;stroke-width:0"
-   inkscape:connector-curvature="0"
-   d="m 227.79,707.12 v 0.29 l -0.84,0.07 c -0.21,0.02 -0.33,0.1 -0.33,0.49 v 5.87 l -0.05,0.06 -2.05,-0.35 v -0.25 l 0.93,-0.11 c 0.16,-0.02 0.23,-0.1 0.23,-0.39 v -4.83 c 0,-0.19 -0.03,-0.31 -0.09,-0.38 -0.05,-0.07 -0.13,-0.1 -0.24,-0.11 l -0.83,-0.07 v -0.29 z"
-   id="path8803" />
 </g>    <image
-       width="68.182747"
+       width="39.61132"
        height="469.4873"
        xlink:href="data:image/png;base64,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 QmCC "
        id="image8805"
-       x="-1641.6072"
+       x="-1619.0358"
        y="3651.0342" />
-    <g
-       id="g8823"
-       transform="matrix(9.9255377,0,0,-9.9255377,-3852.8797,11989.436)"
-       xml:space="preserve"
-       stroke-miterlimit="10.433"
-       font-style="normal"
-       font-variant="normal"
-       font-weight="normal"
-       font-stretch="normal"
-       font-size-adjust="none"
-       letter-spacing="normal"
-       word-spacing="normal"
-       ns0:text="0"
-       ns0:preamble="C:\\Users\\RASPI\\Desktop\\THESIS DOCUMENTS\\Thesis Writing\\phd\\Misc\\textext_preamble.tex"
-       style="font-style:normal;font-variant:normal;font-weight:normal;font-stretch:normal;letter-spacing:normal;word-spacing:normal;text-anchor:start;fill:none;stroke:#000000;stroke-linecap:butt;stroke-linejoin:miter;stroke-miterlimit:10.43299961;stroke-opacity:1;stroke-dasharray:none;stroke-dashoffset:0">
-<path
-   style="fill:#000000;stroke-width:0"
-   inkscape:connector-curvature="0"
-   d="m 226.07,713.9 v -0.35 c 0.95,0 1.22,-1.48 1.22,-3.1 0,-1.62 -0.27,-3.1 -1.22,-3.1 -0.94,0 -1.21,1.48 -1.21,3.1 0,1.62 0.27,3.1 1.21,3.1 h 0 v 0.35 c -1.64,0 -2.23,-1.46 -2.23,-3.45 0,-1.99 0.59,-3.45 2.23,-3.45 1.65,0 2.23,1.46 2.23,3.45 0,1.99 -0.58,3.45 -2.23,3.45 z"
-   id="path8825" />
-</g>    <g
-       style="font-style:normal;font-variant:normal;font-weight:normal;font-stretch:normal;letter-spacing:normal;word-spacing:normal;text-anchor:start;fill:none;stroke:#000000;stroke-linecap:butt;stroke-linejoin:miter;stroke-miterlimit:10.43299961;stroke-opacity:1;stroke-dasharray:none;stroke-dashoffset:0"
-       ns0:preamble="C:\\Users\\RASPI\\Desktop\\THESIS DOCUMENTS\\Thesis Writing\\phd\\Misc\\textext_preamble.tex"
-       ns0:text="1"
-       word-spacing="normal"
-       letter-spacing="normal"
-       font-size-adjust="none"
-       font-stretch="normal"
-       font-weight="normal"
-       font-variant="normal"
-       font-style="normal"
-       stroke-miterlimit="10.433"
-       xml:space="preserve"
-       transform="matrix(9.9255377,0,0,-9.9255377,-3849.2802,11383.252)"
-       id="g8827">
-<path
-   id="path8829"
-   d="m 227.79,707.12 v 0.29 l -0.84,0.07 c -0.21,0.02 -0.33,0.1 -0.33,0.49 v 5.87 l -0.05,0.06 -2.05,-0.35 v -0.25 l 0.93,-0.11 c 0.16,-0.02 0.23,-0.1 0.23,-0.39 v -4.83 c 0,-0.19 -0.03,-0.31 -0.09,-0.38 -0.05,-0.07 -0.13,-0.1 -0.24,-0.11 l -0.83,-0.07 v -0.29 z"
-   inkscape:connector-curvature="0"
-   style="fill:#000000;stroke-width:0" />
-</g>    <image
+    <image
        y="4402.4629"
-       x="-1641.6072"
+       x="-1619.0358"
        id="image8831"
        xlink:href="data:image/png;base64,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 QmCC "
        height="469.4873"
-       width="68.182747" />
+       width="39.61132" />
     <g
        style="font-style:normal;font-variant:normal;font-weight:normal;font-stretch:normal;letter-spacing:normal;word-spacing:normal;text-anchor:start;fill:none;stroke:#000000;stroke-linecap:butt;stroke-linejoin:miter;stroke-miterlimit:10.43299961;stroke-opacity:1;stroke-dasharray:none;stroke-dashoffset:0"
        ns0:preamble="C:\\Users\\RASPI\\Desktop\\THESIS DOCUMENTS\\Thesis Writing\\phd\\Misc\\textext_preamble.tex"
@@ -1299,7 +1219,7 @@
        font-style="normal"
        stroke-miterlimit="10.433"
        xml:space="preserve"
-       transform="matrix(9.9255377,0,0,-9.9255377,-3852.8797,12740.865)"
+       transform="matrix(8.5992282,0,0,-8.5992282,-3559.8265,11781.067)"
        id="g8849">
 <path
    id="path8851"
@@ -1307,15 +1227,15 @@
    inkscape:connector-curvature="0"
    style="fill:#000000;stroke-width:0" />
 </g>    <image
-       width="68.182747"
+       width="39.61132"
        height="469.4873"
        xlink:href="data:image/png;base64,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 QmCC "
        id="image8857"
-       x="-1641.6072"
+       x="-1619.0358"
        y="5153.8916" />
     <g
        id="g9068"
-       transform="matrix(9.9255377,0,0,-9.9255377,-3906.4231,12134.681)"
+       transform="matrix(8.5992282,0,0,-8.5992282,-3626.215,11204.456)"
        xml:space="preserve"
        stroke-miterlimit="10.433"
        font-style="normal"
@@ -1361,7 +1281,7 @@
        font-style="normal"
        stroke-miterlimit="10.433"
        xml:space="preserve"
-       transform="matrix(0,-9.9255377,-9.9255377,0,5307.7413,5451.8021)"
+       transform="matrix(0,-8.5992282,-8.5992282,0,4390.9836,5123.1548)"
        id="g9496">
 <path
    id="path9498"
@@ -1380,7 +1300,7 @@
    style="fill:#000000;stroke-width:0" />
 <polygon
    id="polygon9504"
-   points="240.31,709.97 237.87,709.97 237.87,709.27 240.31,709.27 "
+   points="237.87,709.27 240.31,709.27 240.31,709.97 237.87,709.97 "
    style="fill:#000000;stroke-width:0" />
 <path
    id="path9506"
@@ -1389,7 +1309,7 @@
    style="fill:#000000;stroke-width:0" />
 </g>    <g
        id="g9922"
-       transform="matrix(0,-9.9255377,-9.9255377,0,5307.7413,7003.2306)"
+       transform="matrix(0,-8.5992282,-8.5992282,0,4399.555,6710.1293)"
        xml:space="preserve"
        stroke-miterlimit="10.433"
        font-style="normal"
@@ -1428,7 +1348,7 @@
    inkscape:connector-curvature="0"
    style="fill:#000000;stroke-width:0" />
 <polygon
-   points="257.09,708.55 257.09,709.25 254.65,709.25 254.65,708.55 "
+   points="254.65,708.55 257.09,708.55 257.09,709.25 254.65,709.25 "
    id="polygon9934"
    style="fill:#000000;stroke-width:0" />
 <path
@@ -1449,7 +1369,7 @@
        font-style="normal"
        stroke-miterlimit="10.433"
        xml:space="preserve"
-       transform="matrix(0,-9.9255377,-9.9255377,0,5307.7413,7754.6592)"
+       transform="matrix(0,-8.5992282,-8.5992282,0,4399.555,7461.1475)"
        id="g10352">
 <path
    id="path10354"
@@ -1478,7 +1398,7 @@
    style="fill:#000000;stroke-width:0" />
 <polygon
    id="polygon10364"
-   points="260,708.55 260,709.25 257.56,709.25 257.56,708.55 "
+   points="257.56,709.25 257.56,708.55 260,708.55 260,709.25 "
    style="fill:#000000;stroke-width:0" />
 <path
    id="path10366"
@@ -1486,11 +1406,91 @@
    inkscape:connector-curvature="0"
    style="fill:#000000;stroke-width:0" />
 </g>    <image
-       width="68.182747"
+       width="39.61132"
        height="469.4873"
        xlink:href="data:image/png;base64,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 QmCC "
        id="image10578"
-       x="-1641.6072"
+       x="-1619.0358"
        y="2108.1772" />
-  </g>
+    <g
+       style="font-style:normal;font-variant:normal;font-weight:normal;font-stretch:normal;letter-spacing:normal;word-spacing:normal;text-anchor:start;fill:none;stroke:#000000;stroke-linecap:butt;stroke-linejoin:miter;stroke-miterlimit:10.43299961;stroke-opacity:1;stroke-dasharray:none;stroke-dashoffset:0"
+       ns0:preamble="C:\\Users\\RASPI\\Desktop\\THESIS DOCUMENTS\\Thesis Writing\\phd\\Misc\\textext_preamble.tex"
+       ns0:text="0"
+       word-spacing="normal"
+       letter-spacing="normal"
+       font-size-adjust="none"
+       font-stretch="normal"
+       font-weight="normal"
+       font-variant="normal"
+       font-style="normal"
+       stroke-miterlimit="10.433"
+       xml:space="preserve"
+       transform="matrix(8.5992282,0,0,-8.5992282,-3551.255,10279.893)"
+       id="g3189">
+<path
+   id="path3191"
+   d="m 226.07,713.9 v -0.35 c 0.95,0 1.22,-1.48 1.22,-3.1 0,-1.62 -0.27,-3.1 -1.22,-3.1 -0.94,0 -1.21,1.48 -1.21,3.1 0,1.62 0.27,3.1 1.21,3.1 h 0 v 0.35 c -1.64,0 -2.23,-1.46 -2.23,-3.45 0,-1.99 0.59,-3.45 2.23,-3.45 1.65,0 2.23,1.46 2.23,3.45 0,1.99 -0.58,3.45 -2.23,3.45 z"
+   inkscape:connector-curvature="0"
+   style="fill:#000000;stroke-width:0" />
+</g>    <g
+       id="g3193"
+       transform="matrix(8.5992282,0,0,-8.5992282,-3542.4222,9713.1638)"
+       xml:space="preserve"
+       stroke-miterlimit="10.433"
+       font-style="normal"
+       font-variant="normal"
+       font-weight="normal"
+       font-stretch="normal"
+       font-size-adjust="none"
+       letter-spacing="normal"
+       word-spacing="normal"
+       ns0:text="1"
+       ns0:preamble="C:\\Users\\RASPI\\Desktop\\THESIS DOCUMENTS\\Thesis Writing\\phd\\Misc\\textext_preamble.tex"
+       style="font-style:normal;font-variant:normal;font-weight:normal;font-stretch:normal;letter-spacing:normal;word-spacing:normal;text-anchor:start;fill:none;stroke:#000000;stroke-linecap:butt;stroke-linejoin:miter;stroke-miterlimit:10.43299961;stroke-opacity:1;stroke-dasharray:none;stroke-dashoffset:0">
+<path
+   style="fill:#000000;stroke-width:0"
+   inkscape:connector-curvature="0"
+   d="m 227.79,707.12 v 0.29 l -0.84,0.07 c -0.21,0.02 -0.33,0.1 -0.33,0.49 v 5.87 l -0.05,0.06 -2.05,-0.35 v -0.25 l 0.93,-0.11 c 0.16,-0.02 0.23,-0.1 0.23,-0.39 v -4.83 c 0,-0.19 -0.03,-0.31 -0.09,-0.38 -0.05,-0.07 -0.13,-0.1 -0.24,-0.11 l -0.83,-0.07 v -0.29 z"
+   id="path3195" />
+</g>    <g
+       id="g3197"
+       transform="matrix(8.5992282,0,0,-8.5992282,-3551.255,11022.75)"
+       xml:space="preserve"
+       stroke-miterlimit="10.433"
+       font-style="normal"
+       font-variant="normal"
+       font-weight="normal"
+       font-stretch="normal"
+       font-size-adjust="none"
+       letter-spacing="normal"
+       word-spacing="normal"
+       ns0:text="0"
+       ns0:preamble="C:\\Users\\RASPI\\Desktop\\THESIS DOCUMENTS\\Thesis Writing\\phd\\Misc\\textext_preamble.tex"
+       style="font-style:normal;font-variant:normal;font-weight:normal;font-stretch:normal;letter-spacing:normal;word-spacing:normal;text-anchor:start;fill:none;stroke:#000000;stroke-linecap:butt;stroke-linejoin:miter;stroke-miterlimit:10.43299961;stroke-opacity:1;stroke-dasharray:none;stroke-dashoffset:0">
+<path
+   style="fill:#000000;stroke-width:0"
+   inkscape:connector-curvature="0"
+   d="m 226.07,713.9 v -0.35 c 0.95,0 1.22,-1.48 1.22,-3.1 0,-1.62 -0.27,-3.1 -1.22,-3.1 -0.94,0 -1.21,1.48 -1.21,3.1 0,1.62 0.27,3.1 1.21,3.1 h 0 v 0.35 c -1.64,0 -2.23,-1.46 -2.23,-3.45 0,-1.99 0.59,-3.45 2.23,-3.45 1.65,0 2.23,1.46 2.23,3.45 0,1.99 -0.58,3.45 -2.23,3.45 z"
+   id="path3199" />
+</g>    <g
+       style="font-style:normal;font-variant:normal;font-weight:normal;font-stretch:normal;letter-spacing:normal;word-spacing:normal;text-anchor:start;fill:none;stroke:#000000;stroke-linecap:butt;stroke-linejoin:miter;stroke-miterlimit:10.43299961;stroke-opacity:1;stroke-dasharray:none;stroke-dashoffset:0"
+       ns0:preamble="C:\\Users\\RASPI\\Desktop\\THESIS DOCUMENTS\\Thesis Writing\\phd\\Misc\\textext_preamble.tex"
+       ns0:text="1"
+       word-spacing="normal"
+       letter-spacing="normal"
+       font-size-adjust="none"
+       font-stretch="normal"
+       font-weight="normal"
+       font-variant="normal"
+       font-style="normal"
+       stroke-miterlimit="10.433"
+       xml:space="preserve"
+       transform="matrix(8.5992282,0,0,-8.5992282,-3542.4222,10456.021)"
+       id="g3201">
+<path
+   id="path3203"
+   d="m 227.79,707.12 v 0.29 l -0.84,0.07 c -0.21,0.02 -0.33,0.1 -0.33,0.49 v 5.87 l -0.05,0.06 -2.05,-0.35 v -0.25 l 0.93,-0.11 c 0.16,-0.02 0.23,-0.1 0.23,-0.39 v -4.83 c 0,-0.19 -0.03,-0.31 -0.09,-0.38 -0.05,-0.07 -0.13,-0.1 -0.24,-0.11 l -0.83,-0.07 v -0.29 z"
+   inkscape:connector-curvature="0"
+   style="fill:#000000;stroke-width:0" />
+</g>  </g>
 </svg>
