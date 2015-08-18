@@ -797,11 +797,11 @@ As previously explained in \cref{sec:solute_air}, we consider that species conse
 %-------
 then we deduce the metal's solute composition by postprocessing the obtained solution.
 %---------------------------------------*
-\comment{i should multiply solid fraction by HeavisideM before Sortie to correct the visu. no problem for resolution as
-in Tsolver HeavisideA is taken into account then next time step's T2H will determine a raw solid fraction in the air and the metal}
-\comment{i should create a new FeC tabulation with concentration variation. Once done, revert to 5 times the Concentration parameter
-in the ChampParametre of Tsolver and T2H}
-\subsection{Darcy term in the air}
+% \comment{i should multiply solid fraction by HeavisideM before Sortie to correct the visu. no problem for resolution as
+% in Tsolver HeavisideA is taken into account then next time step's T2H will determine a raw solid fraction in the air and the metal}
+% \comment{i should create a new FeC tabulation with concentration variation. Once done, revert to 5 times the Concentration parameter
+% in the ChampParametre of Tsolver and T2H}
+% \subsection{Darcy term in the air}
 %------
 
 We have seen in the previous chapter that adding the Darcy term into Navier-Stokes system modifies the shape of the 
@@ -853,118 +853,120 @@ The arrows indicate three different transitions of the Darcy term between the ai
 \label{fig:darcy_modif}
 \end{figure}
 %---------------
+
+
 %------------------
-\subsection{Interface motion and stability}
+% \subsection{Interface motion and stability}
 %-----------------------------
 
-In chapter 2, we have presented the transport equation of the distance function using the velocity solution 
-provided by solving momentum conservation equations. In this section, we discuss some important points regarding the stability
-of the interface while being transported. When real values are assigned for the mechanical properties, especially density,
-a ratio of three orders of magnitude exists in the diffuse interface. This high ratio may badly influence the stability
-of the interface, unless we pay attention to the order of the integration method as well as the time step used in Navier-Stokes
-resolution.
+% In chapter 2, we have presented the transport equation of the distance function using the velocity solution 
+% provided by solving momentum conservation equations. In this section, we discuss some important points regarding the stability
+% of the interface while being transported. When real values are assigned for the mechanical properties, especially density,
+% a ratio of three orders of magnitude exists in the diffuse interface. This high ratio may badly influence the stability
+% of the interface, unless we pay attention to the order of the integration method as well as the time step used in Navier-Stokes
+% resolution.
 
-\subsubsection{Integration order influence}
-%---------------------------------
-\subsubsection{Time step influence}
-%---------------------------------
-In the first tests, we noticed \\
-TRY TIME STEP 0.01 sec (stable) and 0.02 sec (unstable): is CFL the cause ?
-%---------
-\subsubsection{Classical coupling}
-%
-A "classical" coupling comes in the sense of "unmodified" coupling. This approach consists of taking the output of the fluid mechanics
-solver, then feed it as raw input to level set transport solver. The physical translation would be that the interface motion is dictated
-by the fluids flow in its vicinity. No treatment whatsoever is done between the two mentioned steps. While conservation principles are best
-satisfied with this approach, the latter yields some drawbacks, preventing its application in a generic way.
-For instance, the free liquid surface is not necessarily horizontal at all times and that can lead to the wrong shrinkage profile
-when solidification is complete.
-\comment{present the example of unstable interface when the ratio between fluids properties became greater than some value+discussion} 
-%----------------------------
-\begin{figure}[htbp]
-\centering
- \begin{subfigure}[t]{0.4\textwidth}
-    \centering
-	\includegraphics[width=\textwidth]{Chapter5/Graphics/UnstableInterface1.pdf}
-	\caption{At a certain time increment (without mesh)}
-    \label{fig:UnstableInterface1}
-  \end{subfigure}
-\qquad
- \begin{subfigure}[t]{0.4\textwidth}
-    \centering
-	\includegraphics[width=\textwidth]{Chapter5/Graphics/UnstableInterface2.pdf}
-	\caption{Another time increment (with mesh)}
-    \label{fig:UnstableInterface2}
-  \end{subfigure}
-\caption{Interface destabilisation under the effect of high properties ratio across the interface.}
-\end{figure}
-%----------------------
-%%---------
+% \subsubsection{Integration order influence}
+% %---------------------------------
+% \subsubsection{Time step influence}
+% %---------------------------------
+% In the first tests, we noticed \\
+% TRY TIME STEP 0.01 sec (stable) and 0.02 sec (unstable): is CFL the cause ?
+% %---------
+% \subsubsection{Classical coupling}
+% %
+% A "classical" coupling comes in the sense of "unmodified" coupling. This approach consists of taking the output of the fluid mechanics
+% solver, then feed it as raw input to level set transport solver. The physical translation would be that the interface motion is dictated
+% by the fluids flow in its vicinity. No treatment whatsoever is done between the two mentioned steps. While conservation principles are best
+% satisfied with this approach, the latter yields some drawbacks, preventing its application in a generic way.
+% For instance, the free liquid surface is not necessarily horizontal at all times and that can lead to the wrong shrinkage profile
+% when solidification is complete.
+% \comment{present the example of unstable interface when the ratio between fluids properties became greater than some value+discussion} 
+% %----------------------------
+% \begin{figure}[htbp]
+% \centering
+%  \begin{subfigure}[t]{0.4\textwidth}
+%     \centering
+% 	\includegraphics[width=\textwidth]{Chapter5/Graphics/UnstableInterface1.pdf}
+% 	\caption{At a certain time increment (without mesh)}
+%     \label{fig:UnstableInterface1}
+%   \end{subfigure}
+% \qquad
+%  \begin{subfigure}[t]{0.4\textwidth}
+%     \centering
+% 	\includegraphics[width=\textwidth]{Chapter5/Graphics/UnstableInterface2.pdf}
+% 	\caption{Another time increment (with mesh)}
+%     \label{fig:UnstableInterface2}
+%   \end{subfigure}
+% \caption{Interface destabilisation under the effect of high properties ratio across the interface.}
+% \end{figure}
+% %----------------------
+% %%---------
 
-\subsubsection{Modified coupling}
-In contrast to a classic coupling, here we attempt to modify the velocity field before feeding to the transport solver.
-The main motivation for considering this approach is the lack of stability that we observed whenever the mechanical
-properties of the fluids were different by several orders of magnitude.
-The algorithm should simultaneously fulfil these requirements: 
-\begin{itemize}
-\itemsep0em
-\item support high ratios of fluids density with close viscosities by preserving an non-oscillating interface,
-\item maintain a horizontal level at the free surface of the melt,
-\item follow shrinking metal surface profile in solidfying regions,
-\item satisfy the mass conservation principle, essentially in the metal.
-\end{itemize}
-We want to process the original transport velocity by imposing a uniform motion (speed and direction) 
-at the nodes of the free surface, and at the same time, be able to follow the pipe formation at the 
-surface as a result of solidification shrinkage, as shown in \cref{fig:horizontal_liquid_surface}.
+% \subsubsection{Modified coupling}
+% In contrast to a classic coupling, here we attempt to modify the velocity field before feeding to the transport solver.
+% The main motivation for considering this approach is the lack of stability that we observed whenever the mechanical
+% properties of the fluids were different by several orders of magnitude.
+% The algorithm should simultaneously fulfil these requirements: 
+% \begin{itemize}
+% \itemsep0em
+% \item support high ratios of fluids density with close viscosities by preserving an non-oscillating interface,
+% \item maintain a horizontal level at the free surface of the melt,
+% \item follow shrinking metal surface profile in solidfying regions,
+% \item satisfy the mass conservation principle, essentially in the metal.
+% \end{itemize}
+% We want to process the original transport velocity by imposing a uniform motion (speed and direction) 
+% at the nodes of the free surface, and at the same time, be able to follow the pipe formation at the 
+% surface as a result of solidification shrinkage, as shown in \cref{fig:horizontal_liquid_surface}.
 
-%----------------------
-\begin{figureth}
-% textwidth 
-{0.8}
-%path 
-{Chapter5/Graphics/FreeSurface.pdf}
-% caption
-{Snapshot of a solidifying ingot by a cooling flux from the side. The profile of the actual surface changes in solid and mushy regions
-to adapt the new density while staying perfectly horizontal in the liquid phase.}
-% label
-\label{fig:horizontal_liquid_surface}
-\end{figureth}
-%-----------------------------------
-%
-\comment{How to transport level set using velocity from momentum conservation DIRECTLY or AVERAGED PER ELEMENTS, 
-show examples of instability/stability when using false/nominal air properties \\ 
-Validation of LS transport: perform test case simulation of buoyancy driven air droplet in water by 2005Nagrath that I also have seen 
-in Shyamprasad's masters report). => I didnt notice: what time step $\delta t$ did they use ? }
-%
-%----------------------
-\begin{figureth}
-% textwidth 
-{0.8}
-%path 
-{Chapter5/Graphics/AvgTransport/BottomSideCooling.pdf}
-% caption
-{Treatment of liquid free surface in a) bottom and b) side heat extraction configurations. The dashed line represents the 
-initial level of the free liquid surface.}
-% label
-\label{fig:bottom_side_cooling}
-\end{figureth}
-%-----------------------------------
+% %----------------------
+% \begin{figureth}
+% % textwidth 
+% {0.8}
+% %path 
+% {Chapter5/Graphics/FreeSurface.pdf}
+% % caption
+% {Snapshot of a solidifying ingot by a cooling flux from the side. The profile of the actual surface changes in solid and mushy regions
+% to adapt the new density while staying perfectly horizontal in the liquid phase.}
+% % label
+% \label{fig:horizontal_liquid_surface}
+% \end{figureth}
+% %-----------------------------------
+% %
+% \comment{How to transport level set using velocity from momentum conservation DIRECTLY or AVERAGED PER ELEMENTS, 
+% show examples of instability/stability when using false/nominal air properties \\ 
+% Validation of LS transport: perform test case simulation of buoyancy driven air droplet in water by 2005Nagrath that I also have seen 
+% in Shyamprasad's masters report). => I didnt notice: what time step $\delta t$ did they use ? }
+% %
+% %----------------------
+% \begin{figureth}
+% % textwidth 
+% {0.8}
+% %path 
+% {Chapter5/Graphics/AvgTransport/BottomSideCooling.pdf}
+% % caption
+% {Treatment of liquid free surface in a) bottom and b) side heat extraction configurations. The dashed line represents the 
+% initial level of the free liquid surface.}
+% % label
+% \label{fig:bottom_side_cooling}
+% \end{figureth}
+% %-----------------------------------
 
-The general idea is read the velocity around the interface up to a certain thickness, which may be the same 
-thickness as the diffuse interface defined in \cref{sec:heaviside}, then compute a volumetric average
-from all the elements in the thickness. This average is then given to the transport solver, which will apply
-the same magnitude and direction to transport the interface. However, as we only need the transport velocity
-to be uniform within the "100\% liquid" elements, it should not be the case for the other elements that belong 
-either to the mushy zone or the solid region, where shrinkage is taking place.
-Therefore, depending on the heat extraction configuration, two scenarios are possible. If heat extraction is far from
-the interface, i.e. there is not direct contact as in \cref{fig:bottom_side_cooling}a, 
-the surface area remains unchanged at any time, hence all the elements
-around the interface are "100\% liquid". This happens when a bottom cooling is applied to the ingot. In contrast, if a side cooling 
-is applied as shown in \cref{fig:bottom_side_cooling}b, the surface area of the interface will be reduced over time
-as a consequence of the solid front progression. In this case, the average transport velocity should be computed only
-from the elements belonging to the free surface. The remaining part of the interface which belongs to partial or full 
-solid regions, is transported with Navier-Stokes output, which should be some orders of magnitude less than the velocity
-imposed at the free surface, as a result of a decreasing permeability.
+% The general idea is read the velocity around the interface up to a certain thickness, which may be the same 
+% thickness as the diffuse interface defined in \cref{sec:heaviside}, then compute a volumetric average
+% from all the elements in the thickness. This average is then given to the transport solver, which will apply
+% the same magnitude and direction to transport the interface. However, as we only need the transport velocity
+% to be uniform within the "100\% liquid" elements, it should not be the case for the other elements that belong 
+% either to the mushy zone or the solid region, where shrinkage is taking place.
+% Therefore, depending on the heat extraction configuration, two scenarios are possible. If heat extraction is far from
+% the interface, i.e. there is not direct contact as in \cref{fig:bottom_side_cooling}a, 
+% the surface area remains unchanged at any time, hence all the elements
+% around the interface are "100\% liquid". This happens when a bottom cooling is applied to the ingot. In contrast, if a side cooling 
+% is applied as shown in \cref{fig:bottom_side_cooling}b, the surface area of the interface will be reduced over time
+% as a consequence of the solid front progression. In this case, the average transport velocity should be computed only
+% from the elements belonging to the free surface. The remaining part of the interface which belongs to partial or full 
+% solid regions, is transported with Navier-Stokes output, which should be some orders of magnitude less than the velocity
+% imposed at the free surface, as a result of a decreasing permeability.
 
 %
 %--------------------------------
@@ -2608,13 +2610,23 @@ where the transformation path is not complex as a result of the smaller number o
 \end{figureth}
 %--------------
 
+Nevertheless, it should be mentionned that the mapping resolution plays an important role in the accurary of thermodyamic conversions.
+Therefore, tabulations size easily increases with the increasing number of solute elements, because of the greater number of temperature-composition 
+combinations to scan while computing equilibirum.
+\Cref{table:mapping_stat} gives a clear idea of the computation times and tabulation size for each alloy. It is clear that computation time is increasing according
+to the number of tabulated lines for \emph{b1Bin}, \emph{b1Tern} and \emph{b1Quat}.
+In order to test the effect of the tabulation file size on computation time, we simulate again the quaternary solidification case but this time with a lightweight
+tabulation where all successive line with similar phase fractions outside the solidification range are deleted, giving what we call \emph{b1QuatLite}. The 
+resulting file is three time smaller than the original tabulation file. Suprisingly, the computation time for \emph{b1QuatLite} shows no significant acceleration 
+compared to \emph{b1Quat}. The file size, proportional to the number of tabulated lines, is important as it causes a search overhead each time the conversion module
+is called. However, \cref{table:mapping_stat} reveals that the multivariable interpolation overhead is even more important, resulting in longer computation times.
+This is may be considered as a limitation of the thermodynamic mapping approach.
 
-Nevertheless, it is important to mention that the mapping resolution is another cause of the shape discrepancy, and the thermodynamic mapping
-of the binary alloy has the advantage: less solute elements means less temperature-composition combinations to scan while computing equilibirum.
-It becomes then clear that a multicomponent mapping has a greater number of combinations to scan in order to get the corresponding transformation paths, compared
-to a binary mapping. For that reason, the multicomponent mapping is often coarser than the binary one to limit the search and interpolations overhead, 
-leading to smaller tabulation files but less accurate path prediction. This is may be considered as a limitation of the thermodynamic mapping approach.
-\Cref{table:mapping_stat} gives a clear idea of the computation times and tabulation size for each alloy.
+%is another cause of the shape discrepancy, and the thermodynamic mapping
+% of the binary alloy has the advantage: less solute elements means less 
+% It becomes then clear that a multicomponent mapping has a greater number of combinations to scan in order to get the corresponding transformation paths, compared
+% to a binary mapping. For that reason, the multicomponent mapping is often coarser than the binary one to limit the search and interpolations overhead, 
+% leading to smaller tabulation files but less accurate path prediction. This is may be considered as a limitation of the thermodynamic mapping approach.
 
 
 %--------------------------------
@@ -2628,10 +2640,10 @@ The computation time corresponds to the CPU time of a simulation running on 20 c
 \tabucline[1pt]{-}
 \textbf{Alloy} & \textbf{Nb solutes} & \textbf{Nb phases}  & \textbf{Tabulation lines}  & \textbf{Size (MB)} & \textbf{Computation time (s)}   \\\tabucline[1pt]{-}
 %-----------------------------
-      \emph{b1Bin}            & 1                       &  4                  &  \num{185010}     &    \num{4.37}   &  \num{37882.2} TODO  \\
-      \emph{b1Tern}           & 2                       &  5                  &  \num{220250}     &    \num{10.18}  &  \num{64453.5} TODO \\    
+      \emph{b1Bin}            & 1                       &  4                  &  \num{185010}     &    \num{4.37}   &  \num{41882.2}  \\
+      \emph{b1Tern}           & 2                       &  5                  &  \num{220250}     &    \num{10.18}  &  \num{59461.5}  \\    
       \emph{b1Quat}           & 3                       &  5                  &  \num{1101250}    &    \num{66.89}  &  \num{85476.7}  \\
-      \emph{b1QuatLite}       & 3                       &  5                  &  \num{326014}     &    \num{20.93}  &  \num{82104.8}  \\\tabucline[1pt]{-}
+      \emph{b1QuatLite}       & 3                       &  5                  &  \num{326014}     &    \num{20.93}  &  \num{84104.8}  \\\tabucline[1pt]{-}
       % http://grammarist.com/words/lite/
 %-----------------------------
 \end{tabu}}
@@ -2641,7 +2653,9 @@ The computation time corresponds to the CPU time of a simulation running on 20 c
 % time taken at 20 s running 20 cores: OK for Quat and QuatLite TODO: relaunch Bin and Tern
 
 Finally we are interested in comparing the mesosegregation levels obtained in all three solidification cases. Segregation maps for the three cases
-are presented in \cref{fig:final_segreg_ternquat}. First, we compare the carbon segregation as it is the only common species for all alloys.
+are presented in \cref{fig:final_segreg_ternquat}. First, we compare the carbon segregation as it is the common species among the presented alloys.
+The first striking difference is a remarkable positive mesosegregation at the chill contact of the \emph{b1Quat} sample, while for \emph{b1Tern}, the positive
+segregation intensity is less, and for \emph{b1Bin} it is even less.
 
 %--------------
 \begin{figureth}
@@ -2656,12 +2670,6 @@ of each chemical species for \emph{b1Bin}, \emph{b1Tern} and \emph{b1Quat} sampl
 \label{fig:final_segreg_ternquat}
 \end{figureth}
 %--------------
-
-
-Draw table of tabulation size on disk and computation time. Stress on the fact that shrinkage results from binary to quaternay are much more different because
-the tabulation is more reliable in terms of resolution. For the others the deformation may be spurious, driven by an unprecise solidification paths. \\
-Compare mass conservation between anisotropic mesh (up to 20\% loss) and isotropic fixed (up to 3\% only) \\
-Compare results of binary, ternary and quaternary tabulations then simplified quaternary \\
  
 %--
 \input{Chapter5/recap5} % resume francais
