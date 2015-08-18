@@ -1,4 +1,44 @@
 \clearpage
 \section*{Résumé chapitre 5}
 
-Dans cette merde de merde ...
+\begin{otherlanguage}{french}
+{\small
+
+Ce dernier chapitre est dédié à la prise en compte du retrait à la solidification à l'origine de la 
+déformation de la surface libre métal-air, en présence des phénomènes de ségregation.
+Pour ce faire, le modèle de solidification utilisé précédemment pour prédire la macroségrégation induite 
+par convection thermosolutale en monodomaine, est enrichi par une
+une méthode de suivi direct d'interface, la level set. %, déjà introduite dans le chapitre 2. 
+Les équations du modèle sont alors reformulées dans un contexte 
+eulérien multidomaine-multiphase, i.e. où deux domaines mutliphasés sont séparés
+par une interface mobile, l'aspect mutliphase dans chaque domaine étant géré par la méthode de prise de moyenne volumique. 
+
+
+Un premier cas d'application 1D est ensuite présenté. C'est un cas qui avait fait l'ojet de validation du \emph{Tsolver} dans le chapitre 3,
+et qui est refait avec des masse volumiques solide et liquide différentes. Cette application simple permet toutefois de comprendre le phénomène
+de ségrégation inverse résultant de l'écoulement du liquide dans la direction du front de solidification pour compenser la différence
+des masse volumique des phases, ce qui enrichit en solutés la partie du métal en contact avec le refroidisseur. 
+Ce phénomène est souvent observé aux surfaces des lingots en contact avec les moules. Des courbes de refroidissement ainsi qu'un bilan de conservation de masse de métal sont
+présentés pour permettre de comprendre l'effet de l'introduction de la méthode level set sur la physique de la solidification.
+
+
+La seconde application est aussi un cas de validation utilisé dans un chapitre précédent, issu d'une simulation sans retrait présente dans la litérature \citep{carozzani_direct_2013}.
+Cependant, le but en est maintenant de tester la robustesse du modèle
+en présence de convection naturelle, d'origine thermique dans l'air et thermosolutale dans le métal, avec suivi de déformation de l'interface par retrait à la solidification.
+Nous utilisons une méthode de remaillage adaptatif basée sur la projection sur les arêtes \citep{coupez_solution_2013}, 
+permettant d'avoir une résolution de maillage fine autour des zones d'intérêtes, notamment l'interface décrite par level set, le vecteur vitesse
+et la concentration moyenne. Ce couplage de techniques numériques permet de déterminer à la fois, la retassure en surface du lingot et la macroségregation,
+ présente sous forme de canaux.
+
+
+Dans le dernier cas, il s'agit de la solidification d'une goutte d'acier en microgravité. 
+Des essais expérimentaux de solidification déclenchée par contact avec un substrat sont présentés avec la forme finale de la goutte.
+Pour pouvoir prédire la déformation de la goutte en présence de mésoségragations, nous considérons trois nuances issues du même alliage:
+un binaire (\emph{b1Bin}) Fe-C, un ternaire (\emph{b1Tern}) Fe-C-Si et finalement un quaternaire (\emph{b1Quat}) Fe-C-Mn-Si.
+D'abord, une étude paramétrique est faite en se servant de l'alliage binaire, dans le but de déterminer les paramètres optimaux de vitesse
+de refroidissement et d'accélération gravitationnelle, pour se rapprocher du profil expérimental déformé de la goutte solidifiée.
+Ensuite, nous simulons la solidification de chaque alliage en montrant la déformation finale ainsi que la distribution finale
+des espèces chimiques.  
+
+}
+\end{otherlanguage}

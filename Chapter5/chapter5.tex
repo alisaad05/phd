@@ -2553,17 +2553,21 @@ Each column depicts a definite time with temperature and phase distribution.
 % ------------------------------------------------------
 
 In this section, the aim is to predict mesosegregation in reduced-gravity solidification of the \emph{b1} alloy, the latter being considered 
-as a ternary and then as a quaternary alloy (cf \cref{table:texus_b1}). 
+as a ternary and then as a quaternary alloy (cf. \cref{table:texus_b1}). 
 %For simplicity, we refer to these alloys respectively by \emph{b1T} and \emph{b1Q}.
-We want to show that, on the one hand we are able to scale our model to fit any multicomponent alloy (based on equilibrium equilibrium conditions), while
-on the other hand, study how solidification paths vary by adding additional components, hence changing the shrinkage kinetics, and the final shape of the sample.
-By introducing additional chemical species, silicon for \emph{b1Tern}, silicon and magnesium for \emph{b1Quat}, a new carbide phase may appear, the M$_7$C$_3$.
- 
-After 15 seconds of chill contact, the \emph{b1Tern} and \emph{b1Quat} alloys have more volume fraction of liquid than \emph{b1Bin} computation as shown in 
-\cref{fig:multicomp_liquid}, meaning that solidification in these samples is slower. 
-The reason can be attributed to new solidification paths created by the more complex system composition compared  to the binary sample. 
-Slower solidification means that the final predicted shape is different, as shown earlier in the parametric study.
-The latter showed that slower cooling rates result in more elongated droplet shapes due to weight force, whereas shrinkage forces tend to counter this effect.
+We want to show that, on the one hand our model handles multicomponent alloys (based on equilibrium equilibrium conditions), while
+on the other hand, how transformation paths vary by adding additional components, thus changing the shrinkage kinetics, hence the final sample shape.
+%By introducing additional chemical species, silicon for \emph{b1Tern}, silicon and magnesium for \emph{b1Quat}, a new carbide phase may appear, the M$_7$C$_3$.
+The first visible sign of different paths during solidification is given in \cref{fig:multicomp_liquid}. We can see that upon adding
+additional chemical species while applying the same cooling conditions, a different liquid fraction remains after 15 s, showing evidence 
+of slower solidification as we go from binary to quaternary. With multicompononent alloys like \emph{b1Tern} and \emph{b1Quat}, an additional solid
+phase may appear, that is the M$_7$C$_3$ carbide.
+%After 15 seconds of chill contact, the \emph{b1Tern} and \emph{b1Quat} alloys have more volume fraction of liquid than \emph{b1Bin} computation as shown in 
+%\cref{fig:multicomp_liquid}, meaning that solidification in these samples is slower. 
+%The reason can be attributed to new solidification paths created by the more complex system composition compared  to the binary sample. 
+% Slower solidification means that the final predicted shape is different, as shown earlier in the parametric study.
+Slower cooling rates result in more elongated droplet shapes due to weight force, whereas shrinkage forces tend to counter this effect.
+Therefore the final predicted shape is different, as shown earlier in the parametric study.
 
 %--------------
 \begin{figureth}
@@ -2578,6 +2582,66 @@ The latter showed that slower cooling rates result in more elongated droplet sha
 \end{figureth}
 %--------------
 
+In \cref{fig:shape_comparison}, we focus on the final droplet profile caused by varying the number of solute elements.
+We clearly notice that the multicomponent solidification results in an elongated shape. 
+All cases were obtained using the optimal simulation
+parameters determined previously by the parametric study, i.e. an thermal exchange coefficient, $\hext$, of \SI{6e4}{\uhconvec} and a gravitational
+acceleration, $\norm{\gravity}$, of \SI{5e-5}{\uacceleration}. The clear difference in solidification paths requires to do the same 
+parametric study to get better simulation-vs-experiment prediction. However, as we have shown earlier the effect of varying these parameters
+on the final profile, we do not perform parametric studies for \emph{b1Tern} and \emph{b1Quat} alloys. 
+
+The vertical elongation obtained by the \emph{b1Tern} sample is almost the double of the \emph{b1Bin} result. Moreover, the final ternary and quaternary
+profiles are almost overlapping, indicating that the prediction accuracy is very close for these alloys. 
+This reveals the importance of simulating solidification processes with real alloy compositions instead of binary simplifications
+where the transformation path is not complex as a result of the smaller number of phases forming at equilibrium. 
+
+%--------------
+\begin{figureth}
+% textwidth 
+{0.5}
+%path 
+{Chapter5/Graphics/3d/tern_quatern/profiles_comparison.pdf}
+% caption
+{Comparison of final droplet profiles obtained by solidifying \emph{b1Bin}, \emph{b1Tern} and \emph{b1Quat} samples, with respect to the initial profile.}
+% label
+\label{fig:shape_comparison}
+\end{figureth}
+%--------------
+
+
+Nevertheless, it is important to mention that the mapping resolution is another cause of the shape discrepancy, and the thermodynamic mapping
+of the binary alloy has the advantage: less solute elements means less temperature-composition combinations to scan while computing equilibirum.
+It becomes then clear that a multicomponent mapping has a greater number of combinations to scan in order to get the corresponding transformation paths, compared
+to a binary mapping. For that reason, the multicomponent mapping is often coarser than the binary one to limit the search and interpolations overhead, 
+leading to smaller tabulation files but less accurate path prediction. This is may be considered as a limitation of the thermodynamic mapping approach.
+\Cref{table:mapping_stat} gives a clear idea of the computation times and tabulation size for each alloy.
+
+
+%--------------------------------
+\begin{table}[htbp]
+\centering
+\caption{Information table showing the tabulations size  for each alloy obtained by thermodynamic mapping, depending on the number of solute elements and phases.
+The computation time corresponds to the CPU time of a simulation running on 20 cores.}
+\label{table:mapping_stat}
+\resizebox{\columnwidth}{!}{%
+{\tabulinesep=1.0mm \begin{tabu}{lccccc}
+\tabucline[1pt]{-}
+\textbf{Alloy} & \textbf{Nb solutes} & \textbf{Nb phases}  & \textbf{Tabulation lines}  & \textbf{Size (MB)} & \textbf{Computation time (s)}   \\\tabucline[1pt]{-}
+%-----------------------------
+      \emph{b1Bin}            & 1                       &  4                  &  \num{185010}     &    \num{4.37}   &  \num{37882.2} TODO  \\
+      \emph{b1Tern}           & 2                       &  5                  &  \num{220250}     &    \num{10.18}  &  \num{64453.5} TODO \\    
+      \emph{b1Quat}           & 3                       &  5                  &  \num{1101250}    &    \num{66.89}  &  \num{85476.7}  \\
+      \emph{b1QuatLite}       & 3                       &  5                  &  \num{326014}     &    \num{20.93}  &  \num{82104.8}  \\\tabucline[1pt]{-}
+      % http://grammarist.com/words/lite/
+%-----------------------------
+\end{tabu}}
+}
+\end{table}
+%--------------------------------
+% time taken at 20 s running 20 cores: OK for Quat and QuatLite TODO: relaunch Bin and Tern
+
+Finally we are interested in comparing the mesosegregation levels obtained in all three solidification cases. Segregation maps for the three cases
+are presented in \cref{fig:final_segreg_ternquat}. First, we compare the carbon segregation as it is the only common species for all alloys.
 
 %--------------
 \begin{figureth}
@@ -2586,22 +2650,12 @@ The latter showed that slower cooling rates result in more elongated droplet sha
 %path 
 {Chapter5/Graphics/3d/tern_quatern/final_segreg.pdf}
 % caption
-{final final.}
+{Segregation maps relative to each alloy, showing positive and negative mesosegregations 
+of each chemical species for \emph{b1Bin}, \emph{b1Tern} and \emph{b1Quat} samples.}
 % label
 \label{fig:final_segreg_ternquat}
 \end{figureth}
 %--------------
-
-
-\subsection{TODO}
-
-we are mainly interested in showing that:
-\begin{itemize}
-\itemsep0em
-\item  the transformation path changes with the alloy, hence the shrinkage kinetics also,
-\item  the mapping resolution in composition and temperature is important to get accurate shrinkage predictions, and
-\item  that 
-\end{itemize}  
 
 
 Draw table of tabulation size on disk and computation time. Stress on the fact that shrinkage results from binary to quaternay are much more different because
@@ -2610,7 +2664,6 @@ Compare mass conservation between anisotropic mesh (up to 20\% loss) and isotrop
 Compare results of binary, ternary and quaternary tabulations then simplified quaternary \\
  
 %--
-
 \input{Chapter5/recap5} % resume francais
 
 
