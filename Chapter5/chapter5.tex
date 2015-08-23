@@ -2614,9 +2614,8 @@ is obtained using coarser composition steps.}
 Nevertheless, it should be mentioned that the mapping resolution plays an important role in the accuracy of thermodynamic conversions.
 Therefore, tabulations size easily increases with the increasing number of solute elements, because of the greater number of temperature-composition 
 combinations to scan while computing equilibrium. To test the effect of changing the mapping resolution, we repeated the binary sample solidification
-but with a mapping of 0.047 wt\% instead of 0.0042 wt\% used for the \emph{b1Bin} sample.
-\Cref{table:mapping_stat} gives a clear idea of the computation times and tabulation size for each alloy. It is clear that computation time is increasing according
-to the number of tabulated lines for \emph{b1Bin}, \emph{b1Tern} and \emph{b1Quat}.
+but with a mapping of 0.047 wt\% instead of 0.0042 wt\% used for the \emph{b1Bin} sample. The corresponding profile in \cref{fig:shape_comparison}, \emph{b1Coarse},
+shows a different deformation then expected by the other samples.
 In order to test the effect of the tabulation file size on computation time, we simulate again the quaternary solidification case but this time with a lightweight
 tabulation where all successive line with similar phase fractions outside the solidification range are deleted, giving what we call \emph{b1QuatLite}. The 
 resulting file is three time smaller than the original tabulation file. Surprisingly, the computation time for \emph{b1QuatLite} shows no significant acceleration 
