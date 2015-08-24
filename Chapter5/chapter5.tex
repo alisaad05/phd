@@ -2352,11 +2352,12 @@ The gravity vector points downwards.}
 
 The optimal computational configuration is now known, thus we proceed to simulate the solidification of the binary alloy given previously in \cref{table:texus_b1}.
 The nominal composition for this alloy is \bin{Fe}{0.105}{C}. In order to obtain accurate segregation results, 
-a fine resolution mapping was performed
-from equilibrium calculations, using 21 values of composition between a minimum of \SI{0.01}{\ucomposition} and \SI{1}{\ucomposition}. This is 
-equivalent for a composition step of \SI{0.0495}{\ucomposition}, with a temperature step of \SI{1}{\udegC} varying in the interval [\SI{20}{\udegC};\SI{1600}{\udegC}].
-The importance of choosing small steps in composition and temperature is to predict accurate solidification paths during mesosegregation (segregation length is limited to the droplet scale), 
-which is the main input of solidification shrinkage. Therefore, less accurate mappings may result in false shrinkage profile prediction. 
+a fine resolution mapping was performed from equilibrium calculations, using 20 values of composition between a minimum of \SI{0.01}{\ucomposition} and \SI{1}{\ucomposition}. 
+This is equivalent for a composition step of \SI{0.0495}{\ucomposition}, with a temperature step of \SI{1}{\udegC} 
+varying in the interval [\SI{20}{\udegC};\SI{1600}{\udegC}].
+The importance of choosing small steps in composition and temperature is to predict 
+accurate solidification paths during mesosegregation (relative to the droplet scale), which is the main input of solidification shrinkage. 
+Therefore, less accurate mappings may result in false shrinkage profile prediction, as will be shown henceforth.
 
 Using the initial and boundary conditions defined earlier, 15 seconds of simulation give the final shrinkage profile given in \cref{fig:bin_vs_exp}.
 We notice that the predicted overall deformation of the droplet is in a good agreement with the experimental shape after solidification.This agreement is
@@ -2469,29 +2470,29 @@ reaches the eutectoid isotherm at \SI{727}{\udegC}.
   [	name=whatever,
 	%title= (c),
 	scale only axis,
-	table/col sep=tab,  % comma % tab
+	table/col sep=comma,  % comma % tab
 	enlarge x limits=false,
 	%legend pos=north east,
 	scaled ticks=true,
 	ylabel style={align=center},
-	ylabel= Relative mesosegregation (\%), %\\$(\avg{w}-\avg{w_0})/\avg{w_0}$ (\%),
-	xlabel=Distance from the chill (mm),
+	ylabel=  $\frac{\avg{w}-w_0}{w_0}$ (\%), %Relative mesosegregation,
+	xlabel=Distance from chill (mm),
 	%xticklabel style={/pgf/number format/fixed},
 	yticklabel style={/pgf/number format/fixed},
 	xtick={0,1,...,6},
 	xticklabels={0,1,...,6},
-	ytick={1,0,...,-4},
-	yticklabels={1,0,...,-4},
+	ytick={-5,-2.5,...,5},
+	yticklabels={-5,-2.5,...,5},
 	%x tick label style={rotate=45,anchor=east},
 	width=0.8\textwidth,
 	height=8cm,	
-	ymin=-4.5, ymax=1.5,
+	ymin=-5, ymax=5,
 	xmin=0, xmax=6,
 	mark repeat	= {50},
 	cycle list name=exotic,
 	axis y line*=left,
 ]
-	\addplot table [x expr=\thisrow{arc_length}*1000, y expr=100*(\thisrow{Concentration_M}-0.105)/0.105] {Chapter5/Data/3d_segregation/BinTransformationPath.txt};
+  \addplot table [x expr=1000*\thisrow{arc_length}, y expr=100*(\thisrow{Concentration}-0.105)/0.105]   {Chapter5/Data/3d_segregation/BinTransformationPath.csv};
 	\draw[thick, dashed, black, opacity=0.5] (axis cs:\pgfkeysvalueof{/pgfplots/xmin},0.0) -- (axis cs:\pgfkeysvalueof{/pgfplots/xmax},0.0);
 	\legend{$\avg{w}$}  	
   	\end{axis}
@@ -2501,7 +2502,7 @@ reaches the eutectoid isotherm at \SI{727}{\udegC}.
   [	name=whatever,
 	%title= (c),
 	scale only axis,
-	table/col sep=tab,  % comma % tab
+	table/col sep=comma,  % comma % tab
 	scaled ticks=true,
 	ylabel= Phase fraction (-),
 	yticklabel style={/pgf/number format/fixed},
@@ -2516,15 +2517,15 @@ reaches the eutectoid isotherm at \SI{727}{\udegC}.
 	axis y line*=right,
 	axis x line=none,
 ]
-	\addplot table [x expr=\thisrow{arc_length}*1000, y=FractionBCC_c] {Chapter5/Data/3d_segregation/BinTransformationPath.txt};
-	\addplot table [x expr=\thisrow{arc_length}*1000, y=FractionFCC_c] {Chapter5/Data/3d_segregation/BinTransformationPath.txt};
-	\addplot table [x expr=\thisrow{arc_length}*1000, y=FractionCEM_c] {Chapter5/Data/3d_segregation/BinTransformationPath.txt};
+	\addplot table [x expr=\thisrow{arc_length}*1000, y=FractionBCC_c] {Chapter5/Data/3d_segregation/BinTransformationPath.csv};
+	\addplot table [x expr=\thisrow{arc_length}*1000, y=FractionFCC_c] {Chapter5/Data/3d_segregation/BinTransformationPath.csv};
+	\addplot table [x expr=\thisrow{arc_length}*1000, y=FractionCEM_c] {Chapter5/Data/3d_segregation/BinTransformationPath.csv};
 	%\draw[thick, dashed, black, opacity=0.5] (axis cs:\pgfkeysvalueof{/pgfplots/xmin},0.0) -- (axis cs:\pgfkeysvalueof{/pgfplots/xmax},0.0);
 	\legend{BCC,FCC,CEM}
   	\end{axis}
 \end{tikzpicture}
 %-------
-\caption{Segregation profile in percent with respect to the nominal composition, along the vertical axis of the droplet.}
+\caption{Segregation profile in percent with respect to the nominal composition, along the vertical revolution axis of the solidified sample.}
 \label{fig:texus_segreg_profile}
 \end{figure}
 %--------------------------------------
@@ -2604,7 +2605,8 @@ where the transformation path is not complex as a result of the smaller number o
 %path 
 {Chapter5/Graphics/3d/tern_quatern/profiles_comparison.pdf}
 % caption
-{Comparison of final droplet profiles obtained by solidifying \emph{b1Bin}, \emph{b1Tern} and \emph{b1Quat} samples, with respect to the initial profile. The \emph{b1BinCoarse} sample
+{Comparison of final droplet profiles obtained by solidifying \emph{b1Bin}, \emph{b1Tern} and \emph{b1Quat} samples, with respect to the initial profile. 
+The \emph{b1BinCoarse} sample
 is obtained using coarser composition steps.}
 % label
 \label{fig:shape_comparison}
@@ -2614,8 +2616,10 @@ is obtained using coarser composition steps.}
 Nevertheless, it should be mentioned that the mapping resolution plays an important role in the accuracy of thermodynamic conversions.
 Therefore, tabulations size easily increases with the increasing number of solute elements, because of the greater number of temperature-composition 
 combinations to scan while computing equilibrium. To test the effect of changing the mapping resolution, we repeated the binary sample solidification
-but with a mapping of 0.047 wt\% instead of 0.0042 wt\% used for the \emph{b1Bin} sample. The corresponding profile in \cref{fig:shape_comparison}, \emph{b1Coarse},
-shows a different deformation then expected by the other samples.
+but with a mapping of \SI{0.0495}{\ucomposition} instead of \SI{0.0052}{\ucomposition} used for the \emph{b1Bin} sample, i.e. about 10 times coarser. 
+The corresponding profile in \cref{fig:shape_comparison}, \emph{b1BinCoarse}, shows less vertical elongation then predicted by the finer \emph{b1Bin} tabulation. 
+This is clearly due to inaccurate calculation of the solidification path, revealing the importance of mappings accuracy in predicting transformation-related physics.
+
 In order to test the effect of the tabulation file size on computation time, we simulate again the quaternary solidification case but this time with a lightweight
 tabulation where all successive line with similar phase fractions outside the solidification range are deleted, giving what we call \emph{b1QuatLite}. The 
 resulting file is three time smaller than the original tabulation file. Surprisingly, the computation time for \emph{b1QuatLite} shows no significant acceleration 
@@ -2633,13 +2637,13 @@ This is may be considered as a limitation of the thermodynamic mapping approach.
 %--------------------------------
 \begin{table}[htbp]
 \centering
-\caption{Information table showing the tabulations size  for each alloy obtained by thermodynamic mapping, depending on the number of solute elements and phases.
-The computation time corresponds to the CPU time of a simulation running on 20 cores.}
+\caption{Information table showing the tabulations size  for each alloy obtained by the same mapping resolution for temperature and composition, 
+depending on the number of solute elements and phases. The computation time corresponds to the CPU time of a simulation running on 20 cores.}
 \label{table:mapping_stat}
 \resizebox{\columnwidth}{!}{%
 {\tabulinesep=1.0mm \begin{tabu}{lccccc}
 \tabucline[1pt]{-}
-\textbf{Alloy} & \textbf{Nb solutes} & \textbf{Nb phases}  & \textbf{Tabulation lines}  & \textbf{Size (MB)} & \textbf{Computation time (s)}   \\\tabucline[1pt]{-}
+\textbf{Alloy} & \textbf{Nb solutes} & \textbf{Nb phases}  & \textbf{Tabulation lines}  & \textbf{Size (MB)} & \textbf{Computation time (s)}  \\\tabucline[1pt]{-}
 %-----------------------------
       \emph{b1Bin}            & 1                       &  4                  &  \num{185010}     &    \num{4.37}   &  \num{59461.5}  \\   %78003.9
       \emph{b1Tern}           & 2                       &  5                  &  \num{220250}     &    \num{10.18}  &  \num{62644.4}  \\    
@@ -2651,7 +2655,6 @@ The computation time corresponds to the CPU time of a simulation running on 20 c
 }
 \end{table}
 %--------------------------------
-% time taken at 20 s running 20 cores: OK for Quat and QuatLite TODO: relaunch Bin and Tern
 
 Finally we are interested in comparing the mesosegregation levels obtained in all three solidification cases. Segregation maps for the three cases
 are presented in \cref{fig:final_segreg_ternquat} on a symmetry plane section. First, we compare the carbon segregation as it is the common species among the presented alloys.
@@ -2699,7 +2702,7 @@ of each chemical species for \emph{b1Bin}, \emph{b1Tern} and \emph{b1Quat} sampl
   %legend pos=north east,
   scaled ticks=true,
   %xlabel=Sample length (m),
-  ylabel=$\avg{w}$ (wt.\% C),
+  ylabel=$\frac{\avg{w_C}-w_{C_0}}{w_{C_0}}$ (\%),
   % xticklabel style={/pgf/number format/fixed},
   xtick={0,1,...,8}, 
   xticklabels={},
@@ -2729,7 +2732,7 @@ of each chemical species for \emph{b1Bin}, \emph{b1Tern} and \emph{b1Quat} sampl
   %legend pos=north east,
   scaled ticks=true,
   %xlabel=Sample length (m),
-  ylabel=$\avg{w}$ (wt.\% Si),
+  ylabel=$\frac{\avg{w_{Si}}-w_{{Si}_0}}{w_{{Si}_0}}$ (\%),
   xticklabel style={/pgf/number format/fixed},
   xtick={0,1,...,8}, 
   xticklabels={},
@@ -2757,7 +2760,7 @@ of each chemical species for \emph{b1Bin}, \emph{b1Tern} and \emph{b1Quat} sampl
   %legend pos=north east,
   scaled ticks=true,
   xlabel=Distance from chill (mm),
-  ylabel=$\avg{w}$ (wt.\% Mn),
+  ylabel=$\frac{\avg{w_{Mn}}-w_{{Mn}_0}}{w_{{Mn}_0}}$ (\%),
   xtick={0,1,...,8}, 
   xticklabels={0,1,...,8}, % showing in (mm)
   ytick={-1,-0.5,...,1},
@@ -2774,18 +2777,19 @@ of each chemical species for \emph{b1Bin}, \emph{b1Tern} and \emph{b1Quat} sampl
 
 \end{tikzpicture}
 %-------
-\caption{Mesosegregation profiles as functions of the distance from the chill, plotted for (a) carbon (b) silicon and (c) manganese elements
+\caption{Relative mesosegregation profiles as functions of the distance from the chill, plotted for (a) carbon (b) silicon and (c) manganese elements
 along the vertical revolution axis of the solidified sample.}
 \label{fig:3d_segregation_multicomponent}
 \end{figure}
 %--------------------------------------
 \shorthandon{;:?!} %http://tex.stackexchange.com/questions/74860/unexpected-clash-between-babel-and-pgf-spy
 
-\comment{update binary profile comparison as well as the corresponding image}
-\comment{update parametric study H3G0 and H4G0 given by new tabulation}
-\comment{introduce and comment the tabulation resolution and its effect on shape}
+% \comment{update binary profile comparison as well as the corresponding image}
+% \comment{update parametric study H3G0 and H4G0 given by new tabulation}
+% \comment{introduce and comment the tabulation resolution and its effect on shape}
 %\comment{update the binary 1d segregation anaysis at the end in the bin tern quat comparison}
 %\comment{update computation time for ternary done with 20 cores}
+\comment{update solidification progress figures for phase fractions with the binary solidification obtained with the finer tabulation}
  
 %--
 \input{Chapter5/recap5} % resume francais
