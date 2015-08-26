@@ -2413,7 +2413,7 @@ for illustrative simplicity.}
 \end{figureth}
 %--------------
 
-The fluid flow is behind the reduced-gravity segregation shown at different stages in \cref{fig:texus_mesoseg}.
+The fluid flow is behind the reduced-gravity segregation shown at different stages in \cref{fig:texus_mesosegregation}.
 We may call it mesosegregation, as the droplet is small and considered as a laboratory-scale sample.
 As earlier mentioned, a restricted region of positive segregation settles at the contact area with the substrate,
 from the first second after the contact.Later, between 2 s and 8 s, the solid front advances in the melt, creating 
@@ -2445,18 +2445,28 @@ information on the smaller scale) that results from the hypoeutectoid compositio
 Beyond this point, the austenitic $\gamma$-FCC phase is gradually replaced by $\alpha$-BCC, which represents the proeutectoid $\alpha$ phase, taking place before temperature
 reaches the eutectoid isotherm at \SI{727}{\udegC}.
 
-%--------------
-\begin{figureth}
-% textwidth 
-{1.0}
-%path 
-{Chapter5/Graphics/3d/bin/mesosegregation.pdf}
-% caption
-{Evolution of the average composition with solidification time, showing evidence of mesosegregation and shape deformation between 0 s and 20 s.}
-% label
-\label{fig:texus_mesoseg}
-\end{figureth}
-%--------------
+%===================================== ANIMATION FIGURE =====================================
+\begin{figure}[htbp]
+\centering
+%
+\ifthenelse{\boolean{enable_animations}}%
+  {% then
+    %\animategraphics[options]{fps}{filename_without_number}{1}{N}
+    %-------
+    \animategraphics{10}{Chapter5/Graphics/3d/bin/mesosegregation/img}{0}{80}
+    \caption{Animation of the average composition with solidification time, showing evidence of mesosegregation and shape deformation between 0 s and 20 s.}
+    %-------
+  }
+  {% else 
+    %-------
+    \includegraphics[width=1.0\textwidth]{Chapter5/Graphics/3d/bin/mesosegregation.pdf}
+    \caption{Evolution of the average composition with solidification time, showing evidence of mesosegregation and shape deformation between 0 s and 20 s.
+     (check animation in the PDF file).} 
+    %-------
+  }
+\label{fig:texus_mesosegregation}
+\end{figure}
+%===================================== ANIMATION FIGURE =====================================
 
 %--------------------------------------
 \shorthandoff{;:?!} %http://tex.stackexchange.com/questions/74860/unexpected-clash-between-babel-and-pgf-spy
