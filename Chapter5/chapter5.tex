@@ -1791,35 +1791,106 @@ of the metal's shrunk surface together with the final macrosegregation.
    %------------
   \begin{subfigure}[t]{0.45\textwidth}
     \centering
-	\includegraphics[width=\textwidth]{Chapter5/Graphics/2d/Hachani0.02.png}
+	\includegraphics[width=\textwidth]{Chapter5/Graphics/2d/Hachani0p02.png}
 	\caption{}
-    \label{fig:HH1}
+    \label{fig:smacs_lowcr}
   \end{subfigure}
   %------------------------------
+  \hfill
   %------------------------------
   \begin{subfigure}[t]{0.45\textwidth}
     \centering
-	\includegraphics[width=\textwidth]{Chapter5/Graphics/2d/Hachani0.04.png}
+	\includegraphics[width=\textwidth]{Chapter5/Graphics/2d/Hachani0p04.png}
 	\caption{}
-    \label{fig:HH2}
+    \label{fig:smacs_highcr}
   \end{subfigure}
    %------------
-\caption{Final macrosegregation patterns obtained by solidifying a \bin{Sn}{3}{Pb} alloy at (a) \SI{0.02}{\ucr} and (b) \SI{0.04}{\ucr}. 
-The different cooling rates a different lead segregation pattern, with a visible sign of volume shrinkage at the top \citep{hachani_experimental_2012}.}
-% The rectangular grid on both alloys is used to measure concentration at grid points \citep{hebditch_observations_1974}.
+\caption{Final macrosegregation patterns obtained by solidifying a \bin{Sn}{3}{Pb} alloy at (a) \SI{0.02}{\uCR} and (b) \SI{0.04}{\uCR}. 
+The different cooling rates result in different lead segregation patterns, with a greater number of channel segregates in the latter.
+The X-rays show also a visible sign of volume shrinkage at the top of each ingot \citep{hachani_experimental_2012}.}
 \label{fig:smacs_exp}
 \end{figure}
 %------------------
 
 
-%**********************************
-\subsection{Absence of convection}
-%**********************************
-We first try to simulate the solidification process by neglecting thermosolutal dependence of phase densities in the Navier-Stokes solver. By doing so,
-no convection forces should arise during solidification, 
-hence the generated flow is only due to the difference between solid and liquid densities, that is the shrinkage driving force.
+% %**********************************
+% \subsection{Absence of convection}
+% %**********************************
+% We first try to simulate the solidification process by neglecting thermosolutal dependence of phase densities in the Navier-Stokes solver. By doing so,
+% no convection forces should arise during solidification, 
+% hence the generated flow is only due to the difference between solid and liquid densities, that is the shrinkage driving force.
+
+% ********************************************
+\subsection{Constant volume solidification}
+% ********************************************
+When no solidification shrinkage is considered, the metal volume remains constant. It is therefore interesting to compare the 
+segregation patterns, first when making this hypothesis then comparing with a case of solidification shrinkage.
+As this case was previously introduced in chapter 3, for the \emph{Tsolver}'s validation, we present only the results. 
+The boundary conditions considered by \citet{caroozani} assumed that the metal-air surface is adiabatic with an imposed zero velocity
+vector. When using the level set method, it is possible to compute the fluid velocity in the viciniy of the interface, no longer needing 
+any imposed velocity in this region. However, we need to understand the effect of chaning the upper boundary condition on the fluid flow, hence
+on macrosegregation. Therefore, we replace no-slip condition on the top boundary by an imposed zero normal velocity but having a free-slip tangential component. 
+
+%-----------------
+\begin{figure}[htbp]
+\centering
+   %------------
+  \begin{subfigure}[t]{0.35\textwidth}
+    \centering
+  \includegraphics[height=4cm]{Chapter5/Graphics/2d/ref_2800s_nosliptop.png}
+  \caption{}
+    \label{fig:noslip}
+  \end{subfigure}
+  %------------------------------
+  %------------------------------
+  \begin{subfigure}[t]{0.1\textwidth}
+    \centering
+  \includegraphics[height=4cm]{Chapter5/Graphics/2d/colorbar.pdf}
+  \end{subfigure}
+  %------------
+  %------------------------------
+  \begin{subfigure}[t]{0.35\textwidth}
+    \centering
+  \includegraphics[height=4cm]{Chapter5/Graphics/2d/ref_2800s_sliptop.png}
+  \caption{}
+    \label{fig:freeslip}
+  \end{subfigure}
+   %------------
+\caption{Comparison of two solidification with macrosegregation cases assuming (a) a no-slip condition on the upper boundary 
+or (b) a tangential free-slip condition. The snapshots are taken at 2800 s.}
+\end{figure}
+%------------------
 
 
+%-----------------
+\begin{figure}[htbp]
+\centering
+   %------------
+  \begin{subfigure}[t]{0.35\textwidth}
+    \centering
+  \includegraphics[height=4cm]{Chapter5/Graphics/2d/ref_7000s_nosliptop.png}
+  \caption{}
+    \label{fig:noslip}
+  \end{subfigure}
+  %------------------------------
+  %------------------------------
+  \begin{subfigure}[t]{0.1\textwidth}
+    \centering
+  \includegraphics[height=4cm]{Chapter5/Graphics/2d/colorbar.pdf}
+  \end{subfigure}
+  %-----------
+  %------------------------------
+  \begin{subfigure}[t]{0.35\textwidth}
+    \centering
+  \includegraphics[height=4cm]{Chapter5/Graphics/2d/ref_7000s_sliptop.png}
+  \caption{}
+    \label{fig:freeslip}
+  \end{subfigure}
+   %------------
+\caption{Comparison of two solidification with macrosegregation cases assuming (a) a no-slip condition on the upper boundary 
+or (b) a tangential free-slip condition. The snapshots are taken at 2800 s.}
+\end{figure}
+%------------------
 
 
 
