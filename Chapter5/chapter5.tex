@@ -1532,7 +1532,9 @@ we use it as a reference case,
 convection-diffusion solidification with $\rhol \neq \rhos$ (with level set) and macrosegregation.
 \end{itemize}
 
+% *************************************************
 \subsubsection{Shrinkage effect on temperature}
+% *************************************************
 If we focus first on \cref{fig:shrinkage_effect}, we first compare solidification cases G and G0, both with equal phase densities, hence no shrinkage.
 This first comparison shows that the introduction of the level set method, compared to a monodomain configuration, heats up
 the overall sample temperature by about \SI{5}{\udegC}, causing solidification to finish a few seconds later than predicted in case G0.
@@ -1769,19 +1771,17 @@ Show solute mass conservation with equal or low solute diffusion in air
 
 
 
-
-
-
+% **********************************************************************
 \section{2D application: controlled solidification benchmark}
-
-This type of applications is very known to the solidification literature and very important in understanding and predicting macrosegregation produced by liquid convection,
-solid grains settling and volume shrinkage.
+% **********************************************************************
+In this application, we aim at predicting macrosegregation produced by liquid convection, in the presence of solidification shrinkage.
 An molten alloy is put in a rectangular crucible with controlled cooling flux on one or two sides to the crucible. The importance of the experiment lies in the 
-thermal convection forces arising from temperature gradients, but also solutal buoyancy forces arising from liquid concentration gradients. 
-Depending on the density of each chemical species, these convection forces may either be in the same or opposite direction, changing the final macrosegregation pattern.
-\citet{hebditch_observations_1974} suggested one of the first experiments working on Sn-Zn and Sn-Pb alloys. A part of their results is shown in \cref{fig:HH_exp}. 
+thermal convection forces arising from temperature gradients, but also solutal buoyancy forces arising from liquid concentration gradients. The final macrosegregation pattern
+strongly depends on density variations caused by each chemical species, but also on the experimental conditions like the lateral thermal gradients as well the cooling rate,
+as shown in \cref{fig:smacs_exp}.
+\citet{hebditch_observations_1974} suggested one of the first experiments working on Sn-Zn and Sn-Pb alloys. 
 More recently, an experimental benchmark was performed by \citet{hachani_experimental_2012} to obtain more accurate 
-composition results with different Sn-Pb and Pb-Sn alloys. In the current section, we are interested in the latter experiment, especially in the prediction
+composition results with various Sn-Pb and Pb-Sn alloys. In the current section, we are interested in the latter experiment, especially in the prediction
 of the metal's shrunk surface together with the final macrosegregation.
 
 %
@@ -1791,7 +1791,7 @@ of the metal's shrunk surface together with the final macrosegregation.
    %------------
   \begin{subfigure}[t]{0.45\textwidth}
     \centering
-	\includegraphics[width=\textwidth]{Chapter5/Graphics/2d/HH1.png}
+	\includegraphics[width=\textwidth]{Chapter5/Graphics/2d/Hachani0.02.png}
 	\caption{}
     \label{fig:HH1}
   \end{subfigure}
@@ -1799,19 +1799,22 @@ of the metal's shrunk surface together with the final macrosegregation.
   %------------------------------
   \begin{subfigure}[t]{0.45\textwidth}
     \centering
-	\includegraphics[width=\textwidth]{Chapter5/Graphics/2d/HH2.png}
+	\includegraphics[width=\textwidth]{Chapter5/Graphics/2d/Hachani0.04.png}
 	\caption{}
     \label{fig:HH2}
   \end{subfigure}
    %------------
-\caption{Final macrosegregation patterns in (a) \bin{Sn}{5}{Zn} and (b) \bin{Sn}{5}{Pb} castings, with a visible sign of volume shrinkage at the top. 
-		The rectangular grid on both alloys is used to measure concentration at grid points \citep{hebditch_observations_1974}.} 
-\label{fig:HH_exp}
+\caption{Final macrosegregation patterns obtained by solidifying a \bin{Sn}{3}{Pb} alloy at (a) \SI{0.02}{\ucr} and (b) \SI{0.04}{\ucr}. 
+The different cooling rates a different lead segregation pattern, with a visible sign of volume shrinkage at the top \citep{hachani_experimental_2012}.}
+% The rectangular grid on both alloys is used to measure concentration at grid points \citep{hebditch_observations_1974}.
+\label{fig:smacs_exp}
 \end{figure}
 %------------------
 
 
+%**********************************
 \subsection{Absence of convection}
+%**********************************
 We first try to simulate the solidification process by neglecting thermosolutal dependence of phase densities in the Navier-Stokes solver. By doing so,
 no convection forces should arise during solidification, 
 hence the generated flow is only due to the difference between solid and liquid densities, that is the shrinkage driving force.
@@ -2626,7 +2629,7 @@ is obtained using coarser composition steps.}
 Nevertheless, it should be mentioned that the mapping resolution plays an important role in the accuracy of thermodynamic conversions.
 Therefore, tabulations size easily increases with the increasing number of solute elements, because of the greater number of temperature-composition 
 combinations to scan while computing equilibrium. To test the effect of changing the mapping resolution, we repeated the binary sample solidification
-but with a mapping of \SI{0.0495}{\ucomposition} instead of \SI{0.0052}{\ucomposition} used for the \emph{b1Bin} sample, i.e. about 10 times coarser. 
+but with a composition step of \SI{0.0495}{\ucomposition} instead of \SI{0.0052}{\ucomposition} used for the \emph{b1Bin} sample, i.e. about 10 times coarser. 
 The corresponding profile in \cref{fig:shape_comparison}, \emph{b1BinCoarse}, shows less vertical elongation then predicted by the finer \emph{b1Bin} tabulation. 
 This is clearly due to inaccurate calculation of the solidification path, revealing the importance of mappings accuracy in predicting transformation-related physics.
 
