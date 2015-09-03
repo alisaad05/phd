@@ -1827,68 +1827,75 @@ When no solidification shrinkage is considered, the metal volume remains constan
 segregation patterns, first when making this hypothesis then comparing with a case of solidification shrinkage.
 As this case was previously introduced in chapter 3, for the \emph{Tsolver}'s validation, we present only the results. 
 The boundary conditions considered by \citet{caroozani} assumed that the metal-air surface is adiabatic with an imposed zero velocity
-vector. When using the level set method, it is possible to compute the fluid velocity in the viciniy of the interface, no longer needing 
-any imposed velocity in this region. However, we need to understand the effect of chaning the upper boundary condition on the fluid flow, hence
-on macrosegregation. Therefore, we replace no-slip condition on the top boundary by an imposed zero normal velocity but having a free-slip tangential component. 
+vector. When using the level set method, it is possible to compute the fluid velocity in the viciniy of the interface, thus imposing directly the velocity in this area is avoided. 
+However, the effect of changing the upper boundary condition on the flow and segregation patterns is important. 
+Therefore, in \cref{fig:smacs_noLS_2800,fig:smacs_noLS_7000}, we compare at 2800 s and 7000 s a no-slip condition on the top boundary to an imposed zero normal velocity but with a free-slip tangential component. 
 
 %-----------------
 \begin{figure}[htbp]
 \centering
    %------------
-  \begin{subfigure}{0.4\textwidth}
+  \begin{subfigure}[t]{0.4\textwidth}
     \centering
-  \includegraphics[height=4cm]{Chapter5/Graphics/2d/ref_2800s_nosliptop.png}
+  \includegraphics[width=\textwidth]{Chapter5/Graphics/2d/ref_2800s_nosliptop.png}
   \caption{}
     \label{fig:noslip}
   \end{subfigure}
   %------------------------------
-  %------------------------------
-  \begin{subfigure}{0.4\textwidth}
+  \begin{subfigure}[t]{0.15\textwidth}
     \centering
-  \includegraphics[height=4cm]{Chapter5/Graphics/2d/ref_2800s_sliptop_wcolorbar.png}
+  \includegraphics[width=0.3\textwidth]{Chapter5/Graphics/2d/colorbar.pdf}
+  \end{subfigure}
+  %------------------------------
+  \begin{subfigure}[t]{0.4\textwidth}
+    \centering
+  \includegraphics[width=\textwidth]{Chapter5/Graphics/2d/ref_2800s_sliptop.png}
   \caption{}
     \label{fig:freeslip}
   \end{subfigure}
    %------------
 \caption{Comparison of two solidification with macrosegregation cases assuming (a) a no-slip condition on the upper boundary 
 or (b) a tangential free-slip condition. The snapshots are taken at 2800 s.}
+\label{fig:smacs_noLS_2800}
 \end{figure}
 %------------------
-
 
 %-----------------
 \begin{figure}[htbp]
 \centering
    %------------
-  \begin{subfigure}[t]{0.35\textwidth}
+  \begin{subfigure}[t]{0.4\textwidth}
     \centering
-  \includegraphics[height=4cm]{Chapter5/Graphics/2d/ref_7000s_nosliptop.png}
+  \includegraphics[width=\textwidth]{Chapter5/Graphics/2d/ref_7000s_nosliptop.png}
   \caption{}
     \label{fig:noslip}
   \end{subfigure}
   %------------------------------
-  %------------------------------
-  \begin{subfigure}[t]{0.1\textwidth}
+  \begin{subfigure}[t]{0.15\textwidth}
     \centering
-  \includegraphics[height=4cm]{Chapter5/Graphics/2d/colorbar.pdf}
+  \includegraphics[width=0.3\textwidth]{Chapter5/Graphics/2d/colorbar.pdf}
   \end{subfigure}
-  %-----------
   %------------------------------
-  \begin{subfigure}[t]{0.35\textwidth}
+  \begin{subfigure}[t]{0.4\textwidth}
     \centering
-  \includegraphics[height=4cm]{Chapter5/Graphics/2d/ref_7000s_sliptop.png}
+  \includegraphics[width=\textwidth]{Chapter5/Graphics/2d/ref_7000s_sliptop.png}
   \caption{}
     \label{fig:freeslip}
   \end{subfigure}
    %------------
 \caption{Comparison of two solidification with macrosegregation cases assuming (a) a no-slip condition on the upper boundary 
-or (b) a tangential free-slip condition. The snapshots are taken at 2800 s.}
+or (b) a tangential free-slip condition. The snapshots are taken at 7000 s.}
+\label{fig:smacs_noLS_7000}
 \end{figure}
 %------------------
 
+In \cref{fig:smacs_noLS_2800} showing an early stage of solidification, the top no-slip wall acts a brake for the moving flow, 
+deviating it downwards. A smaller magnitude flow is then created near the upper boundary, with less heat and chemical species 
+transport, allowing a fast solification rate compared to the slip boundary case. In the latter, the flow 
 
 
 
+% --------------------------------------------------------------------------------------------------------------------------
 % ---------------------------------
 \section{3D application: reduced-gravity solidification}
 % ---------------------------------
