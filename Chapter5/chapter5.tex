@@ -1771,6 +1771,9 @@ Show solute mass conservation with equal or low solute diffusion in air
 
 
 
+
+
+\newpage
 % **********************************************************************
 \section{2D application: controlled solidification benchmark}
 % **********************************************************************
@@ -1821,15 +1824,15 @@ The X-rays show also a visible sign of volume shrinkage at the top of each ingot
 % hence the generated flow is only due to the difference between solid and liquid densities, that is the shrinkage driving force.
 
 % ********************************************
-\subsection{Constant volume solidification}
+\subsection{Boundary condition effect}
 % ********************************************
-When no solidification shrinkage is considered, the metal volume remains constant. It is therefore interesting to compare the 
-segregation patterns, first when making this hypothesis then comparing with a case of solidification shrinkage.
-As this case was previously introduced in chapter 3, for the \emph{Tsolver}'s validation, we present only the results. 
-The boundary conditions considered by \citet{caroozani} assumed that the metal-air surface is adiabatic with an imposed zero velocity
-vector. When using the level set method, it is possible to compute the fluid velocity in the viciniy of the interface, thus imposing directly the velocity in this area is avoided. 
-However, the effect of changing the upper boundary condition on the flow and segregation patterns is important. 
-Therefore, in \cref{fig:smacs_noLS_2800,fig:smacs_noLS_7000}, we compare at 2800 s and 7000 s a no-slip condition on the top boundary to an imposed zero normal velocity but with a free-slip tangential component. 
+
+First, we want to understand the consequence of removing the no-slip boundary condition at the metal-air interface and compare the effect on macrosegregation. 
+For computations without level set, as previously done in chapter 4 for the \emph{Tsolver}'s validation in convection-diffusion regimes, a no-slip condition was applied for all domain boundaries including 
+the interface.
+However, this is not readily implemented with the level set method which considers the local interface velocity for its transport.
+In \cref{fig:slipbc_2800,fig:slipbc_7000}, we compare at 2800 s and 7000 s the differences between a no-slip condition on the top boundary 
+and a free-slip tangential condition, assuming zero normal velocity. 
 
 %-----------------
 \begin{figure}[htbp]
@@ -1839,7 +1842,7 @@ Therefore, in \cref{fig:smacs_noLS_2800,fig:smacs_noLS_7000}, we compare at 2800
     \centering
   \includegraphics[width=\textwidth]{Chapter5/Graphics/2d/ref_2800s_nosliptop.png}
   \caption{}
-    \label{fig:noslip}
+    \label{fig:noslip2800}
   \end{subfigure}
   %------------------------------
   \begin{subfigure}[t]{0.15\textwidth}
@@ -1851,12 +1854,12 @@ Therefore, in \cref{fig:smacs_noLS_2800,fig:smacs_noLS_7000}, we compare at 2800
     \centering
   \includegraphics[width=\textwidth]{Chapter5/Graphics/2d/ref_2800s_sliptop.png}
   \caption{}
-    \label{fig:freeslip}
+    \label{fig:freeslip2800}
   \end{subfigure}
    %------------
 \caption{Comparison of two solidification with macrosegregation cases assuming (a) a no-slip condition on the upper boundary 
 or (b) a tangential free-slip condition. The snapshots are taken at 2800 s.}
-\label{fig:smacs_noLS_2800}
+\label{fig:slipbc_2800}
 \end{figure}
 %------------------
 
@@ -1868,7 +1871,7 @@ or (b) a tangential free-slip condition. The snapshots are taken at 2800 s.}
     \centering
   \includegraphics[width=\textwidth]{Chapter5/Graphics/2d/ref_7000s_nosliptop.png}
   \caption{}
-    \label{fig:noslip}
+    \label{fig:noslip7000}
   \end{subfigure}
   %------------------------------
   \begin{subfigure}[t]{0.15\textwidth}
@@ -1880,22 +1883,85 @@ or (b) a tangential free-slip condition. The snapshots are taken at 2800 s.}
     \centering
   \includegraphics[width=\textwidth]{Chapter5/Graphics/2d/ref_7000s_sliptop.png}
   \caption{}
-    \label{fig:freeslip}
+    \label{fig:freeslip7000}
   \end{subfigure}
    %------------
 \caption{Comparison of two solidification with macrosegregation cases assuming (a) a no-slip condition on the upper boundary 
 or (b) a tangential free-slip condition. The snapshots are taken at 7000 s.}
-\label{fig:smacs_noLS_7000}
+\label{fig:slipbc_7000}
 \end{figure}
 %------------------
 
-In \cref{fig:smacs_noLS_2800} showing an early stage of solidification, the top no-slip wall acts a brake for the moving flow, 
-deviating it downwards. A smaller magnitude flow is then created near the upper boundary, with less heat and chemical species 
-transport, allowing a fast solification rate compared to the slip boundary case. In the latter, the flow 
+In \cref{fig:slipbc_2800}, solidification is still at an early stage, at 2800 s. The main difference between \cref{fig:noslip2800} and 
+\cref{fig:freeslip2800} is the flow pattern near the top interface. The no-slip wall acts a brake for the vicinity flow, 
+deviating it downwards and allow a quicker solidification rate for the right upper part of the metal. The flow near the slip wall
+in \cref{fig:freeslip2800} is not damped and therefore delays solidification of the upper corner where it impinges.
+The different flow pattern creates a more pronounced negative segregation in the upper right corner of \cref{fig:noslip2800}, compared
+to the same location in  \cref{fig:freeslip2800}. Later when solidification is complete at 7000 s (\cref{fig:slipbc_7000}), the overall
+macrosegregation is more visible: expect for the previously mentioned difference in the corner segregation, no big differences are observed.
+This means that when using the level set method, allowing the velocity to have non-zero values near the interface should not drastically  change the
+predicted flow pattern and the subsequent macrosegregation.
+
+% ********************************************
+\subsection{Computational configuration}
+% ********************************************
+
+The case considers a 2D geometry having equivalent dimensions to the 3D case performed earlier (sample of 10 cm in length and 6 cm in height).
+To accomodate the air subdomain, an extra 2 cm are added to sample's height, which finally reaches 8 cm, the interface is thus kept at an elevation of 6 cm. 
+The inital mesh consists of three different mesh sizes: isotropic meshes in the air and the metal, having respectively a uniform size of 2 mm and 1 mm.
+Regarding the interface, an anisotropic mesh adapts to the metal-air surface with a mesh size of 0.1 mm in the normal direction to the interface.
+The thickness of the anisotropic mesh spans 0.5 mm from each side of the interface.
+As the simulation starts, we use the \emph{Remesh4} adaptive technique to maintain accurate predictions for velocity and interface transport.
+However as solidification proceeds, we also need to keep a relatively small mesh size in regions with noticeable composition gradients.
+Although this is possible with the chosen remeshing technique, it is more difficult to maintain a fine mesh size throughout the simulation, 
+and some information may be lost when coarser elements are obtained by remeshing. Therefore, to avoid such unwanted effects, we use another uniform
+isotropic grid, named \emph{grid B}, having a constant mesh size of 0.3 mm, that is three times smaller than the interface elements in the original mesh (named \emph{grid A}).
+The strategy consists of checking the liquid fraction of each node in \emph{grid A}, if its value is located between 30\% and 70\%, then we consider that is a 
+a region of interest, since the flow has not been yet fully stopped due to the low permeablility. We consequently transport the average composition field exclusively 
+for these nodes, keeping for all other nodes their respective average composition values. 
+
+% ********************************************
+\subsection{Results}
+% ********************************************
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
 
 
 % --------------------------------------------------------------------------------------------------------------------------
+\newpage
 % ---------------------------------
 \section{3D application: reduced-gravity solidification}
 % ---------------------------------
