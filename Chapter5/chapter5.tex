@@ -968,7 +968,7 @@ The arrows indicate three different transitions of the Darcy term between the ai
 % solid regions, is transported with Navier-Stokes output, which should be some orders of magnitude less than the velocity
 % imposed at the free surface, as a result of a decreasing permeability.
 
-%
+\cleardoublepage
 %--------------------------------
 %--
 \section{1D application: solidification with inverse segregation}
@@ -1773,7 +1773,7 @@ Show solute mass conservation with equal or low solute diffusion in air
 
 
 
-\newpage
+\cleardoublepage
 % **********************************************************************
 \section{2D application: controlled solidification benchmark}
 % **********************************************************************
@@ -1906,27 +1906,134 @@ predicted flow pattern and the subsequent macrosegregation.
 \subsection{Computational configuration}
 % ********************************************
 
+
+\subsubsection{Mesh and adaptive remeshing}
+
 The case considers a 2D geometry having equivalent dimensions to the 3D case performed earlier (sample of 10 cm in length and 6 cm in height).
 To accomodate the air subdomain, an extra 2 cm are added to sample's height, which finally reaches 8 cm, the interface is thus kept at an elevation of 6 cm. 
 The inital mesh consists of three different mesh sizes: isotropic meshes in the air and the metal, having respectively a uniform size of 2 mm and 1 mm.
 Regarding the interface, an anisotropic mesh adapts to the metal-air surface with a mesh size of 0.1 mm in the normal direction to the interface.
 The thickness of the anisotropic mesh spans 0.5 mm from each side of the interface.
-As the simulation starts, we use the \emph{Remesh4} adaptive technique to maintain accurate predictions for velocity and interface transport.
+
+To adapt the mesh, we use the \emph{Remesh4} adaptive technique to maintain accurate predictions for velocity and interface transport.
 However as solidification proceeds, we also need to keep a relatively small mesh size in regions with noticeable composition gradients.
-Although this is possible with the chosen remeshing technique, it is more difficult to maintain a fine mesh size throughout the simulation, 
-and some information may be lost when coarser elements are obtained by remeshing. Therefore, to avoid such unwanted effects, we use another uniform
+Although this is possible with the \emph{Remesh4} technique, it is more difficult to maintain a fine mesh size throughout the metal, especially in areas
+where solidification is almost complete and the velocity field is has a low magnitude. The consequence is a loss of information when coarser 
+elements are obtained by remeshing.
+
+To avoid such unwanted effects, we use another uniform
 isotropic grid, named \emph{grid B}, having a constant mesh size of 0.3 mm, that is three times smaller than the interface elements in the original mesh (named \emph{grid A}).
-The strategy consists of checking the liquid fraction of each node in \emph{grid A}, if its value is located between 30\% and 70\%, then we consider that is a 
-a region of interest, since the flow has not been yet fully stopped due to the low permeablility. We consequently transport the average composition field exclusively 
-for these nodes, keeping for all other nodes their respective average composition values. 
+The strategy consists of scanning the liquid fraction of each node in \emph{grid A}, if its value is located between 30\% and 70\%, then we consider that is a 
+a region of interest, since the flow velocity is still not zero and a relatively fine mesh is locally obtained. 
+We consequently transport the average composition field exclusively 
+for these nodes from \emph{grid A} to \emph{grid B}, keeping for all other nodes their respective average composition values.
+It should be noted that this transport is only one-way, hence no information feedback from \emph{grid B} to \emph{grid A}.
+
+%-----------------
+\begin{figure}[htbp]
+\centering
+   %------------
+  \begin{subfigure}[t]{0.3\textwidth}
+    \centering
+    \includegraphics[width=\textwidth]{Chapter5/Graphics/2d/GridAinit.png}
+    \caption{\emph{Grid A} (initial)}
+    \label{fig:gridAinit}
+  \end{subfigure}
+  %------------------------------
+  \begin{subfigure}[t]{0.3\textwidth}
+    \centering
+    \includegraphics[width=\textwidth]{Chapter5/Graphics/2d/GridA.png}
+    \caption{\emph{Grid A}}
+    \label{fig:gridA}
+  \end{subfigure}
+  %------------------------------
+  \begin{subfigure}[t]{0.3\textwidth}
+    \centering
+    \includegraphics[width=\textwidth]{Chapter5/Graphics/2d/GridB.png}
+    \caption{\emph{Grid B}}
+    \label{fig:gridB}
+  \end{subfigure}
+   %------------
+\caption{Snapshots of (a) the initial adaptive anisotropic \emph{grid A} then (b) the same grid but at 
+a given time increment with (c) the corresponding fixed isotropic \emph{grid B} at the same time increment. }
+\label{fig:smacs_grids}
+\end{figure}
+%------------------
+
+
+\subsubsection{Initial and boundary conditions}
+
+The air initial temperature is the same as the initial liquid. This is only a hypothesis to prevent steep temperature gradients at the interface,
+which may lead to surface solidification. The initial and boundary thermal conditions used to cool down the metal are defined in chapter 4, given by the experimental
+data of \citet{hachani_experimental_2012}. For the mechanical properties, the top wall allows free inflow/outflow of the air in all directions 
+at an imposed atmospheric pressure.
+This allows the air to follow any volume changes in the metal upon solidifying and shrinking. 
+
+The side walls adjacent to the heat exchangers are given a free tangential slip boundary condition but with a zero normal velocity, which lets the transported 
+level set function move vertically without being attached to the sides. Finally, a no-slip condition applies to the bottom wall. 
+
 
 % ********************************************
 \subsection{Results}
 % ********************************************
 
+The results are recorded at two intermdiate solidification stages, at 3050 s and 3550 s, knowing that solidification onset is around 1920 s.
+First, we look to the results in \cref{fig:1200s_unmask}. The original average composition field obtained by \emph{grid A} is almost
+free of steep composition gradients except for one segregated channel rising from the bottom by the action of thermal convection. 
 
-
-
+%-----------------
+\begin{figure}[htbp]
+\centering
+   %------------
+  \begin{subfigure}[t]{0.4\textwidth}
+    \centering
+  \includegraphics[width=\textwidth]{Chapter5/Graphics/2d/1200s_compo.png}
+  \caption{\emph{Grid A}}
+    \label{fig:1200s_compo}
+  \end{subfigure}
+  %------------------------------
+  \begin{subfigure}[t]{0.15\textwidth}
+    \centering
+  \includegraphics[width=0.3\textwidth]{Chapter5/Graphics/2d/colorbar.pdf}
+  \end{subfigure}
+  %------------------------------ 
+  \begin{subfigure}[t]{0.4\textwidth}
+    \centering
+  \includegraphics[width=\textwidth]{Chapter5/Graphics/2d/1200s_compobis.png}
+  \caption{\emph{Grid B}}
+    \label{fig:1200s_compobis}
+  \end{subfigure}
+   %------------
+   \vspace{5mm}
+   %------------------------------
+  \begin{subfigure}[t]{0.4\textwidth}
+    \centering
+  \includegraphics[width=\textwidth]{Chapter5/Graphics/2d/1200s_unmask.png}
+  \caption{Transport from \emph{grid A} to \emph{grid B}}
+    \label{fig:1200s_unmask}
+  \end{subfigure}
+   %------------
+   %------------
+   %------------------------------
+  \begin{subfigure}[t]{0.15\textwidth}
+    \centering
+  \includegraphics[width=0.3\textwidth]{Chapter5/Graphics/2d/colorbar_gs.pdf}
+  \end{subfigure}
+  %------------------------------
+  %------------------------------
+  \begin{subfigure}[t]{0.4\textwidth}
+    \centering
+  \includegraphics[width=\textwidth]{Chapter5/Graphics/2d/1200s_gs_vl.png}
+  \caption{Solid fraction on \emph{grid B}}
+    \label{fig:1200s_gs}
+  \end{subfigure}
+\caption{Snapshot of the average composition field shown on (a) \emph{grid A} where the mesh gets coarser in fully solidified regions near the right side while
+and then on (b) \emph{grid B} where the uniform fine mesh predicts a smoother composition field (line indicates the current interface level). 
+The increased number of segregated channels on the right side of the
+metal is obtained by the successive transport operations performed in (c) a restricted area (\yellow{yellow} color) based on the nodal values of the liquid fraction.}
+\label{fig:W_mask_1200s}
+\end{figure}
+%------------------
 
 
 
@@ -1961,7 +2068,7 @@ for these nodes, keeping for all other nodes their respective average compositio
 
 
 % --------------------------------------------------------------------------------------------------------------------------
-\newpage
+\cleardoublepage
 % ---------------------------------
 \section{3D application: reduced-gravity solidification}
 % ---------------------------------
