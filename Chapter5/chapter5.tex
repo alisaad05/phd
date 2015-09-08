@@ -1979,7 +1979,9 @@ level set function move vertically without being attached to the sides. Finally,
 
 The results are recorded at two intermdiate solidification stages, at 3050 s and 3550 s, knowing that solidification onset is around 1920 s.
 First, we look to the results in \cref{fig:1200s_unmask}. The original average composition field obtained by \emph{grid A} is almost
-free of steep composition gradients except for one segregated channel rising from the bottom by the action of thermal convection. 
+free of composition gradients except for one segregated channel rising from the bottom by the action of thermal convection. 
+
+BLABLABLA
 
 %-----------------
 \begin{figure}[htbp]
@@ -1988,7 +1990,7 @@ free of steep composition gradients except for one segregated channel rising fro
   \begin{subfigure}[t]{0.4\textwidth}
     \centering
   \includegraphics[width=\textwidth]{Chapter5/Graphics/2d/1200s_compo.png}
-  \caption{\emph{Grid A}}
+  \caption{Lead composition on \emph{Grid A}}
     \label{fig:1200s_compo}
   \end{subfigure}
   %------------------------------
@@ -2000,7 +2002,7 @@ free of steep composition gradients except for one segregated channel rising fro
   \begin{subfigure}[t]{0.4\textwidth}
     \centering
   \includegraphics[width=\textwidth]{Chapter5/Graphics/2d/1200s_compobis.png}
-  \caption{\emph{Grid B}}
+  \caption{Lead composition on \emph{Grid B}}
     \label{fig:1200s_compobis}
   \end{subfigure}
    %------------
@@ -2027,16 +2029,69 @@ free of steep composition gradients except for one segregated channel rising fro
   \caption{Solid fraction on \emph{grid B}}
     \label{fig:1200s_gs}
   \end{subfigure}
-\caption{Snapshot of the average composition field shown on (a) \emph{grid A} where the mesh gets coarser in fully solidified regions near the right side while
+\caption{Snapshots at 3050 s of the average composition field shown on (a) \emph{grid A} where the mesh gets coarser in fully solidified regions near the right side while
 and then on (b) \emph{grid B} where the uniform fine mesh predicts a smoother composition field (line indicates the current interface level). 
 The increased number of segregated channels on the right side of the
-metal is obtained by the successive transport operations performed in (c) a restricted area (\yellow{yellow} color) based on the nodal values of the liquid fraction.}
+metal is obtained by the successive transport operations performed in (c) a restricted area (\yellow{yellow} color) based on the nodal values of (d) the solid fraction field.}
 \label{fig:W_mask_1200s}
 \end{figure}
 %------------------
 
 
 
+
+
+%-----------------
+\begin{figure}[htbp]
+\centering
+   %------------
+  \begin{subfigure}[t]{0.4\textwidth}
+    \centering
+  \includegraphics[width=\textwidth]{Chapter5/Graphics/2d/1700s_compo.png}
+  \caption{Lead composition on \emph{Grid A}}
+    \label{fig:1700s_compo}
+  \end{subfigure}
+  %------------------------------
+  \begin{subfigure}[t]{0.15\textwidth}
+    \centering
+  \includegraphics[width=0.3\textwidth]{Chapter5/Graphics/2d/colorbar.pdf}
+  \end{subfigure}
+  %------------------------------ 
+  \begin{subfigure}[t]{0.4\textwidth}
+    \centering
+  \includegraphics[width=\textwidth]{Chapter5/Graphics/2d/1700s_compobis.png}
+  \caption{Lead composition on \emph{Grid B}}
+    \label{fig:1700s_compobis}
+  \end{subfigure}
+   %------------
+   \vspace{5mm}
+   %------------------------------
+  \begin{subfigure}[t]{0.4\textwidth}
+    \centering
+  \includegraphics[width=\textwidth]{Chapter5/Graphics/2d/1700s_unmask.png}
+  \caption{Transport from \emph{grid A} to \emph{grid B}}
+    \label{fig:1700s_unmask}
+  \end{subfigure}
+   %------------
+   %------------
+   %------------------------------
+  \begin{subfigure}[t]{0.15\textwidth}
+    \centering
+  \includegraphics[width=0.3\textwidth]{Chapter5/Graphics/2d/colorbar_gs.pdf}
+  \end{subfigure}
+  %------------------------------
+  %------------------------------
+  \begin{subfigure}[t]{0.4\textwidth}
+    \centering
+  \includegraphics[width=\textwidth]{Chapter5/Graphics/2d/1700s_gs_vl.png}
+  \caption{Solid fraction on \emph{grid B}}
+    \label{fig:1700s_gs}
+  \end{subfigure}
+\caption{Snapshots at 3550 s of (a) the average composition result obtained on \emph{grid A}, compared to (b) the composition field obtained on \emph{grid B}, 
+(c) theafter being transported in (c) a restricted area (\yellow{yellow} color) based on the nodal values of (d) the solid fraction field.}
+\label{fig:W_mask_1700s}
+\end{figure}
+%------------------
 
 
 
