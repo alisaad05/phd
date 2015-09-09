@@ -1907,8 +1907,9 @@ predicted flow pattern and the subsequent macrosegregation.
 % ********************************************
 
 
+% -------------------------------------------
 \subsubsection{Mesh and adaptive remeshing}
-
+% -------------------------------------------
 The case considers a 2D geometry having equivalent dimensions to the 3D case performed earlier (sample of 10 cm in length and 6 cm in height).
 To accomodate the air subdomain, an extra 2 cm are added to sample's height, which finally reaches 8 cm, the interface is thus kept at an elevation of 6 cm. 
 The inital mesh consists of three different mesh sizes: isotropic meshes in the air and the metal, having respectively a uniform size of 2 mm and 1 mm.
@@ -1955,14 +1956,15 @@ It should be noted that this transport is only one-way, hence no information fee
   \end{subfigure}
    %------------
 \caption{Snapshots of (a) the initial adaptive anisotropic \emph{grid A} then (b) the same grid but at 
-a given time increment with (c) the corresponding fixed isotropic \emph{grid B} at the same time increment. }
+a given time increment with (c) the corresponding fixed isotropic \emph{grid B} at the same time increment.}
 \label{fig:smacs_grids}
 \end{figure}
 %------------------
 
 
+% -----------------------------------------------
 \subsubsection{Initial and boundary conditions}
-
+% -----------------------------------------------
 The air initial temperature is the same as the initial liquid. This is only a hypothesis to prevent steep temperature gradients at the interface,
 which may lead to surface solidification. The initial and boundary thermal conditions used to cool down the metal are defined in chapter 4, given by the experimental
 data of \citet{hachani_experimental_2012}. For the mechanical properties, the top wall allows free inflow/outflow of the air in all directions 
@@ -1978,10 +1980,18 @@ level set function move vertically without being attached to the sides. Finally,
 % ********************************************
 
 The results are recorded at two intermdiate solidification stages, at 3050 s and 3550 s, knowing that solidification onset is around 1920 s.
-First, we look to the results in \cref{fig:1200s_unmask}. The original average composition field obtained by \emph{grid A} is almost
-free of composition gradients except for one segregated channel rising from the bottom by the action of thermal convection. 
-
-BLABLABLA
+First, we look to the results in \cref{fig:W_mask_1200s}. The original average composition field obtained by \emph{grid A}, shown in \cref{fig:1200s_compo},
+is almost free of composition gradients except for one segregated channel rising from the bottom by the action of thermal convection.
+On the other hand, the average composition transport from the adaptive grid to the fixed one, allows recording macrosegregation onto the latter
+at nodes where the solid exceeds 0.7 in volume fraction, depicted by the yellow region in \cref{fig:1200s_unmask}. 
+This is why we observe in \cref{fig:1200s_compobis} a number of channel segregates
+which are slightly below nominal composition but still richer in lead species with respect to the surrounding solid.
+The solid fraction distribution is shown in \cref{fig:1200s_gs}, along with the flow pattern. Local vortices are observed in the metal, probably due 
+to considering only a 2D geometry instead of the complete 3D, and this alters the computation stability by ignoring the boundary layers in the sample 
+thickness, obtained otherwise in 3D. Nevertheless, the overall 
+flow is driven by a thermosolutal driving force, with a compatible flow in the air side. 
+We can observe how the solid fraction is modified in the segregated channel, as a result of macrosegregation.
+At this stage of solidification, the interface movement is still difficult to see, but 500 s later it becomes more visible.
 
 %-----------------
 \begin{figure}[htbp]
@@ -2038,8 +2048,12 @@ metal is obtained by the successive transport operations performed in (c) a rest
 %------------------
 
 
-
-
+We are now at 3550 s, and the decreasing left heat exchanger temperature has just went below the local liquidus, 
+triggering solidification from the left side.
+The average composition field presents noticeable differences between the adaptive \emph{grid A} and the fixed \emph{grid B}.
+The weak mesosegregation observed in \cref{fig:1200s_compo} are now lost in \cref{fig:1700s_compo}, as the mesh got coarser on the metal's solidified right
+side. Fortunately, the macrosegregation distribution is stored in the fixed grid (\cref{fig:1700s_compobis}) and shows more details with the advancement of solidification. 
+The shrinkage due to phase density difference, is now clearly visible judging from interface shape, which still almost planar above the last liquid pool. 
 
 %-----------------
 \begin{figure}[htbp]
@@ -2095,6 +2109,18 @@ metal is obtained by the successive transport operations performed in (c) a rest
 
 
 
+%--------------
+\begin{figureth}
+% textwidth 
+{0.75}
+%path 
+{Chapter5/Graphics/2d/finalseg/finalsegreg.pdf}
+% caption
+{blabl}
+% label
+\label{fig:smacs_final}
+\end{figureth}
+%--------------
 
 
 
