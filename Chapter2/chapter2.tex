@@ -17,10 +17,10 @@ diffusional processes, is a time-dependent phenomenon. One can thus conclude tha
 influence the amount of solid formation: cooling rate and diffusion coefficients. However, 
 convection and other mechanical mixing sources, homogenise the composition much faster than atomic diffusion. 
 As such, \emph{complete mixing} in the liquid is always an acceptable assumption, regardless of the 
-solidification time. We may speak of infinite diffusion in the liquid. Nevertheless, diffusion in the solid, 
+solidification time. Thus, we speak of infinite diffusion in the liquid. Nevertheless, diffusion in the solid, 
 also known as \emph{back diffusion}, is the only transport mechanism with very low diffusion coefficients. 
 Therefore, chemical species require a long time, i.e. low cooling rate, to completely diffuse within the solid.
-The difference in diffusional behaviour at the scale of a secondary dendrite arm, is summarized by two limiting 
+The difference in diffusional behaviour at the scale of a secondary dendrite arm, is summarised by two limiting 
 segregation models of perfect equilibrium  and nonequilibrium, which are the lever rule and Gulliver-Scheil models, respectively. 
 Afterwards, models with finite back diffusion are presented. 
 %------------
@@ -38,16 +38,17 @@ These compositions are given by:
 & \Cs= \Csstar = \frac{\k \Cnominal}{\k\fs + (1-\fs)}
 \end{align}
 %----------------------
-At the end of solidification, the composition of the solid phase is equal to the nominal composition, $\Cs = \Cnominal$
+At the end of solidification, the composition of the solid phase is equal to the nominal composition, $\Cs = \Cnominal$.
 %------------
 %
 %***********************************************
 \subsubsection*{Gulliver-Scheil}
 %***********************************************
 The other limiting case is the absence of diffusion in the solid. That includes also the diffusion at the interface, 
-so nothing diffuses in or out. The consequence is a steady increase of the homogeneous liquid composition while the solid composition remains non-uniform.
-Compared to a full equilibrium approach, higher fractions of liquid will remain until eutectic composition is reached, 
-triggering a eutectic solidification. The phase compositions are given by:
+so nothing diffuses in or out. The consequence is a steady increase 
+of the homogeneous liquid composition while the solid composition remains non-uniform.
+Compared to a full equilibrium approach, higher fractions of liquid will remain. In eutectic systems, liquid may exist until eutectic composition is reached, 
+triggering a eutectic solidification. The phase compositions with this approach are given by:
 %----------------------
 \begin{align}
 \label{eq:scheil}
@@ -82,28 +83,33 @@ exhaustive list of publications: \citet{clyne_solute_1981,kobayashi_solute_1988,
 combeau_modeling_1996,martorano_solutal_2003,tourret_generalized_2009}. It is noted that some of these publications consider 
 also a finite diffusion in the liquid phase.
 %------------------------------------
-%
-%
+
 %***********************************************
 \subsection{Macroscopic solidification model: monodomain} \label{sec:monodomain}
 %***********************************************
 In this section, we will present the macroscopic conservations equations that enable us to predict 
-macrosegregation in the metal when the latter is the only domain in the system.
-%-------------
-%
+macrosegregation in single multiphase metal system.
+
+ 
 %***********************************************
 \subsubsection{Volume averaging} \label{sec:volumeavg}
 %***********************************************
-It is crucial for a solidification model to represent phenomena on the microscale, then scale up to predict 
-macrscopic phenomena. Nevertheless, the characteristic length of a small scale in solidification may represent a dendrite arm spacing, for instance the mushy zone permeability, as it may also represent an atomic distance if one is interested, for instance, in the growth competition between diffusion and surface energy of the solid-liquid interface. Modelling infinitely small-scale phenomena could be prohibitively expensive in computation time, if we target industrial scales. 
 
+It is crucial for a solidification model to represent phenomena on the microscale, then scale up to predict 
+macroscopic phenomena. Nevertheless, the characteristic length of a small scale in solidification may represent a dendrite arm spacing, 
+for instance the mushy zone permeability, as it may also represent an atomic distance if one is interested, 
+for instance, in the growth competition between diffusion and surface energy of the solid-liquid interface. 
+
+Modelling infinitely small-scale phenomena could be prohibitively expensive in computation time, if we target industrial scales. 
 The volume averaging is a technique that allows bypassing this barrier by averaging
 small-scale variations on a so-called \emph{representative volume element} (RVE) \citep{dantzig_solidification_2009} of volume \rev, with the 
 following dimensional constraints:
 the element should be large enough to "see" and average microscopic fluctuations whilst being smaller than the scale of macroscopic variations.
+
 Solid and liquid may exist simultaneously in the RVE, but no gas phase is considered (volume saturation: $\Vs+\Vl=\rev$). 
 Moreover, temperature is assumed uniform and equal for all the phases.
-The formalism, introduced by \citet{ni_volume-averaged_1991}, is summarized by the following equations for any physical quantity $\psi$:
+The formalism, introduced by \citet{ni_volume-averaged_1991}, is summarised by the following equations for any physical quantity $\psi$:
+
 %----------------------
 \begin{align}
 \label{eq:volumeaveraging1}
@@ -126,33 +132,39 @@ where $\gphi$ is the volume fraction of phase $\phi$ with $\gphi=V_\phi/\rev$. T
 & \avg{ \nabvec \psi^\phi } = \nabvec \avg{\psi^\phi} + \integral{\gammastar}{\psi^\phi \vec{n^\phi}}{A}
 \end{align}
 %------------
+
 where $\vstar$ is the local relative interface velocity and $\gammastar$ is the solid-liquid interface, 
 while $n^\phi$ is the normal to $\gammastar$, directed outwards. The surface integral terms in 
 \cref{eq:volumeaveraging3,eq:volumeaveraging4} are \emph{interfacial averages} 
-that express exchanges between the phases across the interface. The previous equations will 
-be used to derive a set macroscopic conservation equations. 
+that express exchanges between the phases across the interface. 
+
+The previous equations will be used to derive a set macroscopic conservation equations. 
 It is noted that the intrinsic average $\avg{\psi}^\phi$ may be replaced by ${\psi}^\phi$ 
 for notation simplicity, whenever the averaging technique applies.
-%
-%
+
+
 %***********************************************
 \subsubsection{Macroscopic equations}
 %***********************************************
+
 A monodomain macroscopic model relies on four main conservation equations to predict 
 macrosegregation in a single alloy, i.e. the latter is considered without 
 any interaction with another alloy or ambient air. The general form of an averaged conservation 
-equation of any physical quantity $\psi$ is given by: %\citep{rappaz_numerical_2003}
+equation of any physical quantity $\psi$ is given by:
+
 %-------
 \begin{align}
 \label{eq:conservationequation}
-& \tempup{\avg{\psi}} + \nabla \cdot \avg{\psi \vec{v}} + \nabla \cdot \avg{\vec{j_{\psi}}} = \avg{Q_{\psi}}
+& \tempup{\avg{\psi}} + \nabvec \cdot \avg{\psi \vec{v}} + \nabvec \cdot \avg{\vec{j_{\psi}}} = \avg{Q_{\psi}}
 \end{align}
 %-------
+
 The first LHS term in \cref{eq:conservationequation} represents the time variation of $\psi$, 
 the second term accounts for transport by advection while the third is the diffusive transport
 and the RHS term represents a volume source. The considered equations are mass, energy, species conservation 
-and momentum, all summarized in \cref{tab:conservationeqs}. The latter equation is averaged only for the liquid phase,
+and momentum, all summarised in \cref{tab:conservationeqs}. The latter equation is averaged only for the liquid phase,
  as we assume a fixed and rigid solid phase ($\vs=\vec{0}$), thus the corresponding equation vanishes.
+
 %-----
 \begin{tableth}
 \centering
@@ -171,7 +183,9 @@ Liquid momentum		&	$\rhol \vl$  	& $-\sigmal$ 				& $\Fv$		\\\tabucline[1pt]{-} 
 \end{tabu}}
 \end{tableth}
 %-----
+
 We develop the ingredients of these equations using the averaging technique, as follows:
+
 %-------
 \begin{align}
 \label{eq:mainingredients1}
@@ -192,10 +206,13 @@ We develop the ingredients of these equations using the averaging technique, as 
 & \avg{\rhol \vl \times \vec{v}} = \gl \rhol \vl \times \vl + \cancel{\gs \rhos \vl \times \vs}
 \end{align}
 %-------
+
 % $\mat{\sigma}$ 
+
 %-------
 Next, we define the average diffusive fluxes, $\vec{q}$ for energy and $\vec{j_i}$ for solutes, 
 using Fourier's conduction law and Fick's first law, respectively \citep{rappaz_numerical_2003}:
+
 %------
 \begin{align}
 \label{eq:fourierlaw}
@@ -204,6 +221,7 @@ using Fourier's conduction law and Fick's first law, respectively \citep{rappaz_
 & \avg{\vec{j_i}} = - \gl \rhol \Dl \nabvec \wil - \cancel{\gs \rhos \Ds \nabvec \wis}
 \end{align}
 %------------
+
 In \cref{eq:ficklaw}, the macroscopic diffusion coefficient in the solid is neglected, 
 by considering that for macroscopic scales, the average composition of the alloy is much more influenced by advective 
 and diffusive transport in the liquid.
@@ -212,19 +230,22 @@ In \cref{eq:fourierlaw}, we assume that phases are at thermal equilibrium, that 
 Now that the main conservation equations ingredients are properly defined, we may write each averaged conservation
 equation as the sum of two local conservation equations for each phase in the RVE, hence introducing also interfacial average terms.
 For instance, the local mass balance in each phase is given by:
+
 %----
 \begin{subequations}
 \begin{align}
 \label{eq:mass_liquid}
-& \temp{\gl \rhol} + \nabla \cdot \brac{\gl \rhol \vl} = S_V \langle \rhol \vlstar \cdot \vec{n} \rangle^* - S_V \langle \rhol \vstar \cdot \vec{n} \rangle^* \\
+& \temp{\gl \rhol} + \nabvec \cdot \brac{\gl \rhol \vl} = S_V \langle \rhol \vlstar \cdot \vec{n} \rangle^* - S_V \langle \rhol \vstar \cdot \vec{n} \rangle^* \\
 \label{eq:mass_solid}
-& \temp{\gs \rhos} + \nabla \cdot \brac{\gs \rhos \vs} = - S_V \langle \rhos \vsstar \cdot \vec{n} \rangle^* + S_V \langle \rhos \vstar \cdot \vec{n} \rangle^*
+& \temp{\gs \rhos} + \nabvec \cdot \brac{\gs \rhos \vs} = - S_V \langle \rhos \vsstar \cdot \vec{n} \rangle^* + S_V \langle \rhos \vstar \cdot \vec{n} \rangle^*
 \end{align}
 \end{subequations}
 %----
+
 where $S_V= A_{sl}/\rev$ is the specific surface area, $\vec{v}^{l^*}$ and $\vec{v}^{s^*}$ are respectively, the liquid 
 and solid phase velocity at the interface and $\vec{v}^*$ is the previously introduced solid-liquid interface velocity. 
 For instance, the first interfacial exchange term in the RHS of \cref{eq:mass_liquid} is expanded as follows \citep{dantzig_solidification_2009}:
+
 %----
 \begin{subequations}
 \begin{align}
@@ -239,7 +260,7 @@ in the RVE:
 %----
 \begin{multline}
 \label{eq:conservation_mass_local}
- \temp{\gl \rhol + \gs \rhos}  +  \nabla \cdot \brac{\gl \rhol \vl + \gs \rhos \vs} = \\  
+ \temp{\gl \rhol + \gs \rhos}  +  \nabvec \cdot \brac{\gl \rhol \vl + \gs \rhos \vs} = \\  
 	  S_V \avg{\rhol \brac{\vlstar-\vstar} \cdot \vec{n}}^*  
    -  S_V \avg{\rhos \brac{\vsstar-\vstar} \cdot \vec{n}}^*
 \end{multline}
@@ -248,37 +269,41 @@ where the RHS cancels to zero as shown by \citet{ni_volume-averaged_1991}. Moreo
 interfacial exchanges for energy, chemical species and momentum cancel out as they are equal in absolute value but opposite in sign. 
 Using \cref{eq:mainingredients1,eq:mainingredients2,eq:mainingredients3,eq:mainingredients4,eq:mainingredients5,eq:mainingredients6,eq:mainingredients7,eq:mainingredients8,eq:fourierlaw,eq:ficklaw}
 and following the same procedure done in \cref{eq:conservation_mass_local}, the averaged mass balance hence writes:
+
 %------
 \begin{align}
 \label{eq:conservation_mass}
-& \frac{\partial \avg{\rho}}{\partial t} + \nabla \cdot \avg{\rho \vec{v}} = 0
+& \frac{\partial \avg{\rho}}{\partial t} + \nabvec \cdot \avg{\rho \vec{v}} = 0
 \end{align}
 %------------
 whereas the averaged energy balance writes:
 %------
 \begin{align}
 \label{eq:conservation_energy_init}
-& \frac{\partial \avg{\rho h}}{\partial t} + \nabla \cdot \avg{\rho h \vec{v}} - \nabla \cdot \brac{\avg{\kappa} \nabvec T} = 0
+& \frac{\partial \avg{\rho h}}{\partial t} + \nabvec \cdot \avg{\rho h \vec{v}} - \nabvec \cdot \brac{\avg{\kappa} \nabvec T} = 0
 \end{align}
 %------------
 and finally the species balance writes:
 %------
 \begin{align}
 \label{eq:conservation_solute_init}
-& \frac{\partial \avg{\rho w_i}}{\partial t} + \nabla \cdot \avg{\rho w_i \vec{v}} - \nabla \cdot \brac{\gl \rhol \Dl \nabvec \wil}= 0
+& \frac{\partial \avg{\rho w_i}}{\partial t} + \nabvec \cdot \avg{\rho w_i \vec{v}} - \nabvec \cdot \brac{\gl \rhol \Dl \nabvec \wil}= 0
 \end{align}
 %------------
 As stated previously, the momentum balance in the solid phase is not taken into consideration, hence we do not sum the corresponding 
 local conservation equations. This has consequences on the advection terms in energy and species conservation, and later on we will show
-the consequences on the momentum conservation in the liquid. First, the advection terms in \cref{eq:conservation_energy_init,eq:conservation_solute_init}
-shall be redefined by considering that the fluid is incompressible $\brac{\nabla \cdot \vit = 0}$, which yields:
+the consequences on the momentum conservation in the liquid. 
+
+First, the advection terms in \cref{eq:conservation_energy_init,eq:conservation_solute_init}
+shall be redefined by considering that the fluid is incompressible $\brac{\nabvec \cdot \vit = 0}$, which yields:
 %------
 \begin{align}
 \label{eq:advection_no_solid}
-& \nabla \cdot \avg{\rho h \vec{v}} = \vit \cdot \nabvec \brac{\rhol \hl} \\
-& \nabla \cdot \avg{\rho w_i \vec{v}} = \vit \cdot \nabvec \brac{\rhol \wil}
+& \nabvec \cdot \avg{\rho h \vec{v}} = \vit \cdot \nabvec \brac{\rhol \hl} \\
+& \nabvec \cdot \avg{\rho w_i \vec{v}} = \vit \cdot \nabvec \brac{\rhol \wil}
 \end{align}
 %------------
+
 As for the liquid momentum balance, we write:
 %------
 \begin{align}
@@ -288,12 +313,14 @@ As for the liquid momentum balance, we write:
 \end{align}
 %------------
 where $\Fv$ is the vector of external body forces exerted on the liquid phase. In our case, it accounts for the fluid's weight:
+
 %------
 \begin{align}
 \label{eq:fluid_weight}
 & \Fv = \rhol \gravity
 \end{align}
 %------------
+
 The interfacial momentum transfer between the solid and liquid phases in \cref{eq:conservation_momentumliq_init} is modelled 
 by a momentum flux vector $\vec{\Gamma}^{l}$, consisting of hydrostatic and deviatoric parts, such that:
 %------------
@@ -312,16 +339,19 @@ where $p^{l^{*}}$ is the pressure at the interface, considered to be equal to th
 pressure $\pl$, $\K$ is a permeability scalar (isotropic) computed using \cref{eq:darcy} and $\mul$ is the liquid's 
 dynamic viscosity. The general form of the Cauchy liquid stress tensor in \cref{eq:conservation_momentumliq_init} 
 is decomposed as follows: 
+
 %------------
 %\begin{subequations} 
 \begin{align}
 \label{eq:stress_liq}
-& \avg{\sigmal} = \gl \sigmal = - \brac{\avg{\pl} -\lambda \nabla \cdot \vit} \I + \avg{\mat{\mathbb{S}}^{l}}
+& \avg{\sigmal} = \gl \sigmal = - \brac{\avg{\pl} -\lambda \nabvec \cdot \vit} \I + \avg{\mat{\mathbb{S}}^{l}}
 \end{align}
 %\end{subequations}
 %------------
 where $\lambda$ is a dilatational viscosity \citep{dantzig_solidification_2009} and $\mat{\mathbb{S}}^{l}$ is the
-liquid strain deviator tensor. In the literature, the coefficient $\lambda$ is taken proportional to the 
+liquid strain deviator tensor. 
+
+In the literature, the coefficient $\lambda$ is taken proportional to the 
 viscosity: $\lambda = \frac{2}{3} \mu^l $. However, as we consider an incompressible flow, the divergence 
 term vanishes, thus rewriting \cref{eq:stress_liq} as follows:
 %------------
@@ -343,7 +373,9 @@ the average liquid velocity:
 \strainrateliq = \frac{1}{2} \brac{\nabmat \vit  +  \nabmattransp \vit}
 \end{align}
 %-------------------------------------------------------------------------------------------
-Finally, we obtain the final form of momentum conservation in the liquid phase coupled with the averaged mass balance, by injecting \cref{eq:fluid_weight,eq:interfacial_momentum_hydrostatic,eq:interfacial_momentum_deviatoric,eq:stress_liq_incompressible2,eq:tensor_strainrate}
+
+Finally, we obtain the final form of momentum conservation in the liquid phase coupled with the averaged 
+mass balance, by injecting \cref{eq:fluid_weight,eq:interfacial_momentum_hydrostatic,eq:interfacial_momentum_deviatoric,eq:stress_liq_incompressible2,eq:tensor_strainrate}
 in \cref{eq:conservation_momentumliq_init}:
 %------
 % \begin{align}
@@ -355,9 +387,11 @@ in \cref{eq:conservation_momentumliq_init}:
 \end{multline}
 % \end{align}
 %------------
+
 where we intentionally employed the \emph{superficial velocity}, $\vit = \gl \vl$, as the main unknown, together with the liquid pressure $\pl$.
 This system, when modelled in 3D, has a total of 4 unknowns (velocity vector and pressure) and 3 equations ($X$,$Y$ and $Z$ projections for the velocity vector).
 A fourth equation provided by the mass balance (\cref{eq:conservation_mass})is therefore added for closure, giving the following system of equations :
+
 %------
 \begin{equation}
 \label{eq:Navier-Stokes1}
@@ -366,7 +400,7 @@ A fourth equation provided by the mass balance (\cref{eq:conservation_mass})is t
       & \temp{ \rhol \vit } + \frac{1}{\gl} \nabvec \cdot \brac{\rhol \vit \times \vit} = \\
 	  &- \gl\nabvec \pl - 2 \mul \nabvec \cdot \brac{\nabmat \vit + \nabmattransp \vit}
 	  - \gl \mul \K^{-1} \vit + \gl \rhol \gravity\\ \\
-      & \nabla \cdot \vit =0
+      & \nabvec \cdot \vit =0
     \end{aligned}
     \right.
 \end{equation}
@@ -381,11 +415,12 @@ using \cref{eq:rholiq}, if the system is incompressible. Hence, the final set of
       & \rholref \brac{\tempup{ \vit } + \frac{1}{\gl} \nabvec \cdot \brac{\vit \times \vit}} = \\
 	  &- \gl\nabvec \pl - 2 \mul \nabvec \cdot \brac{\nabmat \vit + \nabmattransp \vit}
 	  - \gl \mul \K^{-1} \vit + \gl \rhol \gravity\\ \\
-      & \nabla \cdot \vit =0
+      & \nabvec \cdot \vit =0
     \end{aligned}
     \right.
 \end{equation}
 %------------
+
 Since all conservation equations were presented and simplified by the main assumption of a static solid phase, 
 we may include them in a graphical summary in \cref{fig:algo_monodomain}
 %---------------
@@ -416,7 +451,7 @@ we may include them in a graphical summary in \cref{fig:algo_monodomain}
 	\textbf{Conservation of energy (Nonlinear Heat Transfer)} 
 	\begin{equation}
 	\label{eq:diag_energy}
-		 \frac{\partial \avg{\rho h}}{\partial t} + \vit \cdot \nabla \brac{\rhol \hl} - \nabla \cdot \brac{\avg{\kappa} \nabvec T} = 0
+		 \frac{\partial \avg{\rho h}}{\partial t} + \vit \cdot \nabvec \brac{\rhol \hl} - \nabvec \cdot \brac{\avg{\kappa} \nabvec T} = 0
 	\end{equation}
 	\end{tabular}
 };
@@ -449,7 +484,7 @@ we may include them in a graphical summary in \cref{fig:algo_monodomain}
 	\textbf{Conservation of chemical species (Macrosegregation)} 
 	\begin{equation}
 	\label{eq:diag_solute}
-		\frac{\partial \avg{\rho w_i}}{\partial t} + \vit \cdot \nabla \brac{\rhol \wil} - \nabla \cdot \brac{\gl \rhol \Dl \nabvec \wil}= 0
+		\frac{\partial \avg{\rho w_i}}{\partial t} + \vit \cdot \nabvec \brac{\rhol \wil} - \nabvec \cdot \brac{\gl \rhol \Dl \nabvec \wil}= 0
 	\end{equation}
 	\end{tabular}
 };
@@ -465,7 +500,7 @@ we may include them in a graphical summary in \cref{fig:algo_monodomain}
       & \rholref \brac{\tempup{ \vit } + \frac{1}{\gl} \nabvec \cdot \brac{\vit \times \vit}} = \\
 	  &- \gl\nabvec \pl - 2 \mul \nabvec \cdot \brac{\nabmat \vit + \nabmattransp \vit}
 	  - \gl \mul \K^{-1} \vit + \gl \rhol \gravity\\ \\
-      & \nabla \cdot \vit =0
+      & \nabvec \cdot \vit =0
     \end{aligned}
     \right.
 \end{equation}
@@ -538,13 +573,15 @@ monodomain macroscopic model to predict macrosegregation for a time inrement $t$
 The blue boxes represent the output of each equation.}
 \end{figure}
 %%------------------------------------------------------------------------------------------
+
+
 %%------------------------------------------------------------------------------------------
-%%------------------------------------------------------------------------------------------
-\comment{* Macro models: Rivaux ? Gu beckermann 1999 ? \\ 
-* Micro macro: Tommy Carozzani2013, 
-guo  beckermann 2003,  Combeau 2009, Miha Zaloznik 2010 (indirect), 
-P. Thévoz, J.-L. Desbiolles, M. Rappaz, Metallurgical and Materials TransactionsA 20 (2) (1989) 311–322 \\ 
-* end by talking about taking air into account and the need for an interface capturing method}
+% \comment{* Macro models: Rivaux ? Gu beckermann 1999 ? \\ 
+% * Micro macro: Tommy Carozzani2013, 
+% guo  beckermann 2003,  Combeau 2009, Miha Zaloznik 2010 (indirect), 
+% P. Thévoz, J.-L. Desbiolles, M. Rappaz, Metallurgical and Materials TransactionsA 20 (2) (1989) 311–322 \\ 
+% * end by talking about taking air into account and the need for an interface capturing method}
+
 %***********************************************
 \section{Eulerian and Lagrangian motion description}
 %%***********************************************
@@ -598,10 +635,13 @@ an Eulerian behaviour at "fluid" nodes.
 %***********************************************
 \subsection{Interface capturing}
 %***********************************************
+
 As no solid deformation is considered in this work, the Eulerian framework is a convenient choice. Solidification shrinkage is 
 to be considered in our current scope, so it will deform the alloy's outer surface in contact with the air.
 We intend to track this interface and its motion over time via a numerical method. A wide variety of methods accomplish this 
-task while they yield different advantages and disadvantages. Such methods fall into two main classes, either interface tracking
+task while they yield different advantages and disadvantages. 
+
+Such methods fall into two main classes, either interface tracking
 or interface capturing, among which we cite: marker-and-cell (MAC) \citep{harlow_numerical_1965}, volume of fluid (VOF) \citep{hirt_volume_1981}, 
 phase field methods (PF), level set method (LSM) \citep{osher_fronts_1988}, coupled level set - VOF method and others. 
 The interested reader may refer to quick references by \citet{prosperetti_navier-stokes_2002,maitre_review_2006} about these methods.
@@ -612,6 +652,7 @@ For this reason, we will focus on this method henceforth, giving a brief literat
 %***********************************************
 \section{Solidification models with level set}
 %***********************************************
+
 In classic solidification problems, the need to track an interface occurs usually at the solid-liquid interface, that is why the phase field
 method \citep{karma_phase-field_1996,boettinger_phase-field_2002} and the level set method \citep{chen_simple_1997,gibou_level_2003,tan_level_2007} 
 were applied at a microscale to follow mainly the dendritic growth of a single crystal in an undercooled melt.
@@ -638,6 +679,7 @@ Firstly introduced by \citet{osher_fronts_1988}, this method became very popular
 It is reminded that the term \emph{multiphase} in computational domains usually refers to multiple fluids, and thus
 should not be mixed with definition of a phase in the current solidification context. For disambiguation, we shall
 use \emph{multifluid flow} when needed.
+
 The great advantage lies in the way the interface between two fluids, $F_1$ and $F_2$ is implicitly captured, unlike 
 other methods where the exact interface position is needed. In a discrete domain, the concept is to assign for each 
 mesh node of position vector$\vec{x}$, the minimum distance $d_\Gamma(\vec{x})$ separating it from an interface $\Gamma$. 
@@ -668,11 +710,12 @@ positive.}
 \label{fig:distance_function}
 \end{figureth}
 %-----------------------------------
-%
+
 %***********************************************
 \subsection{Diffuse interface}
 \label{sec:heaviside}
 %***********************************************
+
 The level set has many attractive properties that allows seamless implementation in 2D and 3D models. 
 It is a continuously differentiable $C^1$-function. 
 %For instance, a \emph{Heaviside} function, denoted $\heaviside$, can be obtained by first order derivation of the level set function. 
@@ -688,11 +731,13 @@ across the sharp interface, as follows:
 \end{cases}
 \end{align}
 %----------
+
 With the help of \cref{eq:no_smoothing}, we can define the geometric 
 "presence" of a domain with respect to the interface. As such, material properties 
 depend upon this function, which will be discussed later in \cref{sec:mixinglaws}.
 It is established that a steep transition can lead to numerical problems, 
 so the Heaviside function should be smoothed in a volume of fixed thickness around the interface.
+
 Sinusoidal smoothing in \cref{eq:sinusoidal_smoothing} is widely used with level set formulations.
 %------------
 \begin{align}
@@ -707,6 +752,7 @@ Sinusoidal smoothing in \cref{eq:sinusoidal_smoothing} is widely used with level
 \end{align}
 %-----------
 where the interval $\crochet{-\varepsilon; +\varepsilon}$ is an artificial interface thickness around the zero distance.
+
 Defining a diffuse interface rather than a sharp one, is also a common approach 
 in phase field methods \citep{beckermann_modeling_1999,sun_diffuse_2004}.
 It is emphasized that the latter methods give physically meaningful 
@@ -741,7 +787,7 @@ which are extremely useful. We mention the most relevant ones \citep{peng_pde-ba
 \text{normal vector}: \vec{n} &= \frac{\nabvec \levelset}{\norm{\nabvec \levelset} } \\
 %
 \label{eq:levelset_curvature}
-\text{curvature}: \zeta &= - \nabla \cdot \vec{n} \\
+\text{curvature}: \zeta &= - \nabvec \cdot \vec{n} \\
 %
 \label{eq:levelset_interface}
 \text{surface area of the air-metal interface }: A^\Gamma &= \integral{\Omega}{\dirac \norm{\nabvec \levelset}}{\Omega} \\

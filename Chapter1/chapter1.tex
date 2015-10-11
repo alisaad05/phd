@@ -79,7 +79,7 @@ As such, their scale is finer than macrosegregation, hence called "mesosegregate
 {0.6}
 {Chapter1/Graphics/macrosegregation_ingot.pdf}
 { (a) Sulphur print of a 65-ton steel ingot showing (b) various macrosegregation patterns and levels as well as solidification structures \citep{lesoult_macrosegregation_2005}.}
-\label{macrosegregation_ingot}
+\label{fig:macrosegregation_ingot}
 \end{figureth}
 %--------------------------------------------------------
 
@@ -140,6 +140,7 @@ affects the initial microstructure. Although it may not be easy to control them,
 
 The solid-liquid interface fluctuates when solidifying, thus perturbations may appear on the front, locally destabilizing it. 
 Two outcome scenarios are possible.
+
 %----------------------
 \begin{figureth}
 % textwidth 
@@ -147,13 +148,16 @@ Two outcome scenarios are possible.
 %path 
 {Chapter1/Graphics/dendrite_evolution.pdf}
 % caption
-{Time evolution of a solidifying \bin{Al}{4}{Cu} sample, showing interface destabilisation and subsequent dendritic solidification \citep{buffet_measurement_2010}.
-The liquid far from the interface and having a blue color is at nominal composition, while the one near the dendritic structure with the yellow and red colors, is richer in solute.}
+{Time evolution of a solidifying \bin{Al}{4}{Cu} sample, showing interface destabilisation 
+and subsequent dendritic solidification \citep{buffet_measurement_2010}.
+The liquid far from the interface and having a blue color is at nominal composition, 
+while the one near the dendritic structure with the yellow and red colors, is richer in solute.}
 % label
 \label{fig:dendrite_evolution}
 \end{figureth}
 %-----------------------------------
 %
+
 The first scenario is characterized by low values of $\vstar$ where the interface maintains a planar shape, hence we speak of \emph{planar growth}. 
 With this kind of growth, a random protuberance appearing at the interface, has a low tip velocity (low driving force of solidification). As such,
 the rest of the interface catches up, maintaining the planar geometry.
@@ -161,6 +165,7 @@ In another scenario more representative of a real casting, the interface velocit
 The protuberance tip will grow into a liquid less rich in solute, as shown in the time frames of \cref{fig:dendrite_evolution}.
 The zone ahead of the solid-liquid interface is constitutionally undercooled, giving a greater driving force for the protuberance to grow in the direction
 of the thermal gradient. 
+
 An expression for the critical velocity is given by \citet{tiller_redistribution_1953}.
 As the solid-liquid interface adopts a tree-like shape, we speak of \emph{dendritic growth}. Near the chill surface, dendrites are columnar, with a 
 favourable growth in the <100> direction for alloys with cubic lattices, but different orientations are also reported in the literature \citep[see][289]{dantzig_solidification_2009}.
@@ -171,6 +176,7 @@ $\pdas$, between the main trunks, and a secondary spacing, $\sdas$, for the arms
 to the trunks. It should be noted that $\pdas$ and $\sdas$, together with the grain size, are three important 
 microstructural parameters in the as-cast microstructure \citep{easton_grain_2011}.
 Further branching may occur but will not be discussed here.
+
 %-----------------
 \begin{figure}[htbp]
 \centering
@@ -193,23 +199,32 @@ Further branching may occur but will not be discussed here.
 and (b) equiaxed microstructure during solidification of \bin{Al}{10}{Cu} alloy \citep{bogno_growth_2013}.}
 \label{fig:dendritic_growth}
 \end{figure}
-%
+
 %-------------------------------------------------------------------------------------------------------------------------------------------------
-%
+
 %***********************************************
 \subsection{Mush permeability}
 %***********************************************
-The dendritic geometry is crucial in solidification theory as it exhibits lower solid fraction compared to a microstructure formed by planar growth.
-This fact has consequences on the fluid-structure interaction in the mushy zone, namely the liquid flow through dendrites. At the chill surface,
-the solid  grows gradually from dispersed growing nuclei to a permeable solid skeleton, until grains have fully grown at the end of phase change.
-In the intermediate state, the liquid flow in and out of the mushy zone through the network of dendrites is a key phenomenon from various perspectives, 
+
+The dendritic geometry is crucial in solidification theory as it exhibits lower solid 
+fraction compared to a microstructure formed by planar growth.
+This fact has consequences on the fluid-structure interaction in the mushy zone, namely 
+the liquid flow through dendrites. At the chill surface,
+the solid  grows gradually from dispersed growing nuclei to a permeable solid skeleton, 
+until grains have fully grown at the end of phase change.
+In the intermediate state, the liquid flow in and out of the mushy zone through the network 
+of dendrites is a key phenomenon from various perspectives, 
 especially the rheological perspective .
+
 %By defining a \emph{coherency temperature} $\Tcoh$, one can distinguish two behaviors. 
 %For temperatures below $\Tcoh$ (usually at low solid fractions), the liquid flow is characterized by an intrinsic velocity. 
 %As for temperature above $\Tcoh$,
 %For the rest of this section, we will focus on the first behavior where liquid has a relative freedom to move inside the mushy zone.
-The flow through the interdendritic liquid is damped by primary trunks and secondary dendrite arms, resulting in momentum dissipation just like in saturated porous media. 
-The famous \citet{darcy_les_1856} law relates the pressure gradient ($\nabvec p$) to the fluid velocity $\vec{v}$ (assuming the solid phase is fixed), 
+
+The flow through the interdendritic liquid is damped by primary trunks and secondary 
+dendrite arms, resulting in momentum dissipation just like in saturated porous media. 
+The famous \citet{darcy_les_1856} law relates the pressure gradient ($\nabvec p$) to 
+the fluid velocity $\vec{v}$ (assuming the solid phase is fixed), 
 through the following equation \citep{rappaz_numerical_2003}:
 %----------------------
 \begin{align}
@@ -217,7 +232,8 @@ through the following equation \citep{rappaz_numerical_2003}:
 & \vec{v} = \frac{\K}{\mul} \nabvec p
 \end{align}
 %----------------------
-where $\mul$ is the liquid dynamic viscosity and $\K$ is the permeability tensor. The latter parameter has been the subject of numerous studies that aimed
+where $\mul$ is the liquid dynamic viscosity and $\K$ is the permeability tensor. 
+The latter parameter has been the subject of numerous studies that aimed
 to predict it from various microstructural or morphological parameters.
 Some of these studies have started even before the first attempts to model macrosegregation by 
 \citet{flemings_macrosegregation:_1967, flemings_macrosegregation:_1968-1,flemings_macrosegregation:_1968}. 
@@ -238,15 +254,16 @@ The present work uses Carman-Kozeny as a constitutive model for the isotropic pe
 %
 
 %***********************************************
-%
+
 \section{Macrosegregation}
-%
+% ---------------------------
+
 Macrosegregation generally stems from a solubility difference between a liquid phase and one or more solid phases, along with
 a relative velocity between these phases. While the former is responsible for local solute enrichment or depletion, the latter
 will propagate the composition heterogeneity on a scale much larger than just a few dendrites.
 % http://dictionary.cambridge.org/grammar/british-grammar/little-a-little-few-a-few
 This is why macrosegregation could be observed on the scale of a casting, up to several meters in length. 
-Microsegregation may be healed by heat treatments to speed up the diffusion process and allow homogenization. However, heterogeneities 
+Microsegregation may be healed by heat treatments to speed up the diffusion process and allow homogenisation. However, heterogeneities 
 spanning on larger distances cannot be heat treated after solidification. Macrosegregation is thus an irreversible defect. 
 Failure to prevent it, may lead to a substantial decline in the alloy's mechanical behaviour and its serviceability.
 Experimental investigations of macrosegregation in steels were the subject of numerous studies in the past and until now, 
@@ -266,6 +283,8 @@ thermosolutal convection in the liquid, solidification shrinkage, solutal and th
 movement and sedimentation of equiaxed crystals and finally solid deformation.
 
 \subsection{Liquid thermosolutal convection}
+% ------------------------------------------------
+
 During solidification, the liquid density undergoes changes due to temperature gradients.
 Generally for steels, an increasing temperature results in a lighter liquid phase and vice-versa.
 These variations create a driving force of thermal convection in the melt, during which 
@@ -318,6 +337,8 @@ liquid phase density varies considerably upon cooling the superheated alloy to r
 % 
 
 \subsection{Solidification shrinkage}
+% ---------------------------------------
+
 Solids generally have a greater density than the liquid phase ($\rhos > \rhol$), 
 thus occupy less volume, with some exceptions such as silicon, for which the opposite is true. 
 Upon solidification, the liquid therefore moves towards the solidification front to compensate for the volume 
@@ -331,7 +352,8 @@ In contrast to liquid thermosolutal convection, shrinkage flow may cause macrose
 %
 
 \subsection{Movement of equiaxed grains}
-%
+% ---------------------------------------
+
 %read pickering2013: http://www.msm.cam.ac.uk/phase-trans/2013/macro.pdf
 Globular and equiaxed dendritic grains nucleate and grow in the liquid bulk where thermal gradients 
 are weak, or in the presence of inoculants. They are transported by the flow and can float 
@@ -343,7 +365,8 @@ is detected where the grains have finally settled.
 %
 
 \subsection{Solid deformation} 
-%
+% ------------------------------
+
 Stresses of thermal and mechanical nature are always found in casting processes 
 (e.g. bulging between rolls in continuous casting). 
 Deformation of the semi-solid region located in the mushy zone causes a relative solid-liquid 
@@ -351,7 +374,8 @@ flow in the inward (tensile stresses) or outward (compressive stresses) directio
 %
 
 \section{Other defects}
-%
+% ------------------------
+
 Apart from macrosegregation, other defects are also encountered in industrial processes. 
 In the casting industry, defects like pores and cracks can be disastrous causing the cast product 
 to be rejected. If possible, the product is reheated, remelted and then cast again. Otherwise it is scrapped.
@@ -390,11 +414,11 @@ and (c) freckle in the form of a chain of equiaxed crystals in Ni-base superallo
 \label{fig:casting}
 \end{figure}
 
-%
-%-----------------------------
-%
+% --------------------------
+
 \subsection*{Hot tearing} 
-%
+% --------------------------
+
 Hot tearing, also denoted solidification cracking or hot cracking, occurs in the mushy zone 
 at high solid fractions when a failure or crack appears in the cast part. 
 They refer to liquid regions enclosed in the solid, where feeding stops, 
@@ -415,11 +439,14 @@ temperature range (BTR), where the solid fraction is typically greater than \num
 %\label{fig:hottearing}
 %\end{figureth}
 %-------------------------------------------------------------------------------------------------------------------------------------------------
+
 \subsection*{Porosity}
+% --------------------------
 %reference: \url{http://www.afsinc.org/about/content.cfm?ItemNumber=6933} \\
 %reference: \url{http://en.wikipedia.org/wiki/Casting_defect} \\
-%
-Porosity is a void defect formed inside the casting or at the outer surface. It may be attributed to two different factors.
+ 
+Porosity is a void defect formed inside the casting or at the outer surface. 
+It may be attributed to two different factors.
 Firstly, we speak of \emph{shrinkage porosity}, when a void forms as a result of density 
 differences between the liquid and its surrounding dendritic solid network, the latter being generally denser 
 than the former. After solidification is complete, the casting surface may look like \cref{fig:porosity}.
@@ -430,55 +457,17 @@ and pressure drop in the liquid, the latter becomes supersaturated.
 The nucleation of a gaseous phase is then triggered.
 
 %(just like when a cold bottle of coca-cola is opened !).
-%
-%-----------------
-%\begin{figure}[htbp]
+
 %Porosity1-2: http://www.afsinc.org/about/content.cfm?ItemNumber=6933
 %Porosity3: http://www.weldreality.com/aluminumalloys.htm
 %Porosity4: http://www.esab.com/global/en/education/new-lean-duplex-steels.cfm
-%\centering
-   %------------
-  %\begin{subfigure}[t]{0.3\textwidth}
-   % \centering
-	%\includegraphics[width=\textwidth]{Chapter1/Graphics/porosity1.jpg}
-	%\caption{Gas porosity in casting \citep{afs_american_2014}.}
-    %\label{fig:porosity1}
-  %\end{subfigure}
-   %------------
-  % \hspace{1cm}
-   %\begin{subfigure}[t]{0.25\textwidth}
-    %\centering
-	%\includegraphics[width=\textwidth]{Chapter1/Graphics/porosity2.jpg}
-	%\caption{Shrinkage porosity \citep{afs_american_2014}.}
-    %\label{fig:porosity2}
-  %\end{subfigure}
-  %------------------------------
-  %\vskip\baselineskip
-  %------------------------------
-  %\begin{subfigure}[t]{0.3\textwidth}
-   % \centering
-%	\includegraphics[width=\textwidth]{Chapter1/Graphics/porosity3.jpg}
-%	\caption{Gas porosity in aluminium welding \citep{weldreality_aluminum_2014}.}
- %   \label{fig:porosity3}
-  %\end{subfigure}
-   %------------
- % \hspace{1cm}
- %  \begin{subfigure}[t]{0.25\textwidth}
- %   \centering
-%	\includegraphics[width=\textwidth]{Chapter1/Graphics/porosity4.jpg}
-%	\caption{Xray of volume void inside welded duplex steel \citep{esab_new_2014}.}
- %   \label{fig:porosity4}
- % \end{subfigure}
-   %------------
-%\caption{Examples of porosity in casting and welding} 
-%\label{fig:porosity}
-%\end{figure}
-%
+
 
 %-------------------------------------------------------------------------------------------------------------------------------------------------
-%
+
 \subsection*{Freckles or segregated channels} 
-%
+% --------------------------
+ 
 The origin of this defect, shown in \cref{fig:freckle}, is a combined effet of microsegregation, buoyancy forces and
 fragmentation of the dendritic network. 
 %Upon solidification, solid forms while exchanging solutes with the liquid due to partitioning.

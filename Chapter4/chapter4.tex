@@ -119,7 +119,7 @@ where we obtained the following system of mass and liquid momentum conservation 
       & \rholref \brac{\tempup{ \vit } + \frac{1}{\gl} \nabvec \cdot \brac{\vit \times \vit}} = \\
 	  &- \gl\nabvec \pl - \nabvec \cdot \brac{2 \mul \strainrateliq}
 	  - \gl \mul \K^{-1} \vit + \gl \rhol \gravity\\ \\
-      & \nabla \cdot \vit =0
+      & \nabvec \cdot \vit =0
     \end{aligned}
     \right.
 \end{equation}
@@ -142,7 +142,7 @@ We can comment on the strong form with the following recap points:
 \itemsep0em
 \item	the liquid metal is Newtonian with a dynamic viscosity denoted $\mul$
 \item	the metal is incompressible, therefore the liquid and solid densities are constant and equal (hence
-		$\rholref$ in the inertial term) and the mass balance reduces to \\ $\nabla \cdot \vit =0$
+		$\rholref$ in the inertial term) and the mass balance reduces to \\ $\nabvec \cdot \vit =0$
 \item	the Boussinesq approximation is used to compute the thermosolutal buoyancy force in the melt
 		via the term $\gl \rhol \gravity = \gl \rhol \brac{T,\avg{w_i}^l} \gravity$, where $\rhol \brac{T,\avg{w_i}^l}$
 		can be either tabulated as a function of temperature and liquid composition for each solute $i$, or directly 
@@ -213,11 +213,11 @@ Finally, the SUPG-PSPG-LSIC stabilised weak formulation writes:
 	 \crochet{\brac{\frac{2\mul}{\gl}}, \strainrate\brac{\vit}:\strainrate\brac{\vec{U}} } \\
 	& + \crochet{\brac{\mul \K^{-1} \vit },\vec{U}}
 	 - \crochet{\brac{\rhol \gravity},\vec{U}}
-	 - \crochet{p,\nabla \cdot \vec{U}}
+	 - \crochet{p,\nabvec \cdot \vec{U}}
 	 - \crochet{\frac{\vec{N}}{\gl},\vec{U}}^{*} \\
-	 & + \crochet{\taulsic, \brac{\rholref \nabla \cdot \vit \nabla \cdot \vec{u} }} = 0\\ \\
+	 & + \crochet{\taulsic, \brac{\rholref \nabvec \cdot \vit \nabvec \cdot \vec{u} }} = 0\\ \\
 	 &\forall q \in \varrho \\
-	&\crochet{ \nabla \cdot \vit, q} + \\
+	&\crochet{ \nabvec \cdot \vit, q} + \\
 	&\crochet{\taupspg \frac{\nabvec q}{\rholref}, \brac{\frac{\rholref}{\gl} \tempup{\vit} 
 	+ \frac{\rholref}{\gl^2} \brac{\nabmat \vit} \vit 
 	+ \mul \K^{-1} \vit -\rhol \gravity}} = 0
@@ -237,16 +237,16 @@ Replacing \cref{eq:supg_test} in \cref{eq:weakform_before}, we get the final wea
 	 \crochet{\brac{\frac{2\mul}{\gl}}, \strainrate\brac{\vit}:\strainrate\brac{\vec{u}} } \\
 	& + \crochet{\brac{\mul \K^{-1} \vit },\vec{u}}
 	 - \crochet{\brac{\rhol \gravity},\vec{u}}
-	 - \crochet{p,\nabla \cdot \vec{u}}
+	 - \crochet{p,\nabvec \cdot \vec{u}}
 	 - \crochet{\frac{\vec{N}}{\gl},\vec{u}}^{*} \\
 	 %-----------
 	 & + \crochet{\tausupg \nabmat \vec{u} \cdot \vit_{\Ohm_E} , 
 	 \brac{\frac{\rholref}{\gl} \tempup{\vit} + \frac{\rholref}{\gl^2} \brac{\nabmat \vit} \vit
 	   +  \mul \K^{-1} \vit + \nabvec \pl -\rhol \gravity} } \\
-	 & + \crochet{\taulsic, \brac{\rholref \nabla \cdot \vit \nabla \cdot \vec{u} }} = 0  \\ \\
+	 & + \crochet{\taulsic, \brac{\rholref \nabvec \cdot \vit \nabvec \cdot \vec{u} }} = 0  \\ \\
 	 %-----------
 	 &\forall q \in \varrho \\
-	&\crochet{ \nabla \cdot \vit, q} + \\
+	&\crochet{ \nabvec \cdot \vit, q} + \\
 	&\crochet{\taupspg \frac{\nabvec q}{\rholref}, \brac{\frac{\rholref}{\gl} \tempup{\vit} 
 	+ \frac{\rholref}{\gl^2} \brac{\nabmat \vit} \vit 
 	+ \mul \K^{-1} \vit + \nabvec \pl -\rhol \gravity}} = 0

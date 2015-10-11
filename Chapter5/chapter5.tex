@@ -281,12 +281,12 @@ With \cref{eq:vitmetal}, the mass balance in the metal writes:
 %------------
 \begin{subequations}
 \begin{align}
-& \tempup{\avg{\rho}^M} + \nabla \cdot \avg{\rho \vec{v}}^M  = 0 \\ 
-& \tempup{\avg{\rho}^M} + \nabla \cdot \brac{ \gl \rhol \vl} = 0 \\ 
-& \tempup{\avg{\rho}^M} + \rhol \nabla \cdot \brac{ \gl \vl} 
+& \tempup{\avg{\rho}^M} + \nabvec \cdot \avg{\rho \vec{v}}^M  = 0 \\ 
+& \tempup{\avg{\rho}^M} + \nabvec \cdot \brac{ \gl \rhol \vl} = 0 \\ 
+& \tempup{\avg{\rho}^M} + \rhol \nabvec \cdot \brac{ \gl \vl} 
 	+ \gl \vl \cdot  \nabvec \rhol = 0 \\	
 \label{eq:mass_balance_metal}
-& \nabla \cdot \vit 
+& \nabvec \cdot \vit 
 = -\frac{1}{\rhol} \brac{\tempup{\avg{\rho}^M }+ \vit \cdot  \nabvec \rhol}
 \end{align}
 \end{subequations}
@@ -316,7 +316,7 @@ any reference value for density:
       & \rhol \brac{\tempup{ \vit } + \frac{1}{\gl} \nabvec \cdot \brac{\vit \times \vit}} = \\
 	  &- \gl\nabvec \pl - 2 \mul \nabvec \cdot \brac{\nabmat \vit + \nabmattransp \vit}
 	  - \gl \mul \K^{-1} \vit + \gl \rhol \gravity\\ \\
-      & \nabla \cdot \vit = -\frac{1}{\rhol} \brac{\tempup{\avg{\rho}^M} + \vit \cdot  \nabvec \rhol}
+      & \nabvec \cdot \vit = -\frac{1}{\rhol} \brac{\tempup{\avg{\rho}^M} + \vit \cdot  \nabvec \rhol}
     \end{aligned}
     \right.
 \end{equation}
@@ -336,8 +336,8 @@ caused by the shrinking metal volume. Before writing the new equation, we make t
 \item consequence of the static solid phase: $\avg{\rho h \vec{v}} = \gl \rhol \hl \vl +  \cancel{\gs \rhos \hs \vs} = \gl \rhol \hl \vl$ 
 %\item The system's enthalpy may thermodynamically evolve with pressure, knowing that $h=e+\frac{p}{\rho}$, where $e$ is the internal energy and $p$ is the pressure. It infers that the heat transport equation may contain a contribution attributed to volume compression/expansion:
 %\begin{align}
-%			 \frac{\partial p}{\partial t}+\nabla \cdot \brac{p \vec{v}}
-%			 = \frac{\partial p}{\partial t}+ p \nabla \cdot \vec{v} + \vec{v} \cdot \nabvec p 
+%			 \frac{\partial p}{\partial t}+\nabvec \cdot \brac{p \vec{v}}
+%			 = \frac{\partial p}{\partial t}+ p \nabvec \cdot \vec{v} + \vec{v} \cdot \nabvec p 
 %\end{align}
 %In the literature, this contribution has been always neglected, even when accounting for solidification
 %shrinkage, owing to the small variations of pressure.
@@ -354,25 +354,25 @@ The energy conservation equation writes:
 %--------------
 \begin{subequations}
 \begin{align}
-	& \tempup{\avg{\rho h}^M} + \nabla \cdot \avg{\rho h \vec{v}}^M 
-	= \nabla  \cdot \brac{\avg{\kappa}^M \nabvec T } \\
-	& \tempup{\avg{\rho h}^M} + \nabla \cdot \brac{ \gl \rhol \hl \vl} 
-	= \nabla  \cdot \brac{\avg{\kappa}^M \nabvec T } \\
+	& \tempup{\avg{\rho h}^M} + \nabvec \cdot \avg{\rho h \vec{v}}^M 
+	= \nabvec  \cdot \brac{\avg{\kappa}^M \nabvec T } \\
+	& \tempup{\avg{\rho h}^M} + \nabvec \cdot \brac{ \gl \rhol \hl \vl} 
+	= \nabvec  \cdot \brac{\avg{\kappa}^M \nabvec T } \\
 	& \tempup{\avg{\rho h}^M}
 		+ \vit \cdot \nabvec \brac{\rhol \hl}
-		= \nabla  \cdot \brac{\avg{\kappa}^M \nabvec T }
-		  - \rhol \hl  \nabla \cdot \vit \\   
+		= \nabvec  \cdot \brac{\avg{\kappa}^M \nabvec T }
+		  - \rhol \hl  \nabvec \cdot \vit \\   
 	\label{eq:energy_balance_metal}
 	& \tempup{\avg{\rho h}^M}
 		+ \vit \cdot \nabvec \brac{\rhol \hl}
-		= \nabla  \cdot \brac{\avg{\kappa}^M \nabvec T }
+		= \nabvec  \cdot \brac{\avg{\kappa}^M \nabvec T }
 		+ \hl \brac{\tempup{\avg{\rho}^M} + \vit \cdot  \nabvec \rhol} 
 \end{align}
 \end{subequations}
 %\begin{align}
 % \boxed{ \frac{\partial \avg{\rho h}}{\partial t} 
 %		+ \rhol \vit \cdot \nabvec \hl
-%		= \nabla  \cdot \brac{\kappa \nabvec T }
+%		= \nabvec  \cdot \brac{\kappa \nabvec T }
 %		+ \brac{\rhos-\rhol} \hl \frac{\partial  \gs}{\partial t}}
 %\end{align}
 %----------------
@@ -471,17 +471,17 @@ For a binary alloy, we write:
 %
 \begin{subequations}
 \begin{align}
- & \tempup{\avg{\rho w}^M} + \nabla \cdot \avg{\rho w \vec{v}}^M - \nabla  \cdot \brac{\avg{\Dl} \nabvec \brac{\rhol \wl} } = 0 \\
+ & \tempup{\avg{\rho w}^M} + \nabvec \cdot \avg{\rho w \vec{v}}^M - \nabvec  \cdot \brac{\avg{\Dl} \nabvec \brac{\rhol \wl} } = 0 \\
  %
  & \avg{\rho}^M \tempup{\avg{w}^M} + \avg{w}^M \tempup{\avg{\rho}^M} 
-	+ \nabla \cdot \brac{\gl \rhol \wl \vl} 
-	- \nabla \cdot \brac{\gl \Dl \nabvec \brac{\rhol \wl} } = 0 \\
+	+ \nabvec \cdot \brac{\gl \rhol \wl \vl} 
+	- \nabvec \cdot \brac{\gl \Dl \nabvec \brac{\rhol \wl} } = 0 \\
  %
  \label{eq:species_1}
   \begin{split}
 	& \avg{\rho}^M \tempup{\avg{w}^M} + \avg{w}^M \tempup{\avg{\rho}^M} 
-	+ \brac{\rhol \wl} \nabla \cdot \vit + \vit \cdot \nabvec \brac{\rhol \wl} \\
-	& - \nabla \cdot \brac{\gl \Dl \nabvec \brac{\rhol \wl} } = 0 
+	+ \brac{\rhol \wl} \nabvec \cdot \vit + \vit \cdot \nabvec \brac{\rhol \wl} \\
+	& - \nabvec \cdot \brac{\gl \Dl \nabvec \brac{\rhol \wl} } = 0 
   \end{split}
 %
 \end{align}
@@ -491,13 +491,13 @@ The mass balance gives the following relation when the liquid density is constan
 %--------------------------
 \begin{align}
 \label{eq:species_divV}
-\nabla \cdot \vit = -\frac{1}{\rhol} \brac{\tempup{\avg{\rho}}^M}
+\nabvec \cdot \vit = -\frac{1}{\rhol} \brac{\tempup{\avg{\rho}}^M}
 \end{align}
 %----------------
 If we use the result of \cref{eq:species_divV} in \cref{eq:species_1}, then we get the following equation:
 \begin{align}
 \avg{\rho}^M \tempup{\avg{w}^M}  + \avg{w}^M \tempup{\avg{\rho}^M} =
-\wl \tempup{\avg{\rho}^M}  - \vit \cdot \nabvec \brac{\rhol \wl} + \nabla \cdot \brac{\gl \Dl \nabvec \brac{\rhol \wl} }
+\wl \tempup{\avg{\rho}^M}  - \vit \cdot \nabvec \brac{\rhol \wl} + \nabvec \cdot \brac{\gl \Dl \nabvec \brac{\rhol \wl} }
 \end{align}
 %
 Applying Voller-Prakash \citep{voller_modelling_1989} variable splitting, the system ends up with only one variable, $\avg{w}^M$. 
@@ -513,14 +513,14 @@ where the superscript $t$ refers to the previous time step. The chemical species
 \begin{align}
   \begin{split}
 	& \avg{\rho}^M \tempup{\avg{w}^M}  + \cancel{\avg{w}^M \tempup{\avg{\rho}^M}} = \\
-	& \cancel{\avg{w}^M \tempup{\avg{\rho}^M}}  - \rhol \vit \cdot \nabvec \avg{w}^M + \nabla \cdot \brac{\gl \rhol \Dl \nabvec \avg{w}^M } \\
+	& \cancel{\avg{w}^M \tempup{\avg{\rho}^M}}  - \rhol \vit \cdot \nabvec \avg{w}^M + \nabvec \cdot \brac{\gl \rhol \Dl \nabvec \avg{w}^M } \\
 	& + \tempup{\avg{\rho}^M} \crochet{\brac{\wl}^t -  \brac{\avg{w}^M}^t} - \rhol \vit \cdot \nabvec \brac{\brac{\avg{w}^M}^t -\brac{\wl}^t} \\
-	%& + \nabla \cdot \crochet{\gl \rhol \Dl  \nabvec \brac{ \brac{\wl}^t - \avg{w}^t } }
+	%& + \nabvec \cdot \crochet{\gl \rhol \Dl  \nabvec \brac{ \brac{\wl}^t - \avg{w}^t } }
   \end{split} \\ 
     \begin{split}
-	& \avg{\rho}^M \tempup{\avg{w}^M}  + \rhol \vit \cdot \nabvec \avg{w}^M - \nabla \cdot \brac{\gl \rhol \Dl \nabvec \avg{w}^M}=\\
+	& \avg{\rho}^M \tempup{\avg{w}^M}  + \rhol \vit \cdot \nabvec \avg{w}^M - \nabvec \cdot \brac{\gl \rhol \Dl \nabvec \avg{w}^M}=\\
 	& - \tempup{\avg{\rho}^M} \crochet{\brac{\avg{w}^M}^t - \brac{\wl}^t} + \rhol \vit \cdot \nabvec \brac{\brac{\avg{w}^M}^t -\brac{\wl}^t} \\
-	& - \nabla \cdot \crochet{\gl \rhol \Dl  \nabvec \brac{\brac{\avg{w}^M}^t -\brac{\wl}^t} }
+	& - \nabvec \cdot \crochet{\gl \rhol \Dl  \nabvec \brac{\brac{\avg{w}^M}^t -\brac{\wl}^t} }
   \end{split}
 \end{align}
 \end{subequations}
@@ -528,27 +528,27 @@ where the superscript $t$ refers to the previous time step. The chemical species
 %\begin{subequations}
 %\begin{align}
 %	& \frac{\partial \avg{\rho w}}{\partial t} 
-%		+ \rhol \wl  \nabla \cdot \vit
+%		+ \rhol \wl  \nabvec \cdot \vit
 %		+ \vit \cdot \nabvec \brac{\rhol \wl}
-%		= \nabla  \cdot \brac{\gl \rhol D^l \nabvec \wl } \\   
+%		= \nabvec  \cdot \brac{\gl \rhol D^l \nabvec \wl } \\   
 %	& \frac{\partial \avg{\rho w}}{\partial t} 
 %		+ \cancel{\rhol} \wl  \frac{\rhol-\rhos}{\cancel{\rhol}} \frac{\partial  \gs }{\partial t}
 %		+ \vit \cdot \nabvec \brac{\rhol \wl}
-%		= \nabla  \cdot \brac{\gl \rhol D^l \nabvec \wl } \\ 
+%		= \nabvec  \cdot \brac{\gl \rhol D^l \nabvec \wl } \\ 
 %	& \frac{\partial \avg{\rho w}}{\partial t} 
 %		+ \brac{\rhol-\rhos} \wl \frac{\partial  \gs }{\partial t}
 %		+ \vit \cdot \nabvec \brac{\rhol \wl}
-%		= \nabla  \cdot \brac{\gl \rhol D^l \nabvec \wl }        
+%		= \nabvec  \cdot \brac{\gl \rhol D^l \nabvec \wl }        
 %\end{align}
 %\end{subequations}
 %------------------------------
 \begin{align}
 \label{eq:solute_balance_metal}
 \begin{split}
- & \avg{\rho}^M \tempup{\avg{w}^M}  + \rhol  \vit \cdot \nabvec \avg{w}^M - \nabla \cdot \brac{\gl \rhol \Dl \nabvec \avg{w}^M}=\\
+ & \avg{\rho}^M \tempup{\avg{w}^M}  + \rhol  \vit \cdot \nabvec \avg{w}^M - \nabvec \cdot \brac{\gl \rhol \Dl \nabvec \avg{w}^M}=\\
  &	 - \tempup{\avg{\rho}^M} \crochet{\brac{\avg{w}^M}^t - \brac{\wl}^t} \\ 
  &	 + \rhol \vit \cdot \nabvec \brac{\brac{\avg{w}^M}^t -\brac{\wl}^t}
- 	 - \nabla \cdot \crochet{\gl \rhol \Dl  \nabvec \brac{\brac{\avg{w}^M}^t -\brac{\wl}^t} }
+ 	 - \nabvec \cdot \crochet{\gl \rhol \Dl  \nabvec \brac{\brac{\avg{w}^M}^t -\brac{\wl}^t} }
   \end{split}
   \end{align}
 %--------------
@@ -564,9 +564,9 @@ After dividing both sides by $\avg{\rho}=\rhol$, \cref{eq:solute_balance_metal} 
 \begin{align}
 \label{eq:solute_balance_metal_incompressible}
  \begin{split}
-      & \tempup{\avg{w}^M}  + \vit \cdot \nabvec \avg{w}^M - \nabla \cdot \brac{\gl \Dl \nabvec \avg{w}^M} \\
+      & \tempup{\avg{w}^M}  + \vit \cdot \nabvec \avg{w}^M - \nabvec \cdot \brac{\gl \Dl \nabvec \avg{w}^M} \\
 	  & = \vit \cdot \nabvec \brac{\brac{\avg{w}^M}^t -\brac{\wl}^t}
-	 - \nabla \cdot \crochet{\gl \Dl \nabvec \brac{\brac{\avg{w}^M}^t -\brac{\wl}^t} } 
+	 - \nabvec \cdot \crochet{\gl \Dl \nabvec \brac{\brac{\avg{w}^M}^t -\brac{\wl}^t} } 
   \end{split}
 \end{align}
 %--------------
@@ -587,7 +587,7 @@ is solely due to an air mass increase, coming from the system boundaries. The ma
 %------------
 \begin{align}
 \label{eq:mass_balance_air}
-& \nabla \cdot \vA = \nabla \cdot \va = 0
+& \nabvec \cdot \vA = \nabvec \cdot \va = 0
 \end{align}
 %------------
 The air flow is governed by time-dependent incompressible Navier-Stokes equations, as previously done for the metal:
@@ -599,7 +599,7 @@ The air flow is governed by time-dependent incompressible Navier-Stokes equation
       & \rhoa \brac{\tempup{ \va } + \nabvec \cdot \brac{\va \times \va}} = \\
 	  &- \nabvec \pa - 2 \mua \nabvec \cdot \brac{\nabmat \va + \nabmattransp \va}
 	   + \rhoa \gravity\\ \\
-      & \nabla \cdot \va = 0
+      & \nabvec \cdot \va = 0
     \end{aligned}
     \right.
 \end{equation}
@@ -618,14 +618,14 @@ The energy balance governs the air enthalpy $\avg{\rho h}^A$ (which is equal to 
 in the current context) as follows:
 \begin{subequations}
 \begin{align}
-	& \tempup{\avg{\rho h}^A} + \nabla \cdot \avg{\rho h \vec{v}}^A 
-	= \nabla  \cdot \brac{\avg{\kappa}^A \nabvec T } \\
-	& \tempup{\avg{\rho h}^A} + \nabla \cdot \brac{ \rhoa \ha \va} 
-	= \nabla  \cdot \brac{\ka\nabvec T } \\
+	& \tempup{\avg{\rho h}^A} + \nabvec \cdot \avg{\rho h \vec{v}}^A 
+	= \nabvec  \cdot \brac{\avg{\kappa}^A \nabvec T } \\
+	& \tempup{\avg{\rho h}^A} + \nabvec \cdot \brac{ \rhoa \ha \va} 
+	= \nabvec  \cdot \brac{\ka\nabvec T } \\
 	\label{eq:energy_balance_air}
 	& \tempup{\avg{\rho h}^A}
 		+ \va \cdot \nabvec \brac{\rhoa \ha}
-		= \nabla  \cdot \brac{\ka\nabvec T }
+		= \nabvec  \cdot \brac{\ka\nabvec T }
 \end{align}
 \end{subequations}
 %------------
@@ -650,7 +650,7 @@ result in a numerically stiff partial differential equation.
   \label{eq:solute_balance_air}
 	& \avg{\rho}^A \tempup{\avg{w}^A}
 	%+ \va \cdot \nabvec \brac{\rhoa \wa}
-	- \nabla \cdot \brac{\Da \nabvec \brac{\rhoa \wa} } = 0
+	- \nabvec \cdot \brac{\Da \nabvec \brac{\rhoa \wa} } = 0
 \end{align}
 %--------------
 %
@@ -681,11 +681,11 @@ With this notation, we express the monolithic mass balance as:
 %---
 \begin{align}
 \label{eq:monolithic_mass_1}
-& \nabla \cdot \vitf = \nabla \cdot \brac{\heavisideM \vM + \heavisideA \vA} \\
+& \nabvec \cdot \vitf = \nabvec \cdot \brac{\heavisideM \vM + \heavisideA \vA} \\
 \label{eq:monolithic_mass_2}
-& \nabla \cdot \vitf = \heavisideM \nabla \cdot \vM + \heavisideA \nabla \cdot \vA + \nabvec \heavisideM \cdot \brac{\vM - \vA}\\
+& \nabvec \cdot \vitf = \heavisideM \nabvec \cdot \vM + \heavisideA \nabvec \cdot \vA + \nabvec \heavisideM \cdot \brac{\vM - \vA}\\
 \label{eq:monolithic_mass_3}
-& \nabla \cdot \vitf = \heavisideM \nabla \cdot \vit
+& \nabvec \cdot \vitf = \heavisideM \nabvec \cdot \vit
 \end{align}
 %---
 where we used the relation \cref{eq:vitmetal} in the case of a fixed rigid solid to obtain \cref{eq:monolithic_mass_3}.
@@ -697,7 +697,7 @@ when the interface thickness tends to zero. Finally, the monolithic mass balance
 %---
 \begin{align}
 \label{eq:monolithic_mass}
-& \nabla \cdot \vitf = \heavisideM \brac{-\frac{1}{\rhol} \brac{\tempup{\avg{\rho}^M }+ \vit \cdot  \nabvec \rhol}}
+& \nabvec \cdot \vitf = \heavisideM \brac{-\frac{1}{\rhol} \brac{\tempup{\avg{\rho}^M }+ \vit \cdot  \nabvec \rhol}}
 \end{align}
 %---
 The momentum balance looks like the one derived for the metal, but using level set mixed properties, we get the following:
@@ -709,7 +709,7 @@ The momentum balance looks like the one derived for the metal, but using level s
       & \mix{\rho} \brac{\tempup{ \vitf } + \frac{1}{\gf} \nabvec \cdot \brac{\vitf \times \vitf}} = \\
 	  &- \gf\nabvec p - 2 \mix{\mu} \nabvec \cdot \brac{\nabmat \vitf+ \nabmattransp \vitf}
 	  - \gf \mix{\mu} \Kmodif^{-1} \vitf + \mix{\rho g} \gravity\\ \\
-      & \nabla \cdot \vitf = \heavisideM \brac{-\frac{1}{\rhol} \brac{\tempup{\avg{\rho}^M }+ \vit \cdot  \nabvec \rhol}}
+      & \nabvec \cdot \vitf = \heavisideM \brac{-\frac{1}{\rhol} \brac{\tempup{\avg{\rho}^M }+ \vit \cdot  \nabvec \rhol}}
     \end{aligned}
     \right.
 \end{equation}
@@ -753,7 +753,7 @@ Deriving the monolithic energy conservation equation is straightforward. The mon
 \label{eq:monolithic_energy}
 \tempup{\mix{\avg{\rho h}}}
 		+ \vitf \cdot \nabvec \mix{\brac{\rho h}^F}
-		= \nabla  \cdot \brac{\mix{\avg{\kappa}} \nabvec T }
+		= \nabvec  \cdot \brac{\mix{\avg{\kappa}} \nabvec T }
 		+ \mix{\Phi} 
 \end{align}
 %-------
@@ -777,7 +777,7 @@ in the metal's energy balance. These quantities are defined in the following equ
 \text{Average thermal conductivity}&: \mix{\avg{\kappa}} = \heavisideM \avg{\kappa}^M + \heavisideA \avg{\kappa}^A \\
 %
 \label{eq:monolithic_heat_dissipation}
-\text{Average heat change}&: \mix{\Phi} = \heavisideM \rhol \hl \nabla \cdot \vit
+\text{Average heat change}&: \mix{\Phi} = \heavisideM \rhol \hl \nabvec \cdot \vit
 \end{align}
 %-----------
 %
@@ -788,10 +788,10 @@ As previously explained in \cref{sec:solute_air}, we consider that species conse
 \begin{align}
 \label{eq:monolithic_solute}
 \begin{split}
- & \avg{\rho}^M \tempup{\mix{\avg{w}}}  + \rhol  \vit \cdot \nabvec \mix{\avg{w}} - \nabla \cdot \brac{\gl \rhol \Dl \nabvec \mix{\avg{w}}}=\\
+ & \avg{\rho}^M \tempup{\mix{\avg{w}}}  + \rhol  \vit \cdot \nabvec \mix{\avg{w}} - \nabvec \cdot \brac{\gl \rhol \Dl \nabvec \mix{\avg{w}}}=\\
  &	 - \tempup{\avg{\rho}^M} \crochet{\brac{\avg{w}^M}^t - \brac{\wl}^t} \\ 
  &	 + \rhol \vit \cdot \nabvec \brac{\brac{\avg{w}^M}^t -\brac{\wl}^t}
- 	 - \nabla \cdot \crochet{\gl \rhol \Dl  \nabvec \brac{\brac{\avg{w}^M}^t -\brac{\wl}^t} }
+ 	 - \nabvec \cdot \crochet{\gl \rhol \Dl  \nabvec \brac{\brac{\avg{w}^M}^t -\brac{\wl}^t} }
   \end{split}
 \end{align}
 %-------
