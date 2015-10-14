@@ -142,95 +142,52 @@ The previous equations will be used to derive a set macroscopic conservation equ
 It is noted that the intrinsic average $\avg{\psi}^\phi$ may be replaced by ${\psi}^\phi$ 
 for notation simplicity, whenever the averaging technique applies.
 
-
 %***********************************************
 \subsubsection{Macroscopic equations}
 %***********************************************
-
 A monodomain macroscopic model relies on four main conservation equations to predict 
-macrosegregation in a single alloy, i.e. the latter is considered without 
-any interaction with another alloy or ambient air. The general form of an averaged conservation 
-equation of any physical quantity $\psi$ is given by:
-
-%-------
+macrosegregation in a single alloy without any solidification shrinkage. It follows that
+no ambient gas will be taken into account. 
+However, the conservation equations result are the result of all phases contributions in the alloy system.
+It is thus important to describe the general form of a phase-averaged conservation equation, for any physical quantity $\psi$: 
+%-----------
 \begin{align}
-\label{eq:conservationequation}
-& \tempup{\avg{\psi}} + \nabvec \cdot \avg{\psi \vec{v}} + \nabvec \cdot \avg{\vec{j_{\psi}}} = \avg{Q_{\psi}}
+\label{eq:phase_conservation_equation}
+& \avg{\tempup{\psi^\phi}} + \avg{\nabvec \cdot \psi^\phi \vec{v^\phi}} + \avg{\nabvec \cdot \vec{j_{\psi^\phi}}} = \avg{Q_{\psi^\phi}}
 \end{align}
 %-------
+The first LHS term in \cref{eq:phase_conservation_equation} represents the time variation of $\psi$, 
+the second term accounts for transport by advection while the third term accounts for diffusive transport of $\psi$,
+knowing its flux, $\vec{j_{\psi}}$. The RHS term represents a volumetric source. 
+The considered equations are mass, energy, species conservation 
+and momentum. 
+% all summarised in \cref{tab:conservationeqs}. 
+The latter equation is averaged only for the liquid phase,
+as we assume a fixed and rigid solid phase ($\vs=\vec{0}$), thus the corresponding equation vanishes.
 
-The first LHS term in \cref{eq:conservationequation} represents the time variation of $\psi$, 
-the second term accounts for transport by advection while the third is the diffusive transport
-and the RHS term represents a volume source. The considered equations are mass, energy, species conservation 
-and momentum, all summarised in \cref{tab:conservationeqs}. The latter equation is averaged only for the liquid phase,
- as we assume a fixed and rigid solid phase ($\vs=\vec{0}$), thus the corresponding equation vanishes.
-
-%-----
-\begin{tableth}
-\centering
-\caption{Summary of conservation equations with their variables.}
-\label{tab:conservationeqs}
-{\tabulinesep=1.5mm
-\begin{tabu}{ p{5cm} p{1cm} p{1cm} p{1cm}}
-\tabucline[1pt]{-}
-Conservation Equation & $\psi$ & $\vec{j_{\psi}}$ & $Q_{\psi}$ \\\tabucline[1pt]{-}
-%-----------------------------
-Mass				& 	$\rho$  		& $-$ 						& $-$		\\
-Energy				& 	$\rho h$  		& $\vec{q}$ 				& $-$		\\
-Species				& 	$\rho w_i$  	& $\vec{j_i}$ 				& $-$		\\
-Liquid momentum		&	$\rhol \vl$  	& $-\sigmal$ 				& $\Fv$		\\\tabucline[1pt]{-} %\vec{\Gamma}^{l}
-%-----------------------------
-\end{tabu}}
-\end{tableth}
-%-----
-
-We develop the ingredients of these equations using the averaging technique, as follows:
-
-%-------
-\begin{align}
-\label{eq:mainingredients1}
-& \avg{\rho} = \gl \rhol + \gs \rhos \\
-\label{eq:mainingredients2}
-& \avg{\rho \vec{v}} = \gl \rhol \vl + \cancel{\gs \rhos \vs} \\
-\label{eq:mainingredients3}
-& \avg{\rho h} = \gl \rhol \hl + \gs \rhos \hs \\
-\label{eq:mainingredients4}
-& \avg{\rho h \vec{v}} = \gl \rhol \hl \vl + \cancel{\gs \rhos \hs \vs} \\
-\label{eq:mainingredients5}
-& \avg{\rho w_i} = \gl \rhol \wil + \gs \rhos \wis \\
-\label{eq:mainingredients6}
-& \avg{\rho w_i \vec{v}} = \gl \rhol \wil \vl + \cancel{\gs \rhos \wis \vs} \\
-\label{eq:mainingredients7}
-& \avg{\rhol \vl} = \avg{\rhol \vl}^l = \gl \rhol \vl \\
-\label{eq:mainingredients8}
-& \avg{\rhol \vl \times \vec{v}} = \gl \rhol \vl \times \vl + \cancel{\gs \rhos \vl \times \vs}
-\end{align}
-%-------
-
-% $\mat{\sigma}$ 
-
-%-------
-Next, we define the average diffusive fluxes, $\vec{q}$ for energy and $\vec{j_i}$ for solutes, 
-using Fourier's conduction law and Fick's first law, respectively \citep{rappaz_numerical_2003}:
-
-%------
-\begin{align}
-\label{eq:fourierlaw}
-& \avg{\vec{q}} = - \gl \kl \nabvec T -  \gs \ks \nabvec T = -\avg{\kappa} \nabvec T \\
-\label{eq:ficklaw}
-& \avg{\vec{j_i}} = - \gl \rhol \Dl \nabvec \wil - \cancel{\gs \rhos \Ds \nabvec \wis}
-\end{align}
-%------------
-
-In \cref{eq:ficklaw}, the macroscopic diffusion coefficient in the solid is neglected, 
-by considering that for macroscopic scales, the average composition of the alloy is much more influenced by advective 
-and diffusive transport in the liquid.
-In \cref{eq:fourierlaw}, we assume that phases are at thermal equilibrium, that is, temperature is uniform in the RVE.
-
-Now that the main conservation equations ingredients are properly defined, we may write each averaged conservation
-equation as the sum of two local conservation equations for each phase in the RVE, hence introducing also interfacial average terms.
-For instance, the local mass balance in each phase is given by:
-
+% %-----
+% \begin{tableth}
+% \centering
+% \caption{Summary of conservation equations with their variables.}
+% \label{tab:conservationeqs}
+% {\tabulinesep=1.5mm
+% \begin{tabu}{ p{5cm} p{1cm} p{1cm} p{1cm}}
+% \tabucline[1pt]{-}
+% Conservation Equation & $\psi$ & $\vec{j_{\psi}}$ & $Q_{\psi}$ \\\tabucline[1pt]{-}
+% %-----------------------------
+% Mass				& 	$\rho$  		& $-$ 						& $-$		\\
+% Energy				& 	$\rho h$  		& $\vec{q}$ 				& $-$		\\
+% Species				& 	$\rho w_i$  	& $\vec{j_i}$ 				& $-$		\\
+% Liquid momentum		&	$\rhol \vl$  	& $-\sigmal$ 				& $\Fv$		\\\tabucline[1pt]{-} %\vec{\Gamma}^{l}
+% %-----------------------------
+% \end{tabu}}
+% \end{tableth}
+% %-----
+We may then write each averaged macroscopic conservation
+equation as the sum of local conservation equations for each phase in the RVE. 
+This will introduce the interfacial average terms defined earlier in \cref{eq:volumeaveraging3,eq:volumeaveraging4}.
+For instance, if we replace $\psi$ by $\rho$ for each phase $\phi \in \{l,s\}$, \cref{eq:phase_conservation_equation} 
+gives two phase-averaged mass balances, with interfacial terms:
 %----
 \begin{subequations}
 \begin{align}
@@ -244,7 +201,7 @@ For instance, the local mass balance in each phase is given by:
 
 where $S_V= A_{sl}/\rev$ is the specific surface area, $\vec{v}^{l^*}$ and $\vec{v}^{s^*}$ are respectively, the liquid 
 and solid phase velocity at the interface and $\vec{v}^*$ is the previously introduced solid-liquid interface velocity. 
-For instance, the first interfacial exchange term in the RHS of \cref{eq:mass_liquid} is expanded as follows \citep{dantzig_solidification_2009}:
+The $\avg{\hspace{2mm}}^*$ notation in the RHS of \cref{eq:mass_liquid} is expanded as follows \citep{dantzig_solidification_2009}:
 
 %----
 \begin{subequations}
@@ -267,6 +224,43 @@ in the RVE:
 %----
 where the RHS cancels to zero as shown by \citet{ni_volume-averaged_1991}. Moreover, the authors show that with their averaging technique, 
 interfacial exchanges for energy, chemical species and momentum cancel out as they are equal in absolute value but opposite in sign. 
+Regarding the LHS terms, their sum is defined along other variables as follows:
+%-------
+\begin{align}
+\label{eq:mainingredients1}
+& \avg{\rho} = \gl \rhol + \gs \rhos \\
+\label{eq:mainingredients2}
+& \avg{\rho \vec{v}} = \gl \rhol \vl + \cancel{\gs \rhos \vs} \\
+\label{eq:mainingredients3}
+& \avg{\rho h} = \gl \rhol \hl + \gs \rhos \hs \\
+\label{eq:mainingredients4}
+& \avg{\rho h \vec{v}} = \gl \rhol \hl \vl + \cancel{\gs \rhos \hs \vs} \\
+\label{eq:mainingredients5}
+& \avg{\rho w_i} = \gl \rhol \wil + \gs \rhos \wis \\
+\label{eq:mainingredients6}
+& \avg{\rho w_i \vec{v}} = \gl \rhol \wil \vl + \cancel{\gs \rhos \wis \vs} \\
+\label{eq:mainingredients7}
+& \avg{\rhol \vl} = \avg{\rhol \vl}^l = \gl \rhol \vl \\
+\label{eq:mainingredients8}
+& \avg{\rhol \vl \times \vec{v}} = \gl \rhol \vl \times \vl + \cancel{\gs \rhos \vl \times \vs}
+\end{align}
+%-------
+The average diffusive fluxes, \vec{j_{\psi^\phi}}, are represented by $\vec{q}$ for energy and $\vec{j_i}$ for each solute species.
+They are respectively modelled using Fourier's thermal conduction law and Fick's first mass diffusion law:
+%------
+\begin{align}
+\label{eq:fourierlaw}
+& \avg{\vec{q}} = - \gl \kl \nabvec T -  \gs \ks \nabvec T = -\avg{\kappa} \nabvec T \\
+\label{eq:ficklaw}
+& \avg{\vec{j_i}} = - \gl \rhol \Dl \nabvec \wil - \cancel{\gs \rhos \Ds \nabvec \wis}
+\end{align}
+%------------
+In \cref{eq:ficklaw}, the macroscopic diffusion coefficient in the solid is neglected, 
+by considering that for macroscopic scales, the average composition of the alloy is much more influenced by advective 
+and diffusive transport in the liquid.
+In \cref{eq:fourierlaw}, we assume that phases are at thermal equilibrium, that is, temperature is uniform in the RVE.
+
+
 Using \cref{eq:mainingredients1,eq:mainingredients2,eq:mainingredients3,eq:mainingredients4,eq:mainingredients5,eq:mainingredients6,eq:mainingredients7,eq:mainingredients8,eq:fourierlaw,eq:ficklaw}
 and following the same procedure done in \cref{eq:conservation_mass_local}, the averaged mass balance hence writes:
 
@@ -405,8 +399,22 @@ A fourth equation provided by the mass balance (\cref{eq:conservation_mass})is t
     \right.
 \end{equation}
 %------------
-Last, the Boussinesq approximation allows taking a constant density in the inertial terms of \cref{eq:Navier-Stokes1} while the variations responsible for buoyancy forces can be computed
-using \cref{eq:rholiq}, if the system is incompressible. Hence, the final set of equations is better known as the incompressible \emph{Navier-Stokes} equations, applied to a solidifying melt:
+
+Last, the Boussinesq approximation allows taking a constant density in the inertial terms of \cref{eq:Navier-Stokes1} 
+while the variations responsible for buoyancy forces can be deduced from temperature and liquid concentration using thermodynamic
+databases or directly using known thermal and solutal expansion coefficients, respectively $\betaT$ and $\betawil$, and the reference density value $\rholref$:
+
+%------
+\begin{equation}
+\label{eq:rholiq}
+ \rhol = \rholref \brac{ 1- \betaT \brac{T-\Tref} - \sum_{i} \betawil \brac{\wil-\wilref}}
+\end{equation}
+%------------
+
+Hence, the final 
+set of equations is better known as the incompressible \emph{Navier-Stokes} 
+equations, applied to a solidifying melt:
+
 %------
 \begin{equation}
 \label{eq:Navier-Stokes2}

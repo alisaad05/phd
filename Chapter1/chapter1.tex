@@ -135,7 +135,7 @@ of the solvent and the eutectic temperature.}
 \subsection{Dendritic growth}
 %***********************************************
 In a casting process, the vicinity of the chill surface where the contact between the molten alloy and the cold moulds, is the first area to solidify. 
-Thermal gradient, $\vec{G}$, and cooling rate, $R$, are two crucial process parameters that define the solid-liquid interface velocity, $\vstar$, which in turn
+Thermal gradient, $\vec{G}$, and cooling rate, $R$, are two crucial parameters that define the solid-liquid interface velocity, $\vstar$, which in turn
 affects the initial microstructure. Although it may not be easy to control them, their role in solidification is well established.
 
 The solid-liquid interface fluctuates when solidifying, thus perturbations may appear on the front, locally destabilizing it. 
@@ -148,7 +148,7 @@ Two outcome scenarios are possible.
 %path 
 {Chapter1/Graphics/dendrite_evolution.pdf}
 % caption
-{Time evolution of a solidifying \bin{Al}{4}{Cu} sample, showing interface destabilisation 
+{Experimental time evolution of a solidifying \bin{Al}{4}{Cu} sample, showing interface destabilisation 
 and subsequent dendritic solidification \citep{buffet_measurement_2010}.
 The liquid far from the interface and having a blue color is at nominal composition, 
 while the one near the dendritic structure with the yellow and red colors, is richer in solute.}
@@ -162,13 +162,13 @@ The first scenario is characterized by low values of $\vstar$ where the interfac
 With this kind of growth, a random protuberance appearing at the interface, has a low tip velocity (low driving force of solidification). As such,
 the rest of the interface catches up, maintaining the planar geometry.
 In another scenario more representative of a real casting, the interface velocity leads to its instability.
-The protuberance tip will grow into a liquid less rich in solute, as shown in the time frames of \cref{fig:dendrite_evolution}.
+The protuberance tip will grow into a liquid less rich in solute, as shown in the experimental frames of \cref{fig:dendrite_evolution}.
 The zone ahead of the solid-liquid interface is constitutionally undercooled, giving a greater driving force for the protuberance to grow in the direction
 of the thermal gradient. 
 
 An expression for the critical velocity is given by \citet{tiller_redistribution_1953}.
 As the solid-liquid interface adopts a tree-like shape, we speak of \emph{dendritic growth}. Near the chill surface, dendrites are columnar, with a 
-favourable growth in the <100> direction for alloys with cubic lattices, but different orientations are also reported in the literature \citep[see][289]{dantzig_solidification_2009}.
+favourable growth in the $\avg{100}$ direction for alloys with cubic lattices, but different orientations are also reported in the literature \citep[see][289]{dantzig_solidification_2009}.
 
 Far from mould walls, a similar dendritic growth phenomenon occurs where temperature is uniform, but with an equiaxed morphology.
 \Cref{fig:dendritic_growth} shows both columnar and equiaxed morphologies. Columnar dendrites are characterised by a primary spacing, 
@@ -223,18 +223,20 @@ especially the rheological perspective .
 
 The flow through the interdendritic liquid is damped by primary trunks and secondary 
 dendrite arms, resulting in momentum dissipation just like in saturated porous media. 
-The famous \citet{darcy_les_1856} law relates the pressure gradient ($\nabvec p$) to 
-the fluid velocity $\vec{v}$ (assuming the solid phase is fixed), 
-through the following equation \citep{rappaz_numerical_2003}:
+The famous \citet{darcy_les_1856} law relates the liquid pressure $(\gl \pl)$ gradient to 
+the average liquid velocity $(\gl \vl)$, 
+through the following equation:
 %----------------------
 \begin{align}
 \label{eq:darcy}
-& \vec{v} = \frac{\K}{\mul} \nabvec p
+& \gl \vl =-\frac{\K}{\mul} \nabvec \brac{\gl \pl}
 \end{align}
 %----------------------
-where $\mul$ is the liquid dynamic viscosity and $\K$ is the permeability tensor. 
-The latter parameter has been the subject of numerous studies that aimed
-to predict it from various microstructural or morphological parameters.
+where $\mul$ is the liquid dynamic viscosity and $\K$ is the permeability tensor.
+\Cref{eq:darcy} do not account for the solid velocity, $\vs$, assuming that the solid phase is fixed,
+which can occur in columnar solidification or when equiaxed grains are densely packed in later stages of solidification \citep{rappaz_numerical_2003}.
+Evaluating permeability has been the subject of numerous studies that aimed
+to predict it from microstructural or morphological parameters.
 Some of these studies have started even before the first attempts to model macrosegregation by 
 \citet{flemings_macrosegregation:_1967, flemings_macrosegregation:_1968-1,flemings_macrosegregation:_1968}. 
 
@@ -244,14 +246,14 @@ Some models rely additionally on the primary dendrite arm spacing $\pdas$ like B
 dendrite arm spacing $\sdas$ like Carman-Kozeny, as a meaningful parameter to determine an isotropic permeability. 
 Other models like \citet{poirier_permeability_1987,felicelli_simulation_1991} derive an anisotropic permeability based on both $\pdas$ and $\sdas$.
 
-The present work uses Carman-Kozeny as a constitutive model for the isotropic permeability scalar (zero order tensor):
+The present work uses a a particular form of the Carman-Kozeny equation as a constitutive model for the isotropic permeability scalar (zero order tensor),
+depending on the secondary dendrite arm spacing, $\sdas$, as follows:
 %----------------------
 \begin{align}
 \label{eq:permeability}
 & \K  = \frac{\sdas^2 \gl^3}{180\brac{1-\gl}^2}
 \end{align}
 %-----------------------------------
-%
 
 %***********************************************
 

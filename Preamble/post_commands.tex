@@ -43,9 +43,14 @@
 \newcommand\temp[1]{\ensuremath{\frac{\partial}{\partial t} \brac{#1} }} 
 \newcommand\tempup[1]{\ensuremath{\frac{\partial #1}{\partial t} }} 
 
+% \renewcommand\nabla{\ensuremath{\vec{\nabla}}}
+\newcommand\nabvec{\ensuremath{\vec{\nabla}}}
+\newcommand\nabmat{\ensuremath{\mat{\nabla}}}
+\newcommand\nabmattransp{\ensuremath{\mat{\nabla^\text{t}}}}
+
 %\newcommand{\mtrx}[1]{{\underline{\underline{#1}}} }
 \newcommand{\mtrx}[1]{{\overline{\overline{#1}}} }
-\newcommand{\mat}[1]{{\overline{\overline{#1}}} }
+\newcommand{\mat}[1]{{\overline{\overline{\vec{#1}}}}}
 
 \newcommand{\tausupg}{\ensuremath{\tau_\text{SUPG}}}
 \newcommand{\taupspg}{\ensuremath{\tau_\text{PSPG}}}
@@ -89,10 +94,6 @@
 \newcommand\dRdHijk{\ensuremath{\brac{\frac{\partial R}{\partial H}}_{ij}^{\iter}}}
 \newcommand\Rjk{\ensuremath{R_{j}^{\iter}}}
 
-% \renewcommand\nabla{\ensuremath{\vec{\nabla}}}
-\newcommand\nabvec{\ensuremath{\vec{\nabla}}}
-\newcommand\nabmat{\ensuremath{\mat{\nabla}}}
-\newcommand\nabmattransp{\ensuremath{\mat{\nabla^\text{t}}}}
 \newcommand\vit{\ensuremath{\avg{\vl}}}  
 \newcommand\vitf{\ensuremath{\avg{\vf}}}
 \newcommand\vita{\ensuremath{\avg{\va}}}
