@@ -129,7 +129,7 @@ where $\gphi$ is the volume fraction of phase $\phi$ with $\gphi=V_\phi/\rev$. T
 \label{eq:volumeaveraging3}
 & \avg{ \frac{\partial \psi}{\partial t} ^\phi } = \frac{\partial \avg{\psi^\phi}}{\partial t} - \integral{\gammastar}{\psi^\phi \vstar \cdot \vec{n^\phi}}{A} \\
 \label{eq:volumeaveraging4}
-& \avg{ \nabvec \psi^\phi } = \nabvec \avg{\psi^\phi} + \integral{\gammastar}{\psi^\phi \vec{n^\phi}}{A}
+& \avg{ \nabvec \cdot \vec{\psi^\phi} } = \nabvec \cdot \avg{\vec{\psi^\phi}} + \integral{\gammastar}{\vec{\psi^\phi} \cdot \vec{n^\phi}}{A}
 \end{align}
 %------------
 
@@ -148,8 +148,8 @@ for notation simplicity, whenever the averaging technique applies.
 A monodomain macroscopic model relies on four main conservation equations to predict 
 macrosegregation in a single alloy without any solidification shrinkage. It follows that
 no ambient gas will be taken into account. 
-However, the conservation equations result are the result of all phases contributions in the alloy system.
-It is thus important to describe the general form of a phase-averaged conservation equation, for any physical quantity $\psi$: 
+To determine an general averaged macroscopic equation, we must write
+a phase-averaged conservation equation, for any physical quantity $\psi$: 
 %-----------
 \begin{align}
 \label{eq:phase_conservation_equation}
@@ -245,45 +245,34 @@ Regarding the LHS terms, their sum is defined along other variables as follows:
 & \avg{\rhol \vl \times \vec{v}} = \gl \rhol \vl \times \vl + \cancel{\gs \rhos \vl \times \vs}
 \end{align}
 %-------
-The average diffusive fluxes, \vec{j_{\psi^\phi}}, are represented by $\vec{q}$ for energy and $\vec{j_i}$ for each solute species.
+The average diffusive fluxes are represented by $\avg{\vec{q}}$ for energy and $\avg{\vec{j_i}}$ for each solute species.
 They are respectively modelled using Fourier's thermal conduction law and Fick's first mass diffusion law:
 %------
 \begin{align}
 \label{eq:fourierlaw}
 & \avg{\vec{q}} = - \gl \kl \nabvec T -  \gs \ks \nabvec T = -\avg{\kappa} \nabvec T \\
 \label{eq:ficklaw}
-& \avg{\vec{j_i}} = - \gl \rhol \Dl \nabvec \wil - \cancel{\gs \rhos \Ds \nabvec \wis}
+& \avg{\vec{j_i}} = - \gl \Dl \nabvec \brac{\rhol \wil} - \cancel{\gs \Ds \nabvec \brac{\rhos \wis}}
 \end{align}
 %------------
 In \cref{eq:ficklaw}, the macroscopic diffusion coefficient in the solid is neglected, 
 by considering that for macroscopic scales, the average composition of the alloy is much more influenced by advective 
 and diffusive transport in the liquid.
+
 In \cref{eq:fourierlaw}, we assume that phases are at thermal equilibrium, that is, temperature is uniform in the RVE.
-
-
 Using \cref{eq:mainingredients1,eq:mainingredients2,eq:mainingredients3,eq:mainingredients4,eq:mainingredients5,eq:mainingredients6,eq:mainingredients7,eq:mainingredients8,eq:fourierlaw,eq:ficklaw}
-and following the same procedure done in \cref{eq:conservation_mass_local}, the averaged mass balance hence writes:
-
+and following the same procedure done in \cref{eq:conservation_mass_local}, the averaged equations for mass, energy and species conservation hence respectively write:
 %------
 \begin{align}
 \label{eq:conservation_mass}
-& \frac{\partial \avg{\rho}}{\partial t} + \nabvec \cdot \avg{\rho \vec{v}} = 0
-\end{align}
-%------------
-whereas the averaged energy balance writes:
-%------
-\begin{align}
+& \frac{\partial \avg{\rho}}{\partial t} + \nabvec \cdot \avg{\rho \vec{v}} = 0 \\
 \label{eq:conservation_energy_init}
-& \frac{\partial \avg{\rho h}}{\partial t} + \nabvec \cdot \avg{\rho h \vec{v}} - \nabvec \cdot \brac{\avg{\kappa} \nabvec T} = 0
-\end{align}
-%------------
-and finally the species balance writes:
-%------
-\begin{align}
+& \frac{\partial \avg{\rho h}}{\partial t} + \nabvec \cdot \avg{\rho h \vec{v}} - \nabvec \cdot \brac{\avg{\kappa} \nabvec T} = 0 \\
 \label{eq:conservation_solute_init}
-& \frac{\partial \avg{\rho w_i}}{\partial t} + \nabvec \cdot \avg{\rho w_i \vec{v}} - \nabvec \cdot \brac{\gl \rhol \Dl \nabvec \wil}= 0
+& \frac{\partial \avg{\rho w_i}}{\partial t} + \nabvec \cdot \avg{\rho w_i \vec{v}} - \nabvec \cdot \brac{\gl \Dl \nabvec \brac{\rhol \wil}}= 0
 \end{align}
 %------------
+
 As stated previously, the momentum balance in the solid phase is not taken into consideration, hence we do not sum the corresponding 
 local conservation equations. This has consequences on the advection terms in energy and species conservation, and later on we will show
 the consequences on the momentum conservation in the liquid. 
@@ -297,7 +286,6 @@ shall be redefined by considering that the fluid is incompressible $\brac{\nabve
 & \nabvec \cdot \avg{\rho w_i \vec{v}} = \vit \cdot \nabvec \brac{\rhol \wil}
 \end{align}
 %------------
-
 As for the liquid momentum balance, we write:
 %------
 \begin{align}
@@ -307,14 +295,12 @@ As for the liquid momentum balance, we write:
 \end{align}
 %------------
 where $\Fv$ is the vector of external body forces exerted on the liquid phase. In our case, it accounts for the fluid's weight:
-
 %------
 \begin{align}
 \label{eq:fluid_weight}
 & \Fv = \rhol \gravity
 \end{align}
 %------------
-
 The interfacial momentum transfer between the solid and liquid phases in \cref{eq:conservation_momentumliq_init} is modelled 
 by a momentum flux vector $\vec{\Gamma}^{l}$, consisting of hydrostatic and deviatoric parts, such that:
 %------------
@@ -333,7 +319,6 @@ where $p^{l^{*}}$ is the pressure at the interface, considered to be equal to th
 pressure $\pl$, $\K$ is a permeability scalar (isotropic) computed using \cref{eq:darcy} and $\mul$ is the liquid's 
 dynamic viscosity. The general form of the Cauchy liquid stress tensor in \cref{eq:conservation_momentumliq_init} 
 is decomposed as follows: 
-
 %------------
 %\begin{subequations} 
 \begin{align}
@@ -788,7 +773,8 @@ of $\crochet{-\varepsilon;+\varepsilon}$, is derived from the Heaviside as follo
 \end{align}
 %-------------
 The Heaviside and delta Dirac functions can be readily processed to obtain other geometric properties from the level set,
-which are extremely useful. We mention the most relevant ones \citep{peng_pde-based_1999}:
+which are extremely useful. In the context of a system $\Omega$, containing two domains metal ($M$) and gas ($G$) seperated by an interface $\Gamma$, 
+the following properties are interesting to study \citep{peng_pde-based_1999}:
 %------------
 \begin{align}
 \label{eq:levelset_normal}
@@ -805,8 +791,7 @@ which are extremely useful. We mention the most relevant ones \citep{peng_pde-ba
 %
 \end{align}
 %-----------
-where, for the last two equations, we consider a three-dimensional domain $\Omega$ 
-containing two subdomains, metal and air, seperated by an interface $\Gamma$.
+
 It is reminded that for a 2D case, \cref{eq:levelset_interface} evaluates a length 
 instead of the area while \cref{eq:levelset_volume} gives the area instead of volume.
 Finally, within the diffuse interface, fluids properties 
