@@ -14,12 +14,12 @@ In general, it results in a progressive volume change during solidification, unt
 The four stages in \cref{fig:real_ingot_stage_a,fig:real_ingot_stage_c,fig:real_ingot_stage_b,fig:real_ingot_stage_d} depict the volume change with 
 respect to solidification time.
 First, at the level of the first solid crust, near the local solidus temperature, the solid forms with a density greater than 
-the liquid's. The subsequent volume decrease creates voids with a negative pressure, forcing the fluid to be sucked in the direction of the volume change 
-(cf. \cref{fig:real_ingot_stage_b}). As a direct result of the inward feeding flow, the ingot surface
-tends to gradually deform in the feeding direction, forming the so-called \emph{shrinkage pipe}, shown in \cref{fig:shrinkage_exp}. 
+the liquid. The subsequent volume decrease forces the fluid to be sucked in the direction of the volume change 
+(cf. \cref{fig:real_ingot_stage_b}). As a direct result of the inward feeding flow, the ingot free surface with the air
+tends to gradually deform to follow the feeding direction, forming the so-called \emph{shrinkage pipe}, shown in \cref{fig:shrinkage_exp}. 
 Since the mass of the alloy and its chemical species is conserved, 
 a density difference between the phases ($\rhol < \rhos \implies \frac{\rhol}{\rhos}<1$) eventually leads 
-to a different overall volume ($V^s<V^l$) once solidification is complete, as confirm the following equations:
+to a different overall volume ($V^s<V^l$) once solidification is complete, as confirm the following mass conservation equations, from initial (LHS term) to final (RHS term) state:
 %------------
 \begin{subequations}
 \begin{align}
@@ -29,9 +29,8 @@ to a different overall volume ($V^s<V^l$) once solidification is complete, as co
 \end{subequations}
 %------------
 Solidification shrinkage is not the only factor responsible for volume decrease. 
-Thermal shrinkage in both solid and liquid phases, as well 
-as solutal shrinkage in the liquid phase are also common causes in a casting process. 
-However, thermal shrinkage is very important to apprehend, as temperature decreases in steel casting, usually exceeding a \SI{1000}{\udegC}, thus causing substantial density variations. 
+Shrinkage due to temperature and composition variations in both solid and liquid phases, are also common causes in a casting process. 
+Thermal shrinkage is very important to apprehend in steel casting, as the temperature decrease usually exceeds a \SI{1000}{\udegC}, thus causing substantial density variations. 
 %Henceforth, we will focus on shrinkage due to phase change.
 %
 %Talk and explain models in the literature that predict shrinkage (without or with macrosegregation): Beckermann, Wu ? \\
@@ -95,9 +94,10 @@ However, thermal shrinkage is very important to apprehend, as temperature decrea
 {Chapter5/Graphics/shrinkage_exp.png}
 % caption
 {Sulphur prints of three ingots showing pipe formation at the top as a result 
-of solidification shrinkage with various ingot inclination during casting \citep{onodera_effect_1959}.
-Positive macrosegregation is clearly seen in this area, while A-shape and V-shape positive mesosegregates are detected
-at the ingot's tips and centre respectively.}
+of solidification shrinkage, marked with dark areas corresponding to higher sulphur content, while varying ingot inclination during casting.
+Ingot orientation changes from (a) vertical position to (b) \SI{25}{\degree}-inclination after 34 minutes of vertical (dashed line) casting and finally (c) \SI{25}{\degree}-inclination after 3 hours of vertical casting. The white arrow indicates the inclination onset \citep{onodera_effect_1959}. The black arrow indicates the gravity direction.}
+% Positive macrosegregation is clearly seen in this area, while A-shape and V-shape positive mesosegregates are detected
+% at the ingot's tips and centre respectively.
 % label
 \label{fig:shrinkage_exp}
 \end{figureth}
@@ -105,41 +105,41 @@ at the ingot's tips and centre respectively.}
 %
 %
 %============================================
-\section{Choice of interface tracking}
+\section{Choice of boundary tracking}
 %============================================
-In chapter 2, several methods of interface tracking/capturing methods were presented 
+In chapter 2, several methods of boundary tracking/capturing methods were presented 
 along with their similarities and differences. In the case of solidification shrinkage,
-the metal-air interface can be tracked with any method from the previously mentioned.
+the metal-air boundary can be tracked with any method from the previously mentioned.
 However, several reasons motivate us to settle on the level set method. 
 First, the easiest solution is testing a method which already exists in \cimlib library.
-The level set method was implemented by HERE as a framework for monolithic resolution. Since this work,
+The level set method was implemented as a framework for monolithic resolution. Since this work,
 the method has been extensively used and improved in several projects mainly for multiphase flows, which is the 
-main competence of the Computing and FLuids (C.F.L) group at CEMEF. Another motivation is the compatibility
-between \cimlib and \thercast, where the latter is the final destination of the code developed during for the Ph.D. thesis.
+main competence of the Computing and FLuids (C.FL.) group at CEMEF. Another motivation is the compatibility
+between \cimlib and \thercast, where the latter is the final destination of the code developed during this Ph.D. thesis.
 In its recent versions, \thercast handles laminar and turbulent ingot filling where the level set method is used 
 to capture the free surface of the molten metal. Aside from the practical motivations, some technical aspects of the level
-set method make it very attractive to apply it macroscopic surface tracking (in contrast to microscopic interface tracking, 
+set method make it very attractive to apply it to macroscopic surface tracking (in contrast to microscopic interface tracking, 
 for instance the solid-liquid interface), such as topological properties that are readily available (e.g. curvature)
 and accurate position compared to volume-based methods like VOF.
 %
 %============================================
 \section{Multidomain formalism}
 %============================================
-In the previous chapters, we considered in our simulations the metal as a 
+In the previous chapters, we considered in our simulations the metallic alloy as a 
 saturated mixture of solid and liquid during solidification.
-It means that no gas phase may appear during the process, and this  this chapter.
-The reason is we chose to describe our model in Eulerian description, 
+It means that no gas phase may appear during the process.
+The reason is that we chose to describe our model in Eulerian description, 
 for which we have considered a fixed grid to discretise the averaged conservation 
 equations governing the phase change between the liquid and solid phases.
-Furthermore, with the introduction of shrinkage, an increase in global density means 
-that a gas phase should enter the domain to replace the shrunk volume.
+Furthermore, with the introduction of shrinkage, an increase in global density of the metallic alloy means that a gas phase should enter the domain to replace the shrunk volume.
+
 At this point, several interfaces may be distinguished: liquid-solid ($l$-$s$), liquid-air ($l$-$a$) and solid-air ($s$-$a$), where 
 we defined 2 phases ($l$ and $s$) belonging to the "Metal" domain denoted $M$, while the "Air" domain, denoted $A$, 
-is made up of a unique phase, ($a$), with the same name. As a standard for this formalism, we consider that upper case letters
+is made up of a unique gas phase, ($a$), with the same name. As a standard for this formalism, we consider that upper case letters
 are used for domains, while lower case letters are used for phases.
 
-The main idea behind the multidomain formalism, is to go from the classic 
-conservations equations introduced by  volume averaging in chapter 2,
+The main idea behind the multidomain formalism is to go from the classic 
+conservations equations introduced by volume averaging in chapter 2
 in the context of a solidifying two-phase system to generalise it by taking
 into account a third gas phase, such as:
 %-------------
@@ -149,9 +149,9 @@ V^l + V^s + V^a = \rev \\
 \gl + \gs + \ga = 1
 \end{align} 
 %-------------
-while keeping a physical integrity with the former monodomain model. 
-Then, one is free to choose a suitable numerical method to track the 
-interfaces between the several phases. In our applications, we are particularly 
+where $\gphi$ is the volume fraction of each phase $\phi=[l,s,a]$.
+Then, one is free to choose a suitable numerical method to define and track the 
+physical interfaces between the several phases. In our applications, we are particularly 
 interested in keeping an indirect representation of the $l$-$s$ interface (dotted line in \cref{fig:rev_triphase})
 using the volume averaging theory, while employing a different
 method to track the $l$-$a$ and $s$-$a$ interfaces (dashed lines in \cref{fig:rev_triphase}) with the level set method. 
@@ -185,8 +185,8 @@ Each phase in the system has its own velocity, $\vl$, $\vs$ and $\va$, while the
 interfaces $\liqsol$, $\liqair$ and $\solair$ have different and independent velocities, 
 represented by $\vliqsol$, $\vliqair$ and $\vsolair$. Note that the solid-liquid interface
 velocity was denoted $\vstar$ in the previous chapters as no more than two phases were considered.
-The first major assumption is that the solid phase, once formed from the liquid, is fixed and rigid.
-It means that no subsequent deformation may occur and therefore $\vsolair$ reduces to vector zero.
+The first major assumption is that the solid phase, once formed from the liquid, is fixed and rigid, hence $\vs=\vec{0}$.
+It means that no subsequent deformation or contraction/dilatation of the solid phase ($\rhos=\text{constant}$) may occur and therefore $\vsolair$ reduces to vector zero.
 Moreover, we use the already introduced volume averaging principles to write locally for any quantity $\psi$:
 %------------
 \begin{subequations}
@@ -237,14 +237,14 @@ If we consider the liquid phase, the variations of any quantity, named $\psi$, a
 \begin{align}
 \label{eq:}
 & \avg{{\tempup{\psi^l}}} = \tempup{\avg{\psi^l}}
-							- \frac{1}{\rev} \integral{l-a}{\psi^l \vliqair \cdot \nliqair}{\Gamma}
-							- \frac{1}{\rev} \integral{l-s}{\psi^l \vliqsol \cdot \nliqsol}{\Gamma} \\
+							- \frac{1}{\rev} \integral{l-a}{\psi^l \vliqair \cdot \nliqair}{A}
+							- \frac{1}{\rev} \integral{l-s}{\psi^l \vliqsol \cdot \nliqsol}{A} \\
 & \avg{\nabvec \psi^l} =  \nabvec{\avg{\psi^l}} 
-							+ \frac{1}{\rev} \integral{l-a}{\psi^l \nliqair}{\Gamma} 
-							+\frac{1}{\rev} \integral{l-s}{\psi^l \nliqsol }{\Gamma} \\
+							+ \frac{1}{\rev} \integral{l-a}{\psi^l \nliqair}{A} 
+							+\frac{1}{\rev} \integral{l-s}{\psi^l \nliqsol }{A} \\
 & \avg{\nabvec \cdot \vec{\psi}^l} =  \nabvec \cdot {\avg{\vec{\psi}^l}} 
-							+ \frac{1}{\rev} \integral{l-a}{\vec{\psi^l} \cdot \nliqair }{\Gamma} 
-							+\frac{1}{\rev} \integral{l-s}{\vec{\psi^l} \cdot  \nliqsol }{\Gamma}							
+							+ \frac{1}{\rev} \integral{l-a}{\vec{\psi^l} \cdot \nliqair }{A} 
+							+\frac{1}{\rev} \integral{l-s}{\vec{\psi^l} \cdot  \nliqsol }{A}							
 \end{align}
 %------------
 \Cref{eq:transport_presence} can be recast with the level set method by using the smoothed Heaviside function in the metal.
