@@ -192,7 +192,7 @@ Moreover, we use the already introduced volume averaging principles to write loc
 \begin{subequations}
 \begin{align}
 \label{eq:}
-\avg{\psi} &= \avg{\psi^l} + \avg{\psi^s} + \avg{\psi^a} \\
+\avg{\psi} &= \avg{\psi^l} \avg{\psi^s} + \avg{\psi^a} \\
 			&= \gl \psi^l + \gs \psi^s  + \ga \psi^a
 \end{align}
 \end{subequations}
@@ -237,14 +237,14 @@ If we consider the liquid phase, the variations of any quantity, named $\psi$, a
 \begin{align}
 \label{eq:}
 & \avg{{\tempup{\psi^l}}} = \tempup{\avg{\psi^l}}
-							- \frac{1}{\rev} \integral{l-a}{\psi^l \vliqair \cdot \nliqair}{A}
-							- \frac{1}{\rev} \integral{l-s}{\psi^l \vliqsol \cdot \nliqsol}{A} \\
+							- \frac{1}{\rev} \integral{\Gamma_{l-a}}{\psi^l \vliqair \cdot \nliqair}{A}
+							- \frac{1}{\rev} \integral{\Gamma_{l-s}}{\psi^l \vliqsol \cdot \nliqsol}{A} \\
 & \avg{\nabvec \psi^l} =  \nabvec{\avg{\psi^l}} 
-							+ \frac{1}{\rev} \integral{l-a}{\psi^l \nliqair}{A} 
-							+\frac{1}{\rev} \integral{l-s}{\psi^l \nliqsol }{A} \\
+							+ \frac{1}{\rev} \integral{\Gamma_{l-a}}{\psi^l \nliqair}{A} 
+							+\frac{1}{\rev} \integral{\Gamma_{l-s}}{\psi^l \nliqsol }{A} \\
 & \avg{\nabvec \cdot \vec{\psi}^l} =  \nabvec \cdot {\avg{\vec{\psi}^l}} 
-							+ \frac{1}{\rev} \integral{l-a}{\vec{\psi^l} \cdot \nliqair }{A} 
-							+\frac{1}{\rev} \integral{l-s}{\vec{\psi^l} \cdot  \nliqsol }{A}							
+							+ \frac{1}{\rev} \integral{\Gamma_{l-a}}{\vec{\psi^l} \cdot \nliqair }{A} 
+							+\frac{1}{\rev} \integral{\Gamma_{l-s}}{\vec{\psi^l} \cdot  \nliqsol }{A}							
 \end{align}
 %------------
 \Cref{eq:transport_presence} can be recast with the level set method by using the smoothed Heaviside function in the metal.
@@ -257,26 +257,30 @@ the solid-air interface does not move, leading to the following equation:
 & \frac{d \heavisideM}{dt} = \tempup{\heavisideM} + \vliqair \cdot \nabvec \heavisideM = 0
 \end{align}
 %------------
+
 %======================
 \section{FE partitioned model}
 %--------------------------------------------------
-%
-In this section, we start from a the monodomain finite element model 
+ 
+In this section, we start from the monodomain finite element model 
 presented in \cref{sec:monodomain} that was relevant to the metal only, 
 referred to by the superscript $M$, then present the essential assumptions and formulations 
 that allow predicting solidification shrinkage in a Eulerian context that introduces
 another domain, the air, referred to by the superscript $A$.
 \subsection{In the metal}
 %
+
 \subsubsection{Mass and momentum conservation}
-By assuming a fixed solid phase ($\vs=\vec{0}$), the average velocity in the metal reduces only to liquid's average velocity.
-Therefore, we can write:
+% ------------------------------------------------
+
+By assuming a fixed solid phase ($\vs=\vec{0}$), i.e. a constant density for the solid phase without any transport of this phase, the average velocity in the metal reduces only to liquid's average velocity. Therefore, we can write:
 %------------
 \begin{align}
 \label{eq:vitmetal}
-& \vM = \vit = \gl \vl 
+& \vM = \vit + \avg{\vs} = \gl \vl + \cancel{\gs \vs}
 \end{align}
 %------------
+
 With \cref{eq:vitmetal}, the mass balance in the metal writes:
 %------------
 \begin{subequations}
@@ -291,11 +295,14 @@ With \cref{eq:vitmetal}, the mass balance in the metal writes:
 \end{align}
 \end{subequations}
 %------------
-\Cref{eq:mass_balance_metal} explains the flow due to shrinkage. A negative divergence term means that a liquid feeding 
-is necessary to compensate for the density difference, hence acting as a flow driving force in the melt.
-Additional terms should appear in the other conservation equations, balancing the volume 
-change in the heat and species transport.
-%
+
+\Cref{eq:mass_balance_metal} explains the flow due to shrinkage. 
+A negative divergence term means that a liquid feeding 
+is necessary to compensate for a density increase upon solidification, where $\rhos > \rhol$ in the transient term, 
+hence acting as a flow driving force in the melt.
+The second RHS term accounts for the volume change 
+due to heat and species variations in the liquid.
+
 %-----------------------------------
 %\subsection{Momentum Conservation}
 %-----------------------------
@@ -307,7 +314,7 @@ the average density ${\avg{\rho}}^M$
 varies, as it depends on the solidification path as well as on $\rhos$ and $\rhol$ which are not equal nor constant.
 Therefore, the incompressibility condition may not be applicable. In such case, 
 the earlier given system \cref{eq:Navier-Stokes2} is reformulated without 
-any reference value for density:
+any reference value for density and assuming a fixed solid phase:
 %------
 \begin{equation}
 \label{eq:momentum_balance_metal}
@@ -333,7 +340,7 @@ caused by the shrinking metal volume. Before writing the new equation, we make t
 \itemsep0em
 %\item The thermal conductivity is constant for both phases: $\avg{\kappa} = \ks = \kl= \kappa $ 
 %\item consideration of a fixed solid ($ \vec{v}^s=\vec{0} $).
-\item consequence of the static solid phase: $\avg{\rho h \vec{v}} = \gl \rhol \hl \vl +  \cancel{\gs \rhos \hs \vs} = \gl \rhol \hl \vl$ 
+\item consequence of the static solid phase: $\avg{\rho h \vec{v}}^M = \gl \rhol \hl \vl +  \cancel{\gs \rhos \hs \vs}$,
 %\item The system's enthalpy may thermodynamically evolve with pressure, knowing that $h=e+\frac{p}{\rho}$, where $e$ is the internal energy and $p$ is the pressure. It infers that the heat transport equation may contain a contribution attributed to volume compression/expansion:
 %\begin{align}
 %			 \frac{\partial p}{\partial t}+\nabvec \cdot \brac{p \vec{v}}
@@ -341,7 +348,7 @@ caused by the shrinking metal volume. Before writing the new equation, we make t
 %\end{align}
 %In the literature, this contribution has been always neglected, even when accounting for solidification
 %shrinkage, owing to the small variations of pressure.
-\item the heat generated by mechanical deformation, $\mathbb{S}:\dot{\varepsilon}$, is neglected
+\item the heat generated by mechanical deformation, $\mathbb{S}:\dot{\varepsilon}$, is neglected.
 %\begin{enumerate}
 %\item $\avg{\rho h}= \gl \rhol \hl + \gs \rhos \hs $
 %\end{enumerate}
@@ -439,36 +446,42 @@ The energy conservation equation writes:
 %We see that the second LHS term in equation \eqref{eq:energy_balance} acts as 
 %a heat source at the interface between the the phases, in this particular solidification
 %scenario. 
-The second term in the RHS of \cref{eq:energy_balance_metal} is a heat power (of unit $Wm^{-3}$) that adds 
-to the system in the mushy zone. This term is proportional to the solidification rate and expresses 
+
+The second term in the RHS of \cref{eq:energy_balance_metal} is a heat power (of unit $Wm^{-3}$) 
+that adds to the system in the liquid phase (if $\rhol$ is not constant) as well as in the mushy zone (if $\rhol$ and $\rhos$ are not equal). 
+This term is proportional to the solidification rate and expresses 
 the heat generated in regions where the average density is changing and/or a gradient of liquid density is being advected.
+
 % ======================
 \subsubsection{Species conservation}
 % ======================
 The last conservation principle is applied to the chemical species or solutes. This principle allows predicting
 macrosegregation when applied to a solidification system, along with the mass, momentum and energy balances.
 However, the conservation equation should be reformulated in the case of a melt flow driven by shrinkage.
+
 % ======================
-Assumptions
+% Assumptions
 % ======================
+Considered assumptions are: 
 \begin{itemize}
 \itemsep0em
 %\item the alloy is binary, i.e. it is composed from one solute, and hence the notation of the average composition
 %		without a solute index: $\wavg$ for the mass composition and $\avg{\rho w}$ for the volume composition
 \item %the solid fraction is determined assuming complete mixing in both phases, hence the lever rule is applied. 
-	  the solidification path is tabulated using thermodynamic data at equilibrium
-\item the macroscopic solute diffusion coefficient $D^s$ in the solid phase is neglected in the mass diffusive flux term.
-\item consequence of the static solid phase: $\avg{\rho w \vec{v}}^M = \gl \rhol \wl \vl +  \cancel{\gs \rhos \ws \vs} = \gl \rhol \wl \vl$ 
+	  the solidification path is tabulated using thermodynamic data at equilibrium,
+\item the macroscopic solute diffusion coefficient $D^s$ in the solid phase is neglected in the mass diffusive flux term,
+\item consequence of the static solid phase: $\avg{\rho w \vec{v}}^M = \gl \rhol \wl \vl +  \cancel{\gs \rhos \ws \vs}$.
 \end{itemize}
+
 % ======================
 %Formulation
 % ======================
-The species conservation is pretty similar the energy conservation formulated in the previous section. 
-The main difference is the breakup of the volumetric variable $\avg{\rho w}^M$ into a product of density  $\avg{\rho}^M$ and the mass concentration $\avg{w}^M$.
+
+The species conservation presents similarities with the energy conservation formulated in the previous section. 
+The main difference is the breakup of the volumetric variable $\avg{\rho w}^M$ into a product of 
+density  $\avg{\rho}^M$ and the mass composition $\avg{w}^M$ in the transient term.
 For a binary alloy, we write:
-%
 %--------------------------
-%
 \begin{subequations}
 \begin{align}
  & \tempup{\avg{\rho w}^M} + \nabvec \cdot \avg{\rho w \vec{v}}^M - \nabvec  \cdot \brac{\avg{\Dl} \nabvec \brac{\rhol \wl} } = 0 \\
@@ -487,6 +500,7 @@ For a binary alloy, we write:
 \end{align}
 \end{subequations}
 %--------------------------
+
 The mass balance gives the following relation when the liquid density is constant:
 %--------------------------
 \begin{align}
@@ -507,23 +521,32 @@ The splitting is done as follows:
 \wl = \brac{\wl}^t + \avg{w}^M - \brac{\avg{w}^M}^t
 \end{align}
 %
-where the superscript $t$ refers to the previous time step. The chemical species conservation writes:
+where the superscript $t$ refers to the previous time step, and the absence 
+of this superscript corresponds to the unknown variable at the next time step.
+The chemical species conservation writes, still assuming a constant liquid density:
 %
-\begin{subequations}
+% \begin{subequations}
 \begin{align}
   \begin{split}
 	& \avg{\rho}^M \tempup{\avg{w}^M}  + \cancel{\avg{w}^M \tempup{\avg{\rho}^M}} = \\
-	& \cancel{\avg{w}^M \tempup{\avg{\rho}^M}}  - \rhol \vit \cdot \nabvec \avg{w}^M + \nabvec \cdot \brac{\gl \rhol \Dl \nabvec \avg{w}^M } \\
-	& + \tempup{\avg{\rho}^M} \crochet{\brac{\wl}^t -  \brac{\avg{w}^M}^t} - \rhol \vit \cdot \nabvec \brac{\brac{\avg{w}^M}^t -\brac{\wl}^t} \\
-	%& + \nabvec \cdot \crochet{\gl \rhol \Dl  \nabvec \brac{ \brac{\wl}^t - \avg{w}^t } }
-  \end{split} \\ 
-    \begin{split}
-	& \avg{\rho}^M \tempup{\avg{w}^M}  + \rhol \vit \cdot \nabvec \avg{w}^M - \nabvec \cdot \brac{\gl \rhol \Dl \nabvec \avg{w}^M}=\\
-	& - \tempup{\avg{\rho}^M} \crochet{\brac{\avg{w}^M}^t - \brac{\wl}^t} + \rhol \vit \cdot \nabvec \brac{\brac{\avg{w}^M}^t -\brac{\wl}^t} \\
+	& \cancel{\avg{w}^M \tempup{\avg{\rho}^M}}  
+	  - \rhol \vit \cdot \nabvec \avg{w}^M 
+	  + \nabvec \cdot \brac{\gl \rhol \Dl \nabvec \avg{w}^M } \\
+	& + \tempup{\avg{\rho}^M} \crochet{\brac{\wl}^t 
+	  -  \brac{\avg{w}^M}^t} 
+	  - \rhol \vit \cdot \nabvec \brac{\brac{\wl}^t -\brac{\avg{w}^M}^t} \\
 	& - \nabvec \cdot \crochet{\gl \rhol \Dl  \nabvec \brac{\brac{\avg{w}^M}^t -\brac{\wl}^t} }
   \end{split}
 \end{align}
-\end{subequations}
+
+% \begin{align}
+%     \begin{split}
+% 	& \avg{\rho}^M \tempup{\avg{w}^M}  + \rhol \vit \cdot \nabvec \avg{w}^M - \nabvec \cdot \brac{\gl \rhol \Dl \nabvec \avg{w}^M}=\\
+% 	& - \tempup{\avg{\rho}^M} \crochet{\brac{\avg{w}^M}^t - \brac{\wl}^t} + \rhol \vit \cdot \nabvec \brac{\brac{\avg{w}^M}^t -\brac{\wl}^t} \\
+% 	& - \nabvec \cdot \crochet{\gl \rhol \Dl  \nabvec \brac{\brac{\avg{w}^M}^t -\brac{\wl}^t} }
+%   \end{split}
+% \end{align}
+% \end{subequations}
 %
 %\begin{subequations}
 %\begin{align}
@@ -541,6 +564,7 @@ where the superscript $t$ refers to the previous time step. The chemical species
 %		= \nabvec  \cdot \brac{\gl \rhol D^l \nabvec \wl }        
 %\end{align}
 %\end{subequations}
+
 %------------------------------
 \begin{align}
 \label{eq:solute_balance_metal}
@@ -552,14 +576,16 @@ where the superscript $t$ refers to the previous time step. The chemical species
   \end{split}
   \end{align}
 %--------------
+
 It is noted that \cref{eq:solute_balance_metal} is valid only if both densities $\rhol$ and $\rhos$
 are constant but have different values. Since density changes are incorporated in this equation, 
-inverse segregation following solidification shrinkage is predicted.
+inverse segregation following solidification shrinkage could be predicted.
 For the case where macrosegregation is solely due to fluid flow generated by natural or forced convection, 
 i.e. no shrinkage occurs whether due to thermal-solutal contraction or phase change, 
-the overall volume remains constant, hence density is constant. 
-In this situation, $\rhos=\rhol=\avg{\rho}$ and the term $\partial \avg{\rho}/\partial t$ therefore vanishes.
-After dividing both sides by $\avg{\rho}=\rhol$, \cref{eq:solute_balance_metal} reduces to:
+the overall volume remains constant, hence density is constant.
+
+In this situation, $\rhos=\rhol= \avg{\rho}= \avg{\rho}$ and the term $\partial \avg{\rho}/\partial t$ therefore vanishes.
+After dividing both sides by $\avg{\rho}^M=\rhol$, \cref{eq:solute_balance_metal} reduces to:
 %------------------------------
 \begin{align}
 \label{eq:solute_balance_metal_incompressible}
@@ -570,19 +596,20 @@ After dividing both sides by $\avg{\rho}=\rhol$, \cref{eq:solute_balance_metal} 
   \end{split}
 \end{align}
 %--------------
-%
-%====================================================================
+
 \subsection{In the air}
+
 The presence of an air domain in our approach is important to follow the free surface of the solidifying metal.
 For this particular reason, some assumptions are introduced and explained in this section in order to limit unnecessary treatment within
 the air, since it does not undergo phase change. It should be reminded that we consider air as a single-phase system, hence superscripts $A$ and $a$
 are interchangeably used. 
-%
+ 
 \subsubsection{Mass and momentum conservation}
 %-----------------
-To simplify fluid flow resolution in the air, we consider it as incompressible. This assumption is acceptable in the context
-of casting processes where air velocity has an insignificant order of magnitude. Therefore, the free metal surface is not 
-disturbed by air flow in its vicinity. With the incompressibility of air, we are saying that any deformation of the free surface 
+
+To simplify fluid flow resolution in the air, we consider it as incompressible.
+Therefore, the free metal surface is not 
+disturbed by air flow in its vicinity, but only by shrinkage flow in the liquid metal. With the incompressibility of air, we are saying that any deformation of the free surface 
 is solely due to an air mass increase, coming from the system boundaries. The mass balance hence writes:
 %------------
 \begin{align}
@@ -590,6 +617,7 @@ is solely due to an air mass increase, coming from the system boundaries. The ma
 & \nabvec \cdot \vA = \nabvec \cdot \va = 0
 \end{align}
 %------------
+
 The air flow is governed by time-dependent incompressible Navier-Stokes equations, as previously done for the metal:
 %------
 \begin{equation}
@@ -604,18 +632,22 @@ The air flow is governed by time-dependent incompressible Navier-Stokes equation
     \right.
 \end{equation}
 %------------
+
 The air density $\rhoa$ is considered constant along the casting process, 
 therefore thermal gradients in the air that arise due to the low
 thermal conductivity, do not generate any flow, i.e. no Boussinesq approximation 
-tis made on the term $\rhoa \gravity$ in \cref{eq:momentum_balance_air}.
+is made on the term $\rhoa \gravity$ in \cref{eq:momentum_balance_air}.
+
 %-----------
+
 \subsubsection{Energy conservation}
-%-----------------
+
 It was mentioned in the introduction of the current section that air is a single-phase system
-that cannot undergo any phase change. Therefore, heat transfer in this domain simplifies to pure 
-thermal conduction with a low thermal conductivity coefficient, $\ka$.
+that cannot undergo any phase change. Therefore, heat transfer in this domain simplifies to thermal convection
+and thermal conduction with a low thermal conductivity coefficient, $\ka$, for a single gas phase.
 The energy balance governs the air enthalpy $\avg{\rho h}^A$ (which is equal to $\rhoa \ha$ 
 in the current context) as follows:
+%-----------------
 \begin{subequations}
 \begin{align}
 	& \tempup{\avg{\rho h}^A} + \nabvec \cdot \avg{\rho h \vec{v}}^A 
@@ -629,9 +661,10 @@ in the current context) as follows:
 \end{align}
 \end{subequations}
 %------------
+
 \subsubsection{Species conservation} \label{sec:solute_air}
 %-----------------
-The composition of alloying elements is crucial quantity to predict in this work. Nevertheless, such prediction is only relevant
+The composition of alloying elements is a crucial quantity to predict in this work. Nevertheless, such prediction is only relevant
 in the metallic alloy, even if the air is also made up of other chemical species (nitrogen, oxygen ...). For this obvious reason,
 the species conservation equation should not be solved in the air, but that of course is contradictory to the principle of a monolithic approach.
 Consequently, we should compute the conservation of chemical species in both the metal and the air, considering the latter as
@@ -653,46 +686,51 @@ result in a numerically stiff partial differential equation.
 	- \nabvec \cdot \brac{\Da \nabvec \brac{\rhoa \wa} } = 0
 \end{align}
 %--------------
-%
+
 In contrast to \cref{eq:solute_balance_metal} for the metal, solute balance in the air, given by \cref{eq:solute_balance_air}, provides
 a linear equation as we consider a special case where the domain is monophase, therefore:  $\avg{w}^A = \avg{w}^a$ at all times.
 Otherwise, we would have applied the variable decomposition done earlier in \cref{eq:voller_prakash} to linearise the equation.
-%
+
 \section{FE monolithic model}
 %---------------------------------------
+
 \subsection{Monolithic equations}
-%
-The monolithic model combines all conservation equations derived for metal and air in a unique set of equations, to be solved on a fixed mesh. 
+ 
+The monolithic model combines all conservation equations derived for metal and air in a unique set of equations, to be solved on a Eulerian mesh.
 This can be accomplished by using the Heaviside function (defined in \cref{sec:heaviside}) relative to each domain, creating a mixture of properties that
 vary across the interface according to a specified mixing law. However, one of the main technical difficulties of the monolithic resolution is that the
 obtained equation should be consistent with each domain's original equation regarding its shape and terms, making its resolution easier. 
+
 While for energy and solute balances the procedure is straightforward, the presence of the 
-Darcy dissipative term in the metal's Navier-Stokes system makes it more difficult to formulate a single monolithic equation, which is discussed
+Darcy dissipative term in the metal's Navier-Stokes system makes it more difficult to formulate a single monolithic equation. This is discussed
 after writing the equations of the monolithic model.
-%
+
 \subsubsection{Mass and momentum conservation}
-%
-For the system's velocity, $\vitf$, is given by an arithmetic mixing between each domain's relative average fluid velocity, 
+
+The system's velocity, $\vitf$, is given by an arithmetic mixing between each domain's relative average fluid velocity, 
 i.e. we need the relative fluid velocity with respect to other fixed/rigid phases in each domain.
 In the present context, the metal domain consists of a single fluid phase (liquid) and solid phases that form in fixed and rigid structures 
-(assuming that solidification results in an undeformable columnar dendritic and eutectic structures, without any free equiaxed dendritic structure),
-while the the latter domain entirely consists of a fluid phase (air).
+(assuming that solidification results in undeformable columnar structures, without any free-to-move equiaxed structure).
+The air domain entirely consists of a fluid phase.
+
 With this notation, we express the monolithic mass balance as:
 %---
 \begin{align}
 \label{eq:monolithic_mass_1}
 & \nabvec \cdot \vitf = \nabvec \cdot \brac{\heavisideM \vM + \heavisideA \vA} \\
 \label{eq:monolithic_mass_2}
-& \nabvec \cdot \vitf = \heavisideM \nabvec \cdot \vM + \heavisideA \nabvec \cdot \vA + \nabvec \heavisideM \cdot \brac{\vM - \vA}\\
+& \nabvec \cdot \vitf = \heavisideM \nabvec \cdot \vM + \heavisideA \cancel{\nabvec \cdot \vA} + \cancel{\nabvec \heavisideM \cdot \brac{\vM - \vA}}\\
 \label{eq:monolithic_mass_3}
 & \nabvec \cdot \vitf = \heavisideM \nabvec \cdot \vit
 \end{align}
 %---
 where we used the relation \cref{eq:vitmetal} in the case of a fixed rigid solid to obtain \cref{eq:monolithic_mass_3}.
-As for the second term in \cref{eq:monolithic_mass_2}, we have made the assumption that air is incompressible. Therefore
-any volume variation of the metal domain, will trigger an air inflow or suction effect through the surface boundaries of
+As for the second term in \cref{eq:monolithic_mass_2}, we have made the assumption that air is incompressible, hence $\nabvec \cdot \vA= 0$. 
+Therefore any volume variation of the metal domain, will trigger an air inflow or suction effect through the surface boundaries of
 the air domain. The third and last term in the same equation 
-expresses a velocity jump at the interface. In our case, we neglect this contribution by assuming that both velocities tend to be equal
+expresses a velocity jump at the interface. 
+
+In our case, we neglect this contribution by assuming that both velocities tend to be equal
 when the interface thickness tends to zero. Finally, the monolithic mass balance writes:
 %---
 \begin{align}
@@ -714,6 +752,7 @@ The momentum balance looks like the one derived for the metal, but using level s
     \right.
 \end{equation}
 %------------
+
 Note that the Darcy term has a special treatment explained in the next section.
 The mechanical properties are mixed as follows:
 %------------
@@ -743,8 +782,6 @@ as temperature or phase composition ($\rhol$ depends on both), creating buoyancy
 In our approach, since we are only interested in liquid's flow, we keep the air phase density $\rhoa$ constant,
 so as to prevent a mixture of forces around the level set, which helps stabilise the fluid flow resolution.
 
-%---
-
 \subsubsection{Energy conservation}
 %
 Deriving the monolithic energy conservation equation is straightforward. The monolithic system writes:
@@ -762,7 +799,9 @@ The solution of \cref{eq:monolithic_energy} is $\mix{\avg{\rho h}}$, a mixed fie
 enthalpies. The other parameters are $\mix{\brac{\rho h}^F}$ and $\mix{\avg{\kappa}}$ which denote respectively
 the fluids' mixture volume enthalpy and the mixture of average thermal conductivities.
 The last term, $\mix{\Phi}$, is an average heat source accounting for energy change caused by the 
-alloy's shrinking volume. As no volume change was considered for the air, $\mix{\Phi}$ is present only 
+alloy's shrinking volume. 
+
+As no volume change was considered for the air, $\mix{\Phi}$ is present only 
 in the metal's energy balance. These quantities are defined in the following equations:
 %------------
 \begin{align}
@@ -780,9 +819,10 @@ in the metal's energy balance. These quantities are defined in the following equ
 \text{Average heat change}&: \mix{\Phi} = \heavisideM \rhol \hl \nabvec \cdot \vit
 \end{align}
 %-----------
-%
+ 
 \subsubsection{Species conservation}
-%
+%-------------------------------------
+
 As previously explained in \cref{sec:solute_air}, we consider that species conservation is solved over both domains, as follows:
 %-------
 \begin{align}
@@ -809,6 +849,7 @@ equation, dividing all terms by the liquid fraction, $\gl$ (REF VMS SOLVER CHAPT
 in one domain, obliges us to keep it in both domains but "deactivate" it where it is useless, i.e. in the air.
 This is done by computing a fictitious permeability in the air as function of the air fraction using the Carman-Kozeny model,
 as used previously for the metal in \cref{eq:permeability}. We may speak of level set mixing for the Darcy term.
+
 It has a double advantage:
 \begin{enumerate}
 \item the consistency in shape is kept between both domains equations, thus easily deriving the monolithic system;
