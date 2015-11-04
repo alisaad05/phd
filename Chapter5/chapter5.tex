@@ -3008,7 +3008,7 @@ reaches the eutectoid isotherm at \SI{727}{\udegC}.
 	%legend pos=north east,
 	scaled ticks=true,
 	ylabel style={align=center},
-	ylabel=  $\frac{\avg{w}-w_0}{w_0}$ (\%), %Relative mesosegregation,
+	ylabel=  Relative content $\frac{\avg{w}-w_0}{w_0}$ (\%), %Relative mesosegregation,
 	xlabel=Distance from chill (mm),
 	%xticklabel style={/pgf/number format/fixed},
 	yticklabel style={/pgf/number format/fixed},
@@ -3017,7 +3017,7 @@ reaches the eutectoid isotherm at \SI{727}{\udegC}.
 	ytick={-5,-2.5,...,5},
 	yticklabels={-5,-2.5,...,5},
 	%x tick label style={rotate=45,anchor=east},
-	width=0.8\textwidth,
+	width=0.85\textwidth,
 	height=8cm,	
 	ymin=-5, ymax=5,
 	xmin=0, xmax=6,
@@ -3025,7 +3025,7 @@ reaches the eutectoid isotherm at \SI{727}{\udegC}.
 	cycle list name=exotic,
 	axis y line*=left,
 ]
-  \addplot table [x expr=1000*\thisrow{arc_length}, y expr=100*(\thisrow{Concentration}-0.105)/0.105]   {Chapter5/Data/3d_segregation/BinTransformationPath.csv};
+  \addplot table [x expr=1000*\thisrow{arc_length}, y expr=100*(\thisrow{Concentration}-0.105)/0.105, color=red, mark=*]   {Chapter5/Data/3d_segregation/BinTransformationPath.csv};
 	\draw[thick, dashed, black, opacity=0.5] (axis cs:\pgfkeysvalueof{/pgfplots/xmin},0.0) -- (axis cs:\pgfkeysvalueof{/pgfplots/xmax},0.0);
 	\legend{$\avg{w}$}  	
   	\end{axis}
@@ -3041,24 +3041,28 @@ reaches the eutectoid isotherm at \SI{727}{\udegC}.
 	yticklabel style={/pgf/number format/fixed},
 	%ytick={0,0.2,...,1},
 	%yticklabels={0,0.2,...,1},
-	width=0.8\textwidth,
+	width=0.85\textwidth,
 	height=8cm,	
 	ymin=0, ymax=1.05,
 	xmin=0, xmax=6,
 	mark repeat	= {50},
-	%cycle list name=exotic,
+	cycle list name=mycycle,
 	axis y line*=right,
 	axis x line=none,
+	line width=1.0pt,
+    mark size=2.0pt,
 ]
 	\addplot table [x expr=\thisrow{arc_length}*1000, y=FractionBCC_c] {Chapter5/Data/3d_segregation/BinTransformationPath.csv};
 	\addplot table [x expr=\thisrow{arc_length}*1000, y=FractionFCC_c] {Chapter5/Data/3d_segregation/BinTransformationPath.csv};
 	\addplot table [x expr=\thisrow{arc_length}*1000, y=FractionCEM_c] {Chapter5/Data/3d_segregation/BinTransformationPath.csv};
 	%\draw[thick, dashed, black, opacity=0.5] (axis cs:\pgfkeysvalueof{/pgfplots/xmin},0.0) -- (axis cs:\pgfkeysvalueof{/pgfplots/xmax},0.0);
-	\legend{BCC,FCC,CEM}
+	\legend{FCC,BCC,CEM}
   	\end{axis}
 \end{tikzpicture}
 %-------
-\caption{Segregation profile in percent with respect to the nominal composition, along the vertical revolution axis of the solidified sample.}
+\caption{Relative segregation profile in percent with respect to the nominal composition, 
+along the vertical revolution axis of the solidified sample at a temperature lower than \SI{1100}{\udegC}.
+Phase fractions are superimposed on the same graph and their values are read on the right y-axis.}
 \label{fig:texus_segreg_profile}
 \end{figure}
 %--------------------------------------

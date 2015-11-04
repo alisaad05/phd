@@ -425,7 +425,7 @@ or
 \usepackage{eso-pic}	% Nécessaire pour mettre des images en arrière plan
 %\usepackage[top=1cm, bottom=1cm, left=1cm, right=1cm, headheight=15pt]{geometry}
 %\usepackage{graphicx}
-%\usepackage{array}		% Permet d'écrite 'THESE' de haut en bas
+%\usepackage{array}		% Permet d'écrire 'THESE' de haut en bas
 
 % Diagrams and Charts
 \usepackage{mathtools}
@@ -436,6 +436,18 @@ or
 \usepackage{tikz}
 \usetikzlibrary{mindmap,positioning,shapes,snakes,backgrounds,fit,calc,shadows,matrix,spy}
 \usetikzlibrary{pgfplots.groupplots}
+\pgfplotscreateplotcyclelist{mycycle}{%
+solid, every mark/.append style={solid, fill=gray}, mark=*\\%
+dotted, every mark/.append style={solid, fill=gray}, mark=square*\\%
+densely dotted, every mark/.append style={solid, fill=gray}, mark=triangle*\\%triangle
+dashed, every mark/.append style={solid, fill=gray},mark=diamond*\\%
+loosely dotted, every mark/.append style={solid, fill=gray}, mark=otimes*\\%
+loosely dashed, every mark/.append style={solid, fill=gray},mark=*\\%
+densely dashed, every mark/.append style={solid, fill=gray},mark=square*\\%
+dashdotted, every mark/.append style={solid, fill=gray},mark=otimes*\\%
+dasdotdotted, every mark/.append style={solid},mark=star\\%
+densely dashdotted,every mark/.append style={solid, fill=gray},mark=diamond*\\%
+}
 
 % Animations  (gif, png ...)
 \usepackage[controls, 
