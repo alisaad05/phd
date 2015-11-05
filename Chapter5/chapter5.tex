@@ -1159,7 +1159,7 @@ Convergence criterion (temperature) & $\varepsilon_T$ 	& \num{e-2} 	& \si{\udegK
 The major difference with respect to the former validation setup is the air domain that should also be included in the mesh.
 We consider a 2D domain having as dimensions \SI{0.14}{\metre}$\times$\SI{0.001}{m}, where initially the air column's height is only \SI{0.04}{\metre}
 and the remainder of the length is for the metal.  
-\cref{fig:1d_alsi7_geo} shows the geometry, mesh used for this section simulations, while \cref{fig:1d_alsi7_bc} shows the thermal and mechanical boundary conditions.
+\Cref{fig:1d_alsi7_geobc} shows the geometry, mesh used for this section simulations. In the same figure, the thermal and mechanical boundary conditions are shown.
 In the latter, velocity-slip conditions were imposed on the lateral boundaries while a no-slip was used at the bottom where heat is extracted,
 and a free-velocity condition is set at the top of the domain, to ensure a 1D air flow from the top air inlet. 
 
@@ -1169,30 +1169,19 @@ the resulting feeding flow should be able to transport the interface intersectin
 are zero, then the interface transport will face problems at these boundary nodes. This is indeed an important and relevant point 
 in the next 2D test case.
 
-%
-%-----------------
-\begin{figure}[htbp]
-\centering
-   %------------
-  \begin{subfigure}[t]{0.45\textwidth}
-    \centering
-	\includegraphics[width=\textwidth]{Misc/dummy.pdf}
-	\caption{}
-    \label{fig:1d_alsi7_geo}
-  \end{subfigure}
-   %------------
-   \begin{subfigure}[t]{0.45\textwidth}
-    \centering
-	\includegraphics[width=\textwidth]{Misc/dummy.pdf}
-	\caption{}
-    \label{fig:1d_alsi7_bc}
-  \end{subfigure}
-  %-------- 
-\caption{Computational configuration for the 1D inverse segregation case showing (a) the domain geometry with (b)
-the applied boundary conditions to it. } 
-\label{fig:1d_inverseseg_geo_bc}
-\end{figure}
-%-----------------
+%--------------
+\begin{figureth}
+% textwidth 
+{1.0}
+%path 
+{Chapter5/Graphics/1d/geobc.pdf}
+% caption
+{Computational configuration for the 1D inverse segregation case showing the domain geometry with the applied boundary conditions to it.}
+% label
+\label{fig:1d_alsi7_geobc}
+\end{figureth}
+%--------------
+
 %
 \subsection{Shrinkage without macrosegregation}
 %----------------------------------------------------
@@ -1523,7 +1512,8 @@ we see in the previous plots is more related to a physical problem: \textbf{at w
 In our simulations, we systemically considered the Navier-Stokes solution $\vitf$,
 to transport the metal-air interface. This solution is equal to $\vit= \gl \vl$ in the metal domain. 
 
-\comment{PARAGRAPH MOVED TO INTORIDUCTION, MAKE NECESSARY CORRECTIONS}
+\comment{PARAGRAPH MOVED TO INTRODUCTION, MAKE NECESSARY CORRECTIONS}
+
 % However in reality, 
 % between the metal and the air, two interfaces exist: the liquid-air ($\liqair$) and solid-air ($\solair$) interfaces, and these interfaces move at different velocities as solidification proceeds.
 % The liquid-air interface exists at early stages of solidification where only liquid is in contact with the air. In later stages,
@@ -1854,7 +1844,7 @@ in the segregation profile, which should normally say below the nominal value ne
 	ymin=6.45, ymax=7.55,
 	%xmax=0.0928,
 	mark repeat	= {142},
-	cycle list name=exotic,
+	cycle list name=mycycle, %exotic,
 ]
 	\coordinate (spypoint) at (0.002,7.25);
 	\coordinate (magnifyglass) at (0.06,7.3);
@@ -1885,7 +1875,7 @@ in the segregation profile, which should normally say below the nominal value ne
 	ymin=6.45, ymax=7.55,
 	%xmax=0.0928,
 	mark repeat	= {142},
-	cycle list name=exotic,
+	cycle list name=mycycle, %exotic,
 ]
 	\addplot table [x=arc_length, y=Concentration] {Chapter5/Data/1d_alsi7_composition/ModifyVitLiq.csv}; %\closedcycle ;
 	%\addplot[thick, samples=50, smooth,magenta, name path=ls] coordinates {(0.09268,\pgfkeysvalueof{/pgfplots/ymin})(0.09268,\pgfkeysvalueof{/pgfplots/ymax})};
@@ -1914,7 +1904,7 @@ in the segregation profile, which should normally say below the nominal value ne
 	ymin=6.45, ymax=7.55,
 	%xmax=0.0928,
 	mark repeat	= {142},
-	cycle list name=exotic,
+	cycle list name=mycycle, %exotic,
 ]
 	\addplot table [x=arc_length, y=Concentration] {Chapter5/Data/1d_alsi7_composition/NewSolute.csv}; %\closedcycle ;
 	%\addplot table [x=arc_length, y=Concentration] {Chapter5/Data/1d_alsi7_composition/ModifyVitLiq_ModifyDiffSoluteAir_NoSolute.csv}; %\closedcycle ;
@@ -2245,7 +2235,7 @@ metal is obtained by the successive transport operations performed in (c) a rest
 We are now at 3550 s, and the decreasing left heat exchanger temperature has just went below the local liquidus, 
 triggering solidification from the left side.
 The average composition field presents noticeable differences between the adaptive \emph{grid A} and the fixed \emph{grid B}.
-The weak mesosegregation observed in \cref{fig:1200s_compo} are now lost in \cref{fig:1700s_compo}, as the mesh got coarser on the metal's solidified right
+The weak macrosegregation observed in \cref{fig:1200s_compo} are now lost in \cref{fig:1700s_compo}, as the mesh got coarser on the metal's solidified right
 side. Fortunately, the macrosegregation distribution is stored in the fixed grid (\cref{fig:1700s_compobis}) and shows more details with the advancement of solidification. 
 The shrinkage due to phase density difference, is now clearly visible judging from interface shape, which still almost planar above the last liquid pool. 
 
@@ -2558,7 +2548,7 @@ of predicting a front speed as closer as possible to the experimental measuremen
 	%height=5cm,	
 	%ymin=-0.1, ymax=0.2,
 	%mark repeat	= {30},
-	cycle list name=exotic,
+	cycle list name=mycycle, %exotic,
 ]
 %\addplot table [x=time, y=position] {Chapter5/Data/3d_growthspeed/olddroplet_frontposition_vs_time.txt};
 \addplot table [x=time, y=position] {Chapter5/Data/3d_growthspeed/newdroplet_h6e4.txt};
@@ -2762,7 +2752,7 @@ reaching -11\%. We are particularly interested in case H3G0, which shows a good 
 	height=5cm,	
 	ymin=-10, ymax=2,
 	mark repeat	= {50},
-	cycle list name=exotic,
+	cycle list name=mycycle, %exotic,
 ]
 \addplot table [x=Temps, y expr=100*(\thisrow{mM}-0.00022585082)/0.00022585082] {Chapter5/Data/3d_parametric/H1G0.txt};
 \addplot table [x=Temps, y expr=100*(\thisrow{mM}-0.00022585082)/0.00022585082] {Chapter5/Data/3d_parametric/H2G0.txt};
@@ -2802,7 +2792,7 @@ reaching -11\%. We are particularly interested in case H3G0, which shows a good 
 	height=5cm,	
 	ymin=-10, ymax=2,
 	mark repeat	= {50},
-	cycle list name=exotic,
+	cycle list name=mycycle, %exotic,
 ]
 \addplot table [x=Temps, y expr=100*(\thisrow{mM}-0.000229326)/0.000229326] {Chapter5/Data/3d_parametric/H0G1.txt};
 \addplot table [x=Temps, y expr=100*(\thisrow{mM}-0.000229326)/0.000229326] {Chapter5/Data/3d_parametric/H0G2.txt};
@@ -2879,7 +2869,7 @@ a fine resolution mapping was performed from equilibrium calculations, using 20 
 This is equivalent for a composition step of \SI{0.0495}{\ucomposition}, with a temperature step of \SI{1}{\udegC} 
 varying in the interval [\SI{20}{\udegC};\SI{1600}{\udegC}].
 The importance of choosing small steps in composition and temperature is to predict 
-accurate solidification paths during mesosegregation (relative to the droplet scale), which is the main input of solidification shrinkage. 
+accurate solidification paths during macrosegregation (relative to the droplet scale), which is the main input of solidification shrinkage. 
 Therefore, less accurate mappings may result in false shrinkage profile prediction, as will be shown henceforth.
 
 Using the initial and boundary conditions defined earlier, 15 seconds of simulation give the final shrinkage profile given in \cref{fig:bin_vs_exp}.
@@ -2937,7 +2927,6 @@ for illustrative simplicity.}
 %--------------
 
 The fluid flow is behind the reduced-gravity segregation shown at different stages in \cref{fig:texus_mesosegregation}.
-We may call it mesosegregation, as the droplet is small and considered as a laboratory-scale sample.
 As earlier mentioned, a restricted region of positive segregation settles at the contact area with the substrate,
 from the first second after the contact.Later, between 2 s and 8 s, the solid front advances in the melt, creating 
 a noticeable negatively segregated area, about 4\% less than the nominal composition, just below the positive segregation zone.
@@ -3022,7 +3011,7 @@ reaches the eutectoid isotherm at \SI{727}{\udegC}.
 	ymin=-5, ymax=5,
 	xmin=0, xmax=6,
 	mark repeat	= {50},
-	cycle list name=exotic,
+	%cycle list name=mycycle, %exotic,
 	axis y line*=left,
 ]
   \addplot table [x expr=1000*\thisrow{arc_length}, y expr=100*(\thisrow{Concentration}-0.105)/0.105, color=red, mark=*]   {Chapter5/Data/3d_segregation/BinTransformationPath.csv};
@@ -3049,8 +3038,6 @@ reaches the eutectoid isotherm at \SI{727}{\udegC}.
 	cycle list name=mycycle,
 	axis y line*=right,
 	axis x line=none,
-	line width=1.0pt,
-    mark size=2.0pt,
 ]
 	\addplot table [x expr=\thisrow{arc_length}*1000, y=FractionBCC_c] {Chapter5/Data/3d_segregation/BinTransformationPath.csv};
 	\addplot table [x expr=\thisrow{arc_length}*1000, y=FractionFCC_c] {Chapter5/Data/3d_segregation/BinTransformationPath.csv};
@@ -3092,15 +3079,15 @@ Each column depicts a definite time with temperature and phase distribution.
 \subsection{Texus ternary and quaternary alloys}
 % ------------------------------------------------------
 
-In this section, the aim is to predict mesosegregation in reduced-gravity solidification of the \emph{b1} alloy, the latter being considered 
+In this section, the aim is to predict macrosegregation in reduced-gravity solidification of the \emph{b1} alloy, the latter being considered 
 as a ternary and then as a quaternary alloy (cf. \cref{table:texus_b1}). 
 %For simplicity, we refer to these alloys respectively by \emph{b1T} and \emph{b1Q}.
-We want to show that, on the one hand our model handles multicomponent alloys (based on equilibrium equilibrium conditions), while
+We want to show that, on the one hand our model handles multicomponent alloys (based on equilibrium conditions), while
 on the other hand, how transformation paths vary by adding additional components, thus changing the shrinkage kinetics, hence the final sample shape.
 %By introducing additional chemical species, silicon for \emph{b1Tern}, silicon and magnesium for \emph{b1Quat}, a new carbide phase may appear, the M$_7$C$_3$.
 The first visible sign of different paths during solidification is given in \cref{fig:multicomp_liquid}. We can see that upon adding
 additional chemical species while applying the same cooling conditions, a different liquid fraction remains after 15 s, showing evidence 
-of slower solidification as we go from binary to quaternary. With multicomponent alloys like \emph{b1Tern} and \emph{b1Quat}, an additional solid
+of slower solidification as we go from binary to quaternary. Also, with multicomponent alloys like \emph{b1Tern} and \emph{b1Quat}, an additional solid
 phase may appear, that is the M$_7$C$_3$ carbide.
 %After 15 seconds of chill contact, the \emph{b1Tern} and \emph{b1Quat} alloys have more volume fraction of liquid than \emph{b1Bin} computation as shown in 
 %\cref{fig:multicomp_liquid}, meaning that solidification in these samples is slower. 
@@ -3123,9 +3110,9 @@ Therefore the final predicted shape is different, as shown earlier in the parame
 %--------------
 
 In \cref{fig:shape_comparison}, we focus on the final droplet profile caused by varying the number of solute elements.
-We clearly notice that the multicomponent solidification results in an elongated shape. 
+We clearly notice that the multicomponent solidification results in a slightly more elongated shape. 
 All cases were obtained using the optimal simulation
-parameters determined previously by the parametric study, i.e. an thermal exchange coefficient, $\hext$, of \SI{6e4}{\uhconvec} and a gravitational
+parameters determined previously by the parametric study, i.e. thermal exchange coefficient, $\hext$, of \SI{6e4}{\uhconvec} and a gravitational
 acceleration, $\norm{\gravity}$, of \SI{5e-5}{\uacceleration}. The clear difference in solidification paths requires to do the same 
 parametric study to get better simulation-vs-experiment prediction. However, as we have shown earlier the effect of varying these parameters
 on the final profile, we do not perform parametric studies for \emph{b1Tern} and \emph{b1Quat} alloys. 
@@ -3162,7 +3149,7 @@ tabulation where all successive line with similar phase fractions outside the so
 resulting file is three time smaller than the original tabulation file. Surprisingly, the computation time for \emph{b1QuatLite} shows no significant acceleration 
 compared to \emph{b1Quat}. The file size, proportional to the number of tabulated lines, is important as it causes a search overhead each time the conversion module
 is called. However, \cref{table:mapping_stat} reveals that the multi-variable interpolation overhead is even more important, resulting in longer computation times.
-This is may be considered as a limitation of the thermodynamic mapping approach.
+This may be considered as a limitation of the thermodynamic mapping approach.
 
 %is another cause of the shape discrepancy, and the thermodynamic mapping
 % of the binary alloy has the advantage: less solute elements means less 
@@ -3175,17 +3162,24 @@ This is may be considered as a limitation of the thermodynamic mapping approach.
 \begin{table}[htbp]
 \centering
 \caption{Information table showing the tabulations size  for each alloy obtained by the same mapping resolution for temperature and composition, 
-depending on the number of solute elements and phases. The computation time corresponds to the CPU time of a simulation running on 20 cores.}
+depending on the number of solute elements and phases. The temperature step is \SI{1}{\udegC} and the range is the range is [\SI{20}{\udegC}-\SI{1620}{\udegC}] for all four cases . 
+The computation time corresponds to the CPU time of a simulation running on 20 cores.}
 \label{table:mapping_stat}
 \resizebox{\columnwidth}{!}{%
-{\tabulinesep=1.0mm \begin{tabu}{lccccc}
+{\tabulinesep=1.0mm \begin{tabu}{lccccccc}
 \tabucline[1pt]{-}
-\textbf{Alloy} & \textbf{Nb solutes} & \textbf{Nb phases}  & \textbf{Tabulation lines}  & \textbf{Size (MB)} & \textbf{Computation time (s)}  \\\tabucline[1pt]{-}
+\textbf{Alloy} & \textbf{Nb solutes} &  \textbf{Composition range (\si{\ucomposition})}  & \textbf{Composition step (\si{\ucomposition})}  & \textbf{Nb phases}  
+& \textbf{Tabulation lines}  & \textbf{Size (MB)} & \textbf{Computation time (s)}  \\\tabucline[1pt]{-}
 %-----------------------------
-      \emph{b1Bin}            & 1                       &  4                  &  \num{185010}     &    \num{4.37}   &  \num{59461.5}  \\   %78003.9
-      \emph{b1Tern}           & 2                       &  5                  &  \num{220250}     &    \num{10.18}  &  \num{62644.4}  \\    
-      \emph{b1Quat}           & 3                       &  5                  &  \num{1101250}    &    \num{66.89}  &  \num{85476.7}  \\
-      \emph{b1QuatLite}       & 3                       &  5                  &  \num{326014}     &    \num{20.93}  &  \num{84104.8}  \\\tabucline[1pt]{-}
+      \emph{b1Bin}  	& 1 &	C: [0.0945-0.1155] &   0.00525  &  4 &  \num{185010} &    \num{4.37}   &  \num{59461.5}  \\   %78003.9
+      \emph{b1Tern} 	& 2 &	C: [0.0945-0.1155] &   0.00525  &  5 &  \num{220250} &    \num{10.18}  &  \num{62644.4}  \\    
+      					&   &  Si: [0.2412-0.2948] &   0.0134   &    &               &                 &                 \\    
+      \emph{b1Quat} 	& 3 &	C: [0.0945-0.1155] &   0.00525	&  5 &  \num{1101250}&    \num{66.89}  &  \num{85476.7}  \\     
+      					&   &  Mn: [0.5724-0.6996] &   0.0318   &    &               &                 &                 \\    
+      					&   &  Si: [0.2412-0.2948] &   0.0134   &    &               &                 &                 \\    
+      \emph{b1QuatLite} & 3 & 	C: [0.0945-0.1155] &   0.00525	&  5 &  \num{326014} &    \num{20.93}  &  \num{84104.8}  \\
+      					&   &  Mn: [0.5724-0.6996] &   0.0318   &    &               &                 &                 \\    
+      					&   &  Si: [0.2412-0.2948] &   0.0134   &    &               &                 &                 \\\tabucline[1pt]{-}
       % http://grammarist.com/words/lite/
 %-----------------------------
 \end{tabu}}
@@ -3193,15 +3187,15 @@ depending on the number of solute elements and phases. The computation time corr
 \end{table}
 %--------------------------------
 
-Finally we are interested in comparing the mesosegregation levels obtained in all three solidification cases. Segregation maps for the three cases
+Finally we are interested in comparing the macrosegregation levels obtained in all three solidification cases. Segregation maps
 are presented in \cref{fig:final_segreg_ternquat} on a symmetry plane section. First, we compare the carbon segregation as it is the common species among the presented alloys.
-The first difference is a remarkable positive mesosegregation of 3.5\% at the chill contact of the  \emph{b1Tern} and \emph{b1Quat} samples, 
-while being less prominent for \emph{b1Bin} which shows a relative segregation of 1.2\%. As we explained earlier, this positive mesosegregation taking place at the beginning
+The first difference is a remarkable positive macrosegregation of 3.5\% at the chill contact of the  \emph{b1Tern} and \emph{b1Quat} samples, 
+while being less prominent for \emph{b1Bin} which shows a relative segregation of 1.2\%. As we explained earlier, this positive macrosegregation taking place at the beginning
 of solidification is related to the shrinkage flow (cf. \cref{fig:texus_flow}) created by the strong thermal gradient in the contact zone. 
 As the thermal gradient in this zone is almost the same
-for all three cases at solidification onset, the higher velocity which is responsible for the noticeable positive mesosegregation in both multicomponent samples,
+for all three cases at solidification onset, the higher velocity which is responsible for the noticeable positive macrosegregation in both multicomponent samples,
 is related to the solidification path varying with the number of species.
-Two regions of negative mesosegregation are observed across the samples, with various amplitudes. The first region lies just below the positive segregation contact surface.
+Two regions of negative macrosegregation are observed across the samples, with various amplitudes. The first region lies just below the positive segregation contact surface.
 It corresponds to the solute depletion caused by an upward shrinkage flow and a downward gravity flow. With the advancement of the solidification front,
 the gravity flow dominates creating a radial outward negative segregation pattern where  
 
@@ -3250,7 +3244,7 @@ of each chemical species for \emph{b1Bin}, \emph{b1Tern} and \emph{b1Quat} sampl
   ymin=-5, ymax=5,
   %xmax=0.0928,
   mark repeat = {100},
-  cycle list name=exotic,
+  cycle list name=mycycle, %exotic,
   ]
 
   \addplot table [x expr=1000*\thisrow{arc_length}, y expr=100*(\thisrow{Concentration}-0.105)/0.105]   {Chapter5/Data/3d_segregation/centersegreg_bin.csv};
@@ -3306,7 +3300,7 @@ of each chemical species for \emph{b1Bin}, \emph{b1Tern} and \emph{b1Quat} sampl
   height=5cm, 
   ymin=-1, ymax=1,
   mark repeat = {100},
-  cycle list name=exotic,
+  cycle list name=mycycle, %exotic,
   ]
   \addplot table [x expr=1000*\thisrow{arc_length}, y expr=100*(\thisrow{Concentration_Mn}-0.636)/0.636] {Chapter5/Data/3d_segregation/centersegreg_quat.csv};
   \legend{\emph{b1Quat}} 

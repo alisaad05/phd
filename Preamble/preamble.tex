@@ -435,18 +435,21 @@ or
 
 \usepackage{tikz}
 \usetikzlibrary{mindmap,positioning,shapes,snakes,backgrounds,fit,calc,shadows,matrix,spy}
+
 \usetikzlibrary{pgfplots.groupplots}
+\newcommand{\lwidth}{0.5pt}
+\newcommand{\msize}{2.0pt}
 \pgfplotscreateplotcyclelist{mycycle}{%
-solid, every mark/.append style={solid, fill=gray}, mark=*\\%
-dotted, every mark/.append style={solid, fill=gray}, mark=square*\\%
-densely dotted, every mark/.append style={solid, fill=gray}, mark=triangle*\\%triangle
-dashed, every mark/.append style={solid, fill=gray},mark=diamond*\\%
-loosely dotted, every mark/.append style={solid, fill=gray}, mark=otimes*\\%
-loosely dashed, every mark/.append style={solid, fill=gray},mark=*\\%
-densely dashed, every mark/.append style={solid, fill=gray},mark=square*\\%
-dashdotted, every mark/.append style={solid, fill=gray},mark=otimes*\\%
-dasdotdotted, every mark/.append style={solid},mark=star\\%
-densely dashdotted,every mark/.append style={solid, fill=gray},mark=diamond*\\%
+line width=\lwidth, mark size=\msize,   solid, every mark/.append style={solid, fill=gray}, mark=*\\%
+line width=\lwidth, mark size=\msize,   densely dashed, every mark/.append style={solid, fill=gray}, mark=square*\\%
+line width=\lwidth, mark size=\msize,   densely dotted, every mark/.append style={solid, fill=gray}, mark=triangle*\\%triangle
+line width=\lwidth, mark size=\msize,   dashed, every mark/.append style={solid, fill=gray},mark=diamond*\\%
+line width=\lwidth, mark size=\msize,   loosely dotted, every mark/.append style={solid, fill=gray}, mark=otimes*\\%
+line width=\lwidth, mark size=\msize,   loosely dashed, every mark/.append style={solid, fill=gray},mark=*\\%
+line width=\lwidth, mark size=\msize,   densely dashed, every mark/.append style={solid, fill=gray},mark=square*\\%
+line width=\lwidth, mark size=\msize,   dashdotted, every mark/.append style={solid, fill=gray},mark=otimes*\\%
+line width=\lwidth, mark size=\msize,   dasdotdotted, every mark/.append style={solid},mark=star\\%
+line width=\lwidth, mark size=\msize,   densely dashdotted,every mark/.append style={solid, fill=gray},mark=diamond*\\%
 }
 
 % Animations  (gif, png ...)
