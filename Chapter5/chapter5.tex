@@ -1257,6 +1257,7 @@ The thick blue line represents the zero isovalue of the distance function.}
 	%x tick label style={rotate=45,anchor=east},
 	%width=0.5\textwidth,
 	mark repeat	= {1},
+	cycle list name=mycycle, %exotic,
 ]
 \addplot table [x=Temperature, y expr=\thisrow{LIQ}] {Chapter5/Data/1d_alsi7_nominalSP/sp.csv};% \closedcycle ;
 \addplot table [x=Temperature, y expr=\thisrow{ALPHA}] {Chapter5/Data/1d_alsi7_nominalSP/sp.csv};%\closedcycle;
@@ -1453,6 +1454,7 @@ $l^M_f= \brac{1-\beta_{SS}} l^M_0 =$\SI{92.86}{\milli\metre}.
 	%height=5cm,	
 	ymin=-0.1, ymax=0.2,
 	mark repeat	= {30},
+	cycle list name=mycycle, %exotic,
 ]
 \addplot table [x=Temps, y=mMpct] {Chapter5/Data/1d_alsi7_mass/ArtificialDarcyBlocking0pct_smallstep.txt}; %\closedcycle; 
 %\addplot table [x=Temps, y=mMpct] {Chapter5/Data/1d_alsi7_mass/ArtificialDarcyBlocking25pct.txt}\closedcycle;
@@ -1483,6 +1485,7 @@ $l^M_f= \brac{1-\beta_{SS}} l^M_0 =$\SI{92.86}{\milli\metre}.
 	%height=5cm,	
 	ymin=-0.1, ymax=0.2,
 	mark repeat	= {30},
+	cycle list name=mycycle, %exotic,
 ]
 \addplot table [x=Temps, y=mMpct] {Chapter5/Data/1d_alsi7_mass/RealDarcyBlocking0pct.txt}; %\closedcycle;
 %\addplot table [x=Temps, y=mMpct] {Chapter5/Data/1d_alsi7_mass/RealDarcyBlocking25pct.txt}\closedcycle;
@@ -1594,6 +1597,7 @@ the mass increases up to 3\% while the eutectic front is consuming the liquid wi
 	%height=5cm,	
 	%ymin=-0.1, ymax=0.2,
 	mark repeat	= {30},
+	cycle list name=mycycle, %exotic,
 ]
 %\coordinate (pt) at (axis cs:500,0);
 %\coordinate (posZoom) at (axis cs:100,0.5);
@@ -1638,6 +1642,7 @@ the mass increases up to 3\% while the eutectic front is consuming the liquid wi
 	%height=5cm,	
 	%ymin=-0.1, ymax=0.2,
 	mark repeat	= {30},
+	cycle list name=mycycle, %exotic,
 ]
 %\coordinate (pt) at (axis cs:500,0);
 %\coordinate (posZoom) at (axis cs:100,0.5);
@@ -1814,7 +1819,7 @@ while for the second test case, we combine both low solute diffusion and low sol
 are respectively plotted in \cref{fig:1dalsi7_wVSlength}b and \cref{fig:1dalsi7_wVSlength}c.
 These results (second plot in \cref{fig:1dalsi7_wVSlength})  clearly show that just by reducing solute advection in the mixing zone reduce the amplitude of the composition instability.
 In contrast, changing solute diffusion properties for the air coupled with reduced solute advection (third plot in \cref{fig:1dalsi7_wVSlength}) offers no further stability
-in the segregation profile, which should normally say below the nominal value near the interface.
+in the segregation profile, which should normally stay below the nominal value near the interface.
 
 %--------------------------------------
 \shorthandoff{;:?!} %http://tex.stackexchange.com/questions/74860/unexpected-clash-between-babel-and-pgf-spy
@@ -1916,7 +1921,7 @@ in the segregation profile, which should normally say below the nominal value ne
 \end{tikzpicture}
 %-------
 \caption{Plot of the average composition as function of length, along a vertical line passing through the centre of the sample at 1000 s, with 
-		(a) low solute solute diffusion in the air but unmodified solute advection (minimum composition reaches \SI{2.2}{\ucomposition} Si but not shown), 
+		(a) low solute diffusion in the air but unmodified solute advection (minimum composition reaches \SI{2.2}{\ucomposition} Si but not shown), 
 		(b) reduced solute advection in the level set transition zone or (c) a combination of the previous
 		techniques. The solid magenta line shows the position of the interface after solidification 
 		while the black dashed line shows the nominal average composition of the alloy.}
@@ -2383,6 +2388,9 @@ The main difference with respect to parabolic flight experiments,
 TEXUS features solidification in near-zero gravitational fields and for extended periods of time (3 minutes). 
 We do not have an exact measurement of the gravitational field magnitude, but it is several orders
 less than Earth's gravity magnitude ($\norm{\gravity} \in \crochet{10^{-5};10^{-8}}$\si{\uacceleration}).
+It should be mentionned that the experimental setup is comparable between parabolic flights and sounding rocket experiments. That is to say
+that the dimensions of the steel sample, the substrate and the container are almost the same. Nevertheless, different steel compositions were
+considered in each type of experiment.
 
 %--------------
 \begin{figureth}
@@ -2463,11 +2471,11 @@ in the solidifying alloy, compared to thermal shrinkage for instance.
 % --------------------------------------
 
 The simulation considers only 1/4 of the droplet-substrate-gas system, given the axial symmetry of the problem.
-Furthermore, the substrate is implicitly taken into account via a boundary condition, explained in the next section. 
+Furthermore, the substrate is implicitly taken into account via a boundary condition, as explained in the next section. 
 This is sufficient in the current context, because we are only interested in the energy transfer from the droplet to the substrate. 
 
 The steel sample is not perfectly spherical initially as surface oscillations perturb the equilibrium shape. 
-Such perturbations may be attributed to Lorentz forces creating by the positioning coil. 
+Such perturbations may be attributed to Lorentz forces created by the positioning coil. 
 The droplet hence is compared to an ellipsoid having
 a vertical minor axis of \SI{5.68}{\milli \metre} and a horizontal major axis of \SI{6.6}{\milli \metre}, as shown in \cref{fig:imagetomesh}.
 The bottom is a planar surface (diameter of \SI{2}{\milli \metre}, where the contact is initiated). 
@@ -2505,7 +2513,9 @@ Refer to \cref{sec:remesh2_params} for the definition of each mesh parameter.}
 $\varepsilon $							&	\num{1.5e-4}	\\
 $h_{\vec{n}} = h_{\vec{\tau}}$			&	\num{2e-5}		\\ 
 $h_M$  									&	\num{1e-4}		\\
-$h_A$  									&	\num{6e-4} 		\\\tabucline[1pt]{-}
+$h_A$  									&	\num{6e-4} 		\\
+Number of nodes 						&   $\approx$\num{1e5} \\ 
+Number of elements 						&   $\approx$\num{5e5} \\\tabucline[1pt]{-}
 %-----------------------------
 \end{tabu}}
 \end{table}
@@ -2516,7 +2526,7 @@ $h_A$  									&	\num{6e-4} 		\\\tabucline[1pt]{-}
 \subsubsection{Initial and boundary conditions}
 % -----------------------------------------------
 
-The thermal boundary conditions are set as follows: Heat loss by radiation is experimentally avoided, 
+The thermal boundary conditions are set as follows: heat loss by radiation is experimentally avoided, 
 therefore it is not considered in our model, hence all boundaries are considered adiabatic, except for the metal-substrate contact area,
 as previously mentioned. This surface is modelled by a Fourier condition with $\Text$=\SI{25}{\udegC} 
 and an effective exchange coefficient $\hext$ of \SI{6e4}{\uhconvec}. 
@@ -2572,7 +2582,7 @@ since this area solidifies in the first place without further fluid motion, as s
 It is noted that the first solidified shell may experimentally deform under thermal contraction stresses, but we do not consider it 
 hereafter. For the rest of the domain, we impose the normal velocity component to zero on both symmetry faces, 
 while keeping free tangential components. The remaining boundaries, namely the top and the outer surface of the argon gas (cylinder generatrix),
-have free velocity components. However, such condition may cause instability in the level set transport solver, as seen in \cref{fig:transport_instability}. 
+have free velocity components. However, such condition may cause instability in the level set transport solver. 
 This problem has been reported by \citep{basset_simulation_2006}, showing a limitation in the imposed boundary conditions between Navier-Stokes solver and level set transport. 
 Therefore, we limit these instabilities by imposing a no-slip condition, thus allowing the argon to flow in the computational
 domain through the generatrix. The cylinder height was taken big enough to prevent any flow damping near the droplet's north pole,
@@ -2580,19 +2590,19 @@ which may spuriously alter its final shape. The pressure condition for the argon
 %as the experiment does not provide any pressure measurement of the confined argon.
 The adopted time step is 0.01 s.
 
-%--------------
-\begin{figureth}
-% textwidth 
-{0.25}
-%path 
-{Chapter5/Graphics/3d/transport_instability.png}
-% caption
-{2D view showing a transport instability at the top. The green line is the initial metal-gas interface, while the blue line represents
-the transported zero-level of the distance.}
-% label
-\label{fig:transport_instability}
-\end{figureth}
-%--------------
+% %--------------
+% \begin{figureth}
+% % textwidth 
+% {0.25}
+% %path 
+% {Chapter5/Graphics/3d/transport_instability.png}
+% % caption
+% {2D view showing a transport instability at the top. The green line is the initial metal-gas interface, while the blue line represents
+% the transported zero-level of the distance.}
+% % label
+% \label{fig:transport_instability}
+% \end{figureth}
+% %--------------
 
 
 %--------------
@@ -2618,10 +2628,10 @@ respectively \emph{b1Bin}, \emph{b1Tern} and \emph{b1Quat}. }
 \tabucline[1pt]{-}
 \textbf{Alloy} & \textbf{C} & \textbf{Si} & \textbf{Mn} & \textbf{Al} & \textbf{S} & \textbf{P} \\\tabucline[1pt]{-}
 %-----------------------------
-\emph{b1}				&	0.105 	& 		0.268	&	0.636	&	\num{0.0067} 	&		0.009		&	0.0189		\\
-\emph{b1Bin}		&	0.105 	&		    -		&	 -		&		-			&		-			&		-		\\
-\emph{b1Tern}		&	0.105 	& 		0.268	&	 -		&		-			&		-			&	 	-		\\		
-\emph{b1Quat}	  &	0.105 	& 		0.268	&	0.636 	&		-			&		-			& 		- 		\\\tabucline[1pt]{-}
+\emph{b1}		&	0.105 	&	0.268	&	0.636	&	\num{0.0067} 	&		0.009		&	0.0189		\\
+\emph{b1Bin}	&	0.105 	&    -		&	 -		&		-			&		-			&		-		\\
+\emph{b1Tern}	&	0.105 	&	0.268	&	 -		&		-			&		-			&	 	-		\\		
+\emph{b1Quat}	&	0.105 	&	0.268	&	0.636 	&		-			&		-			& 		- 		\\\tabucline[1pt]{-}
 %-----------------------------
 \end{tabu}}
 \end{table}
@@ -2928,7 +2938,7 @@ for illustrative simplicity.}
 
 The fluid flow is behind the reduced-gravity segregation shown at different stages in \cref{fig:texus_mesosegregation}.
 As earlier mentioned, a restricted region of positive segregation settles at the contact area with the substrate,
-from the first second after the contact.Later, between 2 s and 8 s, the solid front advances in the melt, creating 
+from the first second after the contact. Later, between 2 s and 8 s, the solid front advances in the melt, creating 
 a noticeable negatively segregated area, about 4\% less than the nominal composition, just below the positive segregation zone.
 Normally, we would expect that the composition decreases gradually once the solid front advances in time, as confirm the 1D segregation
 profiles in \cref{fig:1dalsi7_wVSlength}. To interpret this unusual observation, we refer to the fluid flow shown earlier in \cref{fig:texus_flow}.
@@ -2966,13 +2976,13 @@ reaches the eutectoid isotherm at \SI{727}{\udegC}.
     %\animategraphics[options]{fps}{filename_without_number}{1}{N}
     %-------
     \animategraphics{10}{Chapter5/Graphics/3d/bin/mesosegregation/img}{0}{80}
-    \caption{Animation of the average composition with solidification time, showing evidence of mesosegregation and shape deformation between 0 s and 20 s.}
+    \caption{Animation of the average composition with solidification time, showing evidence of segregation and shape deformation between 0 s and 20 s.}
     %-------
   }
   {% else 
     %-------
     \includegraphics[width=1.0\textwidth]{Chapter5/Graphics/3d/bin/mesosegregation.pdf}
-    \caption{Evolution of the average composition with solidification time, showing evidence of mesosegregation and shape deformation between 0 s and 20 s.
+    \caption{Evolution of the average composition with solidification time, showing evidence of segregation and shape deformation between 0 s and 20 s.
      (check animation in the PDF file).} 
     %-------
   }
@@ -3274,7 +3284,7 @@ of each chemical species for \emph{b1Bin}, \emph{b1Tern} and \emph{b1Quat} sampl
   ymin=-1, ymax=1,
   %xmax=0.0928,
   mark repeat = {100},
-  cycle list name=exotic,
+  cycle list name=mycycle,
   ]
   \addplot table [x expr=1000*\thisrow{arc_length}, y expr=100*(\thisrow{Concentration_Si}-0.268)/0.268] {Chapter5/Data/3d_segregation/centersegreg_tern.csv};
   \addplot table [x expr=1000*\thisrow{arc_length}, y expr=100*(\thisrow{Concentration_Si}-0.268)/0.268] {Chapter5/Data/3d_segregation/centersegreg_quat.csv};
@@ -3308,7 +3318,7 @@ of each chemical species for \emph{b1Bin}, \emph{b1Tern} and \emph{b1Quat} sampl
 
 \end{tikzpicture}
 %-------
-\caption{Relative mesosegregation profiles as functions of the distance from the chill, plotted for (a) carbon (b) silicon and (c) manganese elements
+\caption{Relative macrosegregation profiles as functions of the distance from the chill, plotted for (a) carbon (b) silicon and (c) manganese elements
 along the vertical revolution axis of the solidified sample.}
 \label{fig:3d_segregation_multicomponent}
 \end{figure}

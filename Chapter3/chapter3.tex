@@ -59,7 +59,7 @@ and hence on the overall heat transfer in the system. We recall the basic expres
 & \avg{\psi} = \sum_\phi \gphi \avg{\psi}^{\phi}
 \end{align}
 %%-------------
-where $g^\phi$ denotes the volume fraction of phase $\phi$ in the RVE, and $\psi^\phi$ is the intrinsic average of the quantity $\psi$ in the RVE. 
+where $g^\phi$ denotes the volume fraction of phase $\phi$ in the RVE, and $\avg{\psi}^\phi$ is the intrinsic average of the quantity $\psi$ in the RVE. 
 It should be emphasized that the averaging technique applies to virtually all thermodynamic volumetric variables (enthalpy, density $\dots$). 
 Among these variables, the temperature is also considered to be uniform in the RVE. 
 
@@ -358,7 +358,7 @@ conservation principle is satisfied. Therefore, the weak form writes:
  = 0
 \end{multline}
 %------------
-where $H=\rho h$ is the volumetric enthalpy, introduced to simplify notations in the following. 
+where $H=\rho h$ is the average volumetric enthalpy, introduced to simplify notations in the following. 
 Furthermore, we assume a static solid phase and an incompressible liquid phase, which allows recasting the second term of 
 \cref{eq:averaged_energy_eqn} into $\vit \cdot \nabvec \avg{\rho h}^l$. 
 $\avg{\rho h}^l = \rhol \hl$ is not main variable of the energy conservation equation's weak form, \cref{eq:weak_energy}.
@@ -444,6 +444,14 @@ Considering the link between the properties and temperature, \cref{eq:discretise
 or for the temperature as the nodal unknown, hence both formulations are presented hereafter.
 
 
+% $$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$4
+% $$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$4
+% MAXIMUM LAZINESS DURING CORRECTION
+\let\iterplus\iter
+\let\iter\iterminus
+% $$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$4
+% $$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$4
+
 %------------------------------------------------------
 \subsection{Enthalpy-based approach }
 %------------------------------------------------------
@@ -465,8 +473,8 @@ relative to what we call the \emph{Hsolver}:
 & \brac{\dRdH}^{\iter}_{ij} \brac{\Hj^\iterplus - \Hj^\iter} = -R_i^\iter
 \end{align}
 %------------
-where $\dRdH$ is a global tangent matrix yielding the variations of the residual with respect to the volumetric enthalpy 
-in the previous iteration, $\Hj^\iter$. The detailed flow chart for the \emph{Hsolver} is given in \cref{fig:HsolverSteps}.
+where $\mat{\dRdH}$ is a global tangent matrix yielding the variations of the residual vector $\vec{R^\iter}$ with respect to the volumetric enthalpy vector 
+in the previous iteration, $\vec{H^\iter}$. The detailed flow chart for the \emph{Hsolver} is given in \cref{fig:HsolverSteps}.
 If \cref{eq:discretise_residual_local} is considered, then the contribution of an element $\OhmE$ writes:
 %-----------------
 \begin{align}
@@ -494,7 +502,7 @@ leading this time to an iterative temperature correction:
 & \brac{\dRdT}^\iter_{ij} \brac{\Tj^\iterplus - \Tj^\iter} = -R_i^\iter
 \end{align}
 %------------
-where $\dRdT$ is a global tangent matrix yielding the variations of the residual with respect to temperature $\Tj^\iter$ at the previous iteration. 
+where $\mat{\dRdT}$ is a global tangent matrix yielding the variations of the residual with respect to the temperature vector, $\vec{T^\iter}$, at the previous iteration. 
 This solver will be referred to as the \emph{Tsolver}. The corresponding flow chart is given in \cref{fig:TsolverSteps}.
 The contribution of an element $\OhmE$ to this tangent matrix is evaluated as:
 %-----------------
@@ -517,13 +525,13 @@ Once updated for iteration $\iter$, convergence tests are performed.
 The previous two sections described the iterative resolution of the same discretised energy 
 conservation by both \emph{Tsolver} and \emph{Hsolver}. However, in \cref{eq:dRdH,eq:dRdT}, an important 
 term emerges from the tangent matrix evaluation describing the variations between enthalpy and temperature: 
-$\dTdH$ and $\dHdT$. 
+$\vec{\dTdH}$ and $\vec{\dHdT}$. 
 
 This term invokes the previously mentioned temperature-enthalpy 
-tabulations which depend on the alloy composition. Consequently,  $\dTdH$ (respectively $\dHdT$)
+tabulations which depend on the alloy composition. Consequently, the vector of nodal values $\vec{\dTdH}$ (respectively $\vec{\dHdT}$)
 has a great influence on the convergence of the \emph{Hsolver} (respectively the \emph{Tsolver}). 
 When \cref{eq:Hsolver_residual_linear} or \cref{eq:Tsolver_residual_linear} 
-is solved at iteration $\iter$, this term is written using a finite difference:
+is solved at iteration $\iterplus$, this term is written using a finite difference:
 %-----------------
 \begin{align}
 %--------
@@ -535,24 +543,24 @@ is solved at iteration $\iter$, this term is written using a finite difference:
 \end{align}
 %------------
 
-For the \emph{Tsolver}, the enthalpy $\rhoh_j^\iter$ is needed to evaluate \cref{eq:finite_difference_Tsolver}. 
-In contrast, the \emph{Hsolver} requires the value of $T_j^\iter$ to evaluate the corresponding \cref{eq:finite_difference_Hsolver}.
+For the \emph{Tsolver}, the enthalpy vector $\vec{H^\iter}$ is needed to evaluate \cref{eq:finite_difference_Tsolver}. 
+In contrast, the \emph{Hsolver} requires the values of $\vec{T^\iter}$ vector to evaluate the corresponding \cref{eq:finite_difference_Hsolver}.
 In both cases, the unknown is determined by the tabulations. The indices next to the mentioned unknowns
-indicate that this relation is used for each iteration $\iter$ at each mesh node $j$, 
+indicate that this relation is used for each iteration $\iterplus$ at each mesh node $j$, 
 hence affecting the global resolution time 
-between the two solvers. The \emph{Hsolver} needs a \emph{H2T} to evaluate $\dTdH$, 
-whereas the \emph{Tsolver} needs a \emph{T2H} to evaluate $\dHdT$.
+between the two solvers. The \emph{Hsolver} needs a \emph{H2T} to evaluate $\vec{\dTdH}$, 
+whereas the \emph{Tsolver} needs a \emph{T2H} to evaluate the vector $\vec{\dHdT}$.
 It can be seen that \emph{Tsolver} uses solely \emph{T2H} procedure 
 (flowchart in \cref{fig:algorithm_t2h}) and the thermodynamic tabulations to determine the volumetric enthalpy, 
-hence the term $\dHdT$. On the other hand, \emph{Hsolver} repeats the same procedure a finite number of times in order to 
-determine a temperature output through \emph{H2T} (flowchart in \cref{fig:algorithm_h2t}) and use it to compute $\dTdH$. 
+hence the term $\vec{\dHdT}$. On the other hand, \emph{Hsolver} repeats the same procedure a finite number of times in order to 
+determine a temperature output through \emph{H2T} (flowchart in \cref{fig:algorithm_h2t}) and use it to compute $\vec{\dTdH}$. 
 This algorithmic difference leverages the 
 \emph{Tsolver} in terms of computation time providing 
 the same numerical accuracy while conserving the total system energy. 
 
 Convergence tests are necessary at the end of each iteration of the energy solver to determine 
 the convergence status of the algorithm. In the context of the \emph{Tsolver} for instance, the residual 
-is re-evaluated with the newly determined temperature $\Tj^\iterplus$ and enthalpy $\Hj^\iterplus$ so \cref{eq:discretise_residual_global} rewrites:
+is re-evaluated with the newly determined temperature vector $\vec{T^\iterplus}$ and enthalpy vector $\vec{H^\iterplus}$ so \cref{eq:discretise_residual_global} rewrites:
 
 %-----------------
 \begin{align}
@@ -564,7 +572,7 @@ is re-evaluated with the newly determined temperature $\Tj^\iterplus$ and enthal
 \end{align}
 %------------
 
-The norm of the current residual, $\norm{R^\iterplus}$, is compared to a fixed small 
+The norm of the current residual, $\norm{\vec{R^\iterplus}}$, is compared to a fixed small 
 value $\varepsilon_R \approx \crochet{\num{d-5};\num{d-4}}$. The resulting temperature variation, 
 $\abval{\Tj^\iter-\Tj^\iterminus}$, should also respond to similar criterion between two consecutive 
 iterations. For that purpose, we compare it to another fixed value $\varepsilon_T \approx \crochet{\num{d-3};\num{d-2}}$.
@@ -575,7 +583,7 @@ Convergence is ultimately achieved when the following criteria are simultaneousl
 \label{eq:energy_convergence_criteria}
    \left\{
    \begin{aligned}
-      & \norm{R^\iterplus} < \varepsilon_R \\
+      & \norm{\vec{R^\iterplus}} < \varepsilon_R \\
 	  & \text{Max}_{j:1 \rightarrow \text{NbGlob}} \abval{\Tj^\iterplus-\Tj^\iter} < \varepsilon_T
     \end{aligned}
     \right.
@@ -934,7 +942,7 @@ A comparison of both solver formulations is done in the hereafter test cases sec
 %------------------------------
 
 The two solvers are tested in a purely diffusive case for a one-dimensional solidification configuration. 
-Predictions with a 1D front tracking model \citep{gandin_constrained_2000} are used as a benchmark. They provides 
+Predictions with a 1D front tracking model \citep{gandin_constrained_2000} are used as a benchmark. They provide 
 solutions for the temperature and solid fraction during directional solidification of a 10 cm long ingot. The nominal
 composition, $w_0$, is \bin{Al}{7}{Si}. 
 The melt having a uniform initial temperature, $T_0$, is cooled with a heat exchange coefficient, $\hext$,
@@ -950,7 +958,7 @@ Values for $\rho$, $C_p$ and $L$, as well as for the thermal conductivities, $\k
 A Gulliver-Scheil approximation is used to compute a single relationship between temperature and volume solid fraction, $\gs$, in the 
 absence of macrosegregation. This is done assuming a linear binary phase diagram and thus requires using the 
 properties listed in \cref{table:data_case_alsi7}, i.e. the segregation coefficient, $k$, the liquidus slope, $m_L$, the 
-liquidus temperature, $T_L$, and the eutectic temperature, $T_E$. \Cref{fig:validation_diffusion} show the comparison with 
+liquidus temperature, $T_L$, and the eutectic temperature, $T_E$. \Cref{fig:validation_diffusion} shows the comparison with 
 the \emph{Hsolver} and \emph{Tsolver}. The cooling curves and liquid fraction results are found superimposed to the front tacking solution, 
 thus giving validation of the implementation as well as the iterative schemes presented above to solve the energy conservation 
 
@@ -1248,7 +1256,7 @@ However, some limitations are still present and need to be explained.
 
 First, we address the technical difficulties inherent to the solver. The previously shown algorithm in \cref{fig:TsolverSteps},
 showed that the Newton-Raphson method is used to linearise the energy equation then iterate on the value of the nonlinear
-term $\dHdT$. The initial value of this term is crucial to achieve a good convergence rate, and therefore it is only manually set equal 
+$\vec{\dHdT}$ term. The initial value of this term is crucial to achieve a good convergence rate, and therefore it is only manually set equal 
 to initial phases volume heat capacity. This should evolve into an automatic initialisation based on a first evaluation given by the tabulation,
 making the appraoch more general. 
 
@@ -1257,9 +1265,8 @@ Although the Newton-Raphson algorithm is known for its quadratic convergence spe
 may easily raise the number of iterations to an average of 5 iterations before convergence can be achieved. In situations without
 phase change but only variable slope of enthalpy versus temperature, from 1 to 2 iterations are needed to converge.
 A possible solution is to implement a line search method which is called at each iteration, whenever the residual of the nonlinear
-system increases insteading of steadily decreasing. Moreover, since $\dHdT$ is a derivative which is based on ratio of finite differences for
- averaged volumetic enthalpy and temperature, \red{continue...}
-
+system increases insteading of steadily decreasing. 
+% Moreover, since $\vec{dHdT}$ is a derivative which is based on ratio of finite differences for averaged volumetic enthalpy and temperature, \red{continue...}
 
 Regarding the thermodynamic tabulations, they are only obtained by assuming full equilibrium for macrosegregation calculations. 
 For many binary alloys, little differences are usually seen when the macrosegregation is induced by a full equlibrium and a non equilibrium solidification
