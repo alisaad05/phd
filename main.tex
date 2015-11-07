@@ -14,10 +14,10 @@
 			 % Chapter2/chapter2,
 			 Chapter3/chapter3,
 			 % Chapter4/chapter4,
-			  % Chapter5/chapter5,
+			 % Chapter5/chapter5,
 			 % Chapter6/chapter6,
-			 % Appendices/appendix1,
-			 % Appendices/appendix2,
+			 % Backmatter/appendix1,
+			 % Backmatter/appendix2,
 			 } 
 %%------------------------ BEGIN  -------------------------------
 \begin{document}
@@ -53,8 +53,8 @@
 % ********************************** Appendices ********************************
 %\appendixpage
 \begin{appendices} % Using appendices environment for more functunality
-%\include{Appendices/appendix1}
-%\include{Appendices/appendix2}
+%\include{Backmatter/appendix1}
+%\include{Backmatter/appendix2}
 \end{appendices}
 
 %%------------------------ BACK MATTER  -------------------------------
@@ -66,6 +66,7 @@
 \renewcommand*{\bibfont}{\footnotesize}
 \printbibliography
 
+\includepdf{Backmatter/FourthPage.pdf}
 % *************************************** Index ********************************
 %\printthesisindex % If index is present
 

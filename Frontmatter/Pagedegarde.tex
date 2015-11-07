@@ -41,39 +41,39 @@
 }
 \def\@jurya{}{}{}
 \newcommand{\jurya}[3]{
-  \def\@jurya{#1,	& #2	& #3\\}
+  \def\@jurya{#1,	& \small{#2}	& \small{#3}\\}
 }
 \def\@juryb{}{}{}
 \newcommand{\juryb}[3]{
-  \def\@juryb{#1,	& #2	& #3\\}
+  \def\@juryb{#1, & \small{#2}  & \small{#3}\\}
 }
 \def\@juryc{}{}{}
 \newcommand{\juryc}[3]{
-  \def\@juryc{#1,	& #2	& #3\\}
+  \def\@juryc{#1, & \small{#2}  & \small{#3}\\}
 }
 \def\@juryd{}{}{}
 \newcommand{\juryd}[3]{
-  \def\@juryd{#1,	& #2	& #3\\}
+  \def\@juryd{#1, & \small{#2}  & \small{#3}\\}
 }
 \def\@jurye{}{}{}
 \newcommand{\jurye}[3]{
-  \def\@jurye{#1,	& #2	& #3\\}
+  \def\@jurye{#1, & \small{#2}  & \small{#3}\\}
 }
 \def\@juryf{}{}{}
 \newcommand{\juryf}[3]{
-  \def\@juryf{#1,	& #2	& #3\\}
+  \def\@juryf{#1, & \small{#2}  & \small{#3}\\}
 }
 \def\@juryg{}{}{}
 \newcommand{\juryg}[3]{
-  \def\@juryg{#1,	& #2	& #3\\}
+  \def\@juryg{#1, & \small{#2}  & \small{#3}\\}
 }
 \def\@juryh{}{}{}
 \newcommand{\juryh}[3]{
-  \def\@juryh{#1,	& #2	& #3\\}
+  \def\@juryh{#1, & \small{#2}  & \small{#3}\\}
 }
 \def\@juryi{}{}{}
 \newcommand{\juryi}[3]{
-  \def\@juryi{#1,	& #2	& #3\\}
+  \def\@juryi{#1, & \small{#2}  & \small{#3}\\}
 }
 \makeatother
 %---------------------------------------------------------------------------------------------------------------------------
@@ -132,11 +132,11 @@
        {\fontsize{18}{22} \color[rgb]{0,0,1} \bfseries{\@title}} \\
     \vfill
                
-        \begin{tabular}{ll}
+        \begin{tabular}{lll}
         \fontsize{11}{12}
 
-    Co-directeur de thèse: & {\bfseries \@encadrant} \\
-    Co-directeur de thèse: & {\bfseries \@directeur}
+    & Co-directeur de thèse: & {\bfseries \@encadrant}\\
+    & Co-directeur de thèse: & {\bfseries \@directeur}
 		\end{tabular}
 	
     \vfill
