@@ -13,7 +13,7 @@ undergoing phase change. It is attributed to the convective transport in fluids
 where the time scale is much smaller than other transport mechanisms (e.g. diffusive transport). 
 To understand how fluid motion contributes to the heat and mass transfer, we have 
 swiftly presented the momentum conservation equation in a solidifying liquid, \cref{eq:Navier-Stokes2}.
-In this chapter, we will first give quick overview of the numerical treatment of this system of 
+In this chapter, we will first give a quick overview of the numerical treatment of this system of 
 Navier-Stokes equations, then comment on some computational aspects such as the choice of a suitable time step and
 the conditions that impose minimum and maximum bounds on both time step and mesh size. 
 Then, we shall present soldification applications
@@ -44,11 +44,12 @@ Further details about both formulation types are given in the next subsections.
 
 First introduced by \citet{arnold_stable_1984}, the MINI element is the key ingredient of this approach.
 This type of element introduces an additional degree of freedom for the velocity field while keeping a linear
-interpolation for the pressure field, thus satisfying the Babuška-Brezzi condition with a richer velocity space.
-The additional degree, known as the \emph{bubble} function, vanishes on the element's boundary.
+interpolation for the pressure field, thus satisfying the Babuška-Brezzi condition with an enriched velocity space.
+The additional degrees of freedom are interpolated by means of the so-called \emph{bubble} function and vanish on the element's boundary.
 We may therefore speak of a P1+/P1 finite element in a velocity-pressure formulation. 
 This stable formulation has been the de facto standard for solving fluid 
-and solid mechanics for many years at CEMEF.
+and solid mechanics for many years at CEMEF. In \forge and \thercast codes, the P1+/P1 MINI element is used with a linear bubble function, leading to a 
+decomposition of tetrahedra into four sub-elements to treat additional degrees of freedom for the velocity field.
 
 %-----------------------
 \begin{figureth}
@@ -63,7 +64,7 @@ The dots represent the nodes while the squares represent the additional degrees,
 %-------------------------------------------------------
 \subsection{Variational multiscale (VMS)}
 %-------------------------------------------------------
-As the name indicates, this approach considers two scales of phenomena: the coarse and fine scales. Applied to a velocity-pressure
+As the name indicates, this approach considers two scales of phenomena: the coarse and fine scales. Applied to our velocity-pressure
 formulation, these fields are decomposed according to these scales as follows:
 %----------------
 \begin{align}
@@ -101,7 +102,7 @@ length scales, a resolved coarse scale and an unresolved fine scale. The incorpo
 within the coarse-scale one results in additional stabilising terms, while in the current approach these terms
 come from a mathematical analysis based on limiting cases of diffusion or advection. 
 The final stabilising scheme is however very similar.
-The Navier-Stokes solver developed by \citet{hachem_stabilized_2010,rivaux_simulation_2011} is a convenience choice 
+The Navier-Stokes solver developed by \citet{hachem_stabilized_2010,rivaux_simulation_2011} is a convenient choice 
 to solve a stabilised Navier-Stokes system with Darcy terms. 
 %For the details of deriving the weak form, the reader is referred to these references.
 
@@ -453,7 +454,6 @@ The left (LHE) and right (RHE) heat exchangers impose the boundary temperature i
 \end{figureth}
 %-----------------------------------
 
-
 %------------------------------------------------------
 \begin{figureth}
 % textwidth 
@@ -467,17 +467,16 @@ The left (LHE) and right (RHE) heat exchangers impose the boundary temperature i
 \end{figureth}
 %------------------------------------------------------
 
-
 In the previous chapter, we have considered a static melt upon solidification of multicomponent alloy. 
-The artificial consideration of a still flow is dropped in this chapter, hence taking into account solute transport 
-caused by fluid motion, using realistic values of the expansion coefficients given in \cref{table:ternary_data_case}.
-In the real conditions, the melt is in constant motion and knowing that the carbon and chromium solutes have lightening effects on the liquid 
+This artificial assumption is dropped in this chapter, hence taking into account solute transport 
+caused by fluid motion, using realistic values of thermal and solutal expansion coefficients given in \cref{table:ternary_data_case}.
+In such conditions, the melt is in constant motion and knowing that the carbon and chromium solutes have lightening effects on the liquid 
 at nominal composition, the density inversion resulting from the composition gradient in the interdendritic 
 liquid, may cause flow instability (segregation plumes) at the solidification front. While the selected alloy 
 is a steel, this application is also representative of directional cooling in a single crystal casting, e.g. 
 for nickel-base superalloys \citep{beckermann_development_2000}. Solidification of this class of alloys is carefully
 controlled so as to prevent any freckle-type defect to exist in the as-cast state.
-In this section, we consider the same simulation parameters defined in \cref{table:ternary_data_case} as well as the geometry and thermal boundary conditions
+In this section, we consider the same simulation parameters defined in \cref{table:ternary_data_case} as well as the cylindrical geometry and thermal boundary conditions
 previously defined in \cref{fig:mutlicomponent_geobc}. Moreover, we solve the liquid momentum conservation equation, with non-slip boundary conditions
 on all external sides of the cylinder.
 
@@ -558,8 +557,10 @@ Nonetheless, as temperature decreases, solid-state transformations are
 still possible as for the case with no macrosegregation. The formation of a cementite phase begins at the 
 cylinder base at \num{8843} s with a temperature of \SI{496.9}{\udegC}. At about \num{9293} s, the isotherm \SI{488.5}{\udegC} reaches the 
 top surface. This temperature value is the local cementite solvus temperature. The difference in the solvus 
-temperature between the bottom and top surfaces is due macrosegregation. Macrosegregation also explains the 
-variation in the cementite content. The solid state transformation ends shortly before \num{10500} s. The influence of the solidification process is clear on 
+temperature between the bottom and top surfaces is due to macrosegregation. Macrosegregation also explains the 
+variation in the cementite content. The solid state transformation ends shortly before \num{10500} s. 
+
+Comparing \cref{fig:planche_nomacroseg,fig:planche_withmacroseg}, the influence of the solidification process is clear on 
 the final macrosegregation pattern, hence the final phase distribution. This is better illustrated by drawing the time evolution of phase fractions at the 
 center of the bottom and top surfaces of the cylinder in \cref{fig:tp_macroseg_influence}. With no macrosegregation, in 
 \cref{fig:tp_macroseg_influence}a, the final distribution of the phases is the same at time \num{12000} s, while in
@@ -602,9 +603,9 @@ and (b) \cref{fig:planche_withmacroseg}.}
 We have seen in the previous multicomponent solidification test case, a formation of segregated channels in the cylinder. 
 This defect manifests itself as a composition inhomogeneity that is highly non-isotropic. A typical description of its 
 morphology would consider a channel with a diameter proportional to few primary dendrite arm spacing and a length that 
-could vary from millimeters to centimeters. These “worm”-like shapes could form during directional solidification of cast 
-parts designed for engine applications, particularly in Nickel-base superalloys \citep{giamei_nature_1970,beckermann_development_2000,
-genereux_characterization_2000,schneider_modeling_1997}. In the latter situation, the channels are filled with a chain of small equiaxed 
+could vary from millimeters to centimeters. These “worm”-like shapes may form during directional solidification of cast 
+parts designed for engine applications, particularly in nickel-base superalloys \citep{giamei_nature_1970,beckermann_development_2000,
+genereux_characterization_2000,schneider_modeling_1997}. In the latter situation, the channels are often filled with a chain of small equiaxed 
 crystals, thus referring to the term “freckle”. In large steel ingots, these channel defects are also related to A- and V-segregates   
 \citep{pickering_macrosegregation_2013}. 
 
@@ -619,8 +620,11 @@ Because it is of prime importance to control the occurrence of channel segregati
 from the late 1960’s \citep{flemings_macrosegregation:_1967, flemings_macrosegregation:_1968-1,flemings_macrosegregation:_1968} 
 to the early 2000’s \citep{ramirez_evaluation_2003} to understand it and characterise it by deriving freckling criteria. 
 These studies are summarized in \citep{auburtin_determination_1998}. One of the reasons for only considering freckling criteria 
-is that direct realistic simulations of the formation of freckles in a casting geometry are still difficult. 
-Indeed, experimental observations show that it requires a satisfying description of the microstructure together 
+is that direct realistic simulations of the formation of freckles in a casting geometry are still difficult.
+It is indeed not crucial for industrial applications, as freckles cannot be cured and lead systematically to part rejection, expect for casting ingots, 
+where channel segregation cannot be avoided.
+
+Experimental observations show that it requires a satisfying description of the microstructure together 
 with the 3D convective flow controlled by the cooling conditions of the complete cast part \citep{shevchenko_chimney_2013}. 
 Such information is not accessible yet. Only simulations in representative simple cuboid or cylindrical domains are 
 usually achieved \citep{felicelli_simulation_1991,felicelli_modeling_1998,kohler_peritectic_2008,guo_three-dimensional_2003}, 
@@ -640,7 +644,9 @@ by \citep{ramirez_evaluation_2003}.
 %--------------------------
 
 An interesting experimental work on directional solidification of \bin{In}{75}{Ga}
-featuring in-situ X-ray monitoring has been recently carried out by \citet{shevchenko_chimney_2013}. 
+featuring in-situ X-ray monitoring has been recently carried out by \citet{shevchenko_chimney_2013} at Dresden's Helmholtz institute.
+We give here a detailed description of their experimental setup, as this experimental work has been used as a reference to test the performance
+of our numerical simulations. This was done through a collaboration resulting in the joint publication \citep{saad_simulation_2015}.
 The comparison with numerical modelling is paramount for two main reasons: firstly, the in-situ technique allows to follow solidification in real-time 
 and offers visual description of the system behaviour: grain morphology, composition evolution, effect on fluid flow in the 
 mushy zone and chimney initiation, as well as other modelling input data such as dendritic and eutectic nucleation undercooling; 
@@ -805,7 +811,7 @@ The dashed and dotted lines are linear liquidus and solidus approximations near 
 {
 Nominal composition 			& $\avg{\Cnominal}$		& 75 					& \si{\ucomposition} 	\\ 
 Liquidus temperature			& $T_l$ 				& \num{25.25} 			& \si{\udegC} 			\\
-Segregation coefficient			& $\k$					& \num{0.0165}			& \si{\ucomposition \per \ucomposition} \\
+Segregation coefficient			& $\k$					& \num{0.0165}			&      					\\
 Liquidus slope					& $m_l$					& \num{-2.73}			& \si{\udegK \per \ucomposition} \\
 \hline
 Gibbs-Thomson coefficient		&$\Gamma_{\text{GT}}$	&\num{2e-7}			& \si{\udegK \per \metre} 		\\ 	

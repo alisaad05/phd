@@ -5,7 +5,7 @@ debug:
 	@echo DEBUGGING
 	@echo ---------
 	
-	pdflatex main.tex
+	pdflatex -synctex=1 main.tex
 	
 shell:
 	@echo ------------
