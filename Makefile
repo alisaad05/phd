@@ -49,5 +49,5 @@ autocommit:
 	@echo AUTOCOMMITTING
 	@echo --------------
 	
-	git add .
+	git add --all
 	git commit -m "Auto Commit"	
