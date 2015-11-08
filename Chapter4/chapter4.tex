@@ -895,7 +895,8 @@ component slightly greater than \SI{1}{\milli\uvelocity}.
   \end{subfigure}
    %------------
 \caption{Average Ga composition field at \SI{250}{\utime} for the 3 FE cases showing the influence of 
-process parameters on the freckling tendency. The black line represents the liquidus isotherm given in \cref{table:data_case_InGa}.} 
+process parameters on the tendency to form channel segregation and convective plumes. 
+The black line represents the liquidus isotherm given in \cref{table:data_case_InGa}.} 
 \label{fig:freckles_fe}
 \end{figure}
 %-----------------
@@ -931,23 +932,23 @@ on a cut plane at the center of the cell at 500 s, 1000 s and 1500 s.}
 \subsubsection{Discussion}
 %--------------------------
 
-In \cref{sec:intro_freckle}, we have introduced some successful attempts of freckle predictions. 
+In \cref{sec:intro_freckle}, we have introduced some successful attempts of channel segregation predictions. 
 The authors tackled the problem from an qualitative perspective. 
-To our knowledge, the closest work to quantitative freckling analysis in solidification literature was done by \citet{ramirez_evaluation_2003}.
-They attempted to draw a correlation (freckling criterion) between the process parameters and the occurrence of freckles, 
-without any size or shape constraints, i.e. any flow instability that may appear and form the smallest freckle is considered. 
+To our knowledge, the closest work to quantitative prediction of segregated channels in solidification literature was done by \citet{ramirez_evaluation_2003}.
+They attempted to draw a correlation (\emph{freckling} criterion) between the process parameters and the occurrence of segregated channels, 
+without any size or shape constraints, i.e. any flow instability that may appear and form the smallest channel segregate is considered. 
 
 To accomplish this, they took a number of experiments done independently by \citet{pollock_breakdown_1996} and \citet{auburtin_freckle_2000} 
 where the casting parameters vary one at a time: casting speed ($R$), thermal gradient ($\vec{G}$), angle ($\theta$) with respect to vertical 
 orientation and nominal composition ($\avg{w_0}$), giving a database for 6 different superalloys. The experimental results were 
-compared to a modified Rayleigh number that accounts for the various parameters. It allowed them to define a threshold for freckle 
-formation in Nickel-base superalloys, as well as Pb-Sn alloys.
+compared to a modified Rayleigh number that accounts for the various parameters. It allowed them to define a threshold for the formation
+of channel segregation in nickel-base superalloys, as well as in Pb-Sn alloys.
 
 Other contributions by \citet{yuan_new_2012} (Pb-Sn alloy) and  \citet{karagadde_3-d_2014} (In-Ga alloy) relied on a Cellular Automata Finite Difference
 (CAFD) model developed by \citet{lee_modeling_2002}, which  solves the dendrite tip growth kinetics at 
 the solid-liquid interface together with macroscopic conservation equations. 
-The authors compared the simulated formation of freckles with the results obtained by \citet{shevchenko_chimney_2013}.
-However, these simulations follow solidification in a small volume that contains a few dendrites with interdendritic liquid, 
+The authors compared simulation results to experimental findings obtained by \citet{shevchenko_chimney_2013}.
+However, their simulation follow solidification in a small volume that contains a few dendrites with interdendritic liquid, 
 therefore limited as far as to predict the liquid behaviour outside the mushy zone.
 On another hand, experimental observations reveal a great deal of information 
 regarding solute redistribution, first in the chimneys that wash the dendrites in their 
@@ -1005,7 +1006,7 @@ For coupling with macroscopic scale modelling, the fraction of phases needs to b
 FE model. This is now done by accounting for the information provided by the CA model. Thus, the 
 fraction of solid is no longer the consequence of a simple conversion of the temperature and 
 composition assuming thermodynamic equilibrium. It also includes the solidification delay due to 
-the kinetics of the development of the grains as detailed elsewhere in the work of \citet{carozzani_direct_2013}.
+the kinetics of the development of the grains as detailed in the work of \citet{carozzani_direct_2013}.
 
 \subsubsection{Numerical method}
 Both the finite element mesh and the cellular automaton grid play a role in predicting channel segregation inasmuch as 
@@ -1139,7 +1140,7 @@ $R$=\SI{-0.01}{\uCR} and temperature gradients of (a) $\norm{\vec{G}}$=\SI{1.1}{
 \subsection{Effect of vertical temperature gradient}
 %---------------------------------------------------
 
-The influence of diverse process parameters can now be considered in context of the grain structure. 
+The influence of diverse process parameters can now be considered in the context of the grain structure. 
 The effect of the vertical temperature gradient is shown by comparing the previous case CAFE-G2R1L1 
 with case CAFE-G1R1L1. The temperature gradient is decreased about 7 times here, from G2=\SI{1.5}{\ugradT}
 to G1=\SI{0.2}{\ugradT}. In fact, both cases share almost all traits with respect to flow patterns and velocity
