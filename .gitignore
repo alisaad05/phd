@@ -33,5 +33,6 @@
 *.tdo
 *.mtc*
 *.brf
+main.pdf
 main-blx.bib
 main.run.xml
