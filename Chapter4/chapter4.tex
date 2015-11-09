@@ -285,7 +285,7 @@ The transient term stabilisation was initially derived for Navier-Stokes equatio
 As the latter has a significant role in the weak form \cref{eq:weakform_after}, it needs to be stabilised.
 The current thesis is based on several past projects that either considered \cref{eq:supg_transient}
 like \citet{liu_finite_2005} or modified it like \citet{gouttebroze_modelisation_2005,rivaux_simulation_2011} 
-to take account the Darcy term, giving the term:
+to take account the Darcy term as follows:
  %----------------
 \begin{align}
 \label{eq:supg_transient_darcy}
@@ -313,7 +313,7 @@ Last, the definitions of the remaining stabilisation parameters are given as fol
 	\brac{\frac{2 \norm{\vit_{\Ohm_E}}}{h_\text{stream}}}^2
    + \brac{\frac{4\nu^l}{h_\text{stream}^2}}^2
    + \brac{\frac{2\brac{1+\Delta t \frac{\mul}{\rholref \K}}}{\Delta t}}^2 }^{-1/2} \\
-& \taulsic = \frac{h_\text{stream}}{2} \norm{\vit_{\Ohm_E}} Z(Re_{\Ohm_E})  
+& \taulsic = \frac{h_\text{stream}}{2} \norm{\vit_{\Ohm_E}}^{-1} Z(Re_{\Ohm_E})  
 \end{align}
 %----------------
 with $Z(Re_{\Ohm_E})$ being a local Reynolds-dependant function that evaluates to:
