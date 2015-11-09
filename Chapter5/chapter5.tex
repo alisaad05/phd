@@ -1712,7 +1712,7 @@ In order to understand better the effect of shrinkage combined with macrosegrega
 the cooling curves from 4 different simulations: 
 \begin{itemize}
 \itemsep0em
-\item \gray{Gray} curve - case G0: pure diffusion solidification with $\rhol=\rhos$ (no level set) used previously in chapter 2 for validation;
+\item \grey{Grey} curve - case G0: pure diffusion solidification with $\rhol=\rhos$ (no level set) used previously in chapter 2 for validation;
 we use it as a reference case,
 \item \green{Green} curve - case G: convection-diffusion solidification with $\rhol=\rhos$ (with level set) at a constant average composition
 \item \blue{Blue} curve - case B: convection-diffusion solidification with $\rhol \neq \rhos$ (with level set) at a constant average composition; this curve is plotted in 
@@ -1726,7 +1726,7 @@ convection-diffusion solidification with $\rhol \neq \rhos$ (with level set) and
 % *************************************************
 If we focus first on \cref{fig:shrinkage_effect}, we first compare solidification cases G and G0, both with equal phase densities, hence no shrinkage.
 This first comparison shows that the introduction of the level set method, compared to a monodomain configuration, heats up
-the overall sample temperature by about \SI{5}{\udegC}, causing solidification to finish a few seconds later than predicted in case G0.
+the overall sample temperature by about \SI{4}{\udegC} (difference between green and grey curves), causing solidification to finish a few seconds later than predicted in case G0.
 This is because we set a very high initial temperature in the air, \SI{800}{\udegC}, to prevent a brutal diffusive flux that may lead to surface solidification
 in the metal. As the sample cools down, the air conductivity (\SI{e-2}{\uconductivity}) is not low enough to prevent a small diffusion flux in the metal's direction.
 However, since in both cases the cooling trend is predicted, we will keep the same thermal diffusion properties in the air, so as not to use unreal conductivity values,
@@ -1737,6 +1737,7 @@ We notice that blue curve temperature of the sixth
 Eulerian sensor rises steadily from 180 s to 600 s reaching a constant temperature of \SI{800}{\udegC}, the air's temperature. 
 This rise confirms the metal has shrunk in length (volume in 3D),
 becoming less than 10 cm, hence replaced by air that entered through the open top boundary.
+The 6$\text{th}$ sensor (at 100 mm) was initially on the metal-air interface, then later relocated in the air after shrinkage.
 The sensors at 12 cm and 14 cm are not shown in this figure as the simulation done for the pure diffusion without level set, the air domain does not exist.
 Another interesting difference resulting from shrinkage is that solidification ends sooner by about 70 s, compared to the pure diffusion case.
 As mass is almost perfectly conserved in both cases, cooling flux is the only factor that may accelerate the cooling. The imposed cooling boundary condition
