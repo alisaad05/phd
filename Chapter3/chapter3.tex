@@ -170,7 +170,7 @@ Regarding the enthalpy-to-temperature conversion (\emph{H2T}) shown in the flowc
 a backward iterative \emph{T2H} search is performed. 
 For a known composition $\wi$, denoting $\brent$ the iteration index to convert the enthalpy 
 $H_{\text{input}}$, we start with an initial guess for temperature $T^{\brentzero}$ then convert it to an 
-enthalpy $H^{\brentzero}$ with the \emph{T2H} conversion. Using an appropriate non-linear algorithm (Brent is the most versatile 
+enthalpy $H^{\brentzero}$ with the \emph{T2H} conversion. Using an appropriate nonlinear algorithm (Brent is the most versatile 
 in our case), we aim at minimizing the following scalar residual: $R_{H} = \abval{H_{\text{input}} - H^\brent }$. 
 Once the algorithm has converged, the temperature $T^\brent$ is the result of the \emph{H2T} conversion. It is 
 inferred that the first conversion (\emph{T2H}) is a direct one whereas the latter (\emph{H2T}) is indirect and requires 
@@ -1264,9 +1264,11 @@ The second point is the number of iterations needed by the method to converge.
 Although the Newton-Raphson algorithm is known for its quadratic convergence speed, imposing low convergence thresholds (\cref{eq:energy_convergence_criteria}) 
 may easily raise the number of iterations to an average of 5 iterations before convergence can be achieved. In situations without
 phase change but only variable slope of enthalpy versus temperature, from 1 to 2 iterations are needed to converge.
-A possible solution is to implement a line search method which is called at each iteration, whenever the residual of the nonlinear
-system increases instead of steadily decreasing. 
-% Moreover, since $\vec{dHdT}$ is a derivative which is based on ratio of finite differences for averaged volumetic enthalpy and temperature, \red{continue...}
+In some situations where phase change tends to be localised, i.e. taking place at some nodes, due to a local high gradient, convergence of
+the nonlinear system may be become difficult, with residual values occasionally increasing instead of decreasing.  
+A possible solution in such situations is to implement a line search method. It consists of interpolating the temperature between the previous temperature
+and the current iteration solution, in order to have a new temperature estimate, leading to a new residual estimate. This method is attractive inasmuch as
+it is not expensive, since no linear system is solved in the sub-iterations, only interpolations and matrices assembly to evaluate the residual.
 
 Regarding the thermodynamic tabulations, they are only obtained by assuming full equilibrium for macrosegregation calculations. 
 For many binary alloys, little differences are usually seen when the macrosegregation is induced by a full equilibrium and a non equilibrium solidification

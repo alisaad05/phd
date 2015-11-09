@@ -279,7 +279,8 @@ regimes, given by:
 %----------------
 where $h_\text{stream}=2\norm{\vit_{\Ohm_E}}\brac{\vit_{\Ohm_E} \cdot \nabvec \interp}$ is the element length in the stream direction, computed using
 the local superficial velocity and the interpolation functions $\interp_j$ relative to each local node $j$,
-$\nu^l$ is the liquid's kinematic viscosity ($\si{\udiffusivity}$) and $\Delta t$ is the time step.
+$\nu^l$ is the liquid's kinematic viscosity ($\si{\udiffusivity}$), equal to the ratio $\mu^l/\rholref$
+ and $\Delta t$ is the time step.
 The transient term stabilisation was initially derived for Navier-Stokes equations without Darcy term.
 As the latter has a significant role in the weak form \cref{eq:weakform_after}, it needs to be stabilised.
 The current thesis is based on several past projects that either considered \cref{eq:supg_transient}
@@ -311,7 +312,7 @@ Last, the definitions of the remaining stabilisation parameters are given as fol
 	\brac{ 
 	\brac{\frac{2 \norm{\vit_{\Ohm_E}}}{h_\text{stream}}}^2
    + \brac{\frac{4\nu^l}{h_\text{stream}^2}}^2
-   + \brac{\frac{2\brac{1+\Delta t \frac{\mul}{\rholref \K}}}{\Delta t}}^2 } \\
+   + \brac{\frac{2\brac{1+\Delta t \frac{\mul}{\rholref \K}}}{\Delta t}}^2 }^{-1/2} \\
 & \taulsic = \frac{h_\text{stream}}{2} \norm{\vit_{\Ohm_E}} Z(Re_{\Ohm_E})  
 \end{align}
 %----------------
@@ -352,13 +353,13 @@ Re_{\Ohm_E} = \frac{\norm{\vit_{\Ohm_E}} h_\text{stream}}{2 \nu^l}
 \subsubsection{Time step}
 %--------------------------------------------------
 
-One solving a convective transport problem, the time step may lead to a transport inaccuracy
+When solving a convective transport problem, the time step may lead to a transport inaccuracy
 if the so-called Courant–Friedrichs–Lewy (CFL) condition is not satisfied. The latter imposes that
 the optimal time step value be determined from the mesh size, $h$, and the velocity, $\vit$, over the domain as follows:
 
 \begin{align}
 \label{eq:cfl_condition}
-\Delta t \leq \Delta t_\text{CFL} = \text{min}_\Omega \frac{h}{\vit}
+\Delta t \leq \Delta t_\text{CFL} = \text{min}_\Omega \frac{h_\text{stream}}{\vit}
 \end{align}
 
 In this work, we chose to compute an initial optimal time step using \cref{eq:cfl_condition}, but keep it
