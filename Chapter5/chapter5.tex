@@ -163,7 +163,7 @@ Then, one is free to choose a suitable numerical method to define and track the
 physical interfaces between the several phases. In our macroscale applications, we are particularly 
 interested in keeping an indirect representation of the $l$-$s$ interface (dotted line in \cref{fig:rev_triphase})
 using the volume averaging theory, while employing a different
-method to track the metal-air ($M$-$A$) interface ($l$-$a$ and $s$-$a$ interfaces, represented by dashed lines in \cref{fig:rev_triphase}) with the level set method. 
+method to track the metal-air ($M$-$A$) boundary ($l$-$a$ and $s$-$a$ interfaces, represented by dashed lines in \cref{fig:rev_triphase}) with the level set method. 
 This allows switching to the latter method in a physically representative manner.
 
 In this context, each domain can be seen as a material having a physical
@@ -263,11 +263,11 @@ or a more generally a boundary between multiphase domains.
 We also know that \cref{eq:variations1,eq:variations2,eq:variations3} allow computing temporal and spatial
 variations of any physical quantity related to a phase or more generally a multiphase domain.
 To avoid ambiguity, we still have to establish a definition for the boundary between the metal and the air, i.e. which 
-interfaces should be accounted for when considering the transport of the air-metal boundary.
+interfaces should be accounted for when considering the transport of the metal-air boundary.
 
 
 
-\subsection{Air-Metal boundary definition} 
+\subsection{Metal-Air boundary definition} 
 %---------------------------------------------
 
 % ---------------BEGINNING OF INSERTED TEXT ----------------------------------
@@ -275,7 +275,7 @@ In reality, between the metal and the air, two boundaries exist, as explained by
 % the liquid-air ($\liqair$) and solid-air ($\solair$) interfaces, 
 % and these interfaces move at different velocities as solidification proceeds.
 The liquid-air interface exists at early stages of solidification where only the free surface of the liquid is in contact with the air, as shows stage 1 in  \cref{fig:1dalsi7_interface_stages}.
-% In this case, the air-metal boundary is defined by the $\liqair$ interface, where the latter is driven by solidification shrinkage, 
+% In this case, the metal-air boundary is defined by the $\liqair$ interface, where the latter is driven by solidification shrinkage, 
 % and therefore by 
 
 In later stages (transition from stage 2 to stage 3 in \cref{fig:1dalsi7_interface_stages}), the mushy zone delimited by dendrite tips, 
@@ -293,14 +293,15 @@ this velocity is constant when the solidification shrinkage and the isotherms ve
 %---------------
 As for the upper part of porous medium, delimited by the $\solair$ interface, its motion could be induced by a mechanical deformation of the solid phase either due to thermal shrinkage/expansion or external mechanical stresses.
 The first factor is ubiquitous in any solidification process, while the second factor is process-dependent. 
-In the present work, we remind that the solid phase is assumed fixed and rigid, therefore we consider dendrites
-to be undeformable during their growth. 
 
+In the present work, we remind that the solid phase is assumed fixed and rigid, therefore we consider dendrites to be undeformable during their growth. 
 Unfortunately, this assumption is contradictory with our current situation where the metal keeps shrinking, 
-until the transition zone (intersection of both domains, identified by $\heaviside^{tr}$) and and the mushy zone overlap, as shown in the numerical row of stage 3 in \cref{fig:1dalsi7_interface_stages}.
-At this point, both interfaces define the Air-Metal boundary. Although it is necessary to track the $\solair$ boundary, the present work limited to considering the $\liqair$ interface as
-fully defining the metal-air boundary. 
-Tracking another boundary adds complexity as an additional tracking method should be used like a new level set with distinct numerical properties. This assumption will have some influence regarding the overall simulation performance, as some errors are induced, as a part of the porous medium is neglected.
+until an overlap of the transition zone (intersection of both domains, identified by $\heaviside^{tr}$) and the mushy zone takes place, 
+as shown in \cref{fig:1dalsi7_interface_stages} (second row, stage 3).
+At this point, both interfaces define the \emph{M-A} boundary. Although it is necessary to track the $\solair$ boundary also, the present work limited to considering the $\liqair$ interface as fully defining the metal-air boundary. 
+Tracking the $\solair$ interface adds complexity as an additional tracking method has to be used like a new level set with distinct numerical properties. 
+This assumption will have some influence regarding the overall simulation performance, as some errors are induced, as the porous medium is not properly accounted for.
+Further discussions about the outcomes of our definition of the metal-air boundary are given in the 1D application section.
 % ---------------END OF INSERTED TEXT ----------------------------------
 With the previous definitions, \cref{eq:transport_presence} can be recast with the level set 
 method by using the smoothed Heaviside function in the metal:
@@ -324,13 +325,12 @@ method by using the smoothed Heaviside function in the metal:
 %path 
 {Chapter5/Graphics/1d/interface_stages.pdf}
 % caption
-{Schematic describing (first row) the physical solidification process and (second row) its numerical treatment of moving a boundary between air and metal domains, at three intermediate stages of 
-solidification. $\heavisideM$, $\heavisideA$ and $\heaviside^{tr}$ are respectively the Heaviside functions for the metal, the air and the transition zone between both domains.}
+{Schematic describing (first row) the physical solidification process and (second row) its numerical treatment of moving the boundary between air and metal domains, at three intermediate stages of solidification. 
+$\heavisideM$, $\heavisideA$ and $\heaviside^{tr}$ are respectively the Heaviside functions for the metal, the air and the transition zone between both domains.}
 % label
 \label{fig:1dalsi7_interface_stages}
 \end{figureth}
 %--------------
-
 
 %======================
 
@@ -349,8 +349,11 @@ another domain, the air, referred to by the superscript $A$.
 \subsubsection{Mass and momentum conservation}
 % ------------------------------------------------
 
-By assuming a fixed solid phase ($\vs=\vec{0}$), i.e. a constant density for the solid phase without any transport of this phase, 
-the average velocity in the metal reduces only to liquid's average velocity. Therefore, we can write:
+By assuming a fixed solid phase ($\vs=\vec{0}$), i.e. a constant density 
+for the solid phase without any transport of this phase, 
+the average velocity in the metal reduces only to liquid's average velocity. 
+
+Therefore, we can write:
 %------------
 \begin{align}
 \label{eq:vitmetal}
@@ -380,15 +383,12 @@ hence acting as a flow driving force in the melt.
 The second RHS term accounts for the volume change 
 due to heat and species variations in the liquid.
 
-%-----------------------------------
-%\subsection{Momentum Conservation}
-%-----------------------------
-
 When the metal's density was considered constant during solidification, 
 the assumption of an incompressible system made it possible to
 use the Boussinesq approximation. However, in the case of solidification shrinkage, 
 the average density ${\avg{\rho}}^M$ varies, as it depends on the solidification 
 path as well as on $\rhos$ and $\rhol$ which are not equal nor constant.
+
 Therefore, the incompressibility condition is no more applicable. In such case, 
 the earlier given system \cref{eq:Navier-Stokes2} is reformulated without 
 any reference value for density and assuming a fixed solid phase:
@@ -537,7 +537,6 @@ the heat generated in regions where the average density is changing and/or a gra
 The last conservation principle is applied to the chemical species or solutes. This principle allows predicting
 macrosegregation when applied to a solidification system, along with the mass, momentum and energy balances.
 However, the conservation equation should be reformulated in the case of a melt flow driven by shrinkage.
-
 % ======================
 % Assumptions
 % ======================
@@ -555,10 +554,10 @@ Considered assumptions are:
 % ======================
 %Formulation
 % ======================
-
 The species conservation presents similarities with the energy conservation formulated in the previous section. 
 The main difference is the breakup of the volumetric variable $\avg{\rho w}^M$ into a product of 
 density  $\avg{\rho}^M$ and the mass composition $\avg{w}^M$ in the transient term.
+
 For a binary alloy, we write:
 %--------------------------
 \begin{subequations}
@@ -845,6 +844,7 @@ The modified permeability, $\Kmodif$, depends on the fluid fraction (\cref{eq:fl
 &\Kmodif = \frac{\sdas^2 \gf^3}{180\brac{1-\gf}^2}	
 \end{align}
 %---------------
+
 Depending on the values of this quantity, the extent to which the Darcy becomes imposing in Navier-Stokes varies as follows:
 \begin{itemize}
 \itemsep0em
@@ -854,6 +854,7 @@ Depending on the values of this quantity, the extent to which the Darcy becomes 
 \end{itemize}
 These 3 cases are graphically represented in \cref{fig:darcy_modif}, showing the different values along with the transitions 
 with respect to phases and domains distribution. 
+
 %---------------
 \begin{figure}[htbp]
 \centering
@@ -877,6 +878,7 @@ The arrows indicate three different transitions of the Darcy term between the ai
 As for the weight force in both domains, it is taken into account via \cref{eq:monolithic_boussinesq}. 
 The phase densities may vary as functions of other parameters such
 as temperature or phase composition ($\rhol$ depends on both), creating buoyancy forces of convection inside the fluid.
+
 In our approach, since we are only interested in liquid's flow, we keep the air phase density $\rhoa$ constant,
 so as to prevent a mixture of forces around the level set, which helps stabilise the fluid flow resolution.
 The mechanical properties are mixed as follows:
@@ -896,8 +898,9 @@ The mechanical properties are mixed as follows:
 %
 \end{align}
 %-----------
-The momentum balance can now be obtained from $\heavisideM \times$\cref{eq:momentum_balance_metal} $+\heavisideA \times$\cref{eq:momentum_balance_air},
-after adapting \cref{eq:momentum_balance_air} to account for a fictitious Darcy term :
+
+The momentum balance can now be obtained from $\heavisideM \times$\cref{eq:momentum_balance_metal} $+\heavisideA \times$\cref{eq:momentum_balance_air}, after adapting \cref{eq:momentum_balance_air} to account for a fictitious Darcy term :
+
 %------
 \begin{equation}
 \label{eq:monolithic_momentum}
@@ -1124,15 +1127,15 @@ For this purpose, we take an aluminium-silicon alloy with the properties shown i
 % cells content (should use the & and // to switch columns and rows)
 %------------------------------------------------------------------------------------------
 {Nominal composition 				& $w_0$ 			& \num{7} 		& \si{\ucomposition} \\ 
-Liquidus temperature 				& $T_L$ 			& \num{618} 	& \si{\udegC} \\ 
-Eutectic temperature 				& $T_E$ 			& \num{577}	 	& \si{\udegC} \\  
-Segregation coefficient 			& $k$ 				& \num{0.13} 	& $-$  \\  
-Liquidus slope 						& $m_L$ 			& \num{-6.5} 	& \si{\uslope} \\ 
+% Liquidus temperature 				& $T_L$ 			& \num{618} 	& \si{\udegC} \\ 
+% Eutectic temperature 				& $T_E$ 			& \num{577}	 	& \si{\udegC} \\  
+% Segregation coefficient 			& $k$ 				& \num{0.13} 	& $-$  \\  
+% Liquidus slope 						& $m_L$ 			& \num{-6.5} 	& \si{\uslope} \\ 
 Liquid density			 			& $\rhol$ 			& \num{2600} 	& \si{\udensity} \\  
 Solid density	 					& $\rhos$ 			& \num{2800} 	& \si{\udensity} \\  
 Air density 						& $\rhoa$ 			& \num{1.3} 	& \si{\udensity} \\  
 Liquid viscosity			 		& $\mul$ 			& \num{d-3} 	& \si{\uviscosity} \\  
-Solid viscosity	 					& $\mus$ 			& \num{d-3} (Darcy) 			& \si{\uviscosity} \\  
+Solid viscosity	 					& $\mus$ 			& (Darcy) 			& \si{\uviscosity} \\  
 Air viscosity 						& $\mua$ 			& \num{d-4} 	& \si{\uviscosity} \\  
 Liquid heat capacity 		 		& $C_p^l$ 			& \num{1000} 	& \si{\umasscapacity} \\  
 Solid heat capacity 		 		& $C_p^s$ 			& \num{928.57} 	& \si{\umasscapacity} \\  
@@ -1159,7 +1162,7 @@ Convergence criterion (temperature) & $\varepsilon_T$ 	& \num{e-2} 	& \si{\udegK
 The major difference with respect to the former validation setup is the air domain that should also be included in the mesh.
 We consider a 2D domain having as dimensions \SI{0.14}{\metre}$\times$\SI{0.001}{m}, where initially the air column's height is only \SI{0.04}{\metre}
 and the remainder of the length is for the metal.  
-\Cref{fig:1d_alsi7_geobc} shows the geometry, mesh used for this section simulations. In the same figure, the thermal and mechanical boundary conditions are shown.
+\Cref{fig:1d_alsi7_geobc} shows the geometry and boundary conditions used for the simulations in this section. In the same figure, the thermal and mechanical boundary conditions are shown.
 In the latter, velocity-slip conditions were imposed on the lateral boundaries while a no-slip was used at the bottom where heat is extracted,
 and a free-velocity condition is set at the top of the domain, to ensure a 1D air flow from the top air inlet. 
 
@@ -1196,7 +1199,8 @@ In the current conditions, $\beta_{SS}$ is constant and equal to \SI{7.14}{\perc
 The domain is initially meshed before any resolution, as shown in \cref{fig:1dalsi7_lsmixing}, in a way to reduce interpolation errors that may
 cause coarse elements within the transition of fluids density and dynamic viscosity, reminding that these parameters are crucial for the stability 
 of the velocity solution used later in the transport step. The chosen mixing laws are arithmetic for the density and logarithmic for the viscosity.
-The choice is based on tests done in former Ph.D. projects at CEMEF. The initial mesh sizes are given in \cref{table:1dalsi7_meshsize}.
+The choice is based on tests done in former Ph.D. projects at CEMEF. 
+The mesh properties are given in \cref{table:1dalsi7_meshsize}.
 
 %--------------------------------
 \begin{table}[htbp]
@@ -1212,7 +1216,9 @@ $\varepsilon $			&	\num{2.5e-4}	\\
 $h_{\vec{n}}$ 			&	\num{2.5e-5}	\\ 
 $h_{\vec{\tau}}$ 		&	\num{2e-4}		\\ 
 $h_M$  					&	\num{1.5e-4}	\\
-$h_A$  					&	\num{2.5e-4} \\\tabucline[1pt]{-}
+$h_A$  					&	\num{2.5e-4} 	\\
+Number of nodes 		&   $\approx$\num{7e3} \\ 
+Number of elements 		&   $\approx$\num{1e4} \\\tabucline[1pt]{-}
 %-----------------------------
 \end{tabu}}
 \end{table}
@@ -1227,8 +1233,9 @@ $h_A$  					&	\num{2.5e-4} \\\tabucline[1pt]{-}
 % caption
 {Snapshots of (a,b) the initial adapted mesh around the interface with different mesh sizes in the air and the metal. The adapted region
 is stretched beyond the level set mixing thickness to ensure better interpolation around the interface, in case of emergence of diffusion
-instabilities. To the right, (c)  the reference fluid density and (d) viscosity are plotted in the transition zone, showing a symmetric mixing for the former
-and a shifted mixing for the latter, as a consequence of the mixing laws.
+instabilities. To the right, (c)  the reference fluid density and (d) viscosity are plotted in the transition zone. 
+% showing a symmetric mixing for the former
+% and a shifted mixing for the latter, as a consequence of the mixing laws.
 The thick blue line represents the zero isovalue of the distance function.}
 % label
 \label{fig:1dalsi7_lsmixing}
@@ -1296,8 +1303,7 @@ under case ``R''.}
 Although no solidification has yet started at 100 s, a two-dimensional flow is observed around the interface, while tends to \SI{e-8}{\uvelocity} elsewhere in the ingot.
 \Cref{fig:1dalsi7_velocity_dt} confirms that this flow is still predicted at smaller time steps. This flow seems like a pure numerical response
 to the properties jump across the interface, namely density and dynamic viscosity. It is also noted that the interface position
-is not modified by the neighbouring currents, that reach a maximum magnitude of \SI{e-4}{\uvelocity}. Therefore, the optimal time step 
-for this simulation is set to 0.01 s, and we refer to it as case R, which stands for "real" air.
+is not modified by the neighbouring currents, that reach a maximum magnitude of \SI{e-4}{\uvelocity}. Therefore, the optimal time step for this simulation is set to 0.01 s, and we refer to it as case R, which stands for "real" air.
 
 The fact that properties transition is crucial in the solution stability, is investigated by 2 reference cases, having equal properties 
 (density and dynamic viscosity) but with different time steps, 0.01 (case A1) and 0.1 s (case A2), where "A" stands for artificial.
@@ -1336,7 +1342,7 @@ From 200 s to 800 s, the local flow instability (discussed earlier in \cref{fig:
 However, in regions of 100\% metal and 100\% air the computed velocity is nearly the same order of magnitude as predicted for all three simulations.
 Finally, in \cref{fig:1dalsi7_differentprops}, we notice a recirculating air flow in the vicinity of the interface as no metal shrinkage 
 may further occur once solidification is complete, thus air flows freely in and out 
-of the upper boundary with a very low magnitude ($\sim$ \SI{e-7}{\uvelocity}), while impinging on the air-metal surface.
+of the upper boundary with a very low magnitude ($\sim$ \SI{e-7}{\uvelocity}), while impinging on the metal-air surface.
 Regarding the CPU times, cases A1 ran for 14 hours, case A2 took only 2 hours while case R ran for 23.3 hours.
 To summarise, we can see conclude from the previous results, the following points:
 \begin{enumerate}
@@ -1370,7 +1376,7 @@ To summarise, we can see conclude from the previous results, the following point
 The results shows the influence of density and viscosity properties across the level set interface.
 The plotted field is the average fluid velocity, on which the corresponding nodal vectors are superimposed, mainly pointing
 downwards, i.e. towards the solidification front. The thick black line represents the zero isovalue of the distance function.
-Properties are given in \cref{table:data_case_inverseseg,table:1dalsi7_comparative_nomacro}.}
+Properties are given in \cref{table:data_case_inverseseg,table:1dalsi7_meshsize,table:1dalsi7_comparative_nomacro}.}
 \label{fig:1dalsi7_caseA1A2}
 \end{figure}
 %-----------------------------------------
@@ -1398,7 +1404,7 @@ Properties are given in \cref{table:data_case_inverseseg,table:1dalsi7_comparati
 \caption{Comparison of two simulations at several stages of solidification ending shortly after 800 s.
 The results shows the influence of density and viscosity properties across the level set interface.
 The plotted field is the average fluid velocity, on which the corresponding nodal vectors are superimposed, pointing
-towards the solidification front.Properties are given in \cref{table:data_case_inverseseg,table:1dalsi7_comparative_nomacro}.}
+towards the solidification front.Properties are given in \cref{table:data_case_inverseseg,table:1dalsi7_meshsize,table:1dalsi7_comparative_nomacro}.}
 \label{fig:1dalsi7_caseA1R}
 \end{figure}
 %-----------------------------------------
@@ -1503,74 +1509,44 @@ $l^M_f= \brac{1-\beta_{SS}} l^M_0 =$\SI{92.86}{\milli\metre}.
 %cases: from 0\%, i.e. where the transport velocity is given by the Navier-Stokes-Darcy resolution, up to 99\% which means that once a node's liquid fraction becomes less than 99\%, 
 %its transport velocity becomes zero. Note that the blue curve corresponds to the results shown in \cref{fig:1dalsi7_equalprops}.
 
-In the previous section, we observed transport problems taking place around 400 s of cooling. Although it was clearly seen in \cref{fig:1dalsi7_equalprops}, it applies
-for both cases, whether air properties are equal or different than the liquid's properties across the interface. 
+In the previous section, we observed \emph{M-A} boundary instability problems taking place around 400 s of cooling, where the flow begins slightly losing it one-demensional
+shape. Although it was clearly seen in \cref{fig:1dalsi7_equalprops}, it applies
+for both cases, whether air properties are equal (cases A1 and A2) or different (case R) than the liquid's properties across the interface. 
 The mass variation plots in \cref{fig:shrinkage_nomacro_massconserv} confirm these observations, since the metal's mass does not remain 
 constant during simulations.
 Therefore, we can deduce that regardless of the time step and the level set mixing of properties, 
 transport problems may occur. 
 
 The level set method is known to have poor mass conservation properties. However, the mass variation
-we see in the previous plots is more related to a physical problem: \textbf{at which velocity does the interface move?}
-In our simulations, we systemically considered the Navier-Stokes solution $\vitf$,
-to transport the metal-air interface. This solution is equal to $\vit= \gl \vl$ in the metal domain. 
-
-\comment{PARAGRAPH MOVED TO INTRODUCTION, MAKE NECESSARY CORRECTIONS}
-
-% However in reality, 
-% between the metal and the air, two interfaces exist: the liquid-air ($\liqair$) and solid-air ($\solair$) interfaces, and these interfaces move at different velocities as solidification proceeds.
-% The liquid-air interface exists at early stages of solidification where only liquid is in contact with the air. In later stages,
-% the mushy zone delimited by dendrite tips, reaches the free liquid surface, creating hence these distinct interfaces: a first interface separating
-% interdendritic liquid from the air, and a second interface that separates the dendrites also from the air. The $\liqair$ interface is driven
-% by solidification shrinkage and therefore by the real microscopic velocity of the interdendritic liquid, $\vl$. According to \citet{dantzig_solidification_2009},
-% this velocity is constant when the solidification shrinkage and the isotherms velocity $\vec{v}_T$ are constant, as states the equation:
-% %----------------
-% \begin{align}
-% \label{eq:real_velocity}
-% & \vl = -\beta_{SS} \vec{v}_T
-% \end{align}
-% %---------------
-% As for the $\solair$ interface, its motion is induced by a mechanical deformation of the solid phase either due to thermal shrinkage or external mechanical stresses.
-% The first factor is ubiquitous in any solidification process, while the second factor is process-dependent. 
-% In the present work, we remind that the solid phase is assumed fixed and rigid, therefore we consider dendrites
-% to be undeformable during their growth. Unfortunately, this assumption is contradictory with our current situation where the metal keeps shrinking, 
-% until an overlap between the level set's diffuse interface and and the mushy zone overlap, as shown in \cref{fig:1dalsi7_interface_stages}).
-% At this stage, tracking a single interface induces concept errors, because we are not sure which of the previously mentioned interfaces is being tracked, and hence failing
-% to determine an adequate transport velocity field. 
-
-% \begin{figureth}
-% % textwidth 
-% {0.8}
-% %path 
-% {Chapter5/Graphics/1d/interface_stages.pdf}
-% % caption
-% {Schematic describing the physical (first row) and numerical (second row) process of moving an interface between air and metal domains, in three intermediate stages of 
-% solidification.}
-% % label
-% \label{fig:1dalsi7_interface_stages}
-% \end{figureth}
-% %--------------
-
-
-In the light of these facts, we will try to limit as much as possible the interface motion, once the mushy zone has reached the diffuse interface.
+we see in the previous plots is more related to a physical problem: \textbf{at which velocity does the \emph{M-A} boundary move?}
+In our simulations, we systemically considered the Navier-Stokes solution, $\vitf$,
+to transport the metal-air boundary. This solution is equal to $\vit= \gl \vl$ in the metal domain. 
+Furthermore, we showed in the introduction of this chapter that the \emph{M-A} boundary actually consists of several interfaces, 
+and when the mushy zone overlaps with the level set mixing zone, we cannot track the boundary between the porous medium 
+(described in \cref{fig:1dalsi7_interface_stages}), which induces concept errors.
+In the light of these facts, we can try to limit as much as possible the motion of the porous medium boundaries, once the mushy zone has reached the level set mixing zone,
+and test the influence on mass conservation.
 To do so, we firstly advise to keep a very small thickness interface, in order to delay the previously explained overlap. Moreover, we suggest computing the 
-transport velocity, used in the level set transport equation (\cref{eq:transport_weak1}), at each node $j$ as follows:
+transport velocity, used in the level set transport equation (\cref{eq:transport_weak1}), at each node as follows:
 %--------
 \begin{align}
 \label{eq:}
 \vec{v} =
 \begin{cases}
-  \vit_j 	& \text{ if } g^l_j > g^{BL} \\
+  \vit		& \text{ if } g^l > g_{BL}^l \\
   0 		& \text{otherwise}
 \end{cases}
 \end{align}
 %---------------
-where $g^{BL}$ is the threshold for the liquid fraction, below which we consider that the interface should not be transported.
+where $g_{BL}^l$ is the threshold for the liquid fraction, below which we consider that the interface should not be transported.
 \Cref{fig:massconserv_blockingpct} shows the mass variation for three blocking fractions: 0, 50, 75 and 99 percent.
-The first value corresponds the case where the Navier-Stokes solution is directly passed to the transport solver.
-For the last value, the portion of the interface in contact with the low solid fraction part
-of the mushy zone becomes immobile. It is clearly seen that the consequence on the mass conservation is not very good, as 
-the mass increases up to 3\% while the eutectic front is consuming the liquid within the mushy zone, while no further shrinkage is allowed.
+The first value corresponds the case where the Navier-Stokes solution is directly passed to the transport solver, corresponding to the previously presented result in \cref{fig:shrinkage_nomacro_massconserv}b.
+For the last value, we consider that as soon as a portion of the \emph{M-A} boundary becomes
+in contact with the low solid fraction part, the liquid in the mushy zone becomes immobile. 
+It is clearly seen that the consequence on the mass conservation is not good, as 
+the mass increases up to 3\% while the eutectic front is consuming the liquid within the mushy zone, and no further shrinkage is allowed.
+We conclude that this strategy adds metal mass in the system, unlike the initial strategy with $g_{BL}^l=0\%$ that
+removes mass.
 
 %--------------------------------------
 \begin{figure}[htbp]
@@ -1593,7 +1569,7 @@ the mass increases up to 3\% while the eutectic front is consuming the liquid wi
 	xtick={0,200,400,600,800,1000},
 	%ytick={-0.1,0,0.1,0.2},
 	%x tick label style={rotate=45,anchor=east},
-	width=0.5\textwidth,
+	width=0.6\textwidth,
 	%height=5cm,	
 	%ymin=-0.1, ymax=0.2,
 	mark repeat	= {30},
@@ -1605,14 +1581,14 @@ the mass increases up to 3\% while the eutectic front is consuming the liquid wi
 \addplot table [x=Temps, y=mMpct] {Chapter5/Data/1d_alsi7_mass/RealDarcyBlocking50pct.txt};% \closedcycle ;
 \addplot table [x=Temps, y=mMpct] {Chapter5/Data/1d_alsi7_mass/RealDarcyBlocking75pct.txt};% \closedcycle ;
 \addplot table [x=Temps, y=mMpct] {Chapter5/Data/1d_alsi7_mass/RealDarcyBlocking99pct.txt};% \closedcycle ;
-\legend{$g^{BL}=0\%$, $g^{BL}=50\%$, $g^{BL}=75\%$, $g^{BL}=99\%$}
+\legend{$g_{BL}^l=0\%$, $g_{BL}^l=50\%$, $g_{BL}^l=75\%$, $g_{BL}^l=99\%$}
 %----
 %\begin{scope}
 %	\spy on (pt) in node at (posZoom);
 %\end{scope}
 \end{axis}
 \end{tikzpicture}
-\caption{Relative mass change versus time for different blocking fractions $g^{BL}$ in the transport solver.}
+\caption{Relative mass change versus time for different blocking fractions $g_{BL}^l$ in the transport solver.}
 \label{fig:massconserv_blockingpct}
 \end{figure}
 %--------------------------------------
@@ -1650,7 +1626,7 @@ the mass increases up to 3\% while the eutectic front is consuming the liquid wi
 %\addplot table [x=Temps, y=mMpct] {Chapter5/Data/1d_alsi7_mass/RealDarcyBlocking25pct.txt};% \closedcycle ;
 \addplot table [x=Temps, y=mMpct] {Chapter5/Data/1d_alsi7_mass/RealDarcyBlocking50pct.txt};% \closedcycle ;
 %\addplot table [x=Temps, y=mMpct] {Chapter5/Data/1d_alsi7_mass/RealDarcyBlocking99pct.txt};% \closedcycle ;
-\legend{$g^{BL}=0\%$, $g^{BL}=50\%$}
+\legend{$g_{BL}^l=0\%$, $g_{BL}^l=50\%$}
 %----
 %\begin{scope}
 %	\spy on (pt) in node at (posZoom);
@@ -1663,26 +1639,29 @@ the mass increases up to 3\% while the eutectic front is consuming the liquid wi
 %--------------------------------------
 %================================================
 
-
-
-In \cref{fig:massconserv_blockingpct2}, we plot again the same curves as in \cref{fig:massconserv_blockingpct}, but keeping the values of $g^{BL}$=0\% and $g^{BL}$=50\%.e
+In \cref{fig:massconserv_blockingpct2}, we plot again the same curves as in \cref{fig:massconserv_blockingpct}, but keeping the values of $g_{BL}^l$=0\% and $g_{BL}^l$=50\%.
 We notice that both values produce the same results until about 300 s. Then, when the mushy zone reaches the interface region, differences appear as a consequence
-of the reduced transport for the higher blocking fraction. However, it should pointed that the differences between 300 s and 800 s are not important because the permeability
+of the reduced transport for the higher blocking fraction. However, it should be pointed out that the differences between 300 s and 800 s are not important because the permeability
 predicted by the Carman-Kozeny model, falls to zero quickly for liquid fractions less than about 60\%. 
 
-In the current application, it is not clear whether the idea of the blocking fraction is useful or not, since the feeding flow
-occurs in a single direction and solidification takes place far from the interface. Therefore, it is interesting to test again in the coming 2D and 3D applications 
-to see if it it yields advantages on the final shape of the interface.
+In the current application, it is not clear whether the idea of the blocking fraction is useful or not, since the feeding flow occurs in a single direction and solidification takes place far from the interface. 
+Since the results obtained zero blocking fraction were better than with increasing values of $g_{BL}^l$,
+further simulations will adopt this strategy.
+
+% Therefore, it is interesting to test again in the coming 2D and 3D applications 
+% to see if it it yields advantages on the final shape of the interface.
 
 
+% -------------------------------------------------
 \subsection{Shrinkage with macrosegregation}
+% -------------------------------------------------
 
 In this section, we consider species conservation equation, in addition to energy conservation and fluid momentum conservation equations, 
-used in the previous section to predict solidification shrinkage.
+studied in the previous section to predict solidification shrinkage.
 The interesting point here is to study the formation of macrosegregation in a one-dimensional configuration and the effect of solidification shrinkage on it.
 As shown in chapter 2, our approach to solve the energy equation relies on tabulations of various solidification paths. 
 In this case, we will generate a simple tabulation based on a phase diagram
-with linear liquidus and solidus lines, whose properties are reminded in \cref{table:1dalsi7_macro_diagram}
+with linear liquidus and solidus lines, whose properties are reminded in \cref{table:1dalsi7_macro_diagram}.
 
 %--------------------------------
 \begin{table}[htbp]
@@ -1704,11 +1683,12 @@ Liquidus slope 			& $m_l$ 		& \num{-6.5} 	& \si{\uslope}\\\tabucline[1pt]{-}
 %--------------------------------
 
 Using the values from \cref{table:1dalsi7_macro_diagram}, a python program generates a \cimlib-compatible tabulation assuming lever rule as microsegregation law, 
-with a \SI{0.1}{\ucomposition} step for average composition within an offset of 20\% around the nominal value. For temperature,
-a cooling range between $T_E$ and \SI{630}{\udegC} is considered with a step of \SI{1}{\udegC}. It is noted that for this application,
-the phase enthalpies are deduced from constant specific heat of each phase as well as constant latent heat.
+with a \SI{0.1}{\ucomposition} step for average composition within an offset of 20\% around the nominal value, i.e.
+29 composition values within the interval [5.6,8.4]\si{\ucomposition}Si.
+For temperature, a range between $T_E$=\SI{577}{\udegC} and \SI{630}{\udegC} is considered with a step of \SI{1}{\udegC}, corresponding to 54 values. It is noted that for this application,
+the phase enthalpies are deduced from constant specific heat of each phase as well as constant latent heat, given in \cref{table:data_case_inverseseg}.
 
-In order to understand better the effect of shrinkage combined with macrosegregation, we plot in \cref{fig:1dasi7_macro_shrinkage},
+In order to understand better the effect of shrinkage combined with macrosegregation, we plot in \cref{fig:1dalsi7_macro_shrinkage},
 the cooling curves from 4 different simulations: 
 \begin{itemize}
 \itemsep0em
@@ -1737,19 +1717,19 @@ We notice that blue curve temperature of the sixth
 Eulerian sensor rises steadily from 180 s to 600 s reaching a constant temperature of \SI{800}{\udegC}, the air's temperature. 
 This rise confirms the metal has shrunk in length (volume in 3D),
 becoming less than 10 cm, hence replaced by air that entered through the open top boundary.
-The 6$\text{th}$ sensor (at 100 mm) was initially on the metal-air interface, then later relocated in the air after shrinkage.
+The 6$\text{th}$ sensor (at 100 mm) was initially on the metal-air boundary, then later relocated in the air after shrinkage.
 The sensors at 12 cm and 14 cm are not shown in this figure as the simulation done for the pure diffusion without level set, the air domain does not exist.
 Another interesting difference resulting from shrinkage is that solidification ends sooner by about 70 s, compared to the pure diffusion case.
 As mass is almost perfectly conserved in both cases, cooling flux is the only factor that may accelerate the cooling. The imposed cooling boundary condition
 is a Fourier-type with the same heat transfer coefficient $\hext$ in both cases. However, a shrinkage flow transports energy in its direction, i.e. towards the solidification
-front, and thus raising slightly the temperature in regions close to the cool wall. Therefore, the Fourier flux proportional to the temperature difference $(T-\Text)$ increases
-and the sample solidifies earlier. 
+front, and thus raising slightly the temperature in regions close to the cool wall. Therefore, the Fourier flux proportional to the local temperature
+increase and the sample solidifies earlier. 
 
 %\subsubsection{Solidification shrinkage with macrosegregation effect on temperature}
-Finally, \cref{fig:macro_effect} compares cases B and R, both with unequal phase densities but only predicting macrosegregation in the latter case. 
-Differences are not striking, as temperatures
-along the metal sample are the same. We spot however a difference at the 10 cm probe, 
-where a slight rise in temperature is observed with respect to the case without macrosegregation.
+Finally, \cref{fig:macro_effect} compares cases B and R, both with unequal phase densities but also predicting macrosegregation in the latter case. 
+Differences are not striking, as temperatures along the metal sample are the same. 
+% We spot however a difference at the 10 cm probe, 
+% where a slight rise in temperature is observed with respect to the case without macrosegregation.
 %
 %-----------------
 \begin{figure}[htbp]
@@ -1774,10 +1754,11 @@ where a slight rise in temperature is observed with respect to the case without 
     \label{fig:macro_effect}
   \end{subfigure}
    %------------
-\caption{Cooling curves at different fixed positions from 0 to 10 cm (initial metal length) and from 10 cm to 14 cm (initial air length) 
-where we show (a) the effect of solidification shrinkage on temperature history without any macrosegregation then
-we show (b) the effect of macrosegregation on temperature in the presence of solidification shrinkage.} 
-\label{fig:1dasi7_macro_shrinkage}
+\caption{Cooling curves at different fixed positions from 0 to 14 cm. 
+where we show (a) the effect of solidification shrinkage on temperature history without any macrosegregation and
+show (b) the effect of macrosegregation on temperature in the presence of solidification shrinkage.
+Initial \emph{M-A} boundary: 10 cm.} 
+\label{fig:1dalsi7_macro_shrinkage}
 \end{figure}
 %------------------
 
@@ -1811,7 +1792,7 @@ As the transport continues in the same direction,
 solute is progressively depleted in the remaining liquid, causing negative macrosegregation at nodes located between 2 cm and 7 cm from the cold wall.
 \Cref{fig:1dalsi7_gs_w} shows only the first 1.5 cm of the solidifying sample, therefore a complete segregation profile is plotted along the sample length in \cref{fig:1dalsi7_wVSlength}a,
 showing thus the negative macrosegregation as previously explained.
-However, from 7 cm to the metal-air interface, the average composition rises as clearly shown in \cref{fig:1dalsi7_wVSlength}a. This looks more like a numerical
+However, from 7 cm to the \emph{M-A} boundary, the average composition rises as clearly shown in \cref{fig:1dalsi7_wVSlength}a. This looks more like a numerical
 instability than a physical rise in concentration. 
 Bearing in mind that a reduced solute diffusion coefficient is imposed in the air domain \SI{1.5e-12}{\udiffusivity} compared to 
 \SI{1.5e-9}{\udiffusivity} in the metal, we investigate into this instability by proposing two test cases: first, we try to limit the solute advection in the transition
@@ -2017,7 +1998,7 @@ The X-rays show also a visible sign of volume shrinkage at the top of each ingot
 \subsection{Boundary condition effect}
 % ********************************************
 
-First, we want to understand the consequence of removing the no-slip boundary condition at the metal-air interface and compare the effect on macrosegregation. 
+First, we want to understand the consequence of removing the no-slip boundary condition at the \emph{M-A} boundary and compare the effect on macrosegregation. 
 For computations without level set, as previously done in chapter 4 for the \emph{Tsolver}'s validation in convection-diffusion regimes, a no-slip condition was applied for all domain boundaries including 
 the interface.
 However, this is not readily implemented with the level set method which considers the local interface velocity for its transport.
@@ -2103,7 +2084,7 @@ predicted flow pattern and the subsequent macrosegregation.
 The case considers a 2D geometry having equivalent dimensions to the 3D case performed earlier (sample of 10 cm in length and 6 cm in height).
 To accomodate the air domain, an extra 2 cm are added to sample's height, which finally reaches 8 cm, the interface is thus kept at an elevation of 6 cm. 
 The inital mesh consists of three different mesh sizes: isotropic meshes in the air and the metal, having respectively a uniform size of 2 mm and 1 mm.
-Regarding the interface, an anisotropic mesh adapts to the metal-air surface with a mesh size of 0.1 mm in the normal direction to the interface.
+Regarding the interface, an anisotropic mesh adapts to the \emph{M-A} boundary with a mesh size of 0.1 mm in the normal direction to the interface.
 The thickness of the anisotropic mesh spans 0.5 mm from each side of the interface.
 
 To adapt the mesh, we use the \emph{Remesh4} adaptive technique to maintain accurate predictions for velocity and interface transport.
@@ -2887,7 +2868,7 @@ Using the initial and boundary conditions defined earlier, 15 seconds of simulat
 We notice that the predicted overall deformation of the droplet is in a good agreement with the experimental shape after solidification.This agreement is
 still not perfect as some key input parameters are still missing in the model, namely the real gravity acceleration on-board the parabolic flight (which should
 be much greater than value used in the simulation), and the correct heat flux between the sample and the substrate. It is emphasized that for higher gravity
-accelerations, surface tension is of central importance since it counters the gravitational force by stabilising the air-metal interface.
+accelerations, surface tension is of central importance since it counters the gravitational force by stabilising the \emph{M-A} boundary.
 
 %--------------
 \begin{figureth}
@@ -3012,15 +2993,15 @@ reaches the eutectoid isotherm at \SI{727}{\udegC}.
 	xlabel=Distance from chill (mm),
 	%xticklabel style={/pgf/number format/fixed},
 	yticklabel style={/pgf/number format/fixed},
-	xtick={0,1,...,6},
-	xticklabels={0,1,...,6},
+	xtick={0,1,...,8},
+	xticklabels={0,1,...,8},
 	ytick={-5,-2.5,...,5},
 	yticklabels={-5,-2.5,...,5},
 	%x tick label style={rotate=45,anchor=east},
 	width=0.85\textwidth,
 	height=8cm,	
 	ymin=-5, ymax=5,
-	xmin=0, xmax=6,
+	xmin=0, xmax=8,
 	mark repeat	= {50},
 	%cycle list name=mycycle, %exotic,
 	axis y line*=left,
@@ -3044,7 +3025,7 @@ reaches the eutectoid isotherm at \SI{727}{\udegC}.
 	width=0.85\textwidth,
 	height=8cm,	
 	ymin=0, ymax=1.05,
-	xmin=0, xmax=6,
+	xmin=0, xmax=8,
 	mark repeat	= {50},
 	cycle list name=mycycle,
 	axis y line*=right,
