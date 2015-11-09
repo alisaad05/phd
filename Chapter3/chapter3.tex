@@ -114,7 +114,7 @@ to close the relation.
 The complexity of performing a thermodynamic conversion is directly linked 
 to the simplicity of determining the alloy properties, namely the phase fractions 
 and both phase densities and enthalpies. In the case of binary alloys and with several assumptions 
-with respect to the system (e.g., linear monovariant lines in temperature-composition 
+with respect to the system (e.g., linear mono-variant lines in temperature-composition 
 relationships of the phase diagram, constant heat capacity of phases and constant latent heat of transformations, 
 equilibrium approximations between phases) analytical calculations are often used to determine 
 the phase fractions and phase compositions. 
@@ -170,7 +170,7 @@ Regarding the enthalpy-to-temperature conversion (\emph{H2T}) shown in the flowc
 a backward iterative \emph{T2H} search is performed. 
 For a known composition $\wi$, denoting $\brent$ the iteration index to convert the enthalpy 
 $H_{\text{input}}$, we start with an initial guess for temperature $T^{\brentzero}$ then convert it to an 
-enthalpy $H^{\brentzero}$ with the \emph{T2H} conversion. Using an appropriate nonlinear algorithm (Brent is the most versatile 
+enthalpy $H^{\brentzero}$ with the \emph{T2H} conversion. Using an appropriate non-linear algorithm (Brent is the most versatile 
 in our case), we aim at minimizing the following scalar residual: $R_{H} = \abval{H_{\text{input}} - H^\brent }$. 
 Once the algorithm has converged, the temperature $T^\brent$ is the result of the \emph{H2T} conversion. It is 
 inferred that the first conversion (\emph{T2H}) is a direct one whereas the latter (\emph{H2T}) is indirect and requires 
@@ -1258,18 +1258,18 @@ First, we address the technical difficulties inherent to the solver. The previou
 showed that the Newton-Raphson method is used to linearise the energy equation then iterate on the value of the nonlinear
 $\vec{\dHdT}$ term. The initial value of this term is crucial to achieve a good convergence rate, and therefore it is only manually set equal 
 to initial phases volume heat capacity. This should evolve into an automatic initialisation based on a first evaluation given by the tabulation,
-making the appraoch more general. 
+making the approach more general. 
 
 The second point is the number of iterations needed by the method to converge.
 Although the Newton-Raphson algorithm is known for its quadratic convergence speed, imposing low convergence thresholds (\cref{eq:energy_convergence_criteria}) 
 may easily raise the number of iterations to an average of 5 iterations before convergence can be achieved. In situations without
 phase change but only variable slope of enthalpy versus temperature, from 1 to 2 iterations are needed to converge.
 A possible solution is to implement a line search method which is called at each iteration, whenever the residual of the nonlinear
-system increases insteading of steadily decreasing. 
+system increases instead of steadily decreasing. 
 % Moreover, since $\vec{dHdT}$ is a derivative which is based on ratio of finite differences for averaged volumetic enthalpy and temperature, \red{continue...}
 
 Regarding the thermodynamic tabulations, they are only obtained by assuming full equilibrium for macrosegregation calculations. 
-For many binary alloys, little differences are usually seen when the macrosegregation is induced by a full equlibrium and a non equilibrium solidification
+For many binary alloys, little differences are usually seen when the macrosegregation is induced by a full equilibrium and a non equilibrium solidification
 It is clear however that this approximation remains limiting for multicomponent alloys. 
 For steels, a third type of approximation is even required, named partial equilibrium, that considers equal chemical potential 
 of interstitial elements in all phases (e.g., C), while substitutional species in the solid phases (e.g., Cr) are frozen \citep{koshikawa_computation_2014}. 
