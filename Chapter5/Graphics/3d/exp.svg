@@ -31,7 +31,7 @@
      inkscape:current-layer="layer1"
      showgrid="false"
      inkscape:window-width="1920"
-     inkscape:window-height="996"
+     inkscape:window-height="1018"
      inkscape:window-x="-8"
      inkscape:window-y="-8"
      inkscape:window-maximized="1"
@@ -594,7 +594,7 @@
        font-style="normal"
        stroke-miterlimit="10.433"
        xml:space="preserve"
-       transform="matrix(4.5134588,0,0,-4.5134588,-1294.0169,4782.8677)"
+       transform="matrix(4.5134588,0,0,-4.5134588,-1277.8545,4803.0708)"
        id="g8081">
 <path
    id="path8083"
@@ -625,8 +625,9 @@
     <path
        inkscape:connector-curvature="0"
        id="path8725"
-       d="M 40.821534,1339.2472 -179.39172,1559.4605"
-       style="fill:none;stroke:#ffffff;stroke-width:2;stroke-linecap:butt;stroke-linejoin:miter;stroke-miterlimit:4;stroke-opacity:1;stroke-dasharray:none" />
+       d="m -433.95016,1422.0797 157.5838,151.5229"
+       style="fill:none;stroke:#ffffff;stroke-width:2;stroke-linecap:butt;stroke-linejoin:miter;stroke-miterlimit:4;stroke-opacity:1;stroke-dasharray:none"
+       sodipodi:nodetypes="cc" />
     <path
        inkscape:connector-curvature="0"
        id="path8727"
