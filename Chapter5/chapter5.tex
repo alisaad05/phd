@@ -1205,18 +1205,18 @@ The mesh properties are given in \cref{table:1dalsi7_meshsize}.
 %--------------------------------
 \begin{table}[htbp]
 \centering
-\caption{Summary of the different mesh sizes used to generate an adaptive anisotropic mesh, along with the level set mixing thickness, $\varepsilon$. 
+\caption{Summary of the mesh parameters used to generate an adaptive anisotropic mesh, along with the level set mixing thickness, $\varepsilon$. 
 Refer to \cref{sec:remesh2_params} for the definition of each mesh parameter.}
 \label{table:1dalsi7_meshsize}
 {\tabulinesep=1.0mm \begin{tabu}{ll}
 \tabucline[1pt]{-}
-\textbf{Mesh parameter} & \textbf{Size [\si{\metre}]} \\\tabucline[1pt]{-}
+\textbf{Mesh parameter} & \textbf{Value} \\\tabucline[1pt]{-}
 %-----------------------------
-$\varepsilon $			&	\num{2.5e-4}	\\
-$h_{\vec{n}}$ 			&	\num{2.5e-5}	\\ 
-$h_{\vec{\tau}}$ 		&	\num{2e-4}		\\ 
-$h_M$  					&	\num{1.5e-4}	\\
-$h_A$  					&	\num{2.5e-4} 	\\
+$\varepsilon $			&	\SI{2.5e-4}{\metre}	\\
+$h_{\vec{n}}$ 			&	\SI{2.5e-5}{\metre}	\\ 
+$h_{\vec{\tau}}$ 		&	\SI{2e-4}{\metre}	\\ 
+$h_M$  					&	\SI{1.5e-4}{\metre}	\\
+$h_A$  					&	\SI{2.5e-4}{\metre} 	\\
 Number of nodes 		&   $\approx$\num{7e3} \\ 
 Number of elements 		&   $\approx$\num{1e4} \\\tabucline[1pt]{-}
 %-----------------------------
@@ -2482,9 +2482,11 @@ to time 0 s in \cref{fig:camera}.}
 \end{figureth}
 %--------------
 
-The mesh is then automatically adapted to the moving interface using \emph{Remesh2}. We adopt the same remeshing strategy applied 
-for 1D cases, whereby a fixed mesh size is imposed in the metal domain to limit as much as possible information diffusion due to remeshing,
-this is specially important for the average composition field. The corresponding parameters are given by \cref{table:texus_remeshing_params}.
+The mesh is then automatically adapted to the moving interface using \emph{Remesh2}. 
+We adopt the same remeshing strategy applied for computations shown in \cref{fig:1dalsi7_equalprops,fig:1dalsi7_differentprops}. 
+whereby a fixed mesh size, $h_M$, is imposed in the metal domain, another fixed size, $h_A$, for the argon domain, while the 
+interface is remeshed using anisotropic elements. All remeshing parameters are found in \cref{table:texus_remeshing_params}. 
+The corresponding parameters are given by \cref{table:texus_remeshing_params}.
 Remeshing is performed each second.
 %--------------------------------
 \begin{table}[htbp]
@@ -2494,12 +2496,12 @@ Refer to \cref{sec:remesh2_params} for the definition of each mesh parameter.}
 \label{table:texus_remeshing_params}
 {\tabulinesep=1.0mm \begin{tabu}{ll}
 \tabucline[1pt]{-}
-\textbf{Mesh parameter} & \textbf{Size [\si{\metre}]} \\\tabucline[1pt]{-}
+\textbf{Mesh parameter} & \textbf{Value} \\\tabucline[1pt]{-}
 %-----------------------------
-$\varepsilon $							&	\num{1.5e-4}	\\
-$h_{\vec{n}} = h_{\vec{\tau}}$			&	\num{2e-5}		\\ 
-$h_M$  									&	\num{1e-4}		\\
-$h_A$  									&	\num{6e-4} 		\\
+$\varepsilon $							&	\SI{1.5e-4}{\metre}	\\
+$h_{\vec{n}} = h_{\vec{\tau}}$			&	\SI{2e-5}{\metre}		\\ 
+$h_M$  									&	\SI{1e-4}{\metre}		\\
+$h_A$  									&	\SI{6e-4}{\metre} 		\\
 Remeshing frequency  					&	1 s 		\\
 Number of nodes 						&   $\approx$\num{1e5} \\ 
 Number of elements 						&   $\approx$\num{5e5} \\\tabucline[1pt]{-}
@@ -2518,7 +2520,8 @@ therefore it is not considered in our model, hence all boundaries are considered
 as previously mentioned. This surface is modelled by a Fourier condition with $\Text$=\SI{25}{\udegC} 
 and an effective exchange coefficient $\hext$ of \SI{6e4}{\uhconvec}. 
 The $\hext$ coefficient's value has been determined by running multiple simulations with different values in the aim
-of predicting a front speed as closer as possible to the experimental measurements plotted in \cref{fig:position_vs_time_binary}, as explained in the coming sections.
+of predicting a front speed as closer as possible to the experimental measurements plotted in \cref{fig:position_vs_time_binary}, 
+as explained in the coming sections.
 
 %--------------------------------------
 \begin{figure}[htbp]
@@ -2541,7 +2544,7 @@ of predicting a front speed as closer as possible to the experimental measuremen
 	%xtick={0,200,400,600,800,1000},
 	%ytick={-0.1,0,0.1,0.2},
 	%x tick label style={rotate=45,anchor=east},
-	width=0.4\textwidth,
+	width=0.6\textwidth,
 	%height=5cm,	
 	%ymin=-0.1, ymax=0.2,
 	%mark repeat	= {30},
@@ -2565,15 +2568,16 @@ in 2009 and TEMPUS 2014 measurements \citep{gandin_project_2014}.}
 
 For the velocity-pressure boundary conditions, \cref{fig:texus_bc} shows that a no-slip condition is imposed
 on the droplet-substrate surface, 
-since this area solidifies in the first place without further fluid motion, as shows \cref{fig:camera}.
+since this area solidifies first without further fluid motion, as shows \cref{fig:camera}.
 It is noted that the first solidified shell may experimentally deform under thermal contraction stresses, 
 but we do not consider it hereafter, unlike what was done by \citet{rivaux_simulation_2011}. 
 For the rest of the domain, we impose the normal velocity component to zero on both symmetry faces, 
-while keeping free tangential components. The remaining boundaries, namely the top and the outer surface of the argon gas (cylinder generatrix),
+while keeping free tangential components. The remaining boundaries, namely the top and the outer lateral surface of the argon gas,
 have free velocity components. However, such condition may cause instability in the level set transport solver. 
 This problem has been reported by \citep{basset_simulation_2006}, showing a limitation in the imposed boundary conditions between Navier-Stokes solver and level set transport. 
 Therefore, we limit these instabilities by imposing a no-slip condition, thus allowing the argon to flow in the computational
-domain through the generatrix. The cylinder height was taken big enough to prevent any flow damping near the droplet's north pole,
+domain through the outer lateral surface. 
+The cylinder height was taken big enough to prevent any flow damping near the droplet's north pole,
 which may spuriously alter its final shape. The pressure condition for the argon gas is left free for all boundaries.
 %as the experiment does not provide any pressure measurement of the confined argon.
 The adopted time step is 0.01 s.
@@ -2600,16 +2604,37 @@ The adopted time step is 0.01 s.
 %path 
 {Chapter5/Graphics/3d/bc.pdf}
 % caption
-{3D views showing the thermal (in \red{red}) and mechanical (in \blue{blue}) boundary conditions used in reduced-gravity simulations.}
+{3D views showing the thermal (in \red{red}) and mechanical (in \blue{blue}) boundary conditions used in reduced-gravity simulations.
+The symmetry planes represent the following set of boundary conditions: adiabatic, zero normal velocity, free tangential velocity and pressure-free.}
 % label
 \label{fig:texus_bc}
 \end{figureth}
 %--------------
 
+% -------------------------------
+\subsubsection{Choice of alloy}
+% -------------------------------
+
+Various steel grades were considered in the CCEMLCC project, depending on whether the considered alloy will be used for parabolic flights
+or sounding rocket missions. A medium-carbon steel, \tern{Fe}{0.9}{C}{0.2}{Si}, was affected for TEMPUS parabolic flights.
+For TEXUS missions, the sample is a low-carbon steel and the grade is designated as "\emph{b1}" alloy. Its nominal 
+composition is given in \cref{table:texus_b1}. 
+
+% For this modelling part, we are mainly interested in two things: first predict the final droplet shape 
+As our approach relies on thermodynamic tabulations, we show in 
+the next section that we can take into account the multicomponent alloy to predict segregation, by considering 
+first only one species, hence a binary Fe-C alloy, refer to as \emph{b1Bin} alloy. 
+In a later step, we consider a ternary Fe-C-Si alloy, \emph{b1Tern}. 
+Finally, we consider a quaternary Fe-C-Mn-Si alloy, \emph{b1Quat}. 
+
+By performing the same reduced-gravity simulation while varying the alloy from binary to quaternary, we can study 
+how the varying solidification paths (as a consequence of macrosegregation) may affect the final droplet shape, 
+as the shrinkage profile is directly related to the solid fraction and its evolution with time.
+
 %--------------------------------
 \begin{table}[htbp]
 \centering
-\caption{Nominal composition (\si{\ucomposition}) of the experimental \emph{b1} steel and its simulation equivalent binary, ternary and quaternary alloys, 
+\caption{Nominal composition (\si{\ucomposition}) of the experimental \emph{b1} steel and its binary, ternary and quaternary alloys approximations, 
 respectively \emph{b1Bin}, \emph{b1Tern} and \emph{b1Quat}. }
 \label{table:texus_b1}
 {\tabulinesep=1.0mm \begin{tabu}{lcccccc}
@@ -2623,45 +2648,32 @@ respectively \emph{b1Bin}, \emph{b1Tern} and \emph{b1Quat}. }
 %-----------------------------
 \end{tabu}}
 \end{table}
+
+
 %--------------------------------
-
-% -------------------------------
-\subsubsection{Choice of alloy}
-% -------------------------------
-
-Various steel grades were considered in the CCEMLCC project. Each grade was assigned to a specific experiment. 
-We limit our study to the steel assigned for TEXUS missions, the grade is designated as "\emph{b1}" alloy. Its nominal 
-composition is given in \cref{table:texus_b1}. As our approach relies on thermodynamic tabulations, we show in 
-the next section that we can take into account the multicomponent alloy to predict segregation, by considering 
-first only one species, hence a binary Fe-C alloy, refer to as \emph{b1Bin} alloy. In a later step, we consider a ternary Fe-C-Si alloy, \emph{b1Tern}. 
-Finally, we consider a quaternary Fe-C-Mn-Si alloy, \emph{b1Quat}. 
-
-By performing the same reduced-gravity simulation while varying the alloy from binary to quaternary, we can study 
-how the varying solidification paths (as a consequence of macrosegregation) may affect the final droplet shape, 
-as the shrinkage profile is directly related to the solid fraction and its evolution with time.
-
 % -------------------------------
 \subsubsection{Parametric study: final shape prediction}
 % -------------------------------
 
 In this subsection, we focus on obtaining a comparable finale shape of the droplet between the experiment and simulation.
-To do so, we vary 2 main important parameters: first, the heat transfer coefficient of the metal-substrate contact surface
-controls the heat extraction and hence the solidification rate. Second parameter is the magnitude if the gravitational field,
+To do so, we study the variations of 2 main important parameters: first, the heat transfer coefficient of the metal-substrate contact surface that controls the heat extraction and hence the solidification rate. 
+The second parameter is the magnitude if the gravitational field,
 which has a great influence on the fluid flow inside the molten droplet.
 The importance of this parametric study is two-fold: 
 \begin{enumerate}
 \itemsep0em
 
 \item in our model, the energy equation solved with the level set methodology considers only heat conduction 
-and advection in the gas A, hence no account for the heat dissipated by radiation (which is an ongoing PhD project at CEMEF). 
-Therefore a trial-and-error strategy is necessary to determine an optimal value of $\hext$ to ensure that the solidification rate is the same
-as in the experiment,
+and advection in the gas A, hence no account for the heat dissipated by radiation.
+% (which is an ongoing PhD project at CEMEF). 
+Therefore a trial-and-error strategy is necessary to determine an optimal value of $\hext$ 
+to ensure that the solidification rate is comparable to the experimental measurements,
 
 \item from a hydrodynamics perspective, a containerless molten droplet levitated under reduced-gravity conditions is maintained nearly spherical 
 under the action of surface tension forces. Other forces due to tangential surface tension gradients (Marangoni force) or Lorentz force may also exist.
 Although possible to implement by the CSF method, accounting numerically for surface tension adds complexity to the model by imposing
 a time step constraint. However, if we neglect this force, the droplet will tend to collapse if gravity acceleration is fast enough.
-Consequently, a parametric study helps us determine this gravity threshold, in the absence of surface tension. 
+Consequently, a parametric study helps us determine this gravity threshold, while neglecting surface tension and Lorentz forces. 
 \end{enumerate}
 
 A series of test simulations were launched in the aim of getting comparable results with the experiment.
