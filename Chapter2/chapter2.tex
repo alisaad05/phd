@@ -17,7 +17,7 @@ diffusional processes, is a time-dependent phenomenon. One can thus conclude tha
 influence the amount of solid formation: cooling rate and diffusion coefficients. However, 
 convection and other mechanical mixing sources, homogenise the composition much faster than atomic diffusion. 
 
-Considering that $\Dl/\Ds\approx$\num{1e3}-\num{1e4} for species within the solidification interval, \emph{complete mixing} in the liquid is often an acceptable assumption, regardless of the 
+Considering that $\Dl/\Ds\approx$\num{d3}-\num{d4} for species within the solidification interval, \emph{complete mixing} in the liquid is often an acceptable assumption, regardless of the 
 solidification time. Thus, we speak of infinite diffusion in the liquid. Diffusion in the solid, 
 also known as \emph{back diffusion}, is the only transport mechanism with very low diffusion coefficients. 
 Therefore, chemical species require a long time, i.e. low cooling rate, to completely diffuse within the solid.
@@ -175,7 +175,7 @@ knowing its flux, $\vec{j_{\psi}}$. The RHS term represents a volumetric source.
 The considered equations are mass, energy, species conservation 
 and momentum. 
 % all summarised in \cref{tab:conservationeqs}. 
-The latter equation is averaged only for the liquid phase,
+The latter equation is written only for the liquid phase,
 as we assume a fixed and rigid solid phase ($\vs=\vec{0}$), thus the corresponding equation vanishes.
 
 % %-----
@@ -273,6 +273,8 @@ by considering that for macroscopic scales, the average composition of the alloy
 and diffusive transport in the liquid.
 
 In \cref{eq:fourierlaw}, we assume that phases are at thermal equilibrium, that is, temperature is uniform in the RVE.
+We also introduced the average thermal conductivity, $\avg{\kappa}$, defined as $\avg{\kappa}=\gs \ks + \gl \kl$.
+
 Using \cref{eq:mainingredients1,eq:mainingredients2,eq:mainingredients3,eq:mainingredients4,eq:mainingredients5,eq:mainingredients6,eq:mainingredients7,eq:mainingredients8,eq:fourierlaw,eq:ficklaw}
 and following the same procedure done in \cref{eq:conservation_mass_local}, the averaged equations for mass, energy and species conservation hence respectively write:
 %------
@@ -286,16 +288,19 @@ and following the same procedure done in \cref{eq:conservation_mass_local}, the 
 \end{align}
 %------------
 
-As stated previously, the momentum balance in the solid phase is not taken into consideration, hence we do not sum the corresponding 
-local conservation equations. This has consequences on the advection terms in energy and species conservation, and later on we will show
+As stated previously, the momentum balance in the solid phase is not taken into consideration, hence we do not sum the corresponding
+conservation equations. This has consequences on the advection terms in energy and species conservation, and later on we will show
 the consequences on the momentum conservation in the liquid. 
 
 First, the advection terms in \cref{eq:conservation_energy_init,eq:conservation_solute_init}
 shall be redefined by considering that the fluid is incompressible $\brac{\nabvec \cdot \vit = 0}$, which yields:
 %------
 \begin{align}
-\label{eq:advection_no_solid}
+\label{eq:constantrhol_mass}
+& \nabvec \cdot \avg{\rho \vec{v}} = \vit \cdot \nabvec \brac{\rhol} \\
+\label{eq:constantrhol_energy}
 & \nabvec \cdot \avg{\rho h \vec{v}} = \vit \cdot \nabvec \brac{\rhol \hl} \\
+\label{eq:constantrhol_solute}
 & \nabvec \cdot \avg{\rho w_i \vec{v}} = \vit \cdot \nabvec \brac{\rhol \wil}
 \end{align}
 %------------
@@ -374,7 +379,7 @@ in \cref{eq:conservation_momentumliq_init}:
 \begin{multline}
 \label{eq:conservation_momentumliq}
  \temp{ \rhol \vit } + \frac{1}{\gl} \nabvec \cdot \brac{\rhol \vit \times \vit} = \\
-	  - \gl\nabvec \pl - 2 \mul \nabvec \cdot \brac{\nabmat \vit + \nabmattransp \vit}
+	  - \gl\nabvec \pl - \mul \nabvec \cdot \brac{\nabmat \vit + \nabmattransp \vit}
 	  - \gl \mul \K^{-1} \vit + \gl \rhol \gravity
 \end{multline}
 % \end{align}
@@ -390,7 +395,7 @@ A fourth equation provided by the mass balance (\cref{eq:conservation_mass})is t
    \left\{
    \begin{aligned}
       & \temp{ \rhol \vit } + \frac{1}{\gl} \nabvec \cdot \brac{\rhol \vit \times \vit} = \\
-	  &- \gl\nabvec \pl - 2 \mul \nabvec \cdot \brac{\nabmat \vit + \nabmattransp \vit}
+	  &- \gl\nabvec \pl - \mul \nabvec \cdot \brac{\nabmat \vit + \nabmattransp \vit}
 	  - \gl \mul \K^{-1} \vit + \gl \rhol \gravity\\ \\
       & \nabvec \cdot \vit =0
     \end{aligned}
@@ -419,7 +424,7 @@ equations, applied to a solidifying melt:
    \left\{
    \begin{aligned}
       & \rholref \brac{\tempup{ \vit } + \frac{1}{\gl} \nabvec \cdot \brac{\vit \times \vit}} = \\
-	  &- \gl\nabvec \pl - 2 \mul \nabvec \cdot \brac{\nabmat \vit + \nabmattransp \vit}
+	  &- \gl\nabvec \pl - \mul \nabvec \cdot \brac{\nabmat \vit + \nabmattransp \vit}
 	  - \gl \mul \K^{-1} \vit + \gl \rhol \gravity\\ \\
       & \nabvec \cdot \vit =0
     \end{aligned}
@@ -595,7 +600,7 @@ The blue boxes represent the output of each equation.}
 %***********************************************
 \subsection{Overview}
 %***********************************************
-In mechanics, it is possible to describe motion using two well-known motion description: Eulerian and Lagrangian descriptions.
+In mechanics, it is possible to describe motion using two well-known descriptions: Eulerian and Lagrangian.
 To start with the latter, it describes the motion of a particle by attributing a reference frame that moves with the particle.
 In other words, the particle itself is the center of a reference frame moving at the same speed during time. 
 The position vector, denoted by $\vec{x}$, is hence updated as follows:
@@ -698,7 +703,7 @@ to which the node belongs.
 \begin{cases}
   d_\Gamma(\vec{x}) 		& \text{ if } \vec{x} \in F_1 \\ 
  -d_\Gamma(\vec{x})			& \text{ if } \vec{x} \in F_2 \\ 
-  0 						& \text{ if } \vec{x} \in \Gamma_{F1, F2} 
+  0 						& \text{ if } \vec{x} \in \Gamma %_{F1, F2} 
 \end{cases}
 \end{align}
 %------------
@@ -709,9 +714,9 @@ to which the node belongs.
 %path 
 {Chapter2/Graphics/distancefunction.pdf}
 % caption
-{Schematic of the interface $\Gamma$ (thick black line) of a rising air bubble ($\Omega$) in water. The other contours represent isovalues
-of the distance function around and inside the interface contour. Those outside are signed negative whereas inside they are signed
-positive.}
+{Schematic of the interface $\Gamma$ (thick black line) of a rising air bubble ($F_1$) in water ($F_2$). 
+The other contours represent isovalues of the distance function around and inside the interface contour. 
+Those outside are signed negative whereas inside they are signed positive.}
 % label
 \label{fig:distance_function}
 \end{figureth}
