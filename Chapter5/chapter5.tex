@@ -267,7 +267,7 @@ interfaces should be accounted for when considering the transport of the metal-a
 
 
 
-\subsection{Metal-Air boundary definition} 
+\subsection{Metal-Air boundary definition} \label{sec:M_A_definition}
 %---------------------------------------------
 
 % ---------------BEGINNING OF INSERTED TEXT ----------------------------------
@@ -742,37 +742,19 @@ in the current context) as follows:
 
 \subsubsection{Species conservation} \label{sec:solute_air}
 %-----------------
-The composition of alloying elements is a crucial quantity to predict in this work. Nevertheless, such prediction is only relevant
-in the metallic alloy, even if the air is also made up of other chemical species (nitrogen, oxygen ...). For this obvious reason,
-the species conservation equation should not be solved in the air, but that of course is contradictory to the principle of a monolithic approach.
-Consequently, we should compute the conservation of chemical species in both the metal and the air, considering the latter as
-a \emph{fictitious metal}, thus having initially the same solute mass composition, $\avg{\Cnominal}^M=\avg{\Cnominal}^A$. 
-Then, we limit as much as possible solute transport between these domains by limiting solute advection and diffusion.
-The computed air velocity, $\va$, will not be used but rather a zero-velocity vector instead, thus suppressing the solute advection term influence.
-As for solute diffusion, a very low macroscopic solute diffusion 
-coefficient is used, ensuring that its order of magnitude is at most 
-a thousand times less than that in the melt, $\Da \lll \Dl$.
-The low artificial diffusion in the air may slightly violate the wanted 
-no-exchange condition at the air-liquid interface, 
-but it is acceptable since suppressing the diffusion term in the air would 
-result in a numerically stiff partial differential equation.
-%--------------
-\begin{align}
-  \label{eq:solute_balance_air}
-	& \avg{\rho}^A \tempup{\avg{w}^A}
-	%+ \va \cdot \nabvec \brac{\rhoa \wa}
-	- \nabvec \cdot \brac{\Da \nabvec \brac{\rhoa \wa} } = 0
-\end{align}
-%--------------
-
-In contrast to \cref{eq:solute_balance_metal} for the metal, solute balance in the air, given by \cref{eq:solute_balance_air}, provides
-a linear equation as we consider a special case where the domain is monophase, therefore:  $\avg{w}^A = \avg{w}^a$ at all times.
-% Otherwise, we would have applied the variable decomposition done earlier in \cref{eq:voller_prakash} to linearise the equation.
+The composition of alloying elements is a crucial quantity to predict in this work. 
+Nevertheless, such prediction is only relevant with metallic species, even if the air 
+is also made up of other chemical species (e.g. nitrogen, oxygen ...). 
+While the other conservation equations (energy, mass and momentum) are important to be solved in the air, 
+the species conservation equation brings no added value to the model when solved in this domain. 
+It may even cause the composition values (i.e. the equation solution) to be unstable near the \emph{M-A} boundary, where mixed properties
+may lead to unwanted solute transport in both directions across the boundary, hence causing cumulative errors.
+Therefore, we leave the species resolution in the air to be included in the final monolithic model.
 
 \section{FE monolithic model}
 %---------------------------------------
 
-\subsection{Monolithic equations}
+% \subsection{Monolithic equations}
 % -----------------------------------------------
  
 The monolithic model combines all conservation equations derived for metal and air in a unique set of equations, to be solved on a Eulerian mesh.
@@ -781,7 +763,7 @@ function then summing all terms, finally using the mixed properties to simplify 
 For each conservation equation, these mixed properties will be properly defined before writing the final monolithic equation.
 
 % ==========================================
-\subsubsection{Mass and momentum conservation}
+\subsection{Mass and momentum conservation}
 % ==========================================
 We define the Metal+Air system velocity, $\vitf$, as an arithmetic mixing between each domain's relative average fluid velocity, 
 i.e. the domain's own relative fluid phase velocity with respect to solid phases.
@@ -916,7 +898,7 @@ The momentum balance can now be obtained from $\heavisideM \times$\cref{eq:momen
 %------------
 
 % ==========================================
-\subsubsection{Energy conservation}
+\subsection{Energy conservation}
 % ==========================================
 To write the monolithic energy conservation equation, we are interested in \cref{eq:energy_balance_metal,eq:energy_balance_air}.
 Mixed quantities from these equations are defined by:
@@ -950,44 +932,90 @@ Using the mixed thermophysical properties, \cref{eq:energy_balance_metal,eq:ener
 		+ \mix{\Phi} 
 \end{align}
 %-------
-The solution of \cref{eq:monolithic_energy} is $\mix{\avg{\rho h}}$, a mixed field between both domains average volumetric
-enthalpies.
+The solution of \cref{eq:monolithic_energy} is $\mix{\avg{\rho h}}$, 
+a mixed field between both domains average volumetric enthalpies. 
 
- 
-\subsubsection{Species conservation}
+Using the current approach for the energy, any motion of the \emph{M-A} boundary is energetically translated
+into a phase change between the air phase on one side and the metallic phases on the other side.
+\citet{chen_three_2014} tackled this problem by reformulating the energy equation with the smoothed Heaviside functions in order to prevent 
+this purely numerical phenomenon. However in the current work, we prefer avoiding this numerical artefact by 
+using the same tabulated phase enthalpy properties (or specific heat if the tabulation approach is not used) for
+the air and the liquid phase. This assumption made on only for the $\liqair$ is compatible with definition of the mobile \emph{M-A}
+boundary made in \cref{sec:M_A_definition}.
+
 %-------------------------------------
-Unlike the monolithic energy conservation which applies to whole Metal+Air system, the monolithic species conservation equation is dedicated
+\subsection{Species conservation}
+%-------------------------------------
+% --------------- BEGIN INSERTED TEXT
+% Consequently, 
+% %--------------
+% \begin{align}
+%   \label{eq:solute_balance_air}
+% 	& \avg{\rho}^A \tempup{\avg{w}^A}
+% 	%+ \va \cdot \nabvec \brac{\rhoa \wa}
+% 	- \nabvec \cdot \brac{\Da \nabvec \brac{\rhoa \wa} } = 0
+% \end{align}
+% %--------------
+
+% In contrast to \cref{eq:solute_balance_metal} for the metal, solute balance in the air, given by \cref{eq:solute_balance_air}, provides
+% a linear equation as we consider a special case where the domain is monophase, therefore:  $\avg{w}^A = \avg{w}^a$ at all times.
+% --------------- END INSERTED TEXT
+Unlike monolithic energy conservation which applies to whole metal+air system, the monolithic species conservation equation is dedicated
 to the transport of \emph{metallic} chemical species, meaning that the air does not contain any metallic species to be transported.
 This physical specificity leaves us with two main resolution strategies:
+
+\paragraph{Monolithic strategy:}
+we combine two species conservation equations into a single monolithic equation. 
+We compute the conservation of chemical species in both the metal and the air, considering the latter as
+a \emph{fictitious metal}. Then, we control solute transport between both domains by:
+
 \begin{enumerate}
-\itemsep0em
-	\item we consider the same species transport equation for the metal and for the air, but using very low diffusion coefficient in the air.
-			(where \emph{fluid } refers to liquid phase in the metal and the single air phase in the air). 
-			In this case, the fictitious air composition, $\avg{w}^A$, 
-			is reset to zero after each resolution so as to prevent any enrichment.
+
+	\item initial composition: 
+	the air average composition (which is equal to the composition of the air phase in our case) 
+	should normally be initialised to zero. However, this initialisation
+	creates a composition gradient across the \emph{M-A} boundary, creating a driving force for diffusion. 
+	Another option would be initialising both domains to the same value, $\avg{\Cnominal}^M=\avg{\Cnominal}^A$. 
+	This has the advantage of keeping solutal gradients to the lowest during the boundary motion 
+	and delaying as much as possible the occurrence of artificial solute transport, until the $\solair$ 
+	interface forms gradually,
+	
+	\item solute diffusion: 
+	a very low macroscopic solute diffusion coefficient is used, 
+	at most a thousand times less than its value in the melt, $\Da \lll \Dl$.
+	The low solute diffusion in the air may not completely ensure a zero solute flux at 
+	the \emph{M-A} boundary, but it helps maintaining a weak diffusive transport,
+
+	\item solute advection: the computed fluid velocity, $\vitf$, is postprocessed to be zero 
+	in the species equation for the air, thus suppressing the advective solute transport term influence
+	which can be more important than the diffusive transport.
+	
 \end{enumerate}
 
-As previously explained in \cref{sec:solute_air}, we consider that species conservation is solved over both domains, as follows:
-%-------
-\begin{align}
-\label{eq:monolithic_solute}
-\begin{split}
- & \avg{\rho}^M \tempup{\mix{\avg{w}}}  + \rhol  \vit \cdot \nabvec \mix{\avg{w}} - \nabvec \cdot \brac{\gl \rhol \Dl \nabvec \mix{\avg{w}}}=\\
- &	 - \tempup{\avg{\rho}^M} \crochet{\brac{\avg{w}^M}^t - \brac{\wl}^t} \\ 
- &	 + \rhol \vit \cdot \nabvec \brac{\brac{\avg{w}^M}^t -\brac{\wl}^t}
- 	 - \nabvec \cdot \crochet{\gl \rhol \Dl  \nabvec \brac{\brac{\avg{w}^M}^t -\brac{\wl}^t} }
-  \end{split}
-\end{align}
-%-------
-then we deduce the metal's solute composition by postprocessing the obtained solution.
-%---------------------------------------*
-% \comment{i should multiply solid fraction by HeavisideM before Sortie to correct the visu. no problem for resolution as
-% in Tsolver HeavisideA is taken into account then next time step's T2H will determine a raw solid fraction in the air and the metal}
-% \comment{i should create a new FeC tabulation with concentration variation. Once done, revert to 5 times the Concentration parameter
-% in the ChampParametre of Tsolver and T2H}
-% \subsection{Darcy term in the air}
-%------
 
+% we consider one equation for species transport for both air and metal. 
+% By adjusting the solutal diffusion coefficient in the air to low values, we
+% can limit  The motivation to go for this strategy using very low diffusion coefficient in the air.
+% (where \emph{fluid } refers to liquid phase in the metal and the single air phase in the air). 
+% In this case, the fictitious air composition, $\avg{w}^A$, 
+% is reset to zero after each resolution so as to prevent any enrichment.
+
+\paragraph{Non-monolithic strategy:}
+
+this strategy aims to avoid the difficulty of dealing with a \emph{fictitious} solute equation for the air.
+This is done by considering only the metal's species conservation equation, \cref{eq:solute_balance_metal}.
+The solution of the latter is the average composition, $\avg{w}^M$. From this solution, we determine the monolithic
+composition value, $\mix{\avg{w}}$, in a straightforward manner at each time increment:  
+% -----------
+\begin{align}
+\label{eq:nonmonolithic_solute}
+& \mix{\avg{w}} = \heavisideM \avg{w}^M + \heavisideA \avg{w_0}^M     
+\end{align}
+% -----------
+where we directly initialise the composition in the air to the metal's nominal composition.
+This strategy has the advantage of being simpler, especially we do not have to deal with density terms
+(which can be seen for example in \cref{eq:solute_balance_metal}) 
+as dictates the previous monolithic strategy, while air density remains constant in this work.
 
 %------------------
 % \subsection{Interface motion and stability}
@@ -1000,14 +1028,14 @@ then we deduce the metal's solute composition by postprocessing the obtained sol
 % of the interface, unless we pay attention to the order of the integration method as well as the time step used in Navier-Stokes
 % resolution.
 
-% \subsubsection{Integration order influence}
+% \subsection{Integration order influence}
 % %---------------------------------
-% \subsubsection{Time step influence}
+% \subsection{Time step influence}
 % %---------------------------------
 % In the first tests, we noticed \\
 % TRY TIME STEP 0.01 sec (stable) and 0.02 sec (unstable): is CFL the cause ?
 % %---------
-% \subsubsection{Classical coupling}
+% \subsection{Classical coupling}
 % %
 % A "classical" coupling comes in the sense of "unmodified" coupling. This approach consists of taking the output of the fluid mechanics
 % solver, then feed it as raw input to level set transport solver. The physical translation would be that the interface motion is dictated
@@ -1037,7 +1065,7 @@ then we deduce the metal's solute composition by postprocessing the obtained sol
 % %----------------------
 % %%---------
 
-% \subsubsection{Modified coupling}
+% \subsection{Modified coupling}
 % In contrast to a classic coupling, here we attempt to modify the velocity field before feeding to the transport solver.
 % The main motivation for considering this approach is the lack of stability that we observed whenever the mechanical
 % properties of the fluids were different by several orders of magnitude.
@@ -1142,9 +1170,9 @@ Solid heat capacity 		 		& $C_p^s$ 			& \num{928.57} 	& \si{\umasscapacity} 	\\
 Air heat capacity 		 			& $C_p^a$ 			& \num{1000} 	& \si{\umasscapacity} 	\\  
 Enthalpy of fusion 				 	& $L$ 				& \num{365384} 	& \si{\umassenergy} 	\\ 
 Thermal conductivity 				& $\kappa$ 			& \num{70} 		& \si{\uconductivity}	\\
-Solute diffusion in the liquid		& $\Dl$ 			& \num{1e-9} 	& \si{\udiffusivity} 	\\  
+Solute diffusion in the liquid		& $\Dl$ 			& \num{e-9} 	& \si{\udiffusivity} 	\\  
 Solute diffusion in the solid		& $\Ds$ 			& \num{0} 	& \si{\udiffusivity} 		\\  
-Solute diffusion in the air	(fictitious)	& $\Da$ 	& (varies with case) 	& \si{\udiffusivity} \\  
+Solute diffusion in the air			& $\Da$ 			& \num{e-12} 	& \si{\udiffusivity} \\  
 \hline  %------------------------------------------------------------------------------------------
 Heat transfer coefficient 			& $\hext$ 			& \num{500} 	& \si{\uhconvec} 	\\ 
 External temperature 				& $\Text$ 			& \num{100} 	& \si{\udegC} 		\\ 
@@ -1411,9 +1439,9 @@ towards the solidification front.Properties are given in \cref{table:data_case_i
 
 \subsubsection{Mass conservation study}
 
-In order to get a better idea about the performance of our model, a mass conservation study may be enlightening. 
-We define the metal's mass as a function of the 
-metal's average density and the Heaviside function relative to the metal domain, as follows:
+In order to get a better idea about the performance of our model, a mass conservation study is performed hereafter. 
+We define the metal's mass as a function of the metal's average density and the Heaviside function relative to the 
+metal domain, as follows:
 %----------------
 \begin{align}
 \label{eq:metal_mass}
@@ -3229,7 +3257,7 @@ This may be considered as a limitation of the thermodynamic mapping approach.
 \begin{table}[htbp]
 \centering
 \caption{Information table showing the tabulations size  for each alloy obtained by the same mapping resolution for temperature and composition, 
-depending on the number of solute elements and phases. The temperature step is \SI{1}{\udegC} and the range is the range is [\SI{20}{\udegC}-\SI{1620}{\udegC}] for all four cases . 
+depending on the number of solute elements and phases. The temperature step is \SI{1}{\udegC} and the range is the range is [20-1620]\si{\udegC} for all four cases . 
 The computation time corresponds to the CPU time of a simulation running on 20 cores.}
 \label{table:mapping_stat}
 \resizebox{\columnwidth}{!}{%

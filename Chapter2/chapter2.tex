@@ -828,11 +828,11 @@ Note that the peak of the Dirac function depends on the interface thickness to e
 \label{fig:heaviside_dirac}
 \end{figureth}
 %-----------------------------------
-%
+
 %***********************************************
-\subsection{Mixing Laws} 
-\label{sec:mixinglaws}
+\subsection{Mixing Laws} \label{sec:mixinglaws}
 %**********************************************
+
 A \emph{monolithic} resolution style, as opposed to a \emph{partitioned} resolution, is based on solving a single set of equations
 for both fluids separated by an interface, as if a single fluid were considered. 
 Level set is one among many methods that use the monolithic style to derive a single set of conservation equations
@@ -863,11 +863,13 @@ and last, the logarithmic law writes:
 \end{align}
 %---
 where $n$ is any real number serving as a logarithm base, which often is either the exponential $e$ or $10$.
+
 The mixture result with this law is the same, regardless of the value of $n$.
 By looking to \cref{fig:mixinglaws}, we clearly see that the difference between all three approaches is the property weight given to each side 
 of the level set in the mixture. The arithmetic law, being symmetric, has equal weights, $\psi^{F_1}$ and $\psi^{F_2}$, in the final mixture. 
 Nevertheless, the asymmetric harmonic mixing varies inside the diffuse interface with a dominant weight of one property 
 over the other. As for the logarithmic mixture, it can be seen as an intermediate transition between the preceding laws.
+
 %----------------------
 \begin{figureth}
 % textwidth 
@@ -880,6 +882,7 @@ over the other. As for the logarithmic mixture, it can be seen as an intermediat
 \label{fig:mixinglaws}
 \end{figureth}
 %-----------------------------------
+
 As long as the interface thickness is small enough, the choice of a mixing law should not drastically change the result, 
 inasmuch as it depends on the discretisation resolution of the interface. This fact made the arithmetic mixing
 the most applied one, because it is symmetric and easy to implement (no handling of potential division problems like harmonic laws for instance). 
@@ -888,17 +891,19 @@ More recently, an interesting study made by \citet{ettrich_modelling_2014} focus
 They define a diffuse interface in which they separately mix the thermal conductivity, $\kappa$, and the heat capacity, $\cp$,
 then compute the thermal diffusivity as the ratio of these properties. Later, the authors compare the temperature field obtained by diffusion
 to a reference case in order to decide which combination of mixing laws gives the best result. Despite not being directly related to a level set 
-method, this work gives an insight of the mixture possibilities and their effect on a pure thermal diffusion.
+method, this work gives an insight of the mixing laws possibilities and their effect on pure thermal diffusion.
 Otherwise, little work has been found in the literature on the broad effects of mixture types on simulation results in a level set context.
+
 %----------------------------------
-%
+
 %*****************************************
 \section{Interface motion} % reinitialisation % regularisation
 %****************************************
+
 When a physical interface needs to have topology changes because
 of fluid structure interaction or surface tension for instance, the level set model 
 can follow these changes by a transport step. The idea is to advect the signed distance
-function, its zero isovalue representing the interface and all other distant isovalues, with the
+function, its zero isovalue representing the interface and all other distant isovalues, with
 velocity field as input. The motion of the interface is thus expressed by:
 %------
 \begin{align}
@@ -911,7 +916,7 @@ velocity field as input. The motion of the interface is thus expressed by:
 %
 \subsection{Level set transport}
 The finite element method gives the fully discretised weak form of \cref{eq:transport_strong} 
-by using a convenient set of test functions $\levelsettest$ belonging the Hilbertian \emph{Sobolev} space:
+by using a convenient set of test functions $\levelsettest$ belonging the Hilbertian Sobolev space:
 %-----------
 \begin{align}
 \label{eq:transport_weak1}
@@ -949,7 +954,7 @@ where $\Mij$ and $\Aij$ are respectively the mass (or capacity) matrix and advec
 finite element, whereas $\Fi$ is a local vector of known quantities from the previous time step. The solution of the linear
 system in \cref{eq:weakform_transport} is the transported distance function.
 
-When the convection regime becomes more dominant diffusion (for high Reynolds number), the standard Galerkin method may lead to instabilities in
+When the convection regime becomes more dominant than diffusion (for high Peclet number), the standard Galerkin method may lead to instabilities in
 the solution. In this case, stabilisation is crucial to avoid these oscillations, unless very fine remeshing is done "such that
 convection no longer dominates on an element level", as stated by \citet{brooks_streamline_1982}.
 The authors give a brief explanation of how numerically a convection-dominated equation can lead to oscillatory solutions with
