@@ -1004,7 +1004,7 @@ a \emph{fictitious metal}. Then, we control solute transport between both domain
 
 this strategy aims to avoid the difficulty of dealing with a \emph{fictitious} solute equation for the air.
 This is done by considering only the metal's species conservation equation, \cref{eq:solute_balance_metal}.
-The solution of the latter is the average composition, $\avg{w}^M$. From this solution, we determine the monolithic
+The solution of the latter is the metal's average composition, $\avg{w}^M$. From this solution, we determine the monolithic
 composition value, $\mix{\avg{w}}$, in a straightforward manner at each time increment:  
 % -----------
 \begin{align}
@@ -1190,7 +1190,8 @@ Convergence criterion (temperature) & $\varepsilon_T$ 	& \num{e-2} 	& \si{\udegK
 The major difference with respect to the former validation setup is the air domain that should also be included in the mesh.
 We consider a 2D domain having as dimensions \SI{0.14}{\metre}$\times$\SI{0.001}{m}, where initially the air column's height is only \SI{0.04}{\metre}
 and the remainder of the length is for the metal.  
-\Cref{fig:1d_alsi7_geobc} shows the geometry and boundary conditions used for the simulations in this section. In the same figure, the thermal and mechanical boundary conditions are shown.
+\Cref{fig:1d_alsi7_geobc} shows the geometry and boundary conditions used for the simulations in this section. 
+In the same figure, the thermal and mechanical boundary conditions are shown.
 In the latter, velocity-slip conditions were imposed on the lateral boundaries while a no-slip was used at the bottom where heat is extracted,
 and a free-velocity condition is set at the top of the domain, to ensure a 1D air flow from the top air inlet. 
 
@@ -1432,7 +1433,8 @@ Properties are given in \cref{table:data_case_inverseseg,table:1dalsi7_meshsize,
 \caption{Comparison of two simulations at several stages of solidification ending shortly after 800 s.
 The results shows the influence of density and viscosity properties across the level set interface.
 The plotted field is the average fluid velocity, on which the corresponding nodal vectors are superimposed, pointing
-towards the solidification front.Properties are given in \cref{table:data_case_inverseseg,table:1dalsi7_meshsize,table:1dalsi7_comparative_nomacro}.}
+towards the solidification front.
+Properties are given in \cref{table:data_case_inverseseg,table:1dalsi7_meshsize,table:1dalsi7_comparative_nomacro}.}
 \label{fig:1dalsi7_caseA1R}
 \end{figure}
 %-----------------------------------------
@@ -1667,18 +1669,14 @@ removes mass.
 %--------------------------------------
 %================================================
 
-In \cref{fig:massconserv_blockingpct2}, we plot again the same curves as in \cref{fig:massconserv_blockingpct}, but keeping the values of $g_{BL}^l$=0\% and $g_{BL}^l$=50\%.
+In \cref{fig:massconserv_blockingpct2}, we plot again the same curves as in 
+\cref{fig:massconserv_blockingpct}, but keeping the values of $g_{BL}^l$=0\% and $g_{BL}^l$=50\%. 
 We notice that both values produce the same results until about 300 s. Then, when the mushy zone reaches the interface region, differences appear as a consequence
-of the reduced transport for the higher blocking fraction. However, it should be pointed out that the differences between 300 s and 800 s are not important because the permeability
-predicted by the Carman-Kozeny model, falls to zero quickly for liquid fractions less than about 60\%. 
+of the reduced transport for the higher blocking fraction. However, it should be pointed out that the differences between 300 s and 800 s are not important because the permeability predicted by the Carman-Kozeny model, falls to zero quickly for liquid fractions less than about 60\%. 
 
 In the current application, it is not clear whether the idea of the blocking fraction is useful or not, since the feeding flow occurs in a single direction and solidification takes place far from the interface. 
 Since the results obtained zero blocking fraction were better than with increasing values of $g_{BL}^l$,
 further simulations will adopt this strategy.
-
-% Therefore, it is interesting to test again in the coming 2D and 3D applications 
-% to see if it it yields advantages on the final shape of the interface.
-
 
 % -------------------------------------------------
 \subsection{Shrinkage with macrosegregation}
