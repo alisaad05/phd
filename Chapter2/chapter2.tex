@@ -173,8 +173,7 @@ The first LHS term in \cref{eq:phase_conservation_equation} represents the time 
 the second term accounts for transport by advection while the third term accounts for diffusive transport of $\psi$,
 knowing its flux, $\vec{j_{\psi}}$. The RHS term represents a volumetric source. 
 The considered equations are mass, energy, species conservation 
-and momentum. 
-% all summarised in \cref{tab:conservationeqs}. 
+and momentum.
 The latter equation is written only for the liquid phase,
 as we assume a fixed and rigid solid phase ($\vs=\vec{0}$), thus the corresponding equation vanishes.
 
@@ -197,15 +196,16 @@ as we assume a fixed and rigid solid phase ($\vs=\vec{0}$), thus the correspondi
 % \end{tableth}
 % %-----
 We may then write each averaged macroscopic conservation
-equation as the sum of local conservation equations for each phase in the RVE. 
-This will introduce the interfacial average terms defined earlier in \cref{eq:volumeaveraging3,eq:volumeaveraging4}.
+equation as the sum of local conservation equations for each phase in the RVE using the interfacial average terms previously defined in \cref{eq:volumeaveraging3,eq:volumeaveraging4}.
 For instance, if we replace $\psi$ by $\rho$ for each phase $\phi \in \{l,s\}$, \cref{eq:phase_conservation_equation} 
 gives two phase-averaged mass balances, with interfacial terms:
 %----
 \begin{subequations}
 \begin{align}
 \label{eq:mass_liquid}
-& \temp{\gl \rhol} + \nabvec \cdot \brac{\gl \rhol \vl} = S_V \langle \rhol \vlstar \cdot \vec{n} \rangle^* - S_V \langle \rhol \vstar \cdot \vec{n} \rangle^* \\
+& \temp{\gl \rhol} + \nabvec \cdot \brac{\gl \rhol \vl} =
+  \integral{\Gamma_{\liqsol}}{\rhol \vstar \cdot \vec{n}}{A} + \integral{\Gamma_{\liqsol}}{\rhol \vlstar \cdot \vec{n}}{A} 
+ S_V \langle  \rangle^* - S_V \langle \rhol \vstar \cdot \vec{n} \rangle^* \\
 \label{eq:mass_solid}
 & \temp{\gs \rhos} + \nabvec \cdot \brac{\gs \rhos \vs} = - S_V \langle \rhos \vsstar \cdot \vec{n} \rangle^* + S_V \langle \rhos \vstar \cdot \vec{n} \rangle^*
 \end{align}
@@ -214,17 +214,17 @@ gives two phase-averaged mass balances, with interfacial terms:
 
 where $S_V= A_{sl}/\rev$ is the specific surface area, $\vec{v}^{l^*}$ and $\vec{v}^{s^*}$ are respectively, the liquid 
 and solid phase velocity at the interface and $\vec{v}^*$ is the previously introduced solid-liquid interface velocity. 
-The $\avg{\hspace{2mm}}^*$ notation in the RHS of \cref{eq:mass_liquid} is expanded as follows \citep{dantzig_solidification_2009}:
+% The $\avg{\hspace{2mm}}^*$ notation in the RHS of \cref{eq:mass_liquid} is expanded as follows \citep{dantzig_solidification_2009}:
 
-%----
-\begin{subequations}
-\begin{align}
-S_V \langle \rhol \vlstar \cdot \vec{n} \rangle^*
-&= \frac{A_{sl}}{\rev} \brac{ \frac{1}{A_{sl}} \integral{A_{sl}}{\rhol \vlstar \cdot \vec{n}}{A}} \\
-&= \frac{1}{\rev}  \integral{A_{sl}}{\rhol \vlstar \cdot \vec{n}}{A}
-\end{align}
-\end{subequations}
-%----
+% %----
+% \begin{subequations}
+% \begin{align}
+% S_V \langle \rhol \vlstar \cdot \vec{n} \rangle^*
+% &= \frac{A_{sl}}{\rev} \brac{ \frac{1}{A_{sl}} \integral{A_{sl}}{\rhol \vlstar \cdot \vec{n}}{A}} \\
+% &= \frac{1}{\rev}  \integral{A_{sl}}{\rhol \vlstar \cdot \vec{n}}{A}
+% \end{align}
+% \end{subequations}
+% %----
 Summing equations \eqref{eq:mass_liquid} and \eqref{eq:mass_solid}, results in the overall mass balance
 in the RVE:
 %----
