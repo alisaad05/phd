@@ -992,7 +992,6 @@ a \emph{fictitious metal}. Then, we control solute transport between both domain
 	
 \end{enumerate}
 
-
 % we consider one equation for species transport for both air and metal. 
 % By adjusting the solutal diffusion coefficient in the air to low values, we
 % can limit  The motivation to go for this strategy using very low diffusion coefficient in the air.
@@ -1001,11 +1000,10 @@ a \emph{fictitious metal}. Then, we control solute transport between both domain
 % is reset to zero after each resolution so as to prevent any enrichment.
 
 \paragraph{Non-monolithic strategy:}
-
 this strategy aims to avoid the difficulty of dealing with a \emph{fictitious} solute equation for the air.
 This is done by considering only the metal's species conservation equation, \cref{eq:solute_balance_metal}.
 The solution of the latter is the metal's average composition, $\avg{w}^M$. From this solution, we determine the monolithic
-composition value, $\mix{\avg{w}}$, in a straightforward manner at each time increment:  
+composition value, $\mix{\avg{w}}$, :  
 % -----------
 \begin{align}
 \label{eq:nonmonolithic_solute}
@@ -1015,7 +1013,10 @@ composition value, $\mix{\avg{w}}$, in a straightforward manner at each time inc
 where we directly initialise the composition in the air to the metal's nominal composition.
 This strategy has the advantage of being simpler, especially we do not have to deal with density terms
 (which can be seen for example in \cref{eq:solute_balance_metal}) 
-as dictates the previous monolithic strategy, while air density remains constant in this work.
+as dictates the previous monolithic strategy, knowing that air density remains constant in this work.
+
+In the next section, we present a simple 1D solidification case with solidification shrinkage, in which we test
+the segregation results given by each strategy.
 
 %------------------
 % \subsection{Interface motion and stability}
@@ -1130,12 +1131,16 @@ as dictates the previous monolithic strategy, while air density remains constant
 % solid regions, is transported with Navier-Stokes output, which should be some orders of magnitude less than the velocity
 % imposed at the free surface, as a result of a decreasing permeability.
 
-\cleardoublepage
-%--------------------------------
-%--
+% \cleardoublepage
+
+%----------------------------------------------------------------
 \section{1D application: solidification with inverse segregation}
 %--------------------------------------------
+
+% -------------------------------------------------
 \subsection{Geometry and boundary conditions}
+% -------------------------------------------------
+
 A simple but very efficient way of analysing the model is to test it through a 1D flow configuration with energy and species conservation.
 For this purpose, we take an aluminium-silicon alloy with the properties shown in \cref{table:data_case_inverseseg}.
 
@@ -1187,9 +1192,8 @@ Convergence criterion (temperature) & $\varepsilon_T$ 	& \num{e-2} 	& \si{\udegK
 \end{tabulate}
 %------------------------
 
-The major difference with respect to the former validation setup is the air domain that should also be included in the mesh.
-We consider a 2D domain having as dimensions \SI{0.14}{\metre}$\times$\SI{0.001}{m}, where initially the air column's height is only \SI{0.04}{\metre}
-and the remainder of the length is for the metal.  
+The rectangular 2D mesh having the dimensions \SI{0.14}{\metre}$\times$\SI{0.001}{m}, consists of metal and air.
+Initially the air column's height is only \SI{0.04}{\metre} and the remainder of the length is the metal.  
 \Cref{fig:1d_alsi7_geobc} shows the geometry and boundary conditions used for the simulations in this section. 
 In the same figure, the thermal and mechanical boundary conditions are shown.
 In the latter, velocity-slip conditions were imposed on the lateral boundaries while a no-slip was used at the bottom where heat is extracted,
@@ -1208,7 +1212,10 @@ in the next 2D test case.
 %path 
 {Chapter5/Graphics/1d/geobc.pdf}
 % caption
-{Computational configuration for the 1D inverse segregation case showing the domain geometry with the applied boundary conditions to it.}
+{Computational configuration for the 1D inverse segregation case showing the domain geometry 
+with the applied boundary conditions to it as well as the gravity vector.
+The symmetry sides represent the following set of boundary conditions: 
+adiabatic, zero normal velocity, free tangential velocity and pressure-free.}
 % label
 \label{fig:1d_alsi7_geobc}
 \end{figureth}
@@ -1228,7 +1235,6 @@ In the current conditions, $\beta_{SS}$ is constant and equal to \SI{7.14}{\perc
 The domain is initially meshed before any resolution, as shown in \cref{fig:1dalsi7_lsmixing}, in a way to reduce interpolation errors that may
 cause coarse elements within the transition of fluids density and dynamic viscosity, reminding that these parameters are crucial for the stability 
 of the velocity solution used later in the transport step. The chosen mixing laws are arithmetic for the density and logarithmic for the viscosity.
-The choice is based on tests done in former Ph.D. projects at CEMEF. 
 The mesh properties are given in \cref{table:1dalsi7_meshsize}.
 
 %--------------------------------
@@ -1291,7 +1297,7 @@ The thick blue line represents the zero isovalue of the distance function.}
 	xticklabel style={/pgf/number format/fixed},
 	xtick={577, 600, 618},
 	%x tick label style={rotate=45,anchor=east},
-	%width=0.5\textwidth,
+	width=0.6\textwidth,
 	mark repeat	= {1},
 	cycle list name=mycycle, %exotic,
 ]
@@ -1299,11 +1305,12 @@ The thick blue line represents the zero isovalue of the distance function.}
 \addplot table [x=Temperature, y expr=\thisrow{ALPHA}] {Chapter5/Data/1d_alsi7_nominalSP/sp.csv};%\closedcycle;
 \addplot table [x=Temperature, y expr=\thisrow{BETA}] {Chapter5/Data/1d_alsi7_nominalSP/sp.csv};%\closedcycle;
 
-\legend{Liquid, FCC, EUT}
+\legend{Liquid, $\alpha$, $\beta$}
 \end{axis}
 \end{tikzpicture}
 
-\caption{Unique solidification path at nominal composition for the shrinkage case without macrosegregation in \bin{Al}{7}{Si}.}
+\caption{Unique solidification path at nominal composition for the shrinkage case without macrosegregation in \bin{Al}{7}{Si},
+showing the liquid phase, aluminium-rich $\alpha$ phase and the silicon-rich $\beta$ phase, which partly forms the eutectic structure.}
 \label{fig:shrinkage_nomacro_sp}
 \end{figure}
 %--------------------------------------
@@ -1371,7 +1378,7 @@ From 200 s to 800 s, the local flow instability (discussed earlier in \cref{fig:
 However, in regions of 100\% metal and 100\% air the computed velocity is nearly the same order of magnitude as predicted for all three simulations.
 Finally, in \cref{fig:1dalsi7_differentprops}, we notice a recirculating air flow in the vicinity of the interface as no metal shrinkage 
 may further occur once solidification is complete, thus air flows freely in and out 
-of the upper boundary with a very low magnitude ($\sim$ \SI{e-7}{\uvelocity}), while impinging on the metal-air surface.
+of the upper boundary with a very low magnitude ($\approx$ \SI{e-7}{\uvelocity}), while impinging on the metal-air surface.
 Regarding the CPU times, cases A1 ran for 14 hours, case A2 took only 2 hours while case R ran for 23.3 hours.
 To summarise, we can see conclude from the previous results, the following points:
 \begin{enumerate}
@@ -1846,7 +1853,7 @@ in the segregation profile, which should normally stay below the nominal value n
 	%legend pos=north east,
 	scaled ticks=true,
 	%xlabel=Sample length (m),
-	ylabel=$\avg{w}$ (wt.\% Si),
+	ylabel=$\mix{\avg{w}}$ (wt.\% Si),
 	xticklabel style={/pgf/number format/fixed},
 	xtick={0,0.02,...,0.14},
 	xticklabels={},
@@ -1877,7 +1884,7 @@ in the segregation profile, which should normally stay below the nominal value n
 	%legend pos=north east,
 	scaled ticks=true,
 	%xlabel=Sample length (m),
-	ylabel=$\avg{w}$ (wt.\% Si),
+	ylabel=$\mix{\avg{w}}$ (wt.\% Si),
 	xticklabel style={/pgf/number format/fixed},
 	xtick={0,0.02,...,0.14},
 	xticklabels={},
@@ -1906,7 +1913,7 @@ in the segregation profile, which should normally stay below the nominal value n
 	%legend pos=north east,
 	scaled ticks=true,
 	xlabel=Sample length (m),
-	ylabel=$\avg{w}$ (wt.\% Si),
+	ylabel=$\mix{\avg{w}}$ (wt.\% Si),
 	xticklabel style={/pgf/number format/fixed},
 	xtick={0,0.02,0.04,0.06,0.08,0.1,0.12,0.14},
 	xticklabels={0,0.02,0.04,0.06,0.08,0.1,0.12,0.14},
@@ -3073,6 +3080,26 @@ reaches the eutectoid isotherm at \SI{727}{\udegC}.
 \end{figure}
 %===================================== ANIMATION FIGURE =====================================
 
+
+
+A better global visualisation of the transformation is given in \cref{fig:texus_phase_distrib}, at different time stages.
+Each column depicts a definite time with temperature and phase distribution. 
+
+%--------------
+\begin{figureth}
+% textwidth 
+{0.9}
+%path 
+{Chapter5/Graphics/3d/bin/phase_distrib.pdf}
+% caption
+{Solidification progress at 5, 10, 15 and 20 s showing the effect of segregation on the transformation paths, from liquid to solid and solid-state.}
+% label
+\label{fig:texus_phase_distrib}
+\end{figureth}
+%--------------
+
+
+
 %--------------------------------------
 \shorthandoff{;:?!} %http://tex.stackexchange.com/questions/74860/unexpected-clash-between-babel-and-pgf-spy
 \begin{figure}[htbp]
@@ -3090,7 +3117,7 @@ reaches the eutectoid isotherm at \SI{727}{\udegC}.
 	%legend pos=north east,
 	scaled ticks=true,
 	ylabel style={align=center},
-	ylabel=  Relative content $\frac{\avg{w}-w_0}{w_0}$ (\%), %Relative mesosegregation,
+	ylabel=  Relative content $\frac{\mix{\avg{w}}-w_0}{w_0}$ (\%), %Relative mesosegregation,
 	xlabel=Distance from chill (mm),
 	%xticklabel style={/pgf/number format/fixed},
 	yticklabel style={/pgf/number format/fixed},
@@ -3149,23 +3176,6 @@ Phase fractions are superimposed on the same graph and their values are read on 
 \shorthandon{;:?!} %http://tex.stackexchange.com/questions/74860/unexpected-clash-between-babel-and-pgf-spy
 
 
-
-A better global visualisation of the transformation is given in \cref{fig:texus_phase_distrib}, at different time stages.
-Each column depicts a definite time with temperature and phase distribution. 
-
-
-%--------------
-\begin{figureth}
-% textwidth 
-{0.9}
-%path 
-{Chapter5/Graphics/3d/bin/phase_distrib.pdf}
-% caption
-{Solidification progress at 5, 10, 15 and 20 s showing the effect of segregation on the transformation paths, from liquid to solid and solid-state.}
-% label
-\label{fig:texus_phase_distrib}
-\end{figureth}
-%--------------
 
 
 % ------------------------------------------------------
