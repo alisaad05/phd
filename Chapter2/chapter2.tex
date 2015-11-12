@@ -120,7 +120,21 @@ whilst being smaller than the scale of macroscopic variations.
 
 Solid and liquid may exist simultaneously in the RVE, but we may also consider that no gas phase could be 
 added (i.e. volume saturation with $\Vs+\Vl=\rev$). Moreover, temperature is generally assumed uniform and equal for all the phases.
-The formalism, introduced by \citet{ni_volume-averaged_1991}, is summarised by the following equations for any physical quantity $\psi$:
+The formalism, introduced by \citet{ni_volume-averaged_1991}, introduces a phase indicator function
+for any phase $\phi$ in the multiphase system:
+% ----------------------
+\begin{align}
+\label{eq:phase_indicator}
+% \chi^\phi(x,t)=
+\chi^\phi=
+\begin{cases}
+  1 	& \text{in } \phi \\ 
+  0 	& \text{otherwise}
+\end{cases}
+\end{align}
+% ----------------------
+Then the approach suggests the following equations for any physical quantity $\psi$ in system containing
+solid ($s$) and liquid ($l$) phases:
 %----------------------
 \begin{align}
 \label{eq:volumeaveraging1}
@@ -129,12 +143,23 @@ The formalism, introduced by \citet{ni_volume-averaged_1991}, is summarised by t
 %------------
 where $\psis$ and $\psil$ are phase averages of $\psi$. Then, for any phase $\phi$, one can introduce the \emph{phase intrinsic average} of $\psi$, denoted $\avg{\psi}^\phi$, by writing:
 %----------------------
+\begin{subequations}
 \begin{align}
 \label{eq:volumeaveraging2}
-& \avg{\psi^\phi} = \frac{1}{\rev} \integral{\Vphi}{\psi}{\Omega} = \gphi \avg{\psi}^\phi
+ \avg{\psi^\phi} = \avg{\chi^\phi \psi} 
+				&=\frac{1}{\rev} \integral{\rev}{\chi^\phi \psi}{\Omega} \\
+\label{eq:volumeaveraging2b}
+				&=\frac{1}{\rev} \integral{\Vphi}{\chi^\phi \psi}{\Omega} \\ 
+\label{eq:volumeaveraging2c}
+				&=\frac{\Vphi}{\rev} \brac{\frac{1}{\Vphi} \integral{\Vphi}{\chi^\phi \psi}{\Omega}} \\ 
+\label{eq:volumeaveraging2d}
+				&= \gphi \avg{\psi}^\phi
 \end{align}
+\end{subequations}
 %------------
-where $\gphi$ is the volume fraction of phase $\phi$ with $\gphi=V_\phi/\rev$. To finalize, the averaging is applied to temporal and spatial derivation operators:
+where $\gphi$ is the volume fraction of phase $\phi$ with $\gphi=V_\phi/\rev$. 
+The transition from \cref{eq:volumeaveraging2} to \cref{eq:volumeaveraging2b} is the consequence of \cref{eq:phase_indicator}.
+To finalize, the averaging is applied to temporal and spatial derivation operators:
 %\citep{rivaux_simulation_2011}:
 \begin{align}
 \label{eq:volumeaveraging3}
@@ -160,16 +185,27 @@ This notation is thus compatible with the previously introduced average defined 
 A monodomain macroscopic model relies on four main conservation equations to predict 
 macrosegregation in a single alloy where the latter is considered without any direct representation of interactions with another
 domain (moulds, air, ...). 
+The general form of such a macroscopic conservation equation is given by:
+%-----------
+\begin{align}
+\label{eq:conservation_equation_noavg}
+& \tempup{\psi} + \nabvec \cdot \psi \vec{v} + \nabvec \cdot \vec{j_{\psi}}
+= Q_{\psi}
+\end{align}
+%-------
+where on the LHS, the first term is non-stationnary, the second term represents the convective transport
+of the quantity $\psi$ while the third term is diffusive transport of $\psi$. The RHS
+term is a source term.
 To determine an general averaged macroscopic equation, we must write
 a phase-averaged conservation equation, for any volumetric physical quantity $\psi$: 
 %-----------
 \begin{align}
-\label{eq:phase_conservation_equation}
+\label{eq:conservation_equation_avg}
 & \avg{\tempup{\psi^\phi}} + \avg{\nabvec \cdot \psi^\phi \vec{v^\phi}} + \avg{\nabvec \cdot \vec{j_{\psi^\phi}}} = \avg{Q_{\psi^\phi}}
 \end{align}
 %-------
 
-The first LHS term in \cref{eq:phase_conservation_equation} represents the time variation of $\psi$, 
+The first LHS term in \cref{eq:conservation_equation_avg} represents the time variation of $\psi$, 
 the second term accounts for transport by advection while the third term accounts for diffusive transport of $\psi$,
 knowing its flux, $\vec{j_{\psi}}$. The RHS term represents a volumetric source. 
 The considered equations are mass, energy, species conservation 
@@ -197,23 +233,22 @@ as we assume a fixed and rigid solid phase ($\vs=\vec{0}$), thus the correspondi
 % %-----
 We may then write each averaged macroscopic conservation
 equation as the sum of local conservation equations for each phase in the RVE using the interfacial average terms previously defined in \cref{eq:volumeaveraging3,eq:volumeaveraging4}.
-For instance, if we replace $\psi$ by $\rho$ for each phase $\phi \in \{l,s\}$, \cref{eq:phase_conservation_equation} 
+For instance, if we replace $\psi$ by $\rho$ for each phase $\phi \in \{l,s\}$, \cref{eq:conservation_equation_avg} 
 gives two phase-averaged mass balances, with interfacial terms:
 %----
 \begin{subequations}
 \begin{align}
 \label{eq:mass_liquid}
 & \temp{\gl \rhol} + \nabvec \cdot \brac{\gl \rhol \vl} =
-  \integral{\Gamma_{\liqsol}}{\rhol \vstar \cdot \vec{n}}{A} + \integral{\Gamma_{\liqsol}}{\rhol \vlstar \cdot \vec{n}}{A} 
- S_V \langle  \rangle^* - S_V \langle \rhol \vstar \cdot \vec{n} \rangle^* \\
+  \integral{\Gamma_{\liqsol}}{\rhol \vlstar \cdot \vec{n}}{A} - \integral{\Gamma_{\liqsol}}{\rhol \vstar \cdot \vec{n}}{A} \\
 \label{eq:mass_solid}
-& \temp{\gs \rhos} + \nabvec \cdot \brac{\gs \rhos \vs} = - S_V \langle \rhos \vsstar \cdot \vec{n} \rangle^* + S_V \langle \rhos \vstar \cdot \vec{n} \rangle^*
+& \temp{\gs \rhos} + \nabvec \cdot \brac{\gs \rhos \vs} = -\integral{\Gamma_{\liqsol}}{\rhos \vsstar \cdot \vec{n}}{A} + \integral{\Gamma_{\liqsol}}{\rhos \vstar \cdot \vec{n}}{A}
 \end{align}
 \end{subequations}
 %----
+where $\vec{v}^{l^*}$ and $\vec{v}^{s^*}$ are respectively, the liquid 
+and solid phase velocity at the interface and $\vec{v}^*$ is the previously introduced solid-liquid interface velocity, while vector $\vec{n}$ is the the normal to the solid-liquid interface, with $\vec{n}=\vec{n^s}=-\vec{n^l}$.
 
-where $S_V= A_{sl}/\rev$ is the specific surface area, $\vec{v}^{l^*}$ and $\vec{v}^{s^*}$ are respectively, the liquid 
-and solid phase velocity at the interface and $\vec{v}^*$ is the previously introduced solid-liquid interface velocity. 
 % The $\avg{\hspace{2mm}}^*$ notation in the RHS of \cref{eq:mass_liquid} is expanded as follows \citep{dantzig_solidification_2009}:
 
 % %----
@@ -231,8 +266,8 @@ in the RVE:
 \begin{multline}
 \label{eq:conservation_mass_local}
  \temp{\gl \rhol + \gs \rhos}  +  \nabvec \cdot \brac{\gl \rhol \vl + \gs \rhos \vs} = \\  
-	  S_V \avg{\rhol \brac{\vlstar-\vstar} \cdot \vec{n}}^*  
-   -  S_V \avg{\rhos \brac{\vsstar-\vstar} \cdot \vec{n}}^*
+	  \integral{\Gamma_{\liqsol}}{\brac{\rhol \vlstar-\rhos \vsstar} \cdot \vec{n}}{A}
+   -  \integral{\Gamma_{\liqsol}}{\brac{\rhol-\rhos} \vstar \cdot \vec{n}}{A}
 \end{multline}
 %----
 where the RHS cancels to zero as shown by \citet{ni_volume-averaged_1991}. Moreover, the authors show that with their averaging technique, 
