@@ -1294,10 +1294,10 @@ on two adaptive remeshing techniques, \emph{Remesh2} and \emph{Remesh4}, then di
 Please note that these names represent only a short notation to simplify metionning the corresponding methods easily in the text.
 
 % *********************************************************
-\subsection{\emph{Remesh2}: Interface remeshing} \label{sec:remesh2_params}
+\subsection{\emph{Remesh2}: domains boundary remeshing} \label{sec:remesh2_params}
 % *********************************************************
 
-\emph{Remesh2} is an explicit method to compute an anisotropic metric around the zero surface of a distance function.
+\emph{Remesh2} is an explicit method to compute an anisotropic metric around the zero surface of a distance function, which defines the boundary between two domains.
 The idea is, as mentioned previously, to reduce the elements cost in the tangential directions to level set by
 stretching the elements, leaving small element lengths in the normal direction, where the level set gradient is the greatest.
 This method is not based on error estimators, but rather on explicit input from the user who chooses the mesh size in
@@ -1337,19 +1337,25 @@ For more details about this method, the reader is referred to \citep{bernacki_de
 
 
 \subsection{\emph{Remesh4}: Multi-criteria remeshing}
-It is a metric construction method based on edge-based error distribution
+
+It is essentially an \emph{a posteriori} error estimator. The method consists of estimating the interpolation error for
+one or more nodal fields, then using a statistical concept, the so-called \emph{length distribution tensor}, a stretching factor
+can be determined by solving several constraints like locally minimizing the induced error, limit the number of created nodes to
+a specific  threhold, etc. Finally, the stretching factor is directly used to correct the edge size/lengths, which varies in such a way to minimize the locally induced error.
+Detailed information can be found in \citep{coupez_metric_2011,el_jannoun_space-time_2014}
+
 %--------------------------------------
 
-What i concluded from Z-FAST-SMACS cases A and B, where remesh4 was used in two different ways (LS and velocity/100  ,  LS and ConcentrationPosNeg)
-is that for diffuse interface thickness less than 2e-4 m, mass conservation gets all sorts of problems, because of low element resolution 
-around interface while higher resolution at the tips of the transition region
+% What i concluded from Z-FAST-SMACS cases A and B, where remesh4 was used in two different ways (LS and velocity/100  ,  LS and ConcentrationPosNeg)
+% is that for diffuse interface thickness less than 2e-4 m, mass conservation gets all sorts of problems, because of low element resolution 
+% around interface while higher resolution at the tips of the transition region
 
 
-\section*{To do ?}
-\comment{Interface Remeshing: Importance when using a static level set and more importantly when LS is transported,
-influence of mixing area \emph{thickness} and \emph{resolution} (i.e. nb of nodes with the area),
-Isotropic or anisotropic ? the first is more important to composition calculation while the second
-is more relevant if we mean do thermohydraulics without macrosegregation}
+% \section*{To do ?}
+% \comment{Interface Remeshing: Importance when using a static level set and more importantly when LS is transported,
+% influence of mixing area \emph{thickness} and \emph{resolution} (i.e. nb of nodes with the area),
+% Isotropic or anisotropic ? the first is more important to composition calculation while the second
+% is more relevant if we mean do thermohydraulics without macrosegregation}
 
 
 
