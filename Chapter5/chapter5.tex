@@ -1795,10 +1795,12 @@ clearly changing behind the eutectic front.}
 \subsubsection{Shrinkage effect on average composition}
 \Cref{fig:1dalsi7_gs_w} shows snapshots at different times of the shrinkage flow caused by the density difference between liquid and solid phases.
 By solid phases, we mean the primary solid phase assumed as a dendritic structure, then the primary and secondary solid phases forming together the eutectic
-that we see starting at 150 s in \cref{fig:1dalsi7_gs_w}. We can see that some solute segregation has already initiated in the mushy zone at 100 s.
-However, the average composition reaches a positive peak of $\avg{w}$=\bin{Al}{7.4}{Si} with the initiation and progression of the eutectic front.
+that we see starting at 150 s in \cref{fig:1dalsi7_gs_w}. 
+We can see that almost no solute segregation has yet taken place in the mushy zone at 100 s.
+Then at 150 s, the average composition reaches a positive peak of $\avg{w}$=\bin{Al}{7.4}{Si} at the closest nodes to the chill. 
+This is triggered by the progression of the eutectic front.
 The sudden transformation of the remaining liquid in the mushy zone into eutectic solid, triggers a local velocity increase (real intrinsic velocity)
-as each node's density varies from $\rhol$ to $\rhos$ in a single time step, at eutectic temperature. The velocity increase, shown later in \cref{fig:1dalsi7_dataVSlength},
+as each node's density varies from $\avg{\rho}^M=g^E \rhol + (1-g^E) \rhos$ to $\rhos$ in a single time step, at eutectic temperature. The velocity increase, shown later in \cref{fig:1dalsi7_dataVSlength},
 causes species transport in the opposite direction of solidification, hence solute "freezes" in the eutectic structure leading to positive macrosegregation
 in the first solidified nodes. This phenomenon is better known as inverse segregation. 
 As the transport continues in the same direction, 
