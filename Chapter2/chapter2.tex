@@ -163,21 +163,21 @@ To finalize, the averaging is applied to temporal and spatial derivation operato
 %\citep{rivaux_simulation_2011}:
 \begin{align}
 \label{eq:volumeaveraging3}
-& \avg{ \frac{\partial \psi}{\partial t} ^\phi } = \frac{\partial \avg{\psi^\phi}}{\partial t} - \integral{\gammastar}{\psi^\phi \vstar \cdot \vec{n^\phi}}{A} \\
+& \avg{ \frac{\partial \psi}{\partial t} ^\phi } = \frac{\partial \avg{\psi^\phi}}{\partial t} - \integral{\Gamma_{\liqsol}}{\psi^\phi \vstar \cdot \vec{n^\phi}}{A} \\
 \label{eq:volumeaveraging4}
-& \avg{ \nabvec \cdot \vec{\psi^\phi} } = \nabvec \cdot \avg{\vec{\psi^\phi}} + \integral{\gammastar}{\vec{\psi^\phi} \cdot \vec{n^\phi}}{A}
+& \avg{ \nabvec \cdot \vec{\psi^\phi} } = \nabvec \cdot \avg{\vec{\psi^\phi}} + \integral{\Gamma_{\liqsol}}{\vec{\psi^\phi} \cdot \vec{n^\phi}}{A}
 \end{align}
 %------------
 
-where $\vstar$ is the local relative interface velocity and $\gammastar$ is the solid-liquid interface, 
-while $n^\phi$ is the normal to $\gammastar$, directed outwards. The surface integral terms in 
+where $\vstar$ is the local relative interface velocity and $\Gamma_{\liqsol}$ is the solid-liquid interface, 
+while $n^\phi$ is the normal to $\Gamma_{\liqsol}$, directed outwards. The surface integral terms in 
 \cref{eq:volumeaveraging3,eq:volumeaveraging4} are \emph{interfacial averages} 
 that express exchanges between the phases across the interface. 
 
 The previous equations will be used to derive a set of macroscopic conservation equations. 
-It is noted that the intrinsic average $\avg{\psi}^\phi$ may be replaced by ${\psi}^\phi$ 
-for notation simplicity, whenever the averaging technique applies.
-This notation is thus compatible with the previously introduced average defined for the solid composition when the latter is non-uniform \cref{eq:scheil3}.
+% It is noted that the intrinsic average $\avg{\psi}^\phi$ may be replaced by ${\psi}^\phi$ 
+% for notation simplicity, whenever the averaging technique applies.
+% This notation is thus compatible with the previously introduced average defined for the solid composition when the latter is non-uniform \cref{eq:scheil3}.
 
 %***********************************************
 \subsubsection{Macroscopic equations}
@@ -193,26 +193,18 @@ The general form of such a macroscopic conservation equation is given by:
 = Q_{\psi}
 \end{align}
 %-------
-where on the LHS, the first term is non-stationnary, the second term represents the convective transport
-of the quantity $\psi$ while the third term is diffusive transport of $\psi$. The RHS
+where the first LHS term is non-stationnary, the second LHS term represents the convective transport
+of the quantity $\psi$ while the third LHS term is diffusive transport of $\psi$. The RHS
 term is a source term.
 To determine an general averaged macroscopic equation, we must write
-a phase-averaged conservation equation, for any volumetric physical quantity $\psi$: 
+a phase-averaged conservation equation, for any volumetric physical quantity $\psi$ using the phase indicator function
+$\chi^\phi$ for phase $\phi$ as follows: 
 %-----------
 \begin{align}
 \label{eq:conservation_equation_avg}
-& \avg{\tempup{\psi^\phi}} + \avg{\nabvec \cdot \psi^\phi \vec{v^\phi}} + \avg{\nabvec \cdot \vec{j_{\psi^\phi}}} = \avg{Q_{\psi^\phi}}
+& \avg{\chi^\phi \tempup{\psi}} + \avg{\chi^\phi \nabvec \cdot \psi \vec{v}} + \avg{\chi^\phi \nabvec \cdot \vec{j_{\psi}}} = \avg{\chi^\phi Q_{\psi}}
 \end{align}
 %-------
-
-The first LHS term in \cref{eq:conservation_equation_avg} represents the time variation of $\psi$, 
-the second term accounts for transport by advection while the third term accounts for diffusive transport of $\psi$,
-knowing its flux, $\vec{j_{\psi}}$. The RHS term represents a volumetric source. 
-The considered equations are mass, energy, species conservation 
-and momentum.
-The latter equation is written only for the liquid phase,
-as we assume a fixed and rigid solid phase ($\vs=\vec{0}$), thus the corresponding equation vanishes.
-
 % %-----
 % \begin{tableth}
 % \centering
@@ -226,7 +218,7 @@ as we assume a fixed and rigid solid phase ($\vs=\vec{0}$), thus the correspondi
 % Mass				& 	$\rho$  		& $-$ 						& $-$		\\
 % Energy				& 	$\rho h$  		& $\vec{q}$ 				& $-$		\\
 % Species				& 	$\rho w_i$  	& $\vec{j_i}$ 				& $-$		\\
-% Liquid momentum		&	$\rhol \vl$  	& $-\sigmal$ 				& $\Fv$		\\\tabucline[1pt]{-} %\vec{\Gamma}^{l}
+% Liquid momentum		&	$\rhol \vl$  	& $-\sigmal$ 				& $\Fv$		\\\tabucline[1pt]{-} %\vec{M}^{*}
 % %-----------------------------
 % \end{tabu}}
 % \end{tableth}
@@ -248,18 +240,6 @@ gives two phase-averaged mass balances, with interfacial terms:
 %----
 where $\vec{v}^{l^*}$ and $\vec{v}^{s^*}$ are respectively, the liquid 
 and solid phase velocity at the interface and $\vec{v}^*$ is the previously introduced solid-liquid interface velocity, while vector $\vec{n}$ is the the normal to the solid-liquid interface, with $\vec{n}=\vec{n^s}=-\vec{n^l}$.
-
-% The $\avg{\hspace{2mm}}^*$ notation in the RHS of \cref{eq:mass_liquid} is expanded as follows \citep{dantzig_solidification_2009}:
-
-% %----
-% \begin{subequations}
-% \begin{align}
-% S_V \langle \rhol \vlstar \cdot \vec{n} \rangle^*
-% &= \frac{A_{sl}}{\rev} \brac{ \frac{1}{A_{sl}} \integral{A_{sl}}{\rhol \vlstar \cdot \vec{n}}{A}} \\
-% &= \frac{1}{\rev}  \integral{A_{sl}}{\rhol \vlstar \cdot \vec{n}}{A}
-% \end{align}
-% \end{subequations}
-% %----
 Summing equations \eqref{eq:mass_liquid} and \eqref{eq:mass_solid}, results in the overall mass balance
 in the RVE:
 %----
@@ -288,9 +268,9 @@ Regarding the LHS terms, their sum is defined along other variables as follows:
 \label{eq:mainingredients6}
 & \avg{\rho w_i \vec{v}} = \gl \rhol \wil \vl + \cancel{\gs \rhos \wis \vs} \\
 \label{eq:mainingredients7}
-& \avg{\rhol \vl} = \avg{\rhol \vl}^l = \gl \rhol \vl \\
+& \avg{\rho^l \vec{v^l}} = \gl \rhol \vl \\
 \label{eq:mainingredients8}
-& \avg{\rhol \vl \times \vec{v}} = \gl \rhol \vl \times \vl + \cancel{\gs \rhos \vl \times \vs}
+& \avg{\rho^l \vec{v^l} \times \vec{v}} = \gl \rhol \vl \times \vl + \cancel{\gs \rhos \vl \times \vs}
 \end{align}
 %-------
 The average diffusive fluxes are represented by $\avg{\vec{q}}$ for energy and $\avg{\vec{j_i}}$ for each solute species.
@@ -332,7 +312,7 @@ shall be redefined by considering that the fluid is incompressible $\brac{\nabve
 %------
 \begin{align}
 \label{eq:constantrhol_mass}
-& \nabvec \cdot \avg{\rho \vec{v}} = \vit \cdot \nabvec \brac{\rhol} \\
+& \nabvec \cdot \avg{\rho \vec{v}} = \vit \cdot \nabvec \rhol \\
 \label{eq:constantrhol_energy}
 & \nabvec \cdot \avg{\rho h \vec{v}} = \vit \cdot \nabvec \brac{\rhol \hl} \\
 \label{eq:constantrhol_solute}
@@ -344,7 +324,7 @@ As for the liquid momentum balance, we write:
 \begin{align}
 \label{eq:conservation_momentumliq_init}
 & \temp{ \rhol \gl \vl } + \nabvec \cdot \brac{\rhol \gl \vl \times \vl} = 
-	\nabvec \cdot \brac{\gl \sigmal} +\gl \Fv + \vec{\Gamma}^{l}
+	\nabvec \cdot \brac{\gl \sigmal} +\gl \Fv + \vec{M}^{*}
 \end{align}
 %------------
 where $\Fv$ is the vector of external body forces exerted on the liquid phase. In our case, it accounts for the fluid's weight:
@@ -355,16 +335,16 @@ where $\Fv$ is the vector of external body forces exerted on the liquid phase. I
 \end{align}
 %------------
 The interfacial momentum transfer between the solid and liquid phases in \cref{eq:conservation_momentumliq_init} is modelled 
-by a momentum flux vector $\vec{\Gamma}^{l}$, consisting of hydrostatic and deviatoric parts, such that:
+by a momentum flux vector $\vec{M}^{*}$, consisting of hydrostatic and deviatoric parts, such that:
 %------------
 %\begin{subequations}
 \begin{align}
 	\label{eq:interfacial_momentum_total}
-	& \vec{\Gamma}^{l} =  \vec{\Gamma}_{p}^{l} + \vec{\Gamma}_{\mathbb{S}}^{l}	\\
+	& \vec{M}^{*} =  \vec{M}^{*}_{p} + \vec{M}^{*}_{\mathbb{S}}	\\
 	\label{eq:interfacial_momentum_hydrostatic}
-	& \vec{\Gamma}_{p}^{l} = p^{l^{*}} \nabvec g^{l} = p^{l} \nabvec g^{l}		\\
+	& \vec{M}^{*}_{p} = p^{l^{*}} \nabvec g^{l} = p^{l} \nabvec g^{l}		\\
 	\label{eq:interfacial_momentum_deviatoric}
-	& \vec{\Gamma}_{\mathbb{S}}^{l} = - \gl^2 \mul \K^{-1} \brac{ \vl - \cancel{\vs} }  
+	& \vec{M}^{*}_{\mathbb{S}} = - \gl^2 \mul \K^{-1} \brac{ \vl - \cancel{\vs} }  
 \end{align}
 %\end{subequations}
 %------------
@@ -455,7 +435,7 @@ equations, applied to a solidifying melt:
 
 %------
 \begin{equation}
-\label{eq:Navier-Stokes2}
+\label{eq:conservation_momentum}
    \left\{
    \begin{aligned}
       & \rholref \brac{\tempup{ \vit } + \frac{1}{\gl} \nabvec \cdot \brac{\vit \times \vit}} = \\
@@ -467,166 +447,163 @@ equations, applied to a solidifying melt:
 \end{equation}
 %------------
 
-Since all conservation equations were presented and simplified by the main assumption of a static solid phase, 
-we may include them in a graphical summary in \cref{fig:algo_monodomain}
-%---------------
-\begin{figure}[htbp]
-\label{fig:algo_monodomain}
-%=========
-\setlength{\largeur}{2cm}
-\setlength{\llargeur}{11cm}
-\setlength{\llargeurOut}{1.8cm}
-\setlength{\rlargeurOut}{0.25cm}
-\centering
-%=========
-\begin{tikzpicture}[node distance=0.5cm]
 
-\tikzstyle{rect}=[rectangle,draw,text=black, fill=red!10, minimum height=0.01cm, rounded corners] % drop shadow % rounded corners
-\tikzstyle{output}=[rectangle,draw,text=black, fill=blue!15, minimum height=0.01cm, rounded corners] % drop shadow % rounded corners
-\tikzstyle{test}=[diamond,aspect=3,draw,text=black,fill=red!10, rounded corners] % drop shadow % rounded corners
-\tikzstyle{fleche}=[->,>=stealth]
-\tikzstyle{trait}=[]
-%=========
-\setlength{\rlargeur}{\largeur}
-\addtolength{\rlargeur}{-1.\tabcolsep}
-\addtolength{\rlargeur}{-1.\llargeur}
-%=========
-\node[rect] (energy)
-{
-	\begin{tabular}{p{\llargeur}}
-	\textbf{Conservation of energy (Nonlinear Heat Transfer)} 
-	\begin{equation}
-	\label{eq:diag_energy}
-		 \frac{\partial \avg{\rho h}}{\partial t} + \vit \cdot \nabvec \brac{\rhol \hl} - \nabvec \cdot \brac{\avg{\kappa} \nabvec T} = 0
-	\end{equation}
-	\end{tabular}
-};
-%==========
-\node[rect,below=of energy] (microseg)
-{
-	\begin{tabular}{p{5.5cm}p{5.2cm}}
-	\textbf{Microsegregation} \\
-	\vspace{1mm} \\
-	%Discrete thermodynamic mapping: \\
-		\multicolumn{2}{l}{Full thermodynamic mapping: }\\
-		\quad \emph{Phase fraction}		& $(T,\wi) \rightarrow \gphi$ \\
-		\quad \emph{Phase composition} 	& $(T,\wi) \rightarrow \wiphi$ \\
-		\quad \emph{Phase enthalpy} 	& $(T,\wiphi) \rightarrow \hphi$ \\
-	\vspace{1mm} \\
-	\multicolumn{2}{l}{Segregation model (SM) + partial thermodynamic mapping:} \\ 
-		\quad \emph{Phase fraction/composition}		& $ (T,\wi) \xrightarrow{\text{SM}} (\gphi, \wiphi)$ \\
-  		\quad \emph{Enthalpy mapping}				& $(T,\wiphi) \xrightarrow[]{} \hphi$ \\
-	\end{tabular}
-};
-%==========
-\node[test,below=of microseg] (cvg)
-{
-	Convergence
-};
-%==========
-\node[rect,below=of cvg] (macroseg)
-{
-	\begin{tabular}{p{\llargeur}}
-	\textbf{Conservation of chemical species (Macrosegregation)} 
-	\begin{equation}
-	\label{eq:diag_solute}
-		\frac{\partial \avg{\rho w_i}}{\partial t} + \vit \cdot \nabvec \brac{\rhol \wil} - \nabvec \cdot \brac{\gl \rhol \Dl \nabvec \wil}= 0
-	\end{equation}
-	\end{tabular}
-};
-%==========
-\node[rect, below=of macroseg] (mecaflu)
-{
-	\begin{tabular}{p{\llargeur}}
-	\textbf{Conservation of liquid momentum (Navier-Stokes)}
-	\begin{equation}
-	\label{eq:diag_navierstokes}
-   \left\{
-   \begin{aligned}
-      & \rholref \brac{\tempup{ \vit } + \frac{1}{\gl} \nabvec \cdot \brac{\vit \times \vit}} = \\
-	  &- \gl\nabvec \pl - 2 \mul \nabvec \cdot \brac{\nabmat \vit + \nabmattransp \vit}
-	  - \gl \mul \K^{-1} \vit + \gl \rhol \gravity\\ \\
-      & \nabvec \cdot \vit =0
-    \end{aligned}
-    \right.
-\end{equation}
-	\end{tabular}
-};
-%%%%%% OUTPUT NODES %%%%%%%%%%%%%%%%
-\node[output,right=of energy] (energyOut)
-{
-	\begin{tabular}{p{\llargeurOut}}
-	\begin{equation*}
-		 T^t
-	\end{equation*}
-	\end{tabular}
-};
-%==========
-\node[output,right=of mecaflu] (mecafluOut)
-{
-	\begin{tabular}{p{\llargeurOut}}
-	\begin{equation*}
-		 \vit^t , (\pl)^t
-	\end{equation*}
-	\end{tabular}
-};
-%==========
-\node[output,right=of macroseg] (macrosegOut)
-{
-	\begin{tabular}{p{\llargeurOut}}
-	\begin{equation*}
-		 \avg{\rho w_i}^t
-	\end{equation*}
-	\end{tabular}
-};
-%==========
-\node[output,right=of microseg] (microsegOut)
-{
-	\begin{tabular}{p{\llargeurOut}}
+To sum up, when solidification occurs at constant volume, i.e. when solid and liquid densities are equal and if the solid is considered fixed (\vs =\vec{0}),
+the multiphase system can be modelled by the four average conservation equations, for mass (\cref{eq:conservation_mass}), energy (\cref{eq:conservation_energy_init}), 
+chemical species (\cref{eq:conservation_solute_init}) and liquid momentum (\cref{eq:conservation_momentum}).
+
+% Since all conservation equations were presented and simplified by the main assumption of a static solid phase, 
+% we may include them in a graphical summary in \cref{fig:algo_monodomain}
+% %---------------
+% \begin{figure}[htbp]
+% \label{fig:algo_monodomain}
+% %=========
+% \setlength{\largeur}{2cm}
+% \setlength{\llargeur}{11cm}
+% \setlength{\llargeurOut}{1.8cm}
+% \setlength{\rlargeurOut}{0.25cm}
+% \centering
+% %=========
+% \begin{tikzpicture}[node distance=0.5cm]
+
+% \tikzstyle{rect}=[rectangle,draw,text=black, fill=red!10, minimum height=0.01cm, rounded corners] % drop shadow % rounded corners
+% \tikzstyle{output}=[rectangle,draw,text=black, fill=blue!15, minimum height=0.01cm, rounded corners] % drop shadow % rounded corners
+% \tikzstyle{test}=[diamond,aspect=3,draw,text=black,fill=red!10, rounded corners] % drop shadow % rounded corners
+% \tikzstyle{fleche}=[->,>=stealth]
+% \tikzstyle{trait}=[]
+% %=========
+% \setlength{\rlargeur}{\largeur}
+% \addtolength{\rlargeur}{-1.\tabcolsep}
+% \addtolength{\rlargeur}{-1.\llargeur}
+% %=========
+% \node[rect] (energy)
+% {
+% 	\begin{tabular}{p{\llargeur}}
+% 	\textbf{Conservation of energy (Nonlinear Heat Transfer)} 
+% 	\begin{equation}
+% 	\label{eq:diag_energy}
+% 		 \frac{\partial \avg{\rho h}}{\partial t} + \vit \cdot \nabvec \brac{\rhol \hl} - \nabvec \cdot \brac{\avg{\kappa} \nabvec T} = 0
+% 	\end{equation}
+% 	\end{tabular}
+% };
+% %==========
+% \node[rect,below=of energy] (microseg)
+% {
+% 	\begin{tabular}{p{5.5cm}p{5.2cm}}
+% 	\textbf{Microsegregation} \\
+% 	\vspace{1mm} \\
+% 	%Discrete thermodynamic mapping: \\
+% 		\multicolumn{2}{l}{Full thermodynamic mapping: }\\
+% 		\quad \emph{Phase fraction}		& $(T,\wi) \rightarrow \gphi$ \\
+% 		\quad \emph{Phase composition} 	& $(T,\wi) \rightarrow \wiphi$ \\
+% 		\quad \emph{Phase enthalpy} 	& $(T,\wiphi) \rightarrow \hphi$ \\
+% 	\vspace{1mm} \\
+% 	\multicolumn{2}{l}{Segregation model (SM) + partial thermodynamic mapping:} \\ 
+% 		\quad \emph{Phase fraction/composition}		& $ (T,\wi) \xrightarrow{\text{SM}} (\gphi, \wiphi)$ \\
+%   		\quad \emph{Enthalpy mapping}				& $(T,\wiphi) \xrightarrow[]{} \hphi$ \\
+% 	\end{tabular}
+% };
+% %==========
+% \node[test,below=of microseg] (cvg)
+% {
+% 	Convergence
+% };
+% %==========
+% \node[rect,below=of cvg] (macroseg)
+% {
+% 	\begin{tabular}{p{\llargeur}}
+% 	\textbf{Conservation of chemical species (Macrosegregation)} 
+% 	\begin{equation}
+% 	\label{eq:diag_solute}
+% 		\frac{\partial \avg{\rho w_i}}{\partial t} + \vit \cdot \nabvec \brac{\rhol \wil} - \nabvec \cdot \brac{\gl \rhol \Dl \nabvec \wil}= 0
+% 	\end{equation}
+% 	\end{tabular}
+% };
+% %==========
+% \node[rect, below=of macroseg] (mecaflu)
+% {
+% 	\begin{tabular}{p{\llargeur}}
+% 	\textbf{Conservation of liquid momentum (Navier-Stokes)}
+% 	\begin{equation}
+% 	\label{eq:diag_navierstokes}
+%    \left\{
+%    \begin{aligned}
+%       & \rholref \brac{\tempup{ \vit } + \frac{1}{\gl} \nabvec \cdot \brac{\vit \times \vit}} = \\
+% 	  &- \gl\nabvec \pl - 2 \mul \nabvec \cdot \brac{\nabmat \vit + \nabmattransp \vit}
+% 	  - \gl \mul \K^{-1} \vit + \gl \rhol \gravity\\ \\
+%       & \nabvec \cdot \vit =0
+%     \end{aligned}
+%     \right.
+% \end{equation}
+% 	\end{tabular}
+% };
+% %%%%%% OUTPUT NODES %%%%%%%%%%%%%%%%
+% \node[output,right=of energy] (energyOut)
+% {
+% 	\begin{tabular}{p{\llargeurOut}}
+% 	\begin{equation*}
+% 		 T^t
+% 	\end{equation*}
+% 	\end{tabular}
+% };
+% %==========
+% \node[output,right=of mecaflu] (mecafluOut)
+% {
+% 	\begin{tabular}{p{\llargeurOut}}
+% 	\begin{equation*}
+% 		 \vit^t , (\pl)^t
+% 	\end{equation*}
+% 	\end{tabular}
+% };
+% %==========
+% \node[output,right=of macroseg] (macrosegOut)
+% {
+% 	\begin{tabular}{p{\llargeurOut}}
+% 	\begin{equation*}
+% 		 \avg{\rho w_i}^t
+% 	\end{equation*}
+% 	\end{tabular}
+% };
+% %==========
+% \node[output,right=of microseg] (microsegOut)
+% {
+% 	\begin{tabular}{p{\llargeurOut}}
 	
-	\begin{equation*}
-		\avg{\rho h}^t
-	\end{equation*}
-	%\begin{equation*}
-   	%	\left.
-	%	\begin{aligned}	   
- 	%		& (\gphi)^t  \\
-  	%		& (\wil)^t , (\wis)^t
-	%	\end{aligned}
-	%	\right.
-	%\end{equation*}
-	\end{tabular}
-};
-%==========
-%Connectivity
-\draw[trait] (energy) -- (microseg);
-\draw[trait] (microseg) -- (cvg);
-\draw[trait] (cvg) -- (macroseg);
-\draw[trait] (macroseg) -- (mecaflu);
-%-----
-\draw[trait] (energy) -- (energyOut);
-\draw[trait] (mecaflu) -- (mecafluOut);
-\draw[trait] (macroseg) -- (macrosegOut);
-\draw[trait] (microseg) -- (microsegOut);
+% 	\begin{equation*}
+% 		\avg{\rho h}^t
+% 	\end{equation*}
+% 	%\begin{equation*}
+%    	%	\left.
+% 	%	\begin{aligned}	   
+%  	%		& (\gphi)^t  \\
+%   	%		& (\wil)^t , (\wis)^t
+% 	%	\end{aligned}
+% 	%	\right.
+% 	%\end{equation*}
+% 	\end{tabular}
+% };
+% %==========
+% %Connectivity
+% \draw[trait] (energy) -- (microseg);
+% \draw[trait] (microseg) -- (cvg);
+% \draw[trait] (cvg) -- (macroseg);
+% \draw[trait] (macroseg) -- (mecaflu);
+% %-----
+% \draw[trait] (energy) -- (energyOut);
+% \draw[trait] (mecaflu) -- (mecafluOut);
+% \draw[trait] (macroseg) -- (macrosegOut);
+% \draw[trait] (microseg) -- (microsegOut);
 
-\coordinate[shift={(-3mm,0mm)}] (energywest) at (energy.west);
-\draw[fleche] (cvg.west) -| (energywest) -- (energy);
-\node[anchor=south east] (No) 	at (cvg.west) {No};
-%==========
-\end{tikzpicture}
-\caption{Graphical resolution algorithm of the conservation equations used in a 
-monodomain macroscopic model to predict macrosegregation for a time inrement $t$. 
-The blue boxes represent the output of each equation.}
-\end{figure}
+% \coordinate[shift={(-3mm,0mm)}] (energywest) at (energy.west);
+% \draw[fleche] (cvg.west) -| (energywest) -- (energy);
+% \node[anchor=south east] (No) 	at (cvg.west) {No};
+% %==========
+% \end{tikzpicture}
+% \caption{Graphical resolution algorithm of the conservation equations used in a 
+% monodomain macroscopic model to predict macrosegregation for a time inrement $t$. 
+% The blue boxes represent the output of each equation.}
+% \end{figure}
 %%------------------------------------------------------------------------------------------
-
-
-%%------------------------------------------------------------------------------------------
-% \comment{* Macro models: Rivaux ? Gu beckermann 1999 ? \\ 
-% * Micro macro: Tommy Carozzani2013, 
-% guo  beckermann 2003,  Combeau 2009, Miha Zaloznik 2010 (indirect), 
-% P. Thévoz, J.-L. Desbiolles, M. Rappaz, Metallurgical and Materials TransactionsA 20 (2) (1989) 311–322 \\ 
-% * end by talking about taking air into account and the need for an interface capturing method}
 
 %***********************************************
 \section{Eulerian and Lagrangian motion description}
@@ -724,12 +701,13 @@ in spot laser welding. The tracked interface in this case was that between the m
 Firstly introduced by \citet{osher_fronts_1988}, this method became very popular in studying multiphase flows.
 It is reminded that the term \emph{multiphase} in computational domains usually refers to multiple fluids, and thus
 should not be mixed with definition of a phase in the current solidification context. For disambiguation, we shall
-use \emph{multifluid flow} when needed.
+use \emph{multifluid flow} when needed, referred to as \emph{domains} in the present work.
 
-The great advantage lies in the way the interface between two fluids, $F_1$ and $F_2$ is implicitly captured, unlike 
-other methods where the exact interface position is needed. In a discrete domain, the concept is to assign for each 
-mesh node of position vector$\vec{x}$, the minimum distance $d_\Gamma(\vec{x})$ separating it from an interface $\Gamma$. 
-The distance function, denoted $\alpha$ and defined in \cref{eq:levelset_defintion}, is then signed positive or negative, based on the fluid or domain 
+The great advantage lies in the way the boundary between two fluid domains, $F_1$ and $F_2$ is implicitly captured, unlike 
+other methods where the exact boundary/interface position is needed. In a discrete domain, the concept is to assign for each 
+mesh node of position vector$\vec{x}$, the minimum distance $d_\Gamma(\vec{x})$ separating it from an interface $\Gamma$,
+which we prefer calling boundary, as it is a numerical approximation of the limit between multiphase domains, in which we can find the physical interfaces.
+The distance function, denoted $\alpha$ and defined in \cref{eq:levelset_defintion}, is then signed positive or negative, based on the domain 
 to which the node belongs.
 %------------
 \begin{align}
@@ -749,46 +727,39 @@ to which the node belongs.
 %path 
 {Chapter2/Graphics/distancefunction.pdf}
 % caption
-{Schematic of the interface $\Gamma$ (thick black line) of a rising air bubble ($F_1$) in water ($F_2$). 
-The other contours represent isovalues of the distance function around and inside the interface contour. 
+{Schematic of the boundary $\Gamma$ (thick black line) of a rising air bubble ($F_1$) in water ($F_2$). 
+The other contours represent isovalues of the distance function around and inside the boundary contour. 
 Those outside are signed negative whereas inside they are signed positive.}
 % label
 \label{fig:distance_function}
 \end{figureth}
 %-----------------------------------
-
 %***********************************************
-\subsection{Diffuse interface}
-\label{sec:heaviside}
+\subsection{Diffuse boundary} \label{sec:heaviside}
 %***********************************************
-
 The level set has many attractive properties that allows seamless implementation in 2D and 3D models. 
 It is a continuously differentiable $C^1$-function. 
 %For instance, a \emph{Heaviside} function, denoted $\heaviside$, can be obtained by first order derivation of the level set function. 
-The Heaviside function is also continuous but non differentiable, with an abrupt transition from $0$ to $1$ 
-across the sharp interface, as follows:
+The Heaviside function is also continuous but non differentiable, with a sharp transition from $0$ to $1$ 
+across the boundary, defining the presence of domain $F_1$ as follows:
 %----------
 \begin{align}
 \label{eq:no_smoothing}
-\heaviside = \heaviside \brac{\levelsetx} = 
+\heaviside_\text{sharp}^{F_1}= 
 \begin{cases}
 	0  & \text{ if } \levelsetx < 0 \\
     1  & \text{ if } \levelsetx \geqslant 0 \\  
 \end{cases}
 \end{align}
 %----------
-
-With the help of \cref{eq:no_smoothing}, we can define the geometric 
-"presence" of a domain with respect to the interface. As such, material properties 
-depend upon this function, which will be discussed later in \cref{sec:mixinglaws}.
+This is better known as the non-smoothed Heaviside function relative to domain $F_1$.
 It is established that a steep transition can lead to numerical problems, 
-so the Heaviside function should be smoothed in a volume of fixed thickness around the interface.
-
+so the Heaviside function should be smoothed in a volume of fixed thickness around the boundary.
 Sinusoidal smoothing in \cref{eq:sinusoidal_smoothing} is widely used with level set formulations.
 %------------
 \begin{align}
 \label{eq:sinusoidal_smoothing}
-\heaviside= 
+\heaviside^{F1} =
 \begin{cases}
 	0  & \text{ if } \levelsetx < -\varepsilon \\
     1  & \text{ if } \levelsetx > \varepsilon \\  
@@ -797,28 +768,28 @@ Sinusoidal smoothing in \cref{eq:sinusoidal_smoothing} is widely used with level
 \end{cases}
 \end{align}
 %-----------
-where the interval $\crochet{-\varepsilon; +\varepsilon}$ is an artificial interface thickness around the zero distance.
+where the interval $\crochet{-\varepsilon; +\varepsilon}$ is an artificial boundary thickness around the zero distance.
 
-Defining a diffuse interface rather than a sharp one, is also a common approach 
+Defining a diffuse boundary rather than a sharp one, is also a common approach 
 in phase field methods \citep{beckermann_modeling_1999,sun_diffuse_2004}.
 It is emphasized that the latter methods give physically meaningful 
-analysis of a diffuse interface and the optimal thickness by thoroughly studying the 
-intricate phenomena happening at the scale of the interface. However, for level set methods, 
+analysis of a diffuse boundary and the optimal thickness by thoroughly studying the 
+intricate phenomena happening at the scale of the boundary. However, for level set methods, 
 there has not been a formal work leading the same type of analysis. For this reason, 
 many aspects of the level set method lack physical meanings but remain computationally useful.
 In a recent paper by \citet{gada_derivation_2009}, the authors respond partially to this problem 
 by analysing and deriving conservation equations using a level set in a more meaningful way, but 
-do not discuss the diffuse interface aspect.
+do not discuss the diffuse boundary aspect.
 
 The Dirac delta function is also an important property to convert surface integrals to volume terms, which could
 turn useful when modelling surface tension effects for instance, using 
 the \emph{continuum surface force} method (CSF) \citep{brackbill_continuum_1992}.
 A smooth Dirac function, plotted in \cref{fig:heaviside_dirac} along with the smooth Heaviside function within an interface thickness 
-of $\crochet{-\varepsilon;+\varepsilon}$, is derived from the Heaviside as follows:
+of $\crochet{-\varepsilon;+\varepsilon}$, is derived as follows:
 %--- --------------
 \begin{align}
 \label{eq:dirac}
-\dirac = \delta \brac{\levelsetx} = \frac{\partial \heaviside  }{\partial \levelsetx}=
+\dirac = \delta \brac{\levelsetx} = \frac{\partial \heaviside^{F1}  }{\partial \levelsetx}=
 \begin{cases}
 \frac{1}{2\varepsilon} \brac{ 1 + \cos \brac{\frac{\pi \levelsetx}{\varepsilon }} }  & \text{ if } \abval{\levelsetx} \leqslant  \varepsilon \\
     0  & \text{ if } \abval{\levelsetx} > \varepsilon
@@ -826,21 +797,21 @@ of $\crochet{-\varepsilon;+\varepsilon}$, is derived from the Heaviside as follo
 \end{align}
 %-------------
 The Heaviside and delta Dirac functions can be readily processed to obtain other geometric properties from the level set,
-which are extremely useful. In the context of a system $\Omega$, containing two domains metal ($M$) and gas ($G$) seperated by an interface $\Gamma$, 
+which are extremely useful. In the context of a system $\Omega$, containing two domains $F_1$ seperated by an interface $\Gamma$, 
 the following properties are interesting to study \citep{peng_pde-based_1999}:
 %------------
 \begin{align}
 \label{eq:levelset_normal}
-\text{normal vector}: \vec{n} &= \frac{\nabvec \levelset}{\norm{\nabvec \levelset} } \\
+\text{normal vector to the boundary }\Gamma: \vec{n} &= \frac{\nabvec \levelset}{\norm{\nabvec \levelset} } \\
 %
 \label{eq:levelset_curvature}
-\text{curvature}: \zeta &= - \nabvec \cdot \vec{n} \\
+\Gamma \text{ boundary curvature}: \zeta &= - \nabvec \cdot \vec{n} \\
 %
 \label{eq:levelset_interface}
-\text{surface area of the air-metal interface }: A^\Gamma &= \integral{\Omega}{\dirac \norm{\nabvec \levelset}}{\Omega} \\
+\text{surface area of the boundary }\Gamma: A^\Gamma &= \integral{\Omega}{\dirac \norm{\nabvec \levelset}}{\Omega} \\
 %
 \label{eq:levelset_volume}
-\text{metal volume}: V^M &= \integral{\Omega}{\heaviside^M}{\Omega}
+\text{volume of fluid 1}: V^{F_1} &= \integral{\Omega}{\heaviside^{F_1}}{\Omega}
 %
 \end{align}
 %-----------
@@ -856,7 +827,7 @@ may vary linearly or not, depending on the mixing law, which is presented in the
 %path 
 {Chapter2/Graphics/HeavisideDirac.pdf}
 % caption
-{Schematic of two level properties inside the diffuse interface: Heaviside (lower x-axis) and Dirac delta (upper x-axis) functions.
+{Schematic of two level properties inside the diffuse interface: smoothed Heaviside (lower x-axis) and Dirac delta (upper x-axis) functions.
 Note that the peak of the Dirac function depends on the interface thickness to ensure a unity integral of the delta function over $\Omega$. }
 %In this example, the interface thickness is 800 $\mu m$.
 % label
@@ -878,24 +849,33 @@ the harmonic and logarithmic mixing. The first law is maybe the most intuitive a
 from VOF-based methods. If we consider any property $\psi$ (for instance the fluid's dynamic viscosity $\mu$) then the arithmetic 
 law will give a mixed property $\mix{\psi}$ as follows:
 %---
+\begin{subequations}
 \begin{align}
 \label{eq:arithmetic}
-\mix{\psi} = \heaviside^{F_1} \psi^{F_1} + \heaviside^{F_2} \psi^{F_2}
+\mix{\psi} &= \heaviside^{F_1} \psi^{F_1} + \brac{1-\heaviside^{F_1}} \psi^{F_2} \\
+\mix{\psi} &= \heaviside^{F_1} \psi^{F_1} + \heaviside^{F_2} \psi^{F_2}
 \end{align}
+\end{subequations}
 %---
-Basically, the result is an average property that follows the same trend as the Heaviside function. As for the harmonic law, it writes:
+Basically, the result is an average property that follows the same trend as the smoothed Heaviside function. As for the harmonic law, it writes:
 %---
+\begin{subequations}
 \begin{align}
 \label{eq:harmonic}
-\mix{\psi} = \brac{\frac{\heaviside^{F_1}}{\psi^{F_1}} + \frac{\heaviside^{F_2}}{\psi^{F_2}} }^{-1}
+\mix{\psi} &= \brac{\frac{\heaviside^{F_1}}{\psi^{F_1}} + \frac{1-\heaviside^{F_1}}{\psi^{F_2}} }^{-1} \\
+\mix{\psi} &= \brac{\frac{\heaviside^{F_1}}{\psi^{F_1}} + \frac{\heaviside^{F_2}}{\psi^{F_2}} }^{-1}
 \end{align}
+\end{subequations}
 %---
 and last, the logarithmic law writes:
 %---
+\begin{subequations}
 \begin{align}
 \label{eq:logarithmic}
-\mix{\psi} =  n^{\brac{\heaviside^{F_1} \log_n \psi^{F_1} + \heaviside^{F_2} \log_n \psi^{F_2}}}
+\mix{\psi} &=  n^{\brac{\heaviside^{F_1} \log_n \psi^{F_1} + \brac{1-\heaviside^{F_1}} \log_n \psi^{F_2}}} \\
+\mix{\psi} &=  n^{\brac{\heaviside^{F_1} \log_n \psi^{F_1} + \heaviside^{F_2} \log_n \psi^{F_2}}}
 \end{align}
+\end{subequations}
 %---
 where $n$ is any real number serving as a logarithm base, which often is either the exponential $e$ or $10$.
 
@@ -986,7 +966,7 @@ $i,j:1 \rightarrow$ Nnodes
 \end{subequations}
 %------------
 where $\Mij$ and $\Aij$ are respectively the mass (or capacity) matrix and advection matrix, both written within a local 
-finite element, whereas $\Fi$ is a local vector of known quantities from the previous time step. The solution of the linear
+finite element, whereas $\Fi$ corresponds to the RHS and is a local vector of known quantities from the previous time step. The solution of the linear
 system in \cref{eq:weakform_transport} is the transported distance function.
 
 When the convection regime becomes more dominant than diffusion (for high Peclet number), the standard Galerkin method may lead to instabilities in
@@ -995,20 +975,20 @@ convection no longer dominates on an element level", as stated by \citet{brooks_
 The authors give a brief explanation of how numerically a convection-dominated equation can lead to oscillatory solutions with
 the standard Galerkin approximation.
 They proposed a stabilisation scheme, the Streamline Upwind Petrov-Galerkin, better known as SUPG, to stabilise advection dominated
-Navier-Stokes equations. However, their technique applies to any convection-diffusion equation.
+Navier-Stokes equations. Their technique applies to any convection-diffusion equation.
 The SUPG method consists of modifying the test functions (like a classical Petrov-Galerkin method) by adding artificial
 diffusion in the flow direction. The modified test function writes:
 %------
 \begin{align}
 \label{eq:testfuntion_supg}
-\levelsetSUPG = \levelsettest + \underbrace{C^E_{SUPG} \brac{\vec{v}_\text{transport} \cdot \nabvec \levelsettest}}_{\text{Upwind contribution}}
+\levelsetSUPG = \levelsettest + \underbrace{\tau^E_{SUPG} \brac{\vec{v} \cdot \nabvec \levelsettest}}_{\text{upwind contribution}}
 \end{align}
 %------------
-where the upwind contribution for each finite element $E$ depends on a stabilisation parameter $C^E_{SUPG}$ that is expressed as follows:
+where the upwind contribution for each finite element $E$ depends on a stabilisation parameter $\tau^E_{SUPG}$ that is expressed as follows:
 %------
 \begin{align}
 \label{eq:supg_constant}
-C^E_{SUPG} = \frac{h^E}{v^E_\text{flow}}
+\tau^E_{SUPG} = \frac{h^E}{v^E_\text{flow}}
 \end{align}
 %------------
 \Cref{eq:supg_constant} shows that the SUPG parameter represents a time 
@@ -1034,7 +1014,7 @@ lost over the domain, which is:
 %------------
 The closer this $L^2$-norm to one, the more regular the level set. An irregular distance function induces 
 cumulative numerical errors while transporting distance values far from the interface,
-resulting in wrong distance information, and loss of properties that make up a "distance function".
+resulting in wrong distance information, and loss of properties. 
 To show one the benefit of level set regularisation, \citet{basset_simulation_2006} states 
 after showing several tests of distance function transport, that
 regularised distance functions transported with a standard Galerkin method (i.e. without any stabilisation) 
@@ -1188,7 +1168,7 @@ while preserving a unitary distance gradient.
 
 \emph{Direct reinitialisation} is another interesting method in the geometric reinitialise category. However,
 it has not gained noticeable attention in the literature given the terrible cost in terms of computation time and efficiency if not optimised.
-The main idea is very simple: reconstruct the distance function over $\Omega$ ar a subset of $\Omega$, by computing the 
+The main idea is very simple: reconstruct the distance function over $\Omega$ or a subset of $\Omega$, by computing the 
 minimum distance between each mesh node and the interface. It means that, for any point $\vec{x} \in \Omega$, the following 
 constraint should be satisfied \citet{osher_signed_2003}:
 %------
@@ -1220,7 +1200,7 @@ In such a case, errors due to interpolation are minimised,
 which guaranties good results but with expensive time cost. 
 
 Heterogeneous meshes (\cref{fig:mesh_iso_hetero_unstruct}) that consist of fine isotropic elements
-in areas of interest along with coarser isotropic elements in other areas, may reduce the needed time to solver each conservation
+in areas of interest along with coarser isotropic elements in other areas, may reduce the needed time to solve each conservation
 equation. Although this is an interesting alternative, it is less powerful than anisotropic meshing. 
 In the latter (\cref{fig:mesh_aniso_hetero_unstruct}),
 elements adapt to a physical quantity, such as enthalpy or velocity, 
@@ -1236,7 +1216,7 @@ composition, where fluid flow may transport species, leading eventually to macro
 
 %
 %-----------------
-\begin{figure}[htbp]
+\begin{figure}[b!]
 \centering
    %------------
   \begin{subfigure}[t]{0.25\textwidth}
@@ -1276,11 +1256,11 @@ composition, where fluid flow may transport species, leading eventually to macro
 \label{fig:premeshing_options}
 \end{figure}
 %-----------------
-%
 
 Since mesh adaptation involves advanced mathematical notions, readers interested 
 in the basics are referred to the following references:
 \citep{coupez_grandes_1991,coupez_generation_2000,gruau_3d_2005,jannoun_space-time_2014}.
+
 In this study, we show and compare different remeshing methods relevant to macrosegregation prediction, and based on previous work
 done at CEMEF. These techniques rely on metric tensors, and some of them belong to
 \emph{a posteriori} error estimators category. A metric or a metric tensor $\mathcal{M}$, 
@@ -1310,47 +1290,50 @@ dilatation scalars defined by the metric in the $\brac{x,y,z}$ space, describing
 a three-dimensional anisotropy.
 The metric information is then passed to a mesh generation tool, called \emph{MTC},
 which is based on an iterative procedure of local topology optimisations. We focus hereafter
-on two adaptive remeshing techniques, then discuss the functional details and show some examples.
+on two adaptive remeshing techniques, \emph{Remesh2} and \emph{Remesh4}, then discuss the functional details and show some examples.
+Please note that these names represent only a short notation to simplify metionning the corresponding methods easily in the text.
 
-\subsection{\emph{Remesh2}: Interface remeshing}
-\label{sec:remesh2_params}
+% *********************************************************
+\subsection{\emph{Remesh2}: Interface remeshing} \label{sec:remesh2_params}
+% *********************************************************
 
 \emph{Remesh2} is an explicit method to compute an anisotropic metric around the zero surface of a distance function.
 The idea is, as mentioned previously, to reduce the elements cost in the tangential directions to level set by
 stretching the elements, leaving small element lengths in the normal direction, where the level set gradient is the greatest.
 This method is not based on error estimators, but rather on explicit input from the user who chooses the mesh size in
-normal and tangential directions to the interface, as well as in the positive and negative regions delimited by the level set.
-The following parameters are used as input data to determine the final node-wise metric:
-%------------------------------------
-\begin{tabbing}
-\hspace{1cm}\=\kill
-$h_{\vec{n}}$ \> mesh size in the normal direction of the level set\\ 
-$h_{\vec{\tau}}$ \> mesh size in the tangential directions of the level set\\ 
-$h_M$ \>  mesh size in the metal \\
-$h_A$ \>  mesh size in the air  \\
-$\levelset$ \> distance function (level set) \\
-$\varepsilon$ \>  level set mixing thickness \\
-$\vec{V}$ \> arbitrary vector
-\end{tabbing} 
-%------------------------------------
-\begin{algorithm}[H]
- \KwData{$\vec{n}\quad h_M \quad h_A \quad h_{\vec{n}} \quad h_{\vec{\tau}} \quad \levelset$ }
- \KwResult{$\mathcal{M}_2$ }
- Initialise node index: $j=0$\;
- \While{$j \leq j_\text{end}$}{
-  \eIf{$\levelset_j < \varepsilon$}{
-    Compute normal direction to level set: $\vec{n} ={\nabvec \levelset }/{\norm{\nabvec \levelset }}$\;
-    Compute the first tangential direction: $\vec{\tau_1} = \vec{V} - \brac{\vec{V} \cdot \vec{n}}\cdot \vec{n}$\;
-    Deduce the second tangential direction: $\vec{\tau_2} = \vec{n} \wedge \vec{\tau_1}$\;
-    Compute rotation matrix and its transpose: $\mathcal{R}_j$ and $\mathcal{R}_j^{-1}$\;
-    Deduce P1 metric at node $j$: $\brac{\mathcal{M}_2}_j = \mathcal{R}_j \Lambda \mathcal{R}_j^{-1}$
-   }{
-   go back to the beginning of current section\;
-  	}
-  Increment $j$ \;	
-  }  
- \caption{\emph{Remesh2} metric construction}
-\end{algorithm}
+normal and tangential directions to the interface, as well as the mesh size in each of the domains separated by the level set.
+For more details about this method, the reader is referred to \citep{bernacki_development_2007,resk_adaptive_2009,roux_level-set_2013}.
+% The following parameters are used as input data to determine the final nodal metric field:
+% %------------------------------------
+% \begin{tabbing}
+% \hspace{1cm}\=\kill
+% $h_{\vec{n}}$ \> mesh size in the normal direction of the level set\\ 
+% $h_{\vec{\tau}}$ \> mesh size in the tangential directions of the level set\\ 
+% $h_M$ \>  mesh size in the metal \\
+% $h_A$ \>  mesh size in the air  \\
+% $\levelset$ \> distance function (level set) \\
+% $\varepsilon$ \>  level set mixing thickness \\
+% $\vec{V}$ \> arbitrary vector
+% \end{tabbing} 
+% %------------------------------------
+% \begin{algorithm}[H]
+%  \KwData{$\vec{n}\quad h_M \quad h_A \quad h_{\vec{n}} \quad h_{\vec{\tau}} \quad \levelset$ }
+%  \KwResult{$\mathcal{M}_2$ }
+%  Initialise node index: $j=0$\;
+%  \While{$j \leq j_\text{end}$}{
+%   \eIf{$\levelset_j < \varepsilon$}{
+%     Compute normal direction to level set: $\vec{n} ={\nabvec \levelset }/{\norm{\nabvec \levelset }}$\;
+%     Compute the first tangential direction: $\vec{\tau_1} = \vec{V} - \brac{\vec{V} \cdot \vec{n}}\cdot \vec{n}$\;
+%     Deduce the second tangential direction: $\vec{\tau_2} = \vec{n} \wedge \vec{\tau_1}$\;
+%     Compute rotation matrix and its transpose: $\mathcal{R}_j$ and $\mathcal{R}_j^{-1}$\;
+%     Deduce P1 metric at node $j$: $\brac{\mathcal{M}_2}_j = \mathcal{R}_j \Lambda \mathcal{R}_j^{-1}$
+%    }{
+%    go back to the beginning of current section\;
+%   	}
+%   Increment $j$ \;	
+%   }  
+%  \caption{\emph{Remesh2} metric construction}
+% \end{algorithm}
 
 
 \subsection{\emph{Remesh4}: Multi-criteria remeshing}
