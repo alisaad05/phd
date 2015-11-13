@@ -1301,8 +1301,22 @@ Please note that these names represent only a short notation to simplify metionn
 The idea is, as mentioned previously, to reduce the elements cost in the tangential directions to level set by
 stretching the elements, leaving small element lengths in the normal direction, where the level set gradient is the greatest.
 This method is not based on error estimators, but rather on explicit input from the user who chooses the mesh size in
-normal and tangential directions to the interface, as well as the mesh size in each of the domains separated by the level set.
-For more details about this method, the reader is referred to \citep{bernacki_development_2007,resk_adaptive_2009,roux_level-set_2013}.
+normal and tangential directions to the interface, as well as the mesh size in each of the domains separated by the level set, as shown in \cref{fig:remesh2}.
+For more details about this method, the reader is referred to \citep{bernacki_development_2007,resk_adaptive_2009,hitti_direct_2011}.
+
+%----------------------
+\begin{figureth}
+% textwidth 
+{0.75}
+%path 
+{Chapter2/Graphics/remesh2.png}
+% caption
+{(a) Multiple level sets used to delimit the grains of an equiaxial polycrystal with (b) a zoom on the anisotropic mesh elements describing the grain boundaries \citep{hitti_direct_2011}. }
+% label
+\label{fig:remesh2}
+\end{figureth}
+%-----------------------------------
+
 % The following parameters are used as input data to determine the final nodal metric field:
 % %------------------------------------
 % \begin{tabbing}
@@ -1342,9 +1356,44 @@ It is essentially an \emph{a posteriori} error estimator. The method consists of
 one or more nodal fields, then using a statistical concept, the so-called \emph{length distribution tensor}, a stretching factor
 can be determined by solving several constraints like locally minimizing the induced error, limit the number of created nodes to
 a specific  threhold, etc. Finally, the stretching factor is directly used to correct the edge size/lengths, which varies in such a way to minimize the locally induced error.
-Detailed information can be found in \citep{coupez_metric_2011,el_jannoun_space-time_2014}
+Detailed information can be found in \citep{coupez_metric_2011,coupez_edge-based_2013,el_jannoun_space-time_2014}.
 
-%--------------------------------------
+This method is readily compatible with multiple scalar or vector input, which results in a final metric accounting
+for the steepness of each quantity gradient. In solidification, such a technique is appealing since we often need 
+to maintain sufficiently small mesh sizes in areas of interest, e.g. narrow mushy zone formation caused by high thermal gradients, areas with composition variations or
+areas where fluid convection is a consequence to combined effects of energy-solute variations. \Cref{fig:remesh4} shows an example of mechanically driven flow,
+along with the accurate capturing of the interface using highly stretched anisotropic elements, at the edges and in the center.
+
+
+%-----------------
+\begin{figure}[htbp]
+\centering
+   %------------
+  \begin{subfigure}[t]{0.3\textwidth}
+    \centering
+	\includegraphics[width=\textwidth]{Chapter2/Graphics/remesh4_1000.png}
+	\caption{}
+  \end{subfigure}
+   %------------
+   %\hspace{1cm}
+   \begin{subfigure}[t]{0.3\textwidth}
+    \centering
+	\includegraphics[width=\textwidth]{Chapter2/Graphics/remesh4_10000.png}
+	\caption{}
+  \end{subfigure}
+   %------------
+  \begin{subfigure}[t]{0.3\textwidth}
+    \centering
+	\includegraphics[width=\textwidth]{Chapter2/Graphics/remesh4_100000.png}
+	\caption{}
+  \end{subfigure}
+  %-------- 
+\caption{Edge-based anisotropic metric generation applied to a driven flow inside cavity with a Reynolds number of (a) \num{1000} (b) \num{10000} and (c) \num{100000}. } 
+\label{fig:remesh4}
+\end{figure}
+%-----------------
+
+
 
 % What i concluded from Z-FAST-SMACS cases A and B, where remesh4 was used in two different ways (LS and velocity/100  ,  LS and ConcentrationPosNeg)
 % is that for diffuse interface thickness less than 2e-4 m, mass conservation gets all sorts of problems, because of low element resolution 
