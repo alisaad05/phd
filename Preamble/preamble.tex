@@ -451,6 +451,14 @@ line width=\lwidth, mark size=\msize,   dashdotted, every mark/.append style={so
 line width=\lwidth, mark size=\msize,   dasdotdotted, every mark/.append style={solid},mark=star\\%
 line width=\lwidth, mark size=\msize,   densely dashdotted,every mark/.append style={solid, fill=gray},mark=diamond*\\%
 }
+\pgfplotscreateplotcyclelist{masscycle}{%
+line width=\lwidth, mark size=\msize,   dashed, every mark/.append style={solid, fill=gray}, mark=square*\\%
+line width=\lwidth, mark size=\msize,   solid, every mark/.append style={solid, fill=gray}, mark=square*\\%
+line width=\lwidth, mark size=\msize,   dashed, every mark/.append style={solid, fill=gray}, mark=triangle*\\%
+line width=\lwidth, mark size=\msize,   solid, every mark/.append style={solid, fill=gray}, mark=triangle*\\%
+line width=\lwidth, mark size=\msize,   dashed, every mark/.append style={solid, fill=gray}, mark=diamond*\\%
+line width=\lwidth, mark size=\msize,   solid, every mark/.append style={solid, fill=gray}, mark=diamond*\\%
+}
 
 % Animations  (gif, png ...)
 \usepackage[controls, 

@@ -1999,37 +1999,78 @@ on larger distances and destabilising the computation.
 \shorthandon{;:?!} %http://tex.stackexchange.com/questions/74860/unexpected-clash-between-babel-and-pgf-spy
 
 
-
-The plots in \cref{fig:1dalsi7_dataVSlength} give important information on the segregation shown in  \cref{fig:1dalsi7_gs_w}.
-We continue our analysis on the link between macrosegregation and solidification shrinkage by plotting in \cref{fig:1dalsi7_dataVSlength} important 
+% The plots in \cref{fig:1dalsi7_wVSlength} give important information on the segregation shown in  \cref{fig:1dalsi7_gs_w}.
+We continue our analysis on the link between macrosegregation and solidification shrinkage by plotting in \cref{fig:MD_subplots} important 
 quantities at different times of the simulation corresponding to the MD strategy.
-The first column in \cref{fig:1dalsi7_dataVSlength} shows the evolution of the average composition in the metal+air system 
-(same plot as in \cref{fig:1dalsi7_dataVSlength}a), as well as the solid (primary and eutectic) and liquid phase compositions. 
+
+The first column in \cref{fig:MD_subplots} shows the evolution of the average composition in the metal+air system 
+(same plot as in \cref{fig:1dalsi7_wVSlength}a), as well as the solid (primary and eutectic) and liquid phase compositions. 
 At 200 s, classic segregation takes place governed by the alloy properties defined in \cref{table:1dalsi7_macro_diagram},
 where we can see that the eutectic had already reached almost 0.6 cm from the chill (as previously seen in \cref{fig:1dalsi7_gs_w}), 
-forcing the liquid composition to drop to zero.
+forcing the liquid composition to drop to zero locally.
 Later at 600 s, the mushy zone reaches the \emph{M-A} boundary, causing the instability to begin. This instability is identified by
 a decrease in average composition, forming the \emph{valley} effect. Shortly before solidification ends at 800 s, the instability had
 already reached its minimum peak, due to neglecting to porous medium boundaries. 
-The second column in \cref{fig:1dalsi7_dataVSlength} shows average density plots
 
-%=====================================BIG LANDSCAPE FIGURE =====================================
+The second column in \cref{fig:MD_subplots} shows mixed average density plots during solidification. From 200 s to 600 s, we can identify
+the extent of the mushy zone, as previously discussed for the phase compositions. We assume that the primary and eutectic solids have the same phase density, $\rhos$.
+The density graphs show only values in the interval [2550, 2850] \si{\udensity}, and therefore we cannot see that in the air domain, the mixed average density
+drops to $\rhoa$. 
+
+Finally, the third column of \cref{fig:MD_subplots} describes the temporal evolution of mixed fluid velocity solutions, namely the average fluid velocity, $\vitf$,
+and the intrinsic average fluid velocity, $\vec{\avg{v}^F}$. At 200s, we see that the suction effect created by the density change in the mushy zone creates a
+unidirectional flow of constant velocity, in both the liquid and air, with a magnitude of about \SI{0.9e-5}{\uvelocity}. At the \emph{M-A} boundary, we see a velocity
+jump caused by the ratio of metal density to air density. Closer to the chill, we can distinguish average and intrinsic velocity profiles in the mushy zone. The latter decreases
+more slowly than the former and showing a slight sharp increase in magnitude (not very visible on the plot) when at the intersection between the mushy zone and the eutectic front.
+In previous solidification shrinkage studies carried by \citet{niane_etude_2004}, the author showed a similar effect caused by the instantaneous eutectic solidification of the remaining
+liquid. However in our simulations, this effect is less prominent, possibly because of the mesh size 	. 
+Later from to 600 s to 800 s, we notice a relatively turbulent flow in the air, compared to its behaviour in the remaining liquid. Another remarkable phenomenon, is the 
+increase in velocity magnitude, almost a hundred times after solidification is finished. We may see this as a numerical response to the modelled physics, which vary
+before and after solidification.  
+
+
+
+%=====================================BIG LANDSCAPE FIGURE  -- MD PLOTS =====================================
 \begin{landscape}
 \begin{figureth}
 % textwidth 
 {1.5}
 %path 
-{Chapter5/Data/1d_alsi7_arc_compositions/compositions_vs_length.pdf}
+{Chapter5/Data/1d_alsi7_arc_compositions/MD_subplots.pdf}
 % caption
 {Group of plots where each row is a given time increment (t=200 s, t=600 s and t=800 s) of the 1D solidification shrinkage simulation with macrosegregation
-applying the monolithic strategy (\cref{fig:1dalsi7_wVSlength}a). 
-Important physical quantities (compositions, density and velocities) are plotted along a line passing through the centre of the sample and parallel to the gravity vector. 
-Plots are titled with the corresponding plotted quantities.}
+applying the \textbf{MD strategy}  (\cref{fig:1dalsi7_wVSlength}a). 
+Physical quantities are plotted along a line passing through the centre of the sample and parallel to the gravity vector.}
 % label
-\label{fig:1dalsi7_dataVSlength}
+\label{fig:MD_subplots}
 \end{figureth}
 \end{landscape}
-%=====================================BIG LANDSCAPE FIGURE =====================================
+%=====================================BIG LANDSCAPE FIGURE -- MD PLOTS =====================================
+
+At this stage, it is interesting to conduct the same investigation done for \cref{fig:MD_subplots} 
+but changing the species resolution strategy to NM, whose results are plotted
+in \cref{fig:NM_subplots}. We have already seen the difference in the average composition plot, which is the same in \cref{fig:1dalsi7_wVSlength}c.	However, the liquid composition shows a peak value when meeting the \emph{M-A} boundary at 800 s. 
+The mixed density does not show noticeable differences, as the predicted phase fractions are the same, regardless of the species resolution strategy. 
+The last column in \cref{fig:NM_subplots} shows a much better flow behaviour compared to the results seen in \cref{fig:MD_subplots}.
+The velocity plots show also lower magnitudes than the MD strategy plots, while still predict a more prominent effect of 
+local intrinsic velocity increase near the eutectic front at 200 s.
+
+%=====================================BIG LANDSCAPE FIGURE -- NM PLOTS =====================================
+\begin{landscape}
+\begin{figureth}
+% textwidth 
+{1.5}
+%path 
+{Chapter5/Data/1d_alsi7_arc_compositions/NM_subplots.pdf}
+% caption
+{Group of plots where each row is a given time increment (t=200 s, t=600 s and t=800 s) of the 1D solidification shrinkage simulation with macrosegregation
+applying the \textbf{NM strategy} (\cref{fig:1dalsi7_wVSlength}c).
+Physical quantities are plotted along a line passing through the centre of the sample and parallel to the gravity vector.}
+% label
+\label{fig:NM_subplots}
+\end{figureth}
+\end{landscape}
+%=====================================BIG LANDSCAPE FIGURE  -- NM PLOTS =====================================
 
 
 
@@ -2042,6 +2083,57 @@ The conservation of the metal's mass and the metallic species mass are discussed
 
 
 
+%--------------------------------------
+\shorthandoff{;:?!} %http://tex.stackexchange.com/questions/74860/unexpected-clash-between-babel-and-pgf-spy
+\begin{figure}[htbp]
+\centering
+%-------
+\begin{tikzpicture}
+%-------------------
+ \begin{axis}
+  [	name=whatever,
+	%title= (c),
+	scale only axis,
+	table/col sep=tab,  % comma % tab
+	enlarge x limits=false,
+	%legend pos=north east,
+	scaled ticks=true,
+	ylabel style={align=center},
+	ylabel=  Relative mass change (\%), %Relative mesosegregation,
+	xlabel=Time (s),
+	%xticklabel style={/pgf/number format/fixed},
+	yticklabel style={/pgf/number format/fixed},
+	xtick={0,100,...,1000},
+	xticklabels={0,100,...,1000},
+	ytick={-1,-0.5,...,1},
+	yticklabels={-1,-0.5,...,1},
+	width=0.75\textwidth,
+	% height=8cm,	
+	ymin=-1.5, ymax=1.5,
+	xmin=0, xmax=1000,
+	mark repeat	= {50},
+	cycle list name=masscycle,
+	% axis y line*=left,
+	legend cell align=left,
+]
+  \addplot table [x=Temps, y=mMpct]   			{Chapter5/Data/1d_species_mass_analysis/species_mass_data_MD.txt};
+  \addplot table [x=Temps, y=msoluteM_pct]  	{Chapter5/Data/1d_species_mass_analysis/species_mass_data_MD.txt};
+  \addplot table [x=Temps, y=mMpct]   			{Chapter5/Data/1d_species_mass_analysis/species_mass_data_MDA.txt};
+  \addplot table [x=Temps, y=msoluteM_pct]  	{Chapter5/Data/1d_species_mass_analysis/species_mass_data_MDA.txt};
+  \addplot table [x=Temps, y expr=\thisrow{mMpct}+0.5]   {Chapter5/Data/1d_species_mass_analysis/species_mass_data_NM.txt};
+  \addplot table [x=Temps, y expr=\thisrow{msoluteM_pct}+0.5]  	{Chapter5/Data/1d_species_mass_analysis/species_mass_data_NM.txt};
+  
+  \legend{MD-metal mass,MD-species mass,MDA-metal mass,MDA-species mass,NM-metal mass,NM-species mass}  	
+  
+  \end{axis}
+  	%------------------
+\end{tikzpicture}
+%-------
+\caption{.}
+\label{fig:mass_species}
+\end{figure}
+%--------------------------------------
+\shorthandon{;:?!} %http://tex.stackexchange.com/questions/74860/unexpected-clash-between-babel-and-pgf-spy
 
 
 
