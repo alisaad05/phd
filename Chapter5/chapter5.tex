@@ -2078,10 +2078,32 @@ Physical quantities are plotted along a line passing through the centre of the s
 \subsubsection{Solute mass conservation}
 % **********************************************
 
-The conservation of the metal's mass and the metallic species mass are discussed in this section.
+The mass conservation for the metal and the metallic species is discussed in this section.
+\Cref{fig:mass_species} shows the relative mass variation of the metal and the silicon species
+for each of the previously defined and used modelling strategies.
+The solute mass variation is computed, similarly to the metal (\cref{eq:metal_mass_variation}), as follows:
+%----------------
+\begin{align}
+\label{eq:solute_mass_variation}
+&  m^\text{sp}_\% = \frac{m^\text{sp} - m^\text{sp}_0}{m^\text{sp}_0} \times 100	
+\end{align}
+% ---------------
+where $m^\text{sp}_0$ is the initial solute mass (``sp'' stands for species, silicon in this case), knowing that
+$m^\text{sp}$ is computed using the average composition as follows:
+%----------------
+\begin{align}
+\label{eq:solute_mass_initial}
+&  m^\text{sp} = \integral{\Ohm}{\heavisideM \mix{\avg{w}} \avg{\rho}^M }{\Ohm}
+\end{align}
+% ---------------
 
-
-
+It is important to analyse the metal mass variation together with the species mass variation
+because a gain or loss in the metal's mass is directly reflected on the mass of the metallic species.
+However, the latter may also be lost or gained depending on the way the configuration of the simulation, 
+how it is solved, the boundary conditions ...
+In our case, we first compared the mass conservation for the metal with all three methods for species conservation:
+MD (monolithic with low diffusion), MDA (monolithic with low diffusion and advection) and last NM (non monolithic).
+Minor differences are detected in the when comparing these three techniques, as shown by the dotted lines in \cref{fig:mass_species}.
 
 %--------------------------------------
 \shorthandoff{;:?!} %http://tex.stackexchange.com/questions/74860/unexpected-clash-between-babel-and-pgf-spy
@@ -2129,7 +2151,8 @@ The conservation of the metal's mass and the metallic species mass are discussed
   	%------------------
 \end{tikzpicture}
 %-------
-\caption{.}
+\caption{Mass variation plots for the metal and the chemical species the latter contains, considering three different strategies 
+to account for the species conservatio in the air.}
 \label{fig:mass_species}
 \end{figure}
 %--------------------------------------
