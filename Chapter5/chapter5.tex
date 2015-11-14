@@ -999,6 +999,8 @@ as dictates the previous monolithic strategy, knowing that air density remains c
 In the next section, we present a simple 1D solidification case with solidification shrinkage, in which we test
 the segregation results given by each strategy.
 
+
+Henceforth we refer to simulations 
 %------------------
 % \subsection{Interface motion and stability}
 %-----------------------------
@@ -1112,7 +1114,8 @@ the segregation results given by each strategy.
 % solid regions, is transported with Navier-Stokes output, which should be some orders of magnitude less than the velocity
 % imposed at the free surface, as a result of a decreasing permeability.
 
-% \cleardoublepage
+
+\cleardoublepage
 
 %----------------------------------------------------------------
 \section{1D application: solidification with inverse segregation}
@@ -1144,7 +1147,7 @@ For this purpose, we take an aluminium-silicon alloy with the properties shown i
 % Liquidus temperature 				& $T_L$ 			& \num{618} 	& \si{\udegC} \\ 
 % Eutectic temperature 				& $T_E$ 			& \num{577}	 	& \si{\udegC} \\  
 % Segregation coefficient 			& $k$ 				& \num{0.13} 	& $-$  \\  
-% Liquidus slope 						& $m_L$ 			& \num{-6.5} 	& \si{\uslope} \\ 
+% Liquidus slope 					$m_L$ 			& \num{-6.5} 	& \si{\uslope} \\ 
 Liquid density			 			& $\rhol$ 			& \num{2600} 	& \si{\udensity} 		\\ 	 
 Solid density	 					& $\rhos$ 			& \num{2800} 	& \si{\udensity} 		\\  
 Air density 						& $\rhoa$ 			& \num{1.3} 	& \si{\udensity} 		\\  
@@ -1219,7 +1222,7 @@ of the velocity solution used later in the transport step. The chosen mixing law
 The mesh properties are given in \cref{table:1dalsi7_meshsize}.
 
 %--------------------------------
-\begin{table}[htbp]
+\begin{table}[H]
 \centering
 \caption{Summary of the mesh parameters used to generate an adaptive anisotropic mesh, along with the level set mixing thickness, $\varepsilon$. 
 Refer to \cref{sec:remesh2_params} for the definition of each mesh parameter.}
@@ -1327,7 +1330,7 @@ The fact that properties transition is crucial in the solution stability, is inv
 All simulation cases are grouped in \cref{table:1dalsi7_comparative_nomacro}.
 
 %--------------------------------
-\begin{table}[htbp]
+\begin{table}[H]
 \centering
 \caption{Summary of the comparative shrinkage simulations without macrosegregation.}
 \label{table:1dalsi7_comparative_nomacro}
@@ -1361,6 +1364,7 @@ Finally, in \cref{fig:1dalsi7_differentprops}, we notice a recirculating air flo
 may further occur once solidification is complete, thus air flows freely in and out 
 of the upper boundary with a very low magnitude ($\approx$ \SI{e-7}{\uvelocity}), while impinging on the metal-air surface.
 Regarding the CPU times, cases A1 ran for 14 hours, case A2 took only 2 hours while case R ran for 23.3 hours.
+
 To summarise, we can see conclude from the previous results, the following points:
 \begin{enumerate}
 	\itemsep0em 
@@ -1427,7 +1431,10 @@ Properties are given in \cref{table:data_case_inverseseg,table:1dalsi7_meshsize,
 \end{figure}
 %-----------------------------------------
 
+
+% ******************************************
 \subsubsection{Mass conservation study}
+% ******************************************
 
 In order to get a better idea about the performance of our model, a mass conservation study is performed hereafter. 
 We define the metal's mass as a function of the metal's average density and the Heaviside function relative to the 
@@ -1537,14 +1544,14 @@ transport problems may occur.
 
 The level set method is known to have poor mass conservation properties. However, the mass variation
 we see in the previous plots is more related to a physical problem: \textbf{at which velocity does the \emph{M-A} boundary move?}
-In our simulations, we systemically considered the Navier-Stokes solution, $\vitf$,
-to transport the metal-air boundary. This solution is equal to $\vit= \gl \vl$ in the metal domain. 
-Furthermore, we showed in the introduction of this chapter that the \emph{M-A} boundary actually consists of several interfaces, 
+% In our simulations, we systemically considered the Navier-Stokes solution, $\vitf$,
+% to transport the metal-air boundary. This solution is equal to $\vit= \gl \vl$ in the metal domain. 
+We showed in the introduction of this chapter that the \emph{M-A} boundary actually consists of several interfaces, 
 and when the mushy zone overlaps with the level set mixing zone, we cannot track the boundary between the porous medium 
 (described in \cref{fig:1dalsi7_interface_stages}), which induces concept errors.
 In the light of these facts, we can try to limit as much as possible the motion of the porous medium boundaries, once the mushy zone has reached the level set mixing zone,
 and test the influence on mass conservation.
-To do so, we firstly advise to keep a very small thickness interface, in order to delay the previously explained overlap. Moreover, we suggest computing the 
+To do so, we firstly advise to keep a very small thickness interface, in order to delay the previously explained overlap. Moreover, we deducing the 
 transport velocity, used in the level set transport equation (\cref{eq:transport_weak1}), at each node as follows:
 %--------
 \begin{align}
@@ -1557,6 +1564,7 @@ transport velocity, used in the level set transport equation (\cref{eq:transport
 \end{align}
 %---------------
 where $g_{BL}^l$ is the threshold for the liquid fraction, below which we consider that the interface should not be transported.
+
 \Cref{fig:massconserv_blockingpct} shows the mass variation for three blocking fractions: 0, 50, 75 and 99 percent.
 The first value corresponds the case where the Navier-Stokes solution is directly passed to the transport solver, corresponding to the previously presented result in \cref{fig:shrinkage_nomacro_massconserv}b.
 For the last value, we consider that as soon as a portion of the \emph{M-A} boundary becomes
@@ -1587,7 +1595,7 @@ removes mass.
 	xtick={0,200,400,600,800,1000},
 	%ytick={-0.1,0,0.1,0.2},
 	%x tick label style={rotate=45,anchor=east},
-	width=0.6\textwidth,
+	width=0.45\textwidth,
 	%height=5cm,	
 	%ymin=-0.1, ymax=0.2,
 	mark repeat	= {30},
@@ -1632,7 +1640,7 @@ removes mass.
 	xtick={0,200,400,600,800,1000},
 	ytick={-0.1,0,0.1,0.2},
 	%x tick label style={rotate=45,anchor=east},
-	width=0.6\textwidth,
+	width=0.45\textwidth,
 	%height=5cm,	
 	%ymin=-0.1, ymax=0.2,
 	mark repeat	= {30},
@@ -1678,7 +1686,7 @@ In this case, we will generate a simple tabulation based on a phase diagram
 with linear liquidus and solidus lines, whose properties are reminded in \cref{table:1dalsi7_macro_diagram}.
 
 %--------------------------------
-\begin{table}[htbp]
+\begin{table}[H]
 \centering
 \caption{Main properties of the linearised phase diagram for Al-Si alloys.}
 \label{table:1dalsi7_macro_diagram}
@@ -1734,6 +1742,7 @@ This rise confirms the metal has shrunk in length (volume in 3D),
 becoming less than 10 cm, hence replaced by air that entered through the open top boundary.
 The 6$\text{th}$ sensor (at 100 mm) was initially on the metal-air boundary, then later relocated in the air after shrinkage.
 The sensors at 12 cm and 14 cm are not shown in this figure as the simulation done for the pure diffusion without level set, the air domain does not exist.
+
 Another interesting difference resulting from shrinkage is that solidification ends sooner by about 70 s, compared to the pure diffusion case.
 As mass is almost perfectly conserved in both cases, cooling flux is the only factor that may accelerate the cooling. The imposed cooling boundary condition
 is a Fourier-type with the same heat transfer coefficient $\hext$ in both cases. However, a shrinkage flow transports energy in its direction, i.e. towards the solidification
@@ -1777,11 +1786,36 @@ Initial \emph{M-A} boundary: 10 cm.}
 \end{figure}
 %------------------
 
+
 % ------------------------------------------------------------
 \subsubsection{Shrinkage effect on average composition}
 % ------------------------------------------------------------
 
-\Cref{fig:1dalsi7_gs_w} shows snapshots at different times of the shrinkage flow caused by the density difference between liquid and solid phases.
+In this section, we shall test the strategies regarding modelling the species conservation in a level set context.
+Therefore, we summarise in \cref{table:simulation_strategy} the approaches along with the most important values.
+
+%--------------------------------
+\begin{table}[H]
+\centering
+\caption{Summary of simulation configurations that are performed showing the different modelling strategies to account for metallic species transport
+in the air domain: monolithic strategy with low species diffusion in the air (MD), monolithic strategy with low species diffusion and advection in the air (MDA)
+and non monolithic strategy with composition reinitialisation in the air (NM).}
+\label{table:simulation_strategy}
+\resizebox{\columnwidth}{!}{%
+{\tabulinesep=1.0mm \begin{tabu}{lccc}
+\tabucline[1pt]{-}
+\textbf{Configuration} & \textbf{Diffusion in air [\si{\udiffusivity}]} & \textbf{Advection in air [\si{\uvelocity}]} & \textbf{Composition reinitialisation} \\\tabucline[1pt]{-}
+%-----------------------------
+MD	&	\num{1.5e-12} &  $\vitf$  	&  -	\\ 
+MDA	&	\num{1.5e-12} &  $\vec{0}$  &  -	\\ 
+NM	&	 $\Dl$ 		  &  $\vitf$  &  $\mix{\avg{w}} = \heavisideM \avg{w}^M + \heavisideA \avg{w_0}^M $	 \\\tabucline[1pt]{-}
+%-----------------------------
+\end{tabu}}
+}
+\end{table}
+%--------------------------------
+
+\Cref{fig:1dalsi7_gs_w} shows snapshots at different times of the shrinkage flow from a MD simulation, caused by the density difference between liquid and solid phases.
 By solid phases, we mean the primary solid phase assumed as a dendritic structure, then the primary and secondary solid phases forming together the eutectic
 that we see starting at 150 s in \cref{fig:1dalsi7_gs_w}. 
 We can see that almost no solute segregation has yet taken place in the mushy zone at 100 s.
@@ -1789,7 +1823,9 @@ Then at 150 s, the average composition reaches a positive peak of $\avg{w}$=\bin
 This is triggered by the progression of the eutectic front.
 The sudden transformation of the remaining liquid in the mushy zone into eutectic solid, triggers a local velocity increase (real intrinsic velocity).
 This is made possible neat the eutectic temperature ($T_E$) where density varies abruptly from $\avg{\rho}^M=g^E \rhol + (1-g^E) \rhos$ to $\rhos$ 
-in a single time step, $g^E$ being the volume fraction of eutectic. The velocity increase causes species transport in the opposite direction of solidification,
+in a single time step, $g^E$ being the volume fraction of eutectic. 
+
+The velocity increase causes species transport in the opposite direction of solidification,
 hence solute "freezes" in the eutectic structure leading to positive macrosegregation
 in the first solidified nodes. This phenomenon is better known as inverse segregation. 
 As the transport continues in the same direction, 
@@ -1804,7 +1840,7 @@ solute is progressively depleted in the remaining liquid, causing negative macro
 %path 
 {Chapter5/Graphics/1d/macro/gs_w.pdf}
 % caption
-{Zoom on the lower part, approximately 1.5 cm of the alloy close to the cooling boundary condition. 
+{Zoom on the lower part, approximately 0.5 cm of the alloy close to the cooling boundary condition. 
 The upper row of figures shows the evolution of volume fraction of solid, when eutectic transformation takes place. 
 The vectors represent the direction of the average velocity field, with a length proportional
 to the magnitude. The lower row of figures shows for the same time increments, the solute redistribution, 
@@ -1833,7 +1869,7 @@ The last plot, \cref{fig:1dalsi7_wVSlength}c, shows the segregation result obtai
 in the air and the metal. Two comments can be made on the latter result: first, the concentration \emph{valley} effect surrounding the \emph{M-A} boundary seen in 
 \cref{fig:1dalsi7_wVSlength}b has shrunk even more, and is now restricted to a very small thickness spanning on one or two elements around the boundary.
 On the air side, the decreasing composition trend has also disappeared, and is now replaced by a sharp transition, as an effect of the explicit reinitialisation of 
-the composition solution. The second comment is about the intensity of the instability (even if in a smaller thickness), which is still better than the first result (\cref{fig:1dalsi7_wVSlength}a) 
+the composition solution. The second comment is about the instability amplitude: itsnis still better than the first result (\cref{fig:1dalsi7_wVSlength}a) 
 but worse than the second result (\cref{fig:1dalsi7_wVSlength}b).
 
 To conclude on the effect of shrinkage on macrosegregation, we may say that the non monolithic gives the best compromise in terms of composition solution
@@ -1949,16 +1985,33 @@ on larger distances and destabilising the computation.
 %\spy [black] on (spypoint) in node[fill=white] at (magnifyglass);  
 \end{tikzpicture}
 %-------
-\caption{Plot of the average composition as function of length, along a vertical line passing through the centre of the sample at 1000 s, with 
-		(a) monolithic strategy with low solute diffusion in the air and unmodified solute advection (minimum composition reaches \SI{2.2}{\ucomposition} Si but not shown), 
-		(b) monolithic strategy with low solute diffusion and advection and (c) a non monolithic strategy
-		for species conservation resolution. 
+\caption{Plot of the average composition as function of length, along a vertical line passing through the centre of the sample at 1000 s, while
+			varying the modelling strategy to account for species conservation in the air by considering  
+		(a) the MD configuration % (minimum composition reaches \SI{2.2}{\ucomposition} Si but not shown), 
+		(b) the MDA configuration 
+		(c) the NM configuration.
+		These configurations are defined in \cref{table:simulation_strategy}.
 		The solid magenta line shows the position of the interface after solidification 
 		while the black dashed line shows the nominal average composition of the alloy.}
 \label{fig:1dalsi7_wVSlength}
 \end{figure}
 %--------------------------------------
 \shorthandon{;:?!} %http://tex.stackexchange.com/questions/74860/unexpected-clash-between-babel-and-pgf-spy
+
+
+
+The plots in \cref{fig:1dalsi7_dataVSlength} give important information on the segregation shown in  \cref{fig:1dalsi7_gs_w}.
+We continue our analysis on the link between macrosegregation and solidification shrinkage by plotting in \cref{fig:1dalsi7_dataVSlength} important 
+quantities at different times of the simulation corresponding to the MD strategy.
+The first column in \cref{fig:1dalsi7_dataVSlength} shows the evolution of the average composition in the metal+air system 
+(same plot as in \cref{fig:1dalsi7_dataVSlength}a), as well as the solid (primary and eutectic) and liquid phase compositions. 
+At 200 s, classic segregation takes place governed by the alloy properties defined in \cref{table:1dalsi7_macro_diagram},
+where we can see that the eutectic had already reached almost 0.6 cm from the chill (as previously seen in \cref{fig:1dalsi7_gs_w}), 
+forcing the liquid composition to drop to zero.
+Later at 600 s, the mushy zone reaches the \emph{M-A} boundary, causing the instability to begin. This instability is identified by
+a decrease in average composition, forming the \emph{valley} effect. Shortly before solidification ends at 800 s, the instability had
+already reached its minimum peak, due to neglecting to porous medium boundaries. 
+The second column in \cref{fig:1dalsi7_dataVSlength} shows average density plots
 
 %=====================================BIG LANDSCAPE FIGURE =====================================
 \begin{landscape}
@@ -1978,12 +2031,13 @@ Plots are titled with the corresponding plotted quantities.}
 \end{landscape}
 %=====================================BIG LANDSCAPE FIGURE =====================================
 
-The plots in \cref{fig:1dalsi7_dataVSlength} give important information on the segregation shown in  \cref{fig:1dalsi7_gs_w}.
 
 
+% **********************************************
 \subsubsection{Solute mass conservation}
+% **********************************************
 
-Show solute mass conservation with equal or low solute diffusion in air
+The conservation of the metal's mass and the metallic species mass are discussed in this section.
 
 
 
@@ -3066,7 +3120,7 @@ As of 4.3 mm and down to the tip of the deformed sample, we observe a steady ris
 by the shrinkage-dominated flow between dendrites compensating for density differences. 
 This rise in solute content is however not strictly correct, says the species mass conservation study, shown in FIG.
 
-In \cref{fig:texus_segreg_profile}, the final phase distribution along the vertical revolution axis is plotted .
+In \cref{fig:texus_segreg_profile}, the final phase distribution along the vertical revolution axis is plotted.
 The plots show that in the upper part of the droplet close to the chill, a eutectoid product (we may not speak of eutectoid microstructure as the current approach is only macroscopic, without
 information on the smaller scale) that results from the hypoeutectoid composition, consisting of 98\% of $\alpha$-BCC phase together and 2\% of CEM between 0 and 2.9 mm away from the substrate.
 Beyond this point, the austenitic $\gamma$-FCC phase is gradually replaced by $\alpha$-BCC, which represents the proeutectoid $\alpha$ phase, taking place before temperature

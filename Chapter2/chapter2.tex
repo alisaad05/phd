@@ -1297,10 +1297,10 @@ Please note that these names represent only a short notation to simplify metionn
 \subsection{\emph{Remesh2}: domains boundary remeshing} \label{sec:remesh2_params}
 % *********************************************************
 
-\emph{Remesh2} is an explicit method to compute an anisotropic metric around the zero surface of a distance function, which defines the boundary between two domains.
+\emph{Remesh2} is an explicit \emph{h}-adaptation method to compute an anisotropic metric around the zero surface of a distance function, which defines the boundary between two domains.
 The idea is, as mentioned previously, to reduce the elements cost in the tangential directions to level set by
 stretching the elements, leaving small element lengths in the normal direction, where the level set gradient is the greatest.
-This method is not based on error estimators, but rather on explicit input from the user who chooses the mesh size in
+This method is not based on error estimators, but rather on user input to choose the mesh size in
 normal and tangential directions to the interface, as well as the mesh size in each of the domains separated by the level set, as shown in \cref{fig:remesh2}.
 For more details about this method, the reader is referred to \citep{bernacki_development_2007,resk_adaptive_2009,hitti_direct_2011}.
 
@@ -1316,6 +1316,30 @@ For more details about this method, the reader is referred to \citep{bernacki_de
 \label{fig:remesh2}
 \end{figureth}
 %-----------------------------------
+
+This remeshing technique relies on the paramater input defined in \cref{table:remesh2_params}.
+
+%--------------------------------
+\begin{table}[htbp]
+\centering
+\caption{Summary of the mesh parameters in order to perform adaptive remeshing based on \emph{Remesh2} technique.}
+\label{table:remesh2_params}
+{\tabulinesep=1.0mm \begin{tabu}{ll}
+\tabucline[1pt]{-}
+\textbf{Mesh parameter} & \textbf{Significance} \\\tabucline[1pt]{-}
+%-----------------------------
+$\varepsilon $			&	level set mixing thickness			\\
+$h_{\vec{n}}$ 			&	mesh size in the normal direction to the level set		\\ 
+$h_{\vec{\tau}}$ 		&	mesh size in the tangential directions of the level set	\\ 
+$h_M$  					&	mesh size in the metal 	\\
+$h_A$  					&	mesh size in the air  		\\
+Number of nodes 		&   resulting number of nodes after remeshing is done \\
+Number of elements 		&   resulting number of elements after remeshing is done  \\\tabucline[1pt]{-}
+%-----------------------------
+\end{tabu}}
+\end{table}
+%--------------------------------
+
 
 % The following parameters are used as input data to determine the final nodal metric field:
 % %------------------------------------
@@ -1349,8 +1373,9 @@ For more details about this method, the reader is referred to \citep{bernacki_de
 %  \caption{\emph{Remesh2} metric construction}
 % \end{algorithm}
 
-
+% ******************************************************
 \subsection{\emph{Remesh4}: Multi-criteria remeshing}
+% ******************************************************
 
 It is essentially an \emph{a posteriori} error estimator. The method consists of estimating the interpolation error for
 one or more nodal fields, then using a statistical concept, the so-called \emph{length distribution tensor}, a stretching factor
@@ -1393,7 +1418,25 @@ along with the accurate capturing of the interface using highly stretched anisot
 \end{figure}
 %-----------------
 
+This remeshing technique relies on the paramater input defined in \cref{table:remesh4_params}.
 
+%--------------------------------
+\begin{table}[htbp]
+\centering
+\caption{Summary of the mesh parameters in order to perform adaptive remeshing based on \emph{Remesh4} technique.}
+\label{table:remesh4_params}
+{\tabulinesep=1.0mm \begin{tabu}{ll}
+\tabucline[1pt]{-}
+\textbf{Mesh parameter} & \textbf{Significance} \\\tabucline[1pt]{-}
+%-----------------------------
+$\varepsilon $			&	level set mixing thickness			\\
+$h_\text{min}$			&   minimum mesh size \\
+Number of nodes 		&   resulting number of nodes after remeshing is done \\
+Number of elements 		&   imposed number of elements needed for the remesh optimisation  \\\tabucline[1pt]{-}
+%-----------------------------
+\end{tabu}}
+\end{table}
+%--------------------------------
 
 % What i concluded from Z-FAST-SMACS cases A and B, where remesh4 was used in two different ways (LS and velocity/100  ,  LS and ConcentrationPosNeg)
 % is that for diffuse interface thickness less than 2e-4 m, mass conservation gets all sorts of problems, because of low element resolution 

@@ -33,7 +33,7 @@ def modify_gs(gs):
 
 
 def plot_composition_at_position(axis,data):
-    axis.plot(data['arc_length'], data['Concentration'],  label=r"$\left \langle w \right \rangle$",  marker = marker.next(), color=c1, markersize=mSize, markevery=mFreq, alpha=mTransp, lw=lw)
+    axis.plot(data['arc_length'], data['Concentration'],  label=r"$\widehat{\left \langle w \right \rangle}$",  marker = marker.next(), color=c1, markersize=mSize, markevery=mFreq, alpha=mTransp, lw=lw)
     axis.plot(data['arc_length'], data['ConcentrationSolide'], label=r"$\left \langle w \right \rangle^s$",  marker = marker.next(), color=c2, markersize=mSize, markevery=mFreq*3, alpha=mTransp, lw=lw)
     axis.plot(data['arc_length'], data['ConcentrationLiquide']*modify_gs(data['FractionSolide_c']), label=r"$\left \langle w \right \rangle^l$", marker = marker.next(), color=c3, markersize=mSize, markevery=mFreq*3, alpha=mTransp, lw=lw)
     axis.set_xlim(0, 0.14)
@@ -45,7 +45,7 @@ def plot_composition_at_position(axis,data):
 
 def plot_density_at_position(axis,data):
     marker = itertools.cycle(('^'))  #randomize marker style
-    axis.plot(data['arc_length'], data['DensityP1'], marker = marker.next(), color="b", markersize=mSize, markevery=mFreq, alpha=mTransp, lw=lw)
+    axis.plot(data['arc_length'], data['DensityP1'], marker = marker.next(),label=r"$\widehat{\left \langle \rho \right \rangle}$",  color="b", markersize=mSize, markevery=mFreq, alpha=mTransp, lw=lw)
     axis.set_xlim(0, 0.14)
     axis.set_ylim(2550, 2850)
 #    axis.set_ylabel("Average metal density (Kg m$^{-3}$)")
@@ -109,6 +109,7 @@ lgd = plt.legend(bbox_to_anchor=(0., 1.05, 1., .102), loc=1, ncol=3, mode="expan
 # *****************************   Density ********************************************************
 ax4.set_title("Average metal density (Kg m$^{-3}$)")
 plot_density_at_position(ax4,z1)
+legend = ax4.legend(loc='best', shadow=False, fancybox=True)
 plot_density_at_position(ax5,z3)
 plot_density_at_position(ax6,z5)
 ax6.tick_params(axis='x', which='both', bottom='on', top='off', labelbottom='on')
