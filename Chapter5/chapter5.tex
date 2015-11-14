@@ -745,8 +745,9 @@ For each conservation equation, these mixed properties will be properly defined 
 % ==========================================
 \subsection{Mass and momentum conservation}
 % ==========================================
-We define the Metal+Air system velocity, $\vitf$, as an arithmetic mixing between each domain's relative average fluid velocity, 
-i.e. the domain's own relative fluid phase velocity with respect to solid phases.
+We define the metal+air average system velocity, $\vitf$, as an arithmetic mixing between each domain's relative average fluid velocity,
+i.e. the domain's own relative fluid phase velocity with respect to solid phases. In parallel, we also define $\vec{\avg{v}^F}$ as the system's 
+fluid intrinsic velocity, obtained by an arithmetic mixing between intrinsic velocities of domain fluids. 
 In the present context, the metal domain consists of a single fluid phase (liquid) and solid phases that form in fixed and rigid structures 
 (assuming that solidification results in undeformable columnar structures, without any free-to-move equiaxed structure).
 The air domain entirely consists of a fluid phase.
@@ -924,7 +925,7 @@ the air and the liquid phase. This assumption made on only for the $\liqair$ is 
 boundary made in \cref{sec:M_A_definition}.
 
 %-------------------------------------
-\subsection{Species conservation}
+\subsection{Species conservation} \label{sec:monolithic_species}
 %-------------------------------------
 % --------------- BEGIN INSERTED TEXT
 % Consequently, 
@@ -1717,6 +1718,7 @@ convection-diffusion solidification with $\rhol \neq \rhos$ (with level set) and
 % *************************************************
 \subsubsection{Shrinkage effect on temperature}
 % *************************************************
+
 If we focus first on \cref{fig:shrinkage_effect}, we first compare solidification cases G and G0, both with equal phase densities, hence no shrinkage.
 This first comparison shows that the introduction of the level set method, compared to a monodomain configuration, heats up
 the overall sample temperature by about \SI{4}{\udegC} (difference between green and grey curves), causing solidification to finish a few seconds later than predicted in case G0.
@@ -1743,7 +1745,7 @@ Finally, \cref{fig:macro_effect} compares cases B and R, both with unequal phase
 Differences are not striking, as temperatures along the metal sample are the same. 
 % We spot however a difference at the 10 cm probe, 
 % where a slight rise in temperature is observed with respect to the case without macrosegregation.
-%
+
 %-----------------
 \begin{figure}[htbp]
 \centering
@@ -1775,6 +1777,26 @@ Initial \emph{M-A} boundary: 10 cm.}
 \end{figure}
 %------------------
 
+% ------------------------------------------------------------
+\subsubsection{Shrinkage effect on average composition}
+% ------------------------------------------------------------
+
+\Cref{fig:1dalsi7_gs_w} shows snapshots at different times of the shrinkage flow caused by the density difference between liquid and solid phases.
+By solid phases, we mean the primary solid phase assumed as a dendritic structure, then the primary and secondary solid phases forming together the eutectic
+that we see starting at 150 s in \cref{fig:1dalsi7_gs_w}. 
+We can see that almost no solute segregation has yet taken place in the mushy zone at 100 s.
+Then at 150 s, the average composition reaches a positive peak of $\avg{w}$=\bin{Al}{7.4}{Si} at the closest nodes to the chill. 
+This is triggered by the progression of the eutectic front.
+The sudden transformation of the remaining liquid in the mushy zone into eutectic solid, triggers a local velocity increase (real intrinsic velocity).
+This is made possible neat the eutectic temperature ($T_E$) where density varies abruptly from $\avg{\rho}^M=g^E \rhol + (1-g^E) \rhos$ to $\rhos$ 
+in a single time step, $g^E$ being the volume fraction of eutectic. The velocity increase causes species transport in the opposite direction of solidification,
+hence solute "freezes" in the eutectic structure leading to positive macrosegregation
+in the first solidified nodes. This phenomenon is better known as inverse segregation. 
+As the transport continues in the same direction, 
+solute is progressively depleted in the remaining liquid, causing negative macrosegregation at nodes located between 2 cm and 7 cm from the chill.
+
+
+
 %--------------
 \begin{figureth}
 % textwidth 
@@ -1783,40 +1805,49 @@ Initial \emph{M-A} boundary: 10 cm.}
 {Chapter5/Graphics/1d/macro/gs_w.pdf}
 % caption
 {Zoom on the lower part, approximately 1.5 cm of the alloy close to the cooling boundary condition. 
-The upper row of figures show the evolution of volume solid fraction, when eutectic transformation takes place. 
+The upper row of figures shows the evolution of volume fraction of solid, when eutectic transformation takes place. 
 The vectors represent the direction of the average velocity field, with a length proportional
-to the magnitude. The lower row of figures show for the same time increments, the solute redistribution, 
+to the magnitude. The lower row of figures shows for the same time increments, the solute redistribution, 
 clearly changing behind the eutectic front.}
 % label
 \label{fig:1dalsi7_gs_w}
 \end{figureth}
 %--------------
 
-\subsubsection{Shrinkage effect on average composition}
-\Cref{fig:1dalsi7_gs_w} shows snapshots at different times of the shrinkage flow caused by the density difference between liquid and solid phases.
-By solid phases, we mean the primary solid phase assumed as a dendritic structure, then the primary and secondary solid phases forming together the eutectic
-that we see starting at 150 s in \cref{fig:1dalsi7_gs_w}. 
-We can see that almost no solute segregation has yet taken place in the mushy zone at 100 s.
-Then at 150 s, the average composition reaches a positive peak of $\avg{w}$=\bin{Al}{7.4}{Si} at the closest nodes to the chill. 
-This is triggered by the progression of the eutectic front.
-The sudden transformation of the remaining liquid in the mushy zone into eutectic solid, triggers a local velocity increase (real intrinsic velocity)
-as each node's density varies from $\avg{\rho}^M=g^E \rhol + (1-g^E) \rhos$ to $\rhos$ in a single time step, at eutectic temperature. The velocity increase, shown later in \cref{fig:1dalsi7_dataVSlength},
-causes species transport in the opposite direction of solidification, hence solute "freezes" in the eutectic structure leading to positive macrosegregation
-in the first solidified nodes. This phenomenon is better known as inverse segregation. 
-As the transport continues in the same direction, 
-solute is progressively depleted in the remaining liquid, causing negative macrosegregation at nodes located between 2 cm and 7 cm from the cold wall.
-\Cref{fig:1dalsi7_gs_w} shows only the first 1.5 cm of the solidifying sample, therefore a complete segregation profile is plotted along the sample length in \cref{fig:1dalsi7_wVSlength}a,
-showing thus the negative macrosegregation as previously explained.
-However, from 7 cm to the \emph{M-A} boundary, the average composition rises as clearly shown in \cref{fig:1dalsi7_wVSlength}a. This looks more like a numerical
-instability than a physical rise in concentration. 
-Bearing in mind that a reduced solute diffusion coefficient is imposed in the air domain \SI{1.5e-12}{\udiffusivity} compared to 
-\SI{1.5e-9}{\udiffusivity} in the metal, we investigate into this instability by proposing two test cases: first, we try to limit the solute advection in the transition
-zone where flow instabilities may form as seen previously in the segregation-free sample but keeping equal solute diffusion coefficients in both domains to \SI{1.5e-9}{\udiffusivity},
-while for the second test case, we combine both low solute diffusion and low solute advection. The average composition results of these two test cases
-are respectively plotted in \cref{fig:1dalsi7_wVSlength}b and \cref{fig:1dalsi7_wVSlength}c.
-These results (second plot in \cref{fig:1dalsi7_wVSlength})  clearly show that just by reducing solute advection in the mixing zone reduce the amplitude of the composition instability.
-In contrast, changing solute diffusion properties for the air coupled with reduced solute advection (third plot in \cref{fig:1dalsi7_wVSlength}) offers no further stability
-in the segregation profile, which should normally stay below the nominal value near the interface.
+\Cref{fig:1dalsi7_gs_w} shows only the first 1.5 cm of the solidifying sample, therefore a complete segregation profile is plotted along the sample length in \cref{fig:1dalsi7_wVSlength}.
+Three curves are plotted in the latter figure: the first curve, \cref{fig:1dalsi7_wVSlength}a, uses the monolithic species conservation (\cref{sec:monolithic_species})
+with limited diffusion in the air, the second curve \cref{fig:1dalsi7_wVSlength}b employs the same strategy but with both limited diffusion and advection in the air, and
+finally \cref{fig:1dalsi7_wVSlength}c is given by the non monolithic strategy for species conservation.
+We look first at \cref{fig:1dalsi7_wVSlength}a showing the negative macrosegregation between 2 cm and 7 cm from the chill, as previously explained.
+However, from 7 cm to the \emph{M-A} boundary, the average composition rises.
+This tendency was also found by \citet{niane_etude_2004}. It corresponds to the liquid freezing due to the eutectic reaction, with no solute feeding in the mushy zone, 
+near the end of solidification, i.e. when the mushy zone has reached the \emph{M-A} boundary.
+% This looks more like a numerical instability than a physical rise in concentration. \
+Also, an unexpected composition profile is seen surrounding this boundary. 
+By comparing with \cref{fig:1dalsi7_wVSlength}b, where the input velocity field is set to zero in the air domain before solving the monolithic species conservation equation,
+resulting in limited species transport in the air as well as within the \emph{M-A} boundary vicinity. The numerical anomaly seen in the previous composition plot is reduced.
+This comparison confirms the fact that macrosegregation is mainly promoted by advective transport rather than diffusion, and therefore controlling the velocity field in the air greatly reduced the sharp
+composition decrease in the boundary vicinity.
+
+The last plot, \cref{fig:1dalsi7_wVSlength}c, shows the segregation result obtained by the non monolithic strategy presented previously to solve the species conservation equations
+in the air and the metal. Two comments can be made on the latter result: first, the concentration \emph{valley} effect surrounding the \emph{M-A} boundary seen in 
+\cref{fig:1dalsi7_wVSlength}b has shrunk even more, and is now restricted to a very small thickness spanning on one or two elements around the boundary.
+On the air side, the decreasing composition trend has also disappeared, and is now replaced by a sharp transition, as an effect of the explicit reinitialisation of 
+the composition solution. The second comment is about the intensity of the instability (even if in a smaller thickness), which is still better than the first result (\cref{fig:1dalsi7_wVSlength}a) 
+but worse than the second result (\cref{fig:1dalsi7_wVSlength}b).
+
+To conclude on the effect of shrinkage on macrosegregation, we may say that the non monolithic gives the best compromise in terms of composition solution
+quality. We may also conclude that the mesh should remain fine around the level set boundary, in order to prevent any composition instability from spanning
+on larger distances and destabilising the computation.
+
+% Bearing in mind that a reduced solute diffusion coefficient is imposed in the air domain \SI{1.5e-12}{\udiffusivity} compared to 
+% \SI{1.5e-9}{\udiffusivity} in the metal, we investigate into this instability by proposing two test cases: first, we try to limit the solute advection in the transition
+% zone where flow instabilities may form as seen previously in the segregation-free sample but keeping equal solute diffusion coefficients in both domains to \SI{1.5e-9}{\udiffusivity},
+% while for the second test case, we combine both low solute diffusion and low solute advection. The average composition results of these two test cases
+% are respectively plotted in \cref{fig:1dalsi7_wVSlength}b and \cref{fig:1dalsi7_wVSlength}c.
+% These results (second plot in \cref{fig:1dalsi7_wVSlength})  clearly show that just by reducing solute advection in the mixing zone reduce the amplitude of the composition instability.
+% In contrast, changing solute diffusion properties for the air coupled with reduced solute advection (third plot in \cref{fig:1dalsi7_wVSlength}) offers no further stability
+% in the segregation profile, which should normally stay below the nominal value near the interface.
 
 %--------------------------------------
 \shorthandoff{;:?!} %http://tex.stackexchange.com/questions/74860/unexpected-clash-between-babel-and-pgf-spy
@@ -1877,6 +1908,7 @@ in the segregation profile, which should normally stay below the nominal value n
 	ymin=6.45, ymax=7.55,
 	%xmax=0.0928,
 	mark repeat	= {142},
+	mark=none,
 	cycle list name=mycycle, %exotic,
 ]
 	\addplot table [x=arc_length, y=Concentration] {Chapter5/Data/1d_alsi7_composition/ModifyVitLiq.csv}; %\closedcycle ;
@@ -1918,15 +1950,15 @@ in the segregation profile, which should normally stay below the nominal value n
 \end{tikzpicture}
 %-------
 \caption{Plot of the average composition as function of length, along a vertical line passing through the centre of the sample at 1000 s, with 
-		(a) low solute diffusion in the air but unmodified solute advection (minimum composition reaches \SI{2.2}{\ucomposition} Si but not shown), 
-		(b) reduced solute advection in the level set transition zone or (c) a combination of the previous
-		techniques. The solid magenta line shows the position of the interface after solidification 
+		(a) monolithic strategy with low solute diffusion in the air and unmodified solute advection (minimum composition reaches \SI{2.2}{\ucomposition} Si but not shown), 
+		(b) monolithic strategy with low solute diffusion and advection and (c) a non monolithic strategy
+		for species conservation resolution. 
+		The solid magenta line shows the position of the interface after solidification 
 		while the black dashed line shows the nominal average composition of the alloy.}
 \label{fig:1dalsi7_wVSlength}
 \end{figure}
 %--------------------------------------
 \shorthandon{;:?!} %http://tex.stackexchange.com/questions/74860/unexpected-clash-between-babel-and-pgf-spy
-
 
 %=====================================BIG LANDSCAPE FIGURE =====================================
 \begin{landscape}
@@ -1936,8 +1968,10 @@ in the segregation profile, which should normally stay below the nominal value n
 %path 
 {Chapter5/Data/1d_alsi7_arc_compositions/compositions_vs_length.pdf}
 % caption
-{Group of plots where each row is a given time increment (t=200 s, t=600 s and t=800 s) of the 1D solidification shrinkage simulation with macrosegregation, 
-while each column one or more physical quantities are plotted along a vertical line passing through the centre of the sample. Plots are titled with the corresponding plotted quantities.}
+{Group of plots where each row is a given time increment (t=200 s, t=600 s and t=800 s) of the 1D solidification shrinkage simulation with macrosegregation
+applying the monolithic strategy (\cref{fig:1dalsi7_wVSlength}a). 
+Important physical quantities (compositions, density and velocities) are plotted along a line passing through the centre of the sample and parallel to the gravity vector. 
+Plots are titled with the corresponding plotted quantities.}
 % label
 \label{fig:1dalsi7_dataVSlength}
 \end{figureth}
@@ -1945,7 +1979,6 @@ while each column one or more physical quantities are plotted along a vertical l
 %=====================================BIG LANDSCAPE FIGURE =====================================
 
 The plots in \cref{fig:1dalsi7_dataVSlength} give important information on the segregation shown in  \cref{fig:1dalsi7_gs_w}.
-CONTINUE COMMENTING ON \cref{fig:1dalsi7_dataVSlength}.
 
 
 \subsubsection{Solute mass conservation}
