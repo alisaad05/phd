@@ -2028,7 +2028,13 @@ Later from to 600 s to 800 s, we notice a relatively turbulent flow in the air, 
 increase in velocity magnitude, almost a hundred times after solidification is finished. We may see this as a numerical response to the modelled physics, which vary
 before and after solidification.  
 
-
+At this stage, it is interesting to conduct the same investigation done for \cref{fig:MD_subplots} 
+but changing the species resolution strategy to NM, whose results are plotted
+in \cref{fig:NM_subplots}. We have already seen the difference in the average composition plot, which is the same in \cref{fig:1dalsi7_wVSlength}c.	However, the liquid composition shows a peak value when meeting the \emph{M-A} boundary at 800 s. 
+The mixed density does not show noticeable differences, as the predicted phase fractions are the same, regardless of the species resolution strategy. 
+The last column in \cref{fig:NM_subplots} shows a much better flow behaviour compared to the results seen in \cref{fig:MD_subplots}.
+The velocity plots show also lower magnitudes than the MD strategy plots, while still predict a more prominent effect of 
+local intrinsic velocity increase near the eutectic front at 200 s.
 
 %=====================================BIG LANDSCAPE FIGURE  -- MD PLOTS =====================================
 \begin{landscape}
@@ -2046,14 +2052,6 @@ Physical quantities are plotted along a line passing through the centre of the s
 \end{figureth}
 \end{landscape}
 %=====================================BIG LANDSCAPE FIGURE -- MD PLOTS =====================================
-
-At this stage, it is interesting to conduct the same investigation done for \cref{fig:MD_subplots} 
-but changing the species resolution strategy to NM, whose results are plotted
-in \cref{fig:NM_subplots}. We have already seen the difference in the average composition plot, which is the same in \cref{fig:1dalsi7_wVSlength}c.	However, the liquid composition shows a peak value when meeting the \emph{M-A} boundary at 800 s. 
-The mixed density does not show noticeable differences, as the predicted phase fractions are the same, regardless of the species resolution strategy. 
-The last column in \cref{fig:NM_subplots} shows a much better flow behaviour compared to the results seen in \cref{fig:MD_subplots}.
-The velocity plots show also lower magnitudes than the MD strategy plots, while still predict a more prominent effect of 
-local intrinsic velocity increase near the eutectic front at 200 s.
 
 %=====================================BIG LANDSCAPE FIGURE -- NM PLOTS =====================================
 \begin{landscape}
@@ -2099,11 +2097,20 @@ $m^\text{sp}$ is computed using the average composition as follows:
 
 It is important to analyse the metal mass variation together with the species mass variation
 because a gain or loss in the metal's mass is directly reflected on the mass of the metallic species.
-However, the latter may also be lost or gained depending on the way the configuration of the simulation, 
-how it is solved, the boundary conditions ...
+However, the latter may also be subject to variations depending on the configuration of the simulation:
+resolution technique, time step, boundary conditions ...
 In our case, we first compared the mass conservation for the metal with all three methods for species conservation:
 MD (monolithic with low diffusion), MDA (monolithic with low diffusion and advection) and last NM (non monolithic).
-Minor differences are detected in the when comparing these three techniques, as shown by the dotted lines in \cref{fig:mass_species}.
+We cannot much of differences when comparing mass analysis for all three techniques, as shown by the dotted lines in \cref{fig:mass_species}.
+This conclusion goes for both the metal and its species. Nevertheless, the MD and MDA plots display some agreement, 
+while the NM curves have the same variations trends but with values shifted down to $\approx$ 0.1\%.
+Although it is not a noticeable difference, but it should be explained.
+The metal mass variation is a direct consequence of volume variation due to level motion as a response to average density changes.
+Changing the species resolution strategy affects only the area surrounding the \emph{M-A} boundary (as earlier seen in 
+\cref{fig:1dalsi7_wVSlength}) and thus the predicted average composition varies. The latter variation impacts the phase fractions,
+namely the liquid, which is an input of the fluid fraction used to evaluate the transport velocity in Navier-Stokes.
+The predicted transport velocities in \cref{fig:MD_subplots,fig:NM_subplots} show that the flow reaches high
+magnitude during solidification time (from 200 s to 800 s) thus causing the level set to move further but on  
 
 %--------------------------------------
 \shorthandoff{;:?!} %http://tex.stackexchange.com/questions/74860/unexpected-clash-between-babel-and-pgf-spy
@@ -2151,8 +2158,8 @@ Minor differences are detected in the when comparing these three techniques, as 
   	%------------------
 \end{tikzpicture}
 %-------
-\caption{Mass variation plots for the metal and the chemical species the latter contains, considering three different strategies 
-to account for the species conservatio in the air.}
+\caption{Mass variation plots for the metal and its chemical species, considering three different strategies 
+to account for the species conservation in the air domain.}
 \label{fig:mass_species}
 \end{figure}
 %--------------------------------------
