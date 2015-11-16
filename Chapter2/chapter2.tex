@@ -1380,12 +1380,13 @@ Number of elements 		&   resulting number of elements after remeshing is done  \
 It is essentially an \emph{a posteriori} error estimator. The method consists of estimating the interpolation error for
 one or more nodal fields, then using a statistical concept, the so-called \emph{length distribution tensor}, a stretching factor
 can be determined by solving several constraints like locally minimizing the induced error, limit the number of created nodes to
-a specific  threhold, etc. Finally, the stretching factor is directly used to correct the edge size/lengths, which varies in such a way to minimize the locally induced error.
-Detailed information can be found in \citep{coupez_metric_2011,coupez_edge-based_2013,el_jannoun_space-time_2014}.
+a specific  threhold, etc. Finally, the stretching factor is directly used to correct the edge lengths, where the latter varies in such a way to minimize the locally induced error down
+to a specified error limit, $\varepsilon_\text{er.}$.
+For detailed technical information, the reader is referred to these references: \citep{coupez_metric_2011,coupez_edge-based_2013,el_jannoun_space-time_2014}.
 
 This method is readily compatible with multiple scalar or vector input, which results in a final metric accounting
 for the steepness of each quantity gradient. In solidification, such a technique is appealing since we often need 
-to maintain sufficiently small mesh sizes in areas of interest, e.g. narrow mushy zone formation caused by high thermal gradients, areas with composition variations or
+to maintain a sufficiently small mesh size in areas of interest, e.g. narrow mushy zone formation caused by high thermal gradients, areas with composition variations or
 areas where fluid convection is a consequence to combined effects of energy-solute variations. \Cref{fig:remesh4} shows an example of mechanically driven flow,
 along with the accurate capturing of the interface using highly stretched anisotropic elements, at the edges and in the center.
 
@@ -1396,7 +1397,7 @@ along with the accurate capturing of the interface using highly stretched anisot
    %------------
   \begin{subfigure}[t]{0.3\textwidth}
     \centering
-	\includegraphics[width=\textwidth]{Chapter2/Graphics/remesh4_1000.png}
+ 	\includegraphics[width=\textwidth]{Chapter2/Graphics/remesh4_1000.png}
 	\caption{}
   \end{subfigure}
    %------------
@@ -1413,7 +1414,8 @@ along with the accurate capturing of the interface using highly stretched anisot
 	\caption{}
   \end{subfigure}
   %-------- 
-\caption{Edge-based anisotropic metric generation applied to a driven flow inside cavity with a Reynolds number of (a) \num{1000} (b) \num{10000} and (c) \num{100000}. } 
+\caption{Edge-based anisotropic metric generation applied to a driven flow inside cavity with a Reynolds number of 
+(a) \num{1000} (b) \num{10000} and (c) \num{100000} \citep{coupez_edge-based_2013}. } 
 \label{fig:remesh4}
 \end{figure}
 %-----------------
@@ -1431,6 +1433,8 @@ This remeshing technique relies on the paramater input defined in \cref{table:re
 %-----------------------------
 $\varepsilon $			&	level set mixing thickness			\\
 $h_\text{min}$			&   minimum mesh size \\
+$\varepsilon_\text{er.}$	&  minimum error limit \\
+Remeshing criteria 	 	&   physical quantities of interest \\
 Number of nodes 		&   resulting number of nodes after remeshing is done \\
 Number of elements 		&   imposed number of elements needed for the remesh optimisation  \\\tabucline[1pt]{-}
 %-----------------------------

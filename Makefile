@@ -12,7 +12,7 @@ shell:
 	@echo SHELL ESCAPE
 	@echo ------------
 	
-	pdflatex --shell-escape main.tex
+	pdflatex -synctex=1 -shell-escape main.tex
 
 pdf:
 	@echo ---------
@@ -30,7 +30,7 @@ clean:
 	@echo CLEANING
 	@echo --------
 	
-	rm -f *.aux *.log *.bbl *.blg *.toc *.lof *.lot *.brf 
+	rm -f *.aux *.log *.bbl *.blg *.toc *.lof *.lot *.brf *.dep
 	rm -f *.maf *.out *.mtc* *.tdo *.dpth *.md5 *.auxlock
 	rm -f *.bib *.xml
 	rm -f Chapter1/*.aux Chapter1/*.log

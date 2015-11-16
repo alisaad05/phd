@@ -1115,7 +1115,8 @@ Henceforth we refer to simulations
 % imposed at the free surface, as a result of a decreasing permeability.
 
 
-\cleardoublepage
+% \cleardoublepage
+\newpage
 
 %----------------------------------------------------------------
 \section{1D application: solidification with inverse segregation}
@@ -1168,8 +1169,8 @@ External temperature 				& $\Text$ 			& \num{100} 	& \si{\udegC} 		\\
 Initial temperature 				& $T_0$ 			& \num{800} 	& \si{\udegC} 		\\ 
 Ingot length 						&  					& \num{0.1} 	& \si{\metre} 		\\ 
 \hline %------------------------------------------------------------------------------------------
-FE mesh size 						&  					& \num{e-3} 	& \si{\metre} 		\\ 
-Time step 							& $\dt$ 			& \num{0.1} 	& \si{\second} 		\\ 
+% FE mesh size 						&  					& \num{e-3} 	& \si{\metre} 		\\ 
+Time step 							& $\dt$ 			& \num{0.01} 	& \si{\second} 		\\ 
 Convergence criterion (residual) 	& $\varepsilon_R$	& \num{e-6} 	& $-$ 				\\ 
 Convergence criterion (temperature) & $\varepsilon_T$ 	& \num{e-2} 	& \si{\udegK}}
 %--------------------------------------------------------------------------------------------------
@@ -1236,8 +1237,9 @@ $h_{\vec{n}}$ 			&	\SI{2.5e-5}{\metre}	\\
 $h_{\vec{\tau}}$ 		&	\SI{2e-4}{\metre}	\\ 
 $h_M$  					&	\SI{1.5e-4}{\metre}	\\
 $h_A$  					&	\SI{2.5e-4}{\metre} 	\\
-Number of nodes 		&   $\approx$\num{7e3} \\ 
-Number of elements 		&   $\approx$\num{1e4} \\\tabucline[1pt]{-}
+Remeshing frequency  	&	0.1 s 		\\
+Number of nodes 		&   $\approx$ \num{7e3} \\ 
+Number of elements 		&   $\approx$ \num{1e4} \\\tabucline[1pt]{-}
 %-----------------------------
 \end{tabu}}
 \end{table}
@@ -1894,7 +1896,7 @@ on larger distances and destabilising the computation.
 %[spy using outlines={circle, magnification=3, connect spies}]
   \begin{axis}
   [	name=one,
-	title= (a),
+	title= (a) Monolithic with low diffusion,
 	%at=(one.right of south east), anchor=left of south west,
 	scale only axis,
 	table/col sep=comma,  % comma % tab
@@ -1925,7 +1927,7 @@ on larger distances and destabilising the computation.
 %-------------------
  \begin{axis}
   [	name=two,
-	title= (b),
+	title= (b) Monolithic with low diffusion and advection,
 	at=(one.below south west), anchor=above north west,
 	scale only axis,
 	table/col sep=comma,  % comma % tab
@@ -1955,7 +1957,7 @@ on larger distances and destabilising the computation.
 %-------------------
  \begin{axis}
   [	name=three,
-	title= (c),
+	title= (c) Non monolithic,
 	at=(two.below south west), anchor=above north west,
 	scale only axis,
 	table/col sep=comma,  % comma % tab
@@ -2077,7 +2079,7 @@ Physical quantities are plotted along a line passing through the centre of the s
 % **********************************************
 
 The mass conservation for the metal and the metallic species is discussed in this section.
-\Cref{fig:mass_species} shows the relative mass variation of the metal and the silicon species
+\Cref{fig:mass_species_alsi7} shows the relative mass variation of the metal and the silicon species
 for each of the previously defined and used modelling strategies.
 The solute mass variation is computed, similarly to the metal (\cref{eq:metal_mass_variation}), as follows:
 %----------------
@@ -2101,7 +2103,7 @@ However, the latter may also be subject to variations depending on the configura
 resolution technique, time step, boundary conditions ...
 In our case, we first compared the mass conservation for the metal with all three methods for species conservation:
 MD (monolithic with low diffusion), MDA (monolithic with low diffusion and advection) and last NM (non monolithic).
-We cannot much of differences when comparing mass analysis for all three techniques, as shown by the dotted lines in \cref{fig:mass_species}.
+We cannot much of differences when comparing mass analysis for all three techniques, as shown by the dotted lines in \cref{fig:mass_species_alsi7}.
 This conclusion goes for both the metal and its species. Nevertheless, the MD and MDA plots display some agreement, 
 while the NM curves have the same variations trends but with values shifted down to $\approx$ 0.1\%.
 Although it is not a noticeable difference, but it should be explained.
@@ -2158,9 +2160,8 @@ magnitude during solidification time (from 200 s to 800 s) thus causing the leve
   	%------------------
 \end{tikzpicture}
 %-------
-\caption{Mass variation plots for the metal and its chemical species, considering three different strategies 
-to account for the species conservation in the air domain.}
-\label{fig:mass_species}
+\caption{Mass variation plots for the metal and its chemical species, considering three different strategies to account for the species conservation in the air domain.}
+\label{fig:mass_species_alsi7}
 \end{figure}
 %--------------------------------------
 \shorthandon{;:?!} %http://tex.stackexchange.com/questions/74860/unexpected-clash-between-babel-and-pgf-spy
@@ -2168,18 +2169,21 @@ to account for the species conservation in the air domain.}
 
 
 
-\cleardoublepage
+% \cleardoublepage
+\newpage
+
 % **********************************************************************
 \section{2D application: controlled solidification benchmark}
 % **********************************************************************
 In this application, we aim at predicting macrosegregation produced by liquid convection, in the presence of solidification shrinkage.
-An molten alloy is put in a rectangular crucible with controlled cooling flux on one or two sides to the crucible. The importance of the experiment lies in the 
+The simulation is the same performed in \cref{sec:tsolver_validation} but now the level set approach is added.
+The importance of the experiment lies in the 
 thermal convection forces arising from temperature gradients, but also solutal buoyancy forces arising from liquid concentration gradients. The final macrosegregation pattern
 strongly depends on density variations caused by each chemical species, but also on the experimental conditions like the lateral thermal gradients as well the cooling rate,
 as shown in \cref{fig:smacs_exp}.
 \citet{hebditch_observations_1974} suggested one of the first experiments working on Sn-Zn and Sn-Pb alloys. 
 More recently, an experimental benchmark was performed by \citet{hachani_experimental_2012} to obtain more accurate 
-composition results with various Sn-Pb and Pb-Sn alloys. In the current section, we are interested in the latter experiment, especially in the prediction
+composition results with various Sn-Pb and Pb-Sn alloys. In the current section, we are interested in the latter experiment with \bin{Sn}{3}{Pb} especially in the prediction
 of the metal's shrunk surface together with the final macrosegregation.
 
 %
@@ -2203,99 +2207,12 @@ of the metal's shrunk surface together with the final macrosegregation.
     \label{fig:smacs_highcr}
   \end{subfigure}
    %------------
-\caption{Final macrosegregation patterns obtained by solidifying a \bin{Sn}{3}{Pb} alloy at (a) \SI{0.02}{\uCR} and (b) \SI{0.04}{\uCR}. 
-The different cooling rates result in different lead segregation patterns, with a greater number of channel segregates in the latter.
-The X-rays show also a visible sign of volume shrinkage at the top of each ingot \citep{hachani_experimental_2012}.}
+\caption{Final macrosegregation patterns obtained experimentally by solidifying a \bin{Sn}{3}{Pb} alloy at (a) \SI{0.02}{\uCR} and (b) \SI{0.04}{\uCR}. 
+The different cooling rates result in different Pb segregation patterns \citep{hachani_experimental_2012}.}
 \label{fig:smacs_exp}
 \end{figure}
 %------------------
 
-
-% %**********************************
-% \subsection{Absence of convection}
-% %**********************************
-% We first try to simulate the solidification process by neglecting thermosolutal dependence of phase densities in the Navier-Stokes solver. By doing so,
-% no convection forces should arise during solidification, 
-% hence the generated flow is only due to the difference between solid and liquid densities, that is the shrinkage driving force.
-
-% ********************************************
-\subsection{Boundary condition effect}
-% ********************************************
-
-First, we want to understand the consequence of removing the no-slip boundary condition at the \emph{M-A} boundary and compare the effect on macrosegregation. 
-For computations without level set, as previously done in chapter 4 for the \emph{Tsolver}'s validation in convection-diffusion regimes, a no-slip condition was applied for all domain boundaries including 
-the interface.
-However, this is not readily implemented with the level set method which considers the local interface velocity for its transport.
-In \cref{fig:slipbc_2800,fig:slipbc_7000}, we compare at 2800 s and 7000 s the differences between a no-slip condition on the top boundary 
-and a free-slip tangential condition, assuming zero normal velocity. 
-
-%-----------------
-\begin{figure}[htbp]
-\centering
-   %------------
-  \begin{subfigure}[t]{0.4\textwidth}
-    \centering
-  \includegraphics[width=\textwidth]{Chapter5/Graphics/2d/ref_2800s_nosliptop.png}
-  \caption{}
-    \label{fig:noslip2800}
-  \end{subfigure}
-  %------------------------------
-  \begin{subfigure}[t]{0.15\textwidth}
-    \centering
-  \includegraphics[width=0.3\textwidth]{Chapter5/Graphics/2d/colorbar.pdf}
-  \end{subfigure}
-  %------------------------------
-  \begin{subfigure}[t]{0.4\textwidth}
-    \centering
-  \includegraphics[width=\textwidth]{Chapter5/Graphics/2d/ref_2800s_sliptop.png}
-  \caption{}
-    \label{fig:freeslip2800}
-  \end{subfigure}
-   %------------
-\caption{Comparison of two solidification with macrosegregation cases assuming (a) a no-slip condition on the upper boundary 
-or (b) a tangential free-slip condition. The snapshots are taken at 2800 s.}
-\label{fig:slipbc_2800}
-\end{figure}
-%------------------
-
-%-----------------
-\begin{figure}[htbp]
-\centering
-   %------------
-  \begin{subfigure}[t]{0.4\textwidth}
-    \centering
-  \includegraphics[width=\textwidth]{Chapter5/Graphics/2d/ref_7000s_nosliptop.png}
-  \caption{}
-    \label{fig:noslip7000}
-  \end{subfigure}
-  %------------------------------
-  \begin{subfigure}[t]{0.15\textwidth}
-    \centering
-  \includegraphics[width=0.3\textwidth]{Chapter5/Graphics/2d/colorbar.pdf}
-  \end{subfigure}
-  %------------------------------
-  \begin{subfigure}[t]{0.4\textwidth}
-    \centering
-  \includegraphics[width=\textwidth]{Chapter5/Graphics/2d/ref_7000s_sliptop.png}
-  \caption{}
-    \label{fig:freeslip7000}
-  \end{subfigure}
-   %------------
-\caption{Comparison of two solidification with macrosegregation cases assuming (a) a no-slip condition on the upper boundary 
-or (b) a tangential free-slip condition. The snapshots are taken at 7000 s.}
-\label{fig:slipbc_7000}
-\end{figure}
-%------------------
-
-In \cref{fig:slipbc_2800}, solidification is still at an early stage, at 2800 s. The main difference between \cref{fig:noslip2800} and 
-\cref{fig:freeslip2800} is the flow pattern near the top interface. The no-slip wall acts a brake for the vicinity flow, 
-deviating it downwards and allow a quicker solidification rate for the right upper part of the metal. The flow near the slip wall
-in \cref{fig:freeslip2800} is not damped and therefore delays solidification of the upper corner where it impinges.
-The different flow pattern creates a more pronounced negative segregation in the upper right corner of \cref{fig:noslip2800}, compared
-to the same location in  \cref{fig:freeslip2800}. Later when solidification is complete at 7000 s (\cref{fig:slipbc_7000}), the overall
-macrosegregation is more visible: expect for the previously mentioned difference in the corner segregation, no big differences are observed.
-This means that when using the level set method, allowing the velocity to have non-zero values near the interface should not drastically  change the
-predicted flow pattern and the subsequent macrosegregation.
 
 % ********************************************
 \subsection{Computational configuration}
@@ -2305,25 +2222,59 @@ predicted flow pattern and the subsequent macrosegregation.
 % -------------------------------------------
 \subsubsection{Mesh and adaptive remeshing}
 % -------------------------------------------
-The case considers a 2D geometry having equivalent dimensions to the 3D case performed earlier (sample of 10 cm in length and 6 cm in height).
-To accomodate the air domain, an extra 2 cm are added to sample's height, which finally reaches 8 cm, the interface is thus kept at an elevation of 6 cm. 
-The inital mesh consists of three different mesh sizes: isotropic meshes in the air and the metal, having respectively a uniform size of 2 mm and 1 mm.
-Regarding the interface, an anisotropic mesh adapts to the \emph{M-A} boundary with a mesh size of 0.1 mm in the normal direction to the interface.
-The thickness of the anisotropic mesh spans 0.5 mm from each side of the interface.
 
-To adapt the mesh, we use the \emph{Remesh4} adaptive technique to maintain accurate predictions for velocity and interface transport.
+The case considers a 2D geometry having equivalent dimensions to the 3D case performed earlier (sample of 10 cm in length and 6 cm in height).
+To accommodate the air domain, an extra 2 cm are added to sample's height, which finally reaches 8 cm, thus the interface has an initial elevation of 6 cm. 
+The initial mesh consists of three different mesh sizes: isotropic meshes in the air and the metal, having respectively a uniform size of 2 mm and 1 mm.
+Regarding the interface, an anisotropic mesh adapts to the \emph{M-A} boundary with a mesh size of 0.1 mm in the normal direction to the interface.
+The thickness of the anisotropic mesh spans 0.5 mm from each side of the interface, hence ensuring an initial resolution of almost 10 elements in the interfacial transition zone.
+
+To adapt the mesh during convection and subsequent solidification, we use the \emph{Remesh4} adaptive technique to maintain accurate predictions for velocity and interface transport.
+After performing some tests, it has been concluded that the remeshing
+frequency should vary depending on the convection regime which pilots the flow velocity.
+For this simulation, we adopted a fast adaptation technique in the high convection regime
+then later we reduce the pace by a factor of 5. The frequency values are included in \cref{table:smacs_meshsize}. 
+Regarding the transition between high and low convection regimes, we did not conduct detailed analysis using 
+known non-dimensional numbers (e.g. Reynolds number), but rather rely on direct inspection of the results while changing the remeshing frequency
+to check if they are satisfactory. We chose 2800 s as an optimal transition time between these high and low convection regimes.
+
 However as solidification proceeds, we also need to keep a relatively small mesh size in regions with noticeable composition gradients.
-Although this is possible with the \emph{Remesh4} technique, it is more difficult to maintain a fine mesh size throughout the metal, especially in areas
-where solidification is almost complete and the velocity field is has a low magnitude. The consequence is a loss of information when coarser 
-elements are obtained by remeshing.
+Although possible to achieve with the \emph{Remesh4} technique, it is still difficult to maintain a fine mesh size throughout the metal, especially in areas
+where solidification is almost complete and where the velocity field has a low magnitude. These areas are interesting as they represent potential
+sites where segregated channels may form. If a low mesh size is not maintained, these channels may numerically disappear. 
 
 To avoid such unwanted effects, we use another uniform
-isotropic grid, named \emph{grid B}, having a constant mesh size of 0.3 mm, that is three times smaller than the interface elements in the original mesh (named \emph{grid A}).
-The strategy consists of scanning the liquid fraction of each node in \emph{grid A}, if its value is located between 30\% and 70\%, then we consider that is a 
-a region of interest, since the flow velocity is still not zero and a relatively fine mesh is locally obtained. 
+isotropic grid, named \emph{grid B}, having a constant mesh size of 0.3 mm, that is a good compromise between the finer interface elements and the coarser air low-velocity elements
+in the original adapted, named \emph{grid A}.
+These grids are shown in \cref{fig:smacs_grids}.
+The strategy consists of scanning the liquid fraction of each node in \emph{grid A}, if its value is located between 30\% and 70\%, then we consider that 
+region of interest, since the flow velocity is still not zero and a relatively fine mesh is locally obtained. 
 We consequently transport the average composition field exclusively 
 for these nodes from \emph{grid A} to \emph{grid B}, keeping for all other nodes their respective average composition values.
 It should be noted that this transport is only one-way, hence no information feedback from \emph{grid B} to \emph{grid A}.
+
+%--------------------------------
+\begin{table}[H]
+\centering
+\caption{Summary of the mesh parameters used to generate an adaptive mesh.
+Refer to \cref{sec:remesh4_params} for the definition of each mesh parameter.}
+\label{table:smacs_meshsize}
+{\tabulinesep=1.0mm \begin{tabu}{ll}
+\tabucline[1pt]{-}
+\textbf{Mesh parameter} & \textbf{Value} \\\tabucline[1pt]{-}
+%-----------------------------
+$\varepsilon $			&	\SI{5e-4}{\metre}	\\
+$h_\text{min}$			& 	 \SI{e-5}{\metre} \\
+Remeshing frequency  	&	0.2 s (t $\leq$ 2800 s)	\\
+						&	1 s	  (t > 2800 s)	\\
+$\varepsilon_\text{er.}$	&  500				 \\
+Remeshing criteria 	 	&   $\norm{\vitf}$, $\vitf _x$, $\vitf_y$, $\levelset$, $\gf$\\
+Number of nodes 		&   $\approx$ \num{7e3} \\ 
+Number of elements 		&   $\approx$ \num{1e4} \\\tabucline[1pt]{-}
+%-----------------------------
+\end{tabu}}
+\end{table}
+%--------------------------------
 
 %-----------------
 \begin{figure}[htbp]
@@ -2351,7 +2302,8 @@ It should be noted that this transport is only one-way, hence no information fee
   \end{subfigure}
    %------------
 \caption{Snapshots of (a) the initial adaptive anisotropic \emph{grid A} then (b) the same grid but at 
-a given time increment with (c) the corresponding fixed isotropic \emph{grid B} at the same time increment.}
+a given time increment with (c) the corresponding fixed isotropic \emph{grid B} at the same time increment, 
+used to record the average composition for $\gs>0.7$.}
 \label{fig:smacs_grids}
 \end{figure}
 %------------------
@@ -2360,27 +2312,95 @@ a given time increment with (c) the corresponding fixed isotropic \emph{grid B} 
 % -----------------------------------------------
 \subsubsection{Initial and boundary conditions}
 % -----------------------------------------------
-The air initial temperature is the same as the initial liquid. This is only a hypothesis to prevent steep temperature gradients at the interface,
+
+The air initial temperature is set the same as the initial liquid. This is only a hypothesis to prevent steep temperature gradients at the interface,
 which may lead to surface solidification. The initial and boundary thermal conditions used to cool down the metal are defined in chapter 4, given by the experimental
 data of \citet{hachani_experimental_2012}. For the mechanical properties, the top wall allows free inflow/outflow of the air in all directions 
-at an imposed atmospheric pressure.
-This allows the air to follow any volume changes in the metal upon solidifying and shrinking. 
+at an imposed atmospheric pressure. This allows the air to follow any volume changes in the metal upon solidifying and shrinking. 
+The geometry and boundary conditions are given in \cref{fig:smacs_geobc}.
+% The side walls adjacent to the heat exchangers are given a free tangential slip boundary condition but with a zero normal velocity, which lets the transported 
+% level set function move vertically without being attached to the sides. Finally, a no-slip condition applies to the bottom wall. 
 
-The side walls adjacent to the heat exchangers are given a free tangential slip boundary condition but with a zero normal velocity, which lets the transported 
-level set function move vertically without being attached to the sides. Finally, a no-slip condition applies to the bottom wall. 
+%--------------
+\begin{figureth}
+% textwidth 
+{1.0}
+%path 
+{Chapter5/Graphics/2d/geobc.pdf}
+% caption
+{Computational configuration for the 2D inverse segregation case showing the domain geometry 
+with the applied boundary conditions to it as well as the gravity vector.
+The pressure of top boundary is imposed to atmospheric pressure. The left heat exchanger (LHE)
+and right heat exchanger (RHE) temperatures are given in \citep{hachani_experimental_2012}.
+}
+% label
+\label{fig:smacs_geobc}
+\end{figureth}
+%--------------
+
+%------------------------
+\begin{tabulate}
+% caption 
+{Parameters for the 2D simulation of the solidification benchmark performed by \citet{hachani_experimental_2012}.}
+% label
+{table:data_case_texus}
+% line separation (e.g. 1.5mm)
+{1.0mm}
+% column justification-number (e.g. |c|ll|)
+{llll}
+% header titles (should use the & sign to switch columns)
+%------------------------------------------------------------------------------------------
+{\textbf{Parameter} & \textbf{Symbol} & \textbf{Value} & \textbf{Unit}}
+% cells content (should use the & and // to switch columns and rows)
+%------------------------------------------------------------------------------------------
+{Nominal composition 				& $w_0$ 			& \num{3}   & \si{\ucomposition} \\ 
+Liquidus temperature 				& $T_L$ 			& \scriptsize{tabulations (\citep{carozzani_direct_2013})} 	& \si{\udegC} \\ 
+% Eutectic temperature 				& $T_E$ 			& \num{577}	 	& \si{\udegC} \\  
+Segregation coefficient 			& $k$ 				& \scriptsize{tabulations (\citep{carozzani_direct_2013})}	& $-$  \\  
+Liquidus slope 						& $m_L$ 			& \scriptsize{tabulations (\citep{carozzani_direct_2013})} 	& \si{\uslope} \\ 
+Liquid density			 			& $\rhol$ 			& \num{7130} 	& \si{\udensity} 		\\ 	 
+Solid density	 					& $\rhos$ 			& \num{7530} 	& \si{\udensity} 		\\  
+Air density 						& $\rhoa$ 			& \num{1.3} 	& \si{\udensity} 		\\  
+Liquid viscosity			 		& $\mul$ 			& \num{d-3} 	& \si{\uviscosity} 		\\  
+Solid viscosity	 					& $\mus$ 			& (Darcy) 			& \si{\uviscosity} 	\\  
+Air viscosity 						& $\mua$ 			& \num{d-4} 	& \si{\uviscosity} 		\\  
+% Liquid heat capacity 		 		& $C_p^l$ 			& \num{1000} 	& \si{\umasscapacity} 	\\  
+% Solid heat capacity 		 		& $C_p^s$ 			& \num{928.57} 	& \si{\umasscapacity} 	\\  
+% Air heat capacity 		 			& $C_p^a$ 			& \num{1000} 	& \si{\umasscapacity} 	\\  
+% Enthalpy of fusion 				 	& $L$ 				& \num{365384} 	& \si{\umassenergy} 	\\ 
+Air thermal conductivity			& $\kappa^a$ 		& \num{0.01} 		& \si{\uconductivity}	\\
+Liquid thermal conductivity 		& $\kappa^l$ 		& \num{33} 		& \si{\uconductivity}	\\
+Solid thermal conductivity 			& $\kappa^s$ 		& \num{55} 		& \si{\uconductivity}	\\
+Solute diffusion in the liquid		& $\Dl$ 			& \num{1.7e-9} 	& \si{\udiffusivity} 	\\  
+Solute diffusion in the solid		& $\Ds$ 			& \num{0} 	& \si{\udiffusivity} 		\\  
+Solute diffusion in the air			& $\Da$ 			& (non monolithic) 	& \si{\udiffusivity} \\  
+Initial temperature 				& $T_0$ 			& \num{240} 	& \si{\udegC} 			\\ 
+% \hline  %------------------------------------------------------------------------------------------
+% Gravity acceleration 	 			& $\hext$ 			& \num{6e4} 	& \si{\uhconvec} 		\\ 
+% Heat transfer coefficient 			& $\hext$ 			& \num{6e4} 	& \si{\uhconvec} 		\\ 
+% External temperature 				& $\Text$ 			& \num{25} 	& \si{\udegC} 				\\ 
+% Ingot length 						&  					& \num{0.1} 	& \si{\metre} 		\\ 
+\hline %------------------------------------------------------------------------------------------
+% FE mesh size 						&  					& \num{e-3} 	& \si{\metre} 		\\ 
+Time step 							& $\dt$ 			& \num{0.01} 	& \si{\second} 		\\ 
+Convergence on residual 	& $\varepsilon_R$	& \num{e-5} 	& $-$ 				\\ 
+Convergence on temperature) & $\varepsilon_T$ 	& \num{e-2} 	& \si{\udegK}}
+%--------------------------------------------------------------------------------------------------
+\end{tabulate}
+%------------------------
 
 
 % ********************************************
 \subsection{Results}
 % ********************************************
 
-The results are recorded at two intermdiate solidification stages, at 3050 s and 3550 s, knowing that solidification onset is around 1920 s.
-First, we look to the results in \cref{fig:W_mask_1200s}. The original average composition field obtained by \emph{grid A}, shown in \cref{fig:1200s_compo},
+The results are recorded at two intermediate solidification stages, at 3050 s and 3550 s, knowing that solidification onset is around 1920 s.
+First, we look to the results in \cref{fig:W_mask_1200s} at 3050 s. The original average composition field obtained by \emph{grid A}, shown in \cref{fig:1200s_compo},
 is almost free of composition gradients except for one segregated channel rising from the bottom by the action of thermal convection.
 On the other hand, the average composition transport from the adaptive grid to the fixed one, allows recording macrosegregation onto the latter
-at nodes where the solid exceeds 0.7 in volume fraction, depicted by the yellow region in \cref{fig:1200s_unmask}. 
+at nodes where the volume fraction of solid is greater than 70\%, depicted by the yellow region in \cref{fig:1200s_unmask}. 
 This is why we observe in \cref{fig:1200s_compobis} a number of channel segregates
-which are slightly below nominal composition but still richer in lead species with respect to the surrounding solid.
+which are richer in Pb species with respect to the surrounding solid.
 The solid fraction distribution is shown in \cref{fig:1200s_gs}, along with the flow pattern. Local vortices are observed in the metal, probably due 
 to considering only a 2D geometry instead of the complete 3D, and this alters the computation stability by ignoring the boundary layers in the sample 
 thickness, obtained otherwise in 3D. Nevertheless, the overall 
@@ -2401,7 +2421,7 @@ At this stage of solidification, the interface movement is still difficult to se
   %------------------------------
   \begin{subfigure}[t]{0.15\textwidth}
     \centering
-  \includegraphics[width=0.3\textwidth]{Chapter5/Graphics/2d/colorbar.pdf}
+  \includegraphics[width=0.3\textwidth]{Chapter5/Graphics/2d/colorbar_w.pdf}
   \end{subfigure}
   %------------------------------ 
   \begin{subfigure}[t]{0.4\textwidth}
@@ -2443,7 +2463,7 @@ metal is obtained by the successive transport operations performed in (c) a rest
 %------------------
 
 
-We are now at 3550 s, and the decreasing left heat exchanger temperature has just went below the local liquidus, 
+We look now at \cref{fig:1700s_gs} at 3550 s, and the decreasing left heat exchanger temperature has just went below the local liquidus, 
 triggering solidification from the left side.
 The average composition field presents noticeable differences between the adaptive \emph{grid A} and the fixed \emph{grid B}.
 The weak macrosegregation observed in \cref{fig:1200s_compo} are now lost in \cref{fig:1700s_compo}, as the mesh got coarser on the metal's solidified right
@@ -2457,19 +2477,19 @@ The shrinkage due to phase density difference, is now clearly visible judging fr
   \begin{subfigure}[t]{0.4\textwidth}
     \centering
   \includegraphics[width=\textwidth]{Chapter5/Graphics/2d/1700s_compo.png}
-  \caption{Lead composition on \emph{Grid A}}
+  \caption{Pb composition on \emph{Grid A}}
     \label{fig:1700s_compo}
   \end{subfigure}
   %------------------------------
   \begin{subfigure}[t]{0.15\textwidth}
     \centering
-  \includegraphics[width=0.3\textwidth]{Chapter5/Graphics/2d/colorbar.pdf}
+  \includegraphics[width=0.3\textwidth]{Chapter5/Graphics/2d/colorbar_w.pdf}
   \end{subfigure}
   %------------------------------ 
   \begin{subfigure}[t]{0.4\textwidth}
     \centering
   \includegraphics[width=\textwidth]{Chapter5/Graphics/2d/1700s_compobis.png}
-  \caption{Lead composition on \emph{Grid B}}
+  \caption{Pb composition on \emph{Grid B}}
     \label{fig:1700s_compobis}
   \end{subfigure}
    %------------
@@ -2519,32 +2539,95 @@ The shrinkage due to phase density difference, is now clearly visible judging fr
 
 
 
+% ****************************************
+\subsection{Mass conservation}
+% ****************************************
+
+For this analysis, we use the same definitions for the mass variation of the metal (\cref{eq:metal_mass_variation}) and the chemical species (\cref{eq:solute_mass_variation}).
+Additionally, we define the relative volume change for each domain in the system as follows:
+%----------------
+\begin{align}
+\label{eq:volume_variation}
+&  v^M_\% = \frac{v^M - v^M_0}{v^M_0} \times 100	
+&  v^A_\% = \frac{v^A - v^A_0}{v^M_0} \times 100	
+\end{align}
+%---------------
+where $v^M_0$ and $v^A_0$ are respectively the initial volume for metal and air. 
+This volume is deduced from the level set by using the definition in \cref{eq:levelset_volume}.
+
+%--------------
+\begin{figureth}
+% textwidth 
+{1.0}
+%path 
+{Chapter5/Data/2d_smacs_mass/global_smacs.pdf}
+% caption
+{Global plots showing (left y-axis) the relative mass variation for the metal and its species and (right y-axis) the corresponding relative volume change for the metal and air domains.}
+% label
+\label{fig:smacs_mass_volume}
+\end{figureth}
+%--------------
+
+
+
+
+% this plot wont fucking work because of the fucking size limit memory in latex, even with shell escaping doesnt work
+% %--------------------------------------
+% \shorthandoff{;:?!} %http://tex.stackexchange.com/questions/74860/unexpected-clash-between-babel-and-pgf-spy
+% \begin{figure}[htbp]
+% \centering
+% %-------
+% \begin{tikzpicture}
+% %-------------------
+%  \begin{axis}
+%   [	name=whatever,
+% 	%title= (c),
+% 	scale only axis,
+% 	table/col sep=tab,  % comma % tab
+% 	enlarge x limits=false,
+% 	%legend pos=north east,
+% 	scaled ticks=true,
+% 	ylabel style={align=center},
+% 	ylabel=  Relative mass change (\%), %Relative mesosegregation,
+% 	xlabel=Time (s),
+% 	%xticklabel style={/pgf/number format/fixed},
+% 	yticklabel style={/pgf/number format/fixed},
+% 	xtick={0,100,...,1000},
+% 	xticklabels={0,100,...,1000},
+% 	ytick={-1,-0.5,...,1},
+% 	yticklabels={-1,-0.5,...,1},
+% 	width=0.75\textwidth,
+% 	% height=8cm,	
+% 	ymin=-1.5, ymax=1.5,
+% 	xmin=0, xmax=1000,
+% 	mark repeat	= {50},
+% 	cycle list name=masscycle,
+% 	% axis y line*=left,
+% 	legend cell align=left,
+% ]
+%   \addplot table [x=Temps, y=mMpct]   			{Chapter5/Data/2d_smacs_mass/smacs_mass.txt};
+%   \addplot table [x=Temps, y=msoluteM_pct]  	{Chapter5/Data/2d_smacs_mass/smacs_mass.txt};
+  
+%   \legend{m^M_\%,m^\text{sp}_\%}  	
+  
+%   \end{axis}
+%   	%------------------
+% \end{tikzpicture}
+% %-------
+% \caption{Mass variation plots for the metal and its chemical species}
+% \label{fig:mass_species_smacs}
+% \end{figure}
+% %--------------------------------------
+% \shorthandon{;:?!} %http://tex.stackexchange.com/questions/74860/unexpected-clash-between-babel-and-pgf-spy
 
 
 
 
 
 
+% \cleardoublepage
+\newpage
 
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-% --------------------------------------------------------------------------------------------------------------------------
-\cleardoublepage
 % ---------------------------------
 \section{3D application: reduced-gravity solidification}
 % ---------------------------------
@@ -2952,13 +3035,13 @@ to propagate further before deformation occurs by gravity. We see a global defor
 results: an ellipsoidal form with a longer vertical axis (i.e. in the direction of the microgravity vector) 
 with respect to the initial shape, while the horizontal axis decreases compared to the original
 sample diameter. Finally, we observe the same deformation tendency if we compare cases H3G0 and H4G0. 
-The latter becomes closer to a situation of pureshrinkage flow. Consequently, its final shape corresponds to a global shrinkage of the initial one.
+The latter becomes closer to a situation of pure shrinkage flow. Consequently, its final shape corresponds to a global shrinkage of the initial one.
 % on the sides, which is the direct result of the fast cooling rate.
 
 In order to have a clear idea on the effect of varying the cooling rate parameter on mass conservation, we plot in \cref{fig:mass_parametricH}
 the mass variation versus time for all four cases. We can notice that mass variation for case H4G0 occurs between 2\% and -1\% near the solidification end,
 recording the least variations compared to other cases. On the other hand, cases H1G0 and H2G0 show an important mass loss before solidification comes to end,
-reaching -11\%. We are particularly interested in case H3G0, which shows a good compromise between the deformation magnitude and mass loss, the latter being at -3\% of mass metal.
+reaching -11\%. We are particularly interested in case H3G0, which shows a good compromise between the deformation magnitude and mass loss, the latter being at -3\% of metal mass.
 
 %----------------
 %
@@ -3124,7 +3207,7 @@ the simulation parameters defined in \cref{table:data_case_texus}.
 % Eutectic temperature 				& $T_E$ 			& \num{577}	 	& \si{\udegC} \\  
 % Segregation coefficient 			& $k$ 				& \num{0.13} 	& $-$  \\  
 % Liquidus slope 						& $m_L$ 			& \num{-6.5} 	& \si{\uslope} \\ 
-Liquid density			 			& $\rhol$ 			& \num{2600} 	& \si{\udensity} 		\\ 	 
+Liquid density			 			& $\rhol$ 			& tabulations  	& \si{\udensity} 		\\ 	 
 Solid density	 					& $\rhos$ 			& \num{2800} 	& \si{\udensity} 		\\  
 Air density 						& $\rhoa$ 			& \num{1.3} 	& \si{\udensity} 		\\  
 Liquid viscosity			 		& $\mul$ 			& \num{d-3} 	& \si{\uviscosity} 		\\  
@@ -3462,8 +3545,10 @@ The computation time corresponds to the CPU time of a simulation running on 20 c
 \resizebox{\columnwidth}{!}{%
 {\tabulinesep=1.0mm \begin{tabu}{lccccccc}
 \tabucline[1pt]{-}
-\textbf{Alloy} & \textbf{Nb solutes} &  \textbf{Composition range (\si{\ucomposition})}  & \textbf{Composition step (\si{\ucomposition})}  & \textbf{Nb phases}  
-& \textbf{Tabulation lines}  & \textbf{Size (MB)} & \textbf{Computation time (s)}  \\\tabucline[1pt]{-}
+\textbf{Alloy} & \textbf{Nb} &  \textbf{Composition}  & \textbf{Composition}  & \textbf{Nb}  
+& \textbf{Tabulation}  & \textbf{Size} & \textbf{Computation}  \\
+ 				 & \textbf{solutes} &  \textbf{range (\si{\ucomposition})}  & \textbf{step (\si{\ucomposition})}  & \textbf{phases}  
+& \textbf{lines}  & \textbf{(MB)} & \textbf{time (s)}  \\\tabucline[1pt]{-}
 %-----------------------------
       \emph{b1Bin}  	& 1 &	C: [0.0945-0.1155] &   0.00525  &  4 &  \num{185010} &    \num{4.37}   &  \num{59461.5}  \\   %78003.9
       \emph{b1Tern} 	& 2 &	C: [0.0945-0.1155] &   0.00525  &  5 &  \num{220250} &    \num{10.18}  &  \num{62644.4}  \\    
@@ -3527,7 +3612,7 @@ of each chemical species for \emph{b1Bin}, \emph{b1Tern} and \emph{b1Quat} sampl
   %legend pos=north east,
   scaled ticks=true,
   %xlabel=Sample length (m),
-  ylabel=$\frac{\avg{w_C}-w_{C_0}}{w_{C_0}}$ (\%),
+  ylabel=$\frac{\mix{\avg{w_{C}}}-w_{C_0}}{w_{C_0}}$ (\%),
   % xticklabel style={/pgf/number format/fixed},
   xtick={0,1,...,8}, 
   xticklabels={},
@@ -3557,7 +3642,7 @@ of each chemical species for \emph{b1Bin}, \emph{b1Tern} and \emph{b1Quat} sampl
   %legend pos=north east,
   scaled ticks=true,
   %xlabel=Sample length (m),
-  ylabel=$\frac{\avg{w_{Si}}-w_{{Si}_0}}{w_{{Si}_0}}$ (\%),
+  ylabel=$\frac{\mix{\avg{w_{Si}}}-w_{{Si}_0}}{w_{{Si}_0}}$ (\%),
   xticklabel style={/pgf/number format/fixed},
   xtick={0,1,...,8}, 
   xticklabels={},
@@ -3585,7 +3670,7 @@ of each chemical species for \emph{b1Bin}, \emph{b1Tern} and \emph{b1Quat} sampl
   %legend pos=north east,
   scaled ticks=true,
   xlabel=Distance from chill (mm),
-  ylabel=$\frac{\avg{w_{Mn}}-w_{{Mn}_0}}{w_{{Mn}_0}}$ (\%),
+  ylabel=$\frac{\mix{\avg{w_{Mn}}}-w_{{Mn}_0}}{w_{{Mn}_0}}$ (\%),
   xtick={0,1,...,8}, 
   xticklabels={0,1,...,8}, % showing in (mm)
   ytick={-1,-0.5,...,1},
