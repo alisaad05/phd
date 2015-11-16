@@ -2297,8 +2297,8 @@ Refer to \cref{sec:remesh4_params} for the definition of each mesh parameter.}
 %-----------------------------
 $\varepsilon $			&	\SI{5e-4}{\metre}	\\
 $h_\text{min}$			& 	 \SI{e-5}{\metre} \\
-Remeshing frequency  	&	0.2 s (t $\leq$ 2800 s)	\\
-						&	1 s	  (t > 2800 s)	\\
+Remeshing frequency  	&	0.2 s (t $\leq$ 3000 s)	\\
+						&	1 s	  (t > 3000 s)	\\
 $\varepsilon_\text{er.}$	&  500				 \\
 Remeshing criteria 	 	&   $\norm{\vitf}$, $\vitf _x$, $\vitf_y$, $\levelset$, $\gf$\\
 Number of nodes 	(\emph{Grid A}) 	&   $\approx$ \num{e4} \\ 
@@ -2322,6 +2322,8 @@ which may lead to surface solidification. The initial and boundary thermal condi
 data of \citet{hachani_experimental_2012}. For the mechanical properties, the top wall allows free inflow/outflow of the air in all directions 
 at an imposed atmospheric pressure. This allows the air to follow any volume changes in the metal upon solidifying and shrinking. 
 The geometry and boundary conditions are given in \cref{fig:smacs_geobc}.
+Regarding the species conservation inthe presence of the level set, the non monolithic strategy proved to be good in limiting the composition instability surrounding the \emph{M-A} boundary, and hence it will be used for this 2D simulation.
+All simulation related parameters are shown in \cref{table:data_case_smacs}.
 % The side walls adjacent to the heat exchangers are given a free tangential slip boundary condition but with a zero normal velocity, which lets the transported 
 % level set function move vertically without being attached to the sides. Finally, a no-slip condition applies to the bottom wall. 
 
@@ -2347,7 +2349,7 @@ and right heat exchanger (RHE) temperatures are given in \citep{hachani_experime
 % caption 
 {Parameters for the 2D simulation of the solidification benchmark performed by \citet{hachani_experimental_2012}.}
 % label
-{table:data_case_texus}
+{table:data_case_smacs}
 % line separation (e.g. 1.5mm)
 {1.0mm}
 % column justification-number (e.g. |c|ll|)
@@ -2412,8 +2414,16 @@ flow is driven by a thermosolutal driving force, with a compatible flow in the a
 We can observe how the solid fraction is modified in the segregated channel, as a result of macrosegregation.
 At this stage of solidification, the interface movement is still difficult to see, but 500 s later it becomes more visible.
 
+
+We look now at \cref{fig:1700s_gs} at 3550 s, and the decreasing left heat exchanger temperature has just went below the local liquidus, 
+triggering solidification from the left side.
+The average composition field presents noticeable differences between the adaptive \emph{grid A} and the fixed \emph{grid B}.
+The weak macrosegregation observed in \cref{fig:1200s_compo} are now lost in \cref{fig:1700s_compo}, as the mesh got coarser on the metal's solidified right
+side. Fortunately, the macrosegregation distribution is stored in the fixed grid (\cref{fig:1700s_compobis}) and shows more details with the advancement of solidification. 
+The shrinkage due to phase density difference, is now clearly visible judging from interface shape, which still almost planar above the last liquid pool. 
+
 %-----------------
-\begin{figure}[htbp]
+\begin{figure}[H]
 \centering
    %------------
   \begin{subfigure}[t]{0.4\textwidth}
@@ -2466,16 +2476,8 @@ metal is obtained by the successive transport operations performed in (c) a rest
 \end{figure}
 %------------------
 
-
-We look now at \cref{fig:1700s_gs} at 3550 s, and the decreasing left heat exchanger temperature has just went below the local liquidus, 
-triggering solidification from the left side.
-The average composition field presents noticeable differences between the adaptive \emph{grid A} and the fixed \emph{grid B}.
-The weak macrosegregation observed in \cref{fig:1200s_compo} are now lost in \cref{fig:1700s_compo}, as the mesh got coarser on the metal's solidified right
-side. Fortunately, the macrosegregation distribution is stored in the fixed grid (\cref{fig:1700s_compobis}) and shows more details with the advancement of solidification. 
-The shrinkage due to phase density difference, is now clearly visible judging from interface shape, which still almost planar above the last liquid pool. 
-
 %-----------------
-\begin{figure}[htbp]
+\begin{figure}[H]
 \centering
    %------------
   \begin{subfigure}[t]{0.4\textwidth}
@@ -2526,16 +2528,15 @@ The shrinkage due to phase density difference, is now clearly visible judging fr
 \end{figure}
 %------------------
 
-
-
 %--------------
 \begin{figureth}
 % textwidth 
-{0.75}
+{0.65}
 %path 
 {Chapter5/Graphics/2d/finalseg/finalsegreg.pdf}
 % caption
-{blabl}
+{Final macrosegregation pattern showing the positively segregated channels within neagtive segregation areas to the right,
+while on the left the last liquid to solidify forms a recognisable pipe shrinkage and a positively segregated region underneath it.}
 % label
 \label{fig:smacs_final}
 \end{figureth}
@@ -2559,10 +2560,24 @@ Additionally, we define the relative volume change for each domain in the system
 where $v^M_0$ and $v^A_0$ are respectively the initial volume for metal and air. 
 This volume is deduced from the level set by using the definition in \cref{eq:levelset_volume}.
 
+All mass and volume data are plotted in \cref{fig:smacs_mass_volume}. The main reason for grouping all plots in a single
+is to be able to analyse the mass variations as function of the solidification advancement, which can be tracked
+by volume changes.
+
+We see in the figure that no mass/volume variations are detected before 1900 s, seconds before solidification onset. Once the phase change starts, the average metal density decreases. Since air is incompressible, it is sucked towards the shrinking metallic front.
+With our free velocity boundary condition, an air intake thus takes places, which is confirmed by the blue curve corresponding to the relative air volume variation, starting from 2400 s. However between 1900 s and 2400 s, an unexpected slight volume increase of the metal takes place, although it should be decreasing under the action of the decreasing average density by solidification. This behaviour can be attributed to the competition between the flow due to thermosolutal convection and another flow due to shrinkage, and obviously the former is more  imposing than the latter. Therefore, it forces the level set to slightly move upwards, letting the metal gain some volume at the expense of air, whose volume is seen temporarily decreasing between 1900 s and 2500 s.
+The metal's mass curve confirms also a positive variation, which is also reflected on the solute mass.
+After 2500 s, we can see that the metal volume is beginning its descent until it reaches the final volume corresponding to $-6\%$ of the initial volume. This value can also be deduced from the solidification shrinkage coefficient, $\beta_{SS}$, deduced from $\rhol$ and $\rhos$ included in \cref{table:data_case_smacs}.
+However between 2500 s and 3000 s, the metal and species mass do not show any sign of stability, but still rising. Until around 3200 s, both mass percentages decrease again as expected.
+While the metal's mass and volume follow the same trend after 3200 s, they are not really correlated. The mass is supposed to remain relatively unchanged until the final volume is reached. Therefore this means that the \emph{M-A} is moving towards the metal, with a greater speed than it should have. At about 3800 s, solidification is almost complete, and the remaining liquid is not capable of inducing a significant boundary. 
+
+The other unexpected profile is the solute mass from 3600 s to 3800 s, where the ingot is almost completely solidified but still features species transport.
+It can be explained by the new quantities 
+
 %--------------
 \begin{figureth}
 % textwidth 
-{1.0}
+{0.75}
 %path 
 {Chapter5/Data/2d_smacs_mass/global_smacs.pdf}
 % caption
@@ -2660,18 +2675,6 @@ with reduced gravitational forces ($\norm{\gravity} \in \crochet{10^{-5};10^{-1}
 % ---------------------------------
 
 % ---------------------------------
-\subsubsection{TEMPUS experiment for parabolic flight campaigns}
-% ---------------------------------
-
-The TEMPUS experiment came as a first alternative for EML experiments on ground during which accurate thermophysical and rheological characterisation were difficult to achieve.
-Each flight consists of several cycles of free fall, a reduced-gravity environment is hence created, 
-allowing to use only a single radiofrequency (RF) coil to stabilise the position of the droplet, while the substrate comes into contact with the molten sample
-from above it. An axial pyrometer measures the sample temperature during the process. 
-Also, a high-speed camera records the solidification process, producing frames as shown in \cref{fig:camera}.
-This is useful to measure the front growth speed. 
-Each parabola cycle lasts for 50 s, offering an effective low gravity ($\norm{\gravity}\approx$\SI{e-1}{\uacceleration}) for about 20 s.
-
-% ---------------------------------
 \subsubsection{TEXUS sounding rocket}
 % ---------------------------------
 
@@ -2700,6 +2703,20 @@ is similar to the one used for TEMPUS experiments.}
 \label{fig:texus_exp}
 \end{figureth}
 %--------------
+
+
+% ---------------------------------
+\subsubsection{TEMPUS experiment for parabolic flight campaigns}
+% ---------------------------------
+
+The TEMPUS experiment came as a first alternative for EML experiments on ground during which accurate thermophysical and rheological characterisation were difficult to achieve.
+Each flight consists of several cycles of free fall, a reduced-gravity environment is hence created, 
+allowing to use only a single radiofrequency (RF) coil to stabilise the position of the droplet, while the substrate comes into contact with the molten sample
+from above it. An axial pyrometer measures the sample temperature during the process. 
+Also, a high-speed camera records the solidification process, producing frames as shown in \cref{fig:camera}.
+This is useful to measure the front growth speed. 
+Each parabola cycle lasts for 50 s, offering an effective low gravity ($\norm{\gravity}\approx$\SI{e-1}{\uacceleration}) for about 20 s.
+
 
 %--------------
 \begin{figureth}
@@ -2828,53 +2845,57 @@ Number of elements 						&   $\approx$\num{5e5} \\\tabucline[1pt]{-}
 
 The thermal boundary conditions are set as follows: heat loss by radiation is experimentally avoided, 
 therefore it is not considered in our model, hence all boundaries are considered adiabatic, except for the metal-substrate contact area,
-as previously mentioned. This surface is modelled by a Fourier condition with $\Text$=\SI{25}{\udegC} 
-and an effective exchange coefficient $\hext$ of \SI{6e4}{\uhconvec}. 
-The $\hext$ coefficient's value has been determined by running multiple simulations with different values in the aim
-of predicting a front speed as closer as possible to the experimental measurements plotted in \cref{fig:position_vs_time_binary}, 
-as explained in the coming sections.
+as previously mentioned. 
 
-%--------------------------------------
-\begin{figure}[htbp]
-\centering
-\begin{tikzpicture}%[spy using outlines={draw, blue, magnification=2, connect spies}]
- \pgfkeys{%
-    /pgf/number format/set thousands separator = {}}
-%================================================
-\begin{axis}
-[	name=mass curves,
-	%title= mass conservation,
-	scale only axis,
-	table/col sep=tab,
-	enlarge x limits=false,
-	legend pos=north west,
-	scaled ticks=true,
-	xlabel=Time (s),
-	ylabel= Front position (m),
-	xticklabel style={/pgf/number format/fixed},
-	%xtick={0,200,400,600,800,1000},
-	%ytick={-0.1,0,0.1,0.2},
-	%x tick label style={rotate=45,anchor=east},
-	width=0.6\textwidth,
-	%height=5cm,	
-	%ymin=-0.1, ymax=0.2,
-	%mark repeat	= {30},
-	cycle list name=mycycle, %exotic,
-]
-%\addplot table [x=time, y=position] {Chapter5/Data/3d_growthspeed/olddroplet_frontposition_vs_time.txt};
-\addplot table [x=time, y=position] {Chapter5/Data/3d_growthspeed/newdroplet_h6e4.txt};
-\addplot table [x=time, y expr=\thisrow{position}/1000] {Chapter5/Data/3d_growthspeed/EXP_texus2009_frontposition_vs_time.txt};
-\addplot table [x=time, y expr=\thisrow{position}/1000] {Chapter5/Data/3d_growthspeed/exp_tempus2014_frontposition_vs_time.txt};
+% -----------  DISPLACED TEXT
+% This surface is modelled by a Fourier condition with $\Text$=\SI{25}{\udegC} 
+% and an effective exchange coefficient $\hext$ of \SI{6e4}{\uhconvec}. 
+% The $\hext$ coefficient's value has been determined by running multiple simulations with different values in the aim
+% of predicting a front speed as closer as possible to the experimental measurements plotted in \cref{fig:position_vs_time_binary}, 
+% as explained in the coming sections.
 
-\legend{Simulation, TEXUS, TEMPUS}
-\end{axis}
-\end{tikzpicture}
-\caption{Position of solidification front versus time for the binary alloy 
-simulation compared to the experimental findings of the TEXUS-46 flight 
-in 2009 and TEMPUS 2014 measurements \citep{gandin_project_2014}.}
-\label{fig:position_vs_time_binary}
-\end{figure}
-%--------------------------------------
+% %--------------------------------------
+% \begin{figure}[htbp]
+% \centering
+% \begin{tikzpicture}%[spy using outlines={draw, blue, magnification=2, connect spies}]
+%  \pgfkeys{%
+%     /pgf/number format/set thousands separator = {}}
+% %================================================
+% \begin{axis}
+% [	name=mass curves,
+% 	%title= mass conservation,
+% 	scale only axis,
+% 	table/col sep=tab,
+% 	enlarge x limits=false,
+% 	legend pos=north west,
+% 	scaled ticks=true,
+% 	xlabel=Time (s),
+% 	ylabel= Front position (m),
+% 	xticklabel style={/pgf/number format/fixed},
+% 	%xtick={0,200,400,600,800,1000},
+% 	%ytick={-0.1,0,0.1,0.2},
+% 	%x tick label style={rotate=45,anchor=east},
+% 	width=0.6\textwidth,
+% 	%height=5cm,	
+% 	%ymin=-0.1, ymax=0.2,
+% 	%mark repeat	= {30},
+% 	cycle list name=mycycle, %exotic,
+% ]
+% %\addplot table [x=time, y=position] {Chapter5/Data/3d_growthspeed/olddroplet_frontposition_vs_time.txt};
+% \addplot table [x=time, y=position] {Chapter5/Data/3d_growthspeed/newdroplet_h6e4.txt};
+% \addplot table [x=time, y expr=\thisrow{position}/1000] {Chapter5/Data/3d_growthspeed/EXP_texus2009_frontposition_vs_time.txt};
+% \addplot table [x=time, y expr=\thisrow{position}/1000] {Chapter5/Data/3d_growthspeed/exp_tempus2014_frontposition_vs_time.txt};
+
+% \legend{Simulation, TEXUS, TEMPUS}
+% \end{axis}
+% \end{tikzpicture}
+% \caption{Position of solidification front versus time for the binary alloy 
+% simulation compared to the experimental findings of the TEXUS-46 flight 
+% in 2009 and TEMPUS 2014 measurements \citep{gandin_project_2014}.}
+% \label{fig:position_vs_time_binary}
+% \end{figure}
+% %--------------------------------------
+% -----------  END OF DISPLACED TEXT
 
 
 For the velocity-pressure boundary conditions, \cref{fig:texus_bc} shows that a no-slip condition is imposed
@@ -2989,8 +3010,9 @@ Consequently, a parametric study helps us determine this gravity threshold, whil
 
 A series of test simulations were launched in the aim of getting comparable results with the experiment.
 Several values of $\hext$ were tested in the interval [\num{e2};\num{e6}]\si{\uhconvec}, while the gravity acceleration influence was tested
-for values lying in the interval [\num{e-6};\num{e-2}]\si{\uacceleration}. The best match for the final shape while preserving a front propagation
-speed close to \SI{0.7}{\milli \uvelocity}, was obtained by setting simultaneously $\hext=6 \times 10^{4}$ \si{\uhconvec} and $\norm{\gravity}=5\times 10^{-5}$ \si{\uacceleration}.
+for values lying in the interval [\num{e-6};\num{e-2}]\si{\uacceleration}. 
+% The best match for the final shape while preserving a front propagation
+% speed close to \SI{0.7}{\milli \uvelocity}, was obtained by setting simultaneously $\hext=6 \times 10^{4}$ \si{\uhconvec} and $\norm{\gravity}=5\times 10^{-5}$ \si{\uacceleration}.
 To demonstrate the effect of varying these parameters, we present a parametric study in \cref{table:parametric_study}, where only the most relevant cases are studied with
 a binary alloy, \bin{Fe}{0.105}{C}.
 
@@ -3143,7 +3165,7 @@ For case H0G2, the droplet is less solicited by its weight, and therefore solidi
 It should be reminded that in the current global numerical model does not account for the metal's surface tension, which may
 clearly have a drastic influence on the final shape, especially at higher gravity magnitudes, such as for cases H0G1 and H0G2.
 Moving on to cases H0G3 and H0G4, the weight driving force becomes negligible compared to the shrinkage driving force. Therefore,
-the sample shows significant lateral deformation, while in the central vertical plane of the droplet, the droplet has shrunk when 
+the sample shows little lateral deformation, while in the central vertical plane of the droplet, the droplet has shrunk when 
 compared to the initial profile. This is more visible in case H0G4, where the final shape is overall smaller than the initial volume,
 which is not the same as found in cases H3G0 and H4G0. The mass conservation analysis corresponding to the gravity magnitude variation
 are plotted in \cref{fig:mass_parametricG}. The plots show, as expected, better mass conservation for decreasing gravity acceleration, i.e.
@@ -3187,9 +3209,61 @@ The gravity vector points downwards.}
 \subsection{Texus binary alloy}
 % --------------------------------
 
-The optimal computational configuration is now known, thus we proceed to simulate the solidification of the binary alloy given previously in \cref{table:texus_b1}, using
-the simulation parameters defined in \cref{table:data_case_texus}.
+\subsubsection{Optimal configuration}
 
+This contact surface between the droplet and the chill is modelled by a Fourier condition with $\Text$=\SI{25}{\udegC} 
+and an effective exchange coefficient $\hext$ of \SI{6e4}{\uhconvec}.
+The $\hext$ coefficient's value has been determined by running multiple simulations with different values in the aim
+of predicting a front speed as closer as possible to the experimental measurements plotted in \cref{fig:position_vs_time_binary}.
+The best match for the final shape while preserving a front propagation
+speed close to \SI{0.7}{\milli \uvelocity}, was obtained by setting simultaneously 
+$\hext=6 \times 10^{4}$ \si{\uhconvec} and $\norm{\gravity}=5\times 10^{-5}$ \si{\uacceleration}.
+These values are included in \cref{table:data_case_texus} along with the other simulation parameters.
+It is reminded that for the species conservation, the non monolithic strategy is used.
+The optimal computational configuration is now known, thus we proceed to simulate the solidification 
+of the binary alloy given previously in \cref{table:texus_b1}.
+
+%--------------------------------------
+\begin{figure}[htbp]
+\centering
+\begin{tikzpicture}%[spy using outlines={draw, blue, magnification=2, connect spies}]
+ \pgfkeys{%
+    /pgf/number format/set thousands separator = {}}
+%================================================
+\begin{axis}
+[	name=mass curves,
+	%title= mass conservation,
+	scale only axis,
+	table/col sep=tab,
+	enlarge x limits=false,
+	legend pos=north west,
+	scaled ticks=true,
+	xlabel=Time (s),
+	ylabel= Front position (m),
+	xticklabel style={/pgf/number format/fixed},
+	%xtick={0,200,400,600,800,1000},
+	%ytick={-0.1,0,0.1,0.2},
+	%x tick label style={rotate=45,anchor=east},
+	width=0.6\textwidth,
+	%height=5cm,	
+	%ymin=-0.1, ymax=0.2,
+	%mark repeat	= {30},
+	cycle list name=mycycle, %exotic,
+]
+%\addplot table [x=time, y=position] {Chapter5/Data/3d_growthspeed/olddroplet_frontposition_vs_time.txt};
+\addplot table [x=time, y=position] {Chapter5/Data/3d_growthspeed/newdroplet_h6e4.txt};
+\addplot table [x=time, y expr=\thisrow{position}/1000] {Chapter5/Data/3d_growthspeed/EXP_texus2009_frontposition_vs_time.txt};
+\addplot table [x=time, y expr=\thisrow{position}/1000] {Chapter5/Data/3d_growthspeed/exp_tempus2014_frontposition_vs_time.txt};
+
+\legend{Simulation, TEXUS, TEMPUS}
+\end{axis}
+\end{tikzpicture}
+\caption{Position of solidification front versus time for the binary alloy 
+simulation compared to the experimental findings of the TEXUS-46 flight 
+in 2009 and TEMPUS 2014 measurements \citep{gandin_project_2014}.}
+\label{fig:position_vs_time_binary}
+\end{figure}
+%--------------------------------------
 
 %------------------------
 \begin{tabulate}
@@ -3209,9 +3283,9 @@ the simulation parameters defined in \cref{table:data_case_texus}.
 {Nominal composition 				& $w_0$ 			& \num{0.105}   & \si{\ucomposition} \\ 
 % Liquidus temperature 				& $T_L$ 			& \num{618} 	& \si{\udegC} \\ 
 % Eutectic temperature 				& $T_E$ 			& \num{577}	 	& \si{\udegC} \\  
-% Segregation coefficient 			& $k$ 				& \num{0.13} 	& $-$  \\  
-% Liquidus slope 						& $m_L$ 			& \num{-6.5} 	& \si{\uslope} \\ 
-Liquid density			 			& $\rhol$ 			& tabulations  	& \si{\udensity} 		\\ 	 
+Segregation coefficient 			& $k$ 				& \scriptsize{tabulations (\citep{andersson_thermo-calc_2002})} 	& $-$  \\  
+Liquidus slope 						& $m_L$ 			&  \scriptsize{tabulations (\citep{andersson_thermo-calc_2002})} 	& \si{\uslope} \\ 
+Liquid density			 			& $\rhol$ 			& \scriptsize{tabulations (\citep{andersson_thermo-calc_2002})}	& \si{\udensity} 		\\ 	 
 Solid density	 					& $\rhos$ 			& \num{2800} 	& \si{\udensity} 		\\  
 Air density 						& $\rhoa$ 			& \num{1.3} 	& \si{\udensity} 		\\  
 Liquid viscosity			 		& $\mul$ 			& \num{d-3} 	& \si{\uviscosity} 		\\  
@@ -3220,27 +3294,32 @@ Air viscosity 						& $\mua$ 			& \num{d-4} 	& \si{\uviscosity} 		\\
 % Liquid heat capacity 		 		& $C_p^l$ 			& \num{1000} 	& \si{\umasscapacity} 	\\  
 % Solid heat capacity 		 		& $C_p^s$ 			& \num{928.57} 	& \si{\umasscapacity} 	\\  
 % Air heat capacity 		 			& $C_p^a$ 			& \num{1000} 	& \si{\umasscapacity} 	\\  
-% Enthalpy of fusion 				 	& $L$ 				& \num{365384} 	& \si{\umassenergy} 	\\ 
+% Enthalpy of fusion 				& $L$ 			& \num{365384} 	& \si{\umassenergy} 	\\ 
 Air thermal conductivity			& $\kappa^a$ 		& \num{0.01} 		& \si{\uconductivity}	\\
 Liquid thermal conductivity 		& $\kappa^l$ 		& \num{42} 		& \si{\uconductivity}	\\
 Solid thermal conductivity 			& $\kappa^s$ 		& \num{42} 		& \si{\uconductivity}	\\
 Solute diffusion in the liquid		& $\Dl$ 			& \num{1e-9} 	& \si{\udiffusivity} 	\\  
 Solute diffusion in the solid		& $\Ds$ 			& \num{0} 	& \si{\udiffusivity} 		\\  
-Solute diffusion in the air	(fictitious)	& $\Da$ 	& (varies with case) 	& \si{\udiffusivity} \\  
+Solute diffusion in the air	(fictitious)	& $\Da$ 	& (Non monolithic) 	& \si{\udiffusivity} \\  
 \hline  %------------------------------------------------------------------------------------------
-Gravity acceleration 	 			& $\hext$ 			& \num{6e4} 	& \si{\uhconvec} 		\\ 
+Gravity acceleration 	 			& $\norm{\gravity}$  & \num{5e-5} 	& \si{\uacceleration} 		\\ 
 Heat transfer coefficient 			& $\hext$ 			& \num{6e4} 	& \si{\uhconvec} 		\\ 
 External temperature 				& $\Text$ 			& \num{25} 	& \si{\udegC} 				\\ 
 Initial temperature 				& $T_0$ 			& \num{800} 	& \si{\udegC} 			\\ 
 % Ingot length 						&  					& \num{0.1} 	& \si{\metre} 		\\ 
 \hline %------------------------------------------------------------------------------------------
-FE mesh size 						&  					& \num{e-3} 	& \si{\metre} 		\\ 
+% FE mesh size 						&  					& \num{e-3} 	& \si{\metre} 		\\ 
 Time step 							& $\dt$ 			& \num{0.01} 	& \si{\second} 		\\ 
 Convergence criterion (residual) 	& $\varepsilon_R$	& \num{e-4} 	& $-$ 				\\ 
 Convergence criterion (temperature) & $\varepsilon_T$ 	& \num{e-1} 	& \si{\udegK}}
 %--------------------------------------------------------------------------------------------------
 \end{tabulate}
 %------------------------
+
+
+% ***************************
+\subsubsection{Results}
+% ***************************
 
 The nominal composition for this alloy is \bin{Fe}{0.105}{C}. In order to obtain accurate segregation results, 
 a fine resolution mapping was performed from equilibrium calculations, using 20 values of composition between a minimum of \SI{0.01}{\ucomposition} and \SI{1}{\ucomposition}. 
@@ -3250,11 +3329,13 @@ The importance of choosing small steps in composition and temperature is to pred
 accurate solidification paths during macrosegregation (relative to the droplet scale), which is the main input of solidification shrinkage. 
 Therefore, less accurate mappings may result in false shrinkage profile prediction, as will be shown henceforth.
 
-Using the initial and boundary conditions defined earlier, 15 seconds of simulation give the final shrinkage profile given in \cref{fig:bin_vs_exp}.
-We notice that the predicted overall deformation of the droplet is in a good agreement with the experimental shape after solidification.This agreement is
-still not perfect as some key input parameters are still missing in the model, namely the real gravity acceleration on-board the parabolic flight (which should
-be much greater than value used in the simulation), and the correct heat flux between the sample and the substrate. It is emphasized that for higher gravity
-accelerations, surface tension is of central importance since it counters the gravitational force by stabilising the \emph{M-A} boundary.
+Using the initial and boundary conditions defined earlier, 15 seconds of simulation give the final shrinkage profile shown in \cref{fig:bin_vs_exp}.
+We notice that the predicted overall deformation of the droplet is in a good agreement with the experimental shape after solidification.
+This agreement is still not perfect as some key input parameters are still missing in the model, 
+namely the real gravity acceleration on-board the TEXUS sounding rocket missions 
+and the correct heat flux between the sample and the substrate. 
+It is emphasized that for higher gravity accelerations or lower heat transfer, surface tension is of central importance since 
+it counters the gravitational force by stabilising the \emph{M-A} boundary.
 
 %--------------
 \begin{figureth}
@@ -3297,6 +3378,7 @@ solidifying, the droplet forms a rigid and fixed solid, surrounded by natural ar
 deviation towards the solidification front at 0.25 s and 1 s, contributing to solute transport in gravity's opposite direction.
 At 8 sec, the mushy zone reaches the droplet vertex marking a flow pattern change. 
 At 20 s, the argon flows freely in the domain around the completely solidified and rigid sample.
+Yellow arrows help visualise the directions of the velocity field. 
 Please note that the scale of latter snapshot has a maximum magnitude of \SI{e-6}{\uvelocity}, not shown
 for illustrative simplicity.}
 % label
@@ -3498,7 +3580,8 @@ acceleration, $\norm{\gravity}$, of \SI{5e-5}{\uacceleration}. The clear differe
 parametric study to get better simulation-vs-experiment prediction. However, as we have shown earlier the effect of varying these parameters
 on the final profile, we do not perform parametric studies for \emph{b1Tern} and \emph{b1Quat} alloys. 
 
-The vertical elongation obtained by the \emph{b1Tern} sample is almost the double of the \emph{b1Bin} result. Moreover, the final ternary and quaternary
+The vertical elongation obtained by the \emph{b1Tern} sample is slightly different than the \emph{b1Bin} result, as shown in \cref{fig:shape_comparison}. 
+Moreover, the final ternary and quaternary
 profiles are almost overlapping, indicating that the prediction accuracy is very close for these alloys. 
 This reveals the importance of simulating solidification processes with real alloy compositions instead of binary simplifications
 where the transformation path is not complex as a result of the smaller number of phases forming at equilibrium. 
@@ -3573,14 +3656,19 @@ The computation time corresponds to the CPU time of a simulation running on 20 c
 Finally we are interested in comparing the macrosegregation levels obtained in all three solidification cases. Segregation maps
 are presented in \cref{fig:final_segreg_ternquat} on a symmetry plane section. First, we compare the carbon segregation as it is the common species among the presented alloys.
 The first difference is a remarkable positive macrosegregation of 3.5\% at the chill contact of the  \emph{b1Tern} and \emph{b1Quat} samples, 
-while being less prominent for \emph{b1Bin} which shows a relative segregation of 1.2\%. As we explained earlier, this positive macrosegregation taking place at the beginning
+while being less prominent for \emph{b1Bin} 
+% which shows a relative segregation of 1.2\%. 
+
+As we explained earlier, this positive macrosegregation taking place at the beginning
 of solidification is related to the shrinkage flow (cf. \cref{fig:texus_flow}) created by the strong thermal gradient in the contact zone. 
 As the thermal gradient in this zone is almost the same
 for all three cases at solidification onset, the higher velocity which is responsible for the noticeable positive macrosegregation in both multicomponent samples,
 is related to the solidification path varying with the number of species.
-Two regions of negative macrosegregation are observed across the samples, with various amplitudes. The first region lies just below the positive segregation contact surface.
-It corresponds to the solute depletion caused by an upward shrinkage flow and a downward gravity flow. With the advancement of the solidification front,
-the gravity flow dominates creating a radial outward negative segregation pattern where  
+Two regions of negative macrosegregation are observed across the samples, with various amplitudes. The first region lies just below the chill contact.
+It corresponds to the solute depletion caused by an upward shrinkage flow and a downward gravity flow. 
+With the advancement of the solidification front,
+the gravity flow dominates forcing the remaining liquid to fall down while dragging the species from the sides of the droplet to the center.
+This creates a radial negative segregation pattern, as seen in \cref{fig:final_segreg_ternquat}. 
 
 
 %--------------
@@ -3597,7 +3685,10 @@ of each chemical species for \emph{b1Bin}, \emph{b1Tern} and \emph{b1Quat} sampl
 \end{figureth}
 %--------------
 
-
+The last result regarding the multicomponent solidification application in reduced-gravity conditions 
+is a composition plot in \cref{fig:3d_segregation_multicomponent} for each species in the solidified samples. 
+This is basically similar to the analysis we made for \cref{fig:final_segreg_ternquat}, 
+but this plot show the composition profile along the revolution axis.
 
 %--------------------------------------
 \shorthandoff{;:?!} %http://tex.stackexchange.com/questions/74860/unexpected-clash-between-babel-and-pgf-spy
