@@ -94,7 +94,7 @@ exhaustive list of publications: \citet{clyne_solute_1981,kobayashi_solute_1988,
 combeau_modeling_1996,martorano_solutal_2003,tourret_generalized_2009}. It is noted that some of these publications consider 
 also a finite diffusion in the liquid phase. It also noted that dealing with some aspects 
 (e.g. multicomponent equilibrium phase diagrams, cross-diffusion of species, ...) is generally difficult
-and received a limited number of studies in the aim of determining a multicompponent segregation model, thus numerical approaches are favored.
+and received a limited number of studies in the aim of determining a multicomponent segregation model, thus numerical approaches are favored.
 %------------------------------------
 
 %***********************************************
@@ -1374,7 +1374,7 @@ Number of elements 		&   resulting number of elements after remeshing is done  \
 % \end{algorithm}
 
 % ******************************************************
-\subsection{\emph{Remesh4}: Multi-criteria remeshing}
+\subsection{\emph{Remesh4}: Multi-criteria remeshing}   \label{sec:remesh4_params}
 % ******************************************************
 
 It is essentially an \emph{a posteriori} error estimator. The method consists of estimating the interpolation error for
@@ -1420,7 +1420,9 @@ along with the accurate capturing of the interface using highly stretched anisot
 \end{figure}
 %-----------------
 
-This remeshing technique relies on the paramater input defined in \cref{table:remesh4_params}.
+This remeshing technique relies on the parameter input defined in \cref{table:remesh4_params}.
+Among the parameters, $h_\text{min}$ and $\varepsilon_\text{er.}$ are the most important.
+The first one 
 
 %--------------------------------
 \begin{table}[htbp]
