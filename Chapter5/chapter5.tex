@@ -1239,7 +1239,7 @@ $h_M$  					&	\SI{1.5e-4}{\metre}	\\
 $h_A$  					&	\SI{2.5e-4}{\metre} 	\\
 Remeshing frequency  	&	0.1 s 		\\
 Number of nodes 		&   $\approx$ \num{7e3} \\ 
-Number of elements 		&   $\approx$ \num{1e4} \\\tabucline[1pt]{-}
+Number of elements 		&   $\approx$ \num{e4} \\\tabucline[1pt]{-}
 %-----------------------------
 \end{tabu}}
 \end{table}
@@ -2253,29 +2253,6 @@ We consequently transport the average composition field exclusively
 for these nodes from \emph{grid A} to \emph{grid B}, keeping for all other nodes their respective average composition values.
 It should be noted that this transport is only one-way, hence no information feedback from \emph{grid B} to \emph{grid A}.
 
-%--------------------------------
-\begin{table}[H]
-\centering
-\caption{Summary of the mesh parameters used to generate an adaptive mesh.
-Refer to \cref{sec:remesh4_params} for the definition of each mesh parameter.}
-\label{table:smacs_meshsize}
-{\tabulinesep=1.0mm \begin{tabu}{ll}
-\tabucline[1pt]{-}
-\textbf{Mesh parameter} & \textbf{Value} \\\tabucline[1pt]{-}
-%-----------------------------
-$\varepsilon $			&	\SI{5e-4}{\metre}	\\
-$h_\text{min}$			& 	 \SI{e-5}{\metre} \\
-Remeshing frequency  	&	0.2 s (t $\leq$ 2800 s)	\\
-						&	1 s	  (t > 2800 s)	\\
-$\varepsilon_\text{er.}$	&  500				 \\
-Remeshing criteria 	 	&   $\norm{\vitf}$, $\vitf _x$, $\vitf_y$, $\levelset$, $\gf$\\
-Number of nodes 		&   $\approx$ \num{7e3} \\ 
-Number of elements 		&   $\approx$ \num{1e4} \\\tabucline[1pt]{-}
-%-----------------------------
-\end{tabu}}
-\end{table}
-%--------------------------------
-
 %-----------------
 \begin{figure}[htbp]
 \centering
@@ -2307,6 +2284,31 @@ used to record the average composition for $\gs>0.7$.}
 \label{fig:smacs_grids}
 \end{figure}
 %------------------
+
+%--------------------------------
+\begin{table}[H]
+\centering
+\caption{Summary of the mesh parameters used to generate an adaptive mesh.
+Refer to \cref{sec:remesh4_params} for the definition of each mesh parameter.}
+\label{table:smacs_meshsize}
+{\tabulinesep=1.0mm \begin{tabu}{ll}
+\tabucline[1pt]{-}
+\textbf{Mesh parameter} & \textbf{Value} \\\tabucline[1pt]{-}
+%-----------------------------
+$\varepsilon $			&	\SI{5e-4}{\metre}	\\
+$h_\text{min}$			& 	 \SI{e-5}{\metre} \\
+Remeshing frequency  	&	0.2 s (t $\leq$ 2800 s)	\\
+						&	1 s	  (t > 2800 s)	\\
+$\varepsilon_\text{er.}$	&  500				 \\
+Remeshing criteria 	 	&   $\norm{\vitf}$, $\vitf _x$, $\vitf_y$, $\levelset$, $\gf$\\
+Number of nodes 	(\emph{Grid A}) 	&   $\approx$ \num{e4} \\ 
+Number of elements  (\emph{Grid A})		&   $\approx$ \num{2e4} \\\tabucline[1pt]{-}
+Number of nodes 	(\emph{Grid B}) 	&   $\approx$ \num{e5} \\ 
+Number of elements  (\emph{Grid B})		&   $\approx$ \num{2e5} \\\tabucline[1pt]{-}
+%-----------------------------
+\end{tabu}}
+\end{table}
+%--------------------------------
 
 
 % -----------------------------------------------
@@ -2810,7 +2812,7 @@ $h_{\vec{n}} = h_{\vec{\tau}}$			&	\SI{2e-5}{\metre}		\\
 $h_M$  									&	\SI{1e-4}{\metre}		\\
 $h_A$  									&	\SI{6e-4}{\metre} 		\\
 Remeshing frequency  					&	1 s 		\\
-Number of nodes 						&   $\approx$\num{1e5} \\ 
+Number of nodes 						&   $\approx$\num{e5} \\ 
 Number of elements 						&   $\approx$\num{5e5} \\\tabucline[1pt]{-}
 %-----------------------------
 \end{tabu}}
