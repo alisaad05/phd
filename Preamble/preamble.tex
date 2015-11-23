@@ -460,6 +460,9 @@ line width=\lwidth, mark size=\msize,   solid, every mark/.append style={solid, 
 line width=\lwidth, mark size=\msize,   dotted, every mark/.append style={solid, line width=\lmarkerwidth, fill=gray}, mark=diamond*\\%
 line width=\lwidth, mark size=\msize,   solid, every mark/.append style={solid, line width=\lmarkerwidth, fill=gray}, mark=diamond*\\%
 }
+\pgfplotscreateplotcyclelist{nodotscycle}{%
+line width=\lwidth, mark size=\msize,  solid\\%
+}
 
 % Animations  (gif, png ...)
 \usepackage[controls, 

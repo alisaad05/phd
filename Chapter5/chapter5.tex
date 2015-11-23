@@ -200,7 +200,7 @@ Moreover, we use the already introduced volume averaging principles to write loc
 \begin{subequations}
 \begin{align}
 \label{eq:}
-\avg{\psi} &= \avg{\psi^l} \avg{\psi^s} + \avg{\psi^a} \\
+\avg{\psi} &= \avg{\psi^l} +  \avg{\psi^s} + \avg{\psi^a} \\
 			&= \gl \psi^l + \gs \psi^s  + \ga \psi^a
 \end{align}
 \end{subequations}
@@ -379,14 +379,14 @@ the average density ${\avg{\rho}}^M$ varies, as it depends on the solidification
 path as well as on $\rhos$ and $\rhol$ which are not equal nor constant.
 
 Therefore, the incompressibility condition is no more applicable. In such case, 
-the earlier given system \cref{eq:Navier-Stokes2} is reformulated without 
+the earlier given system \cref{eq:conservation_momentum} is reformulated without 
 any reference value for density and assuming a fixed solid phase:
 %------
 \begin{equation}
 \label{eq:momentum_balance_metal}
    \left\{
    \begin{aligned}
-      & \rhol \brac{\tempup{ \vit } + \frac{1}{\gl} \nabvec \cdot \brac{\vit \times \vit}} = \\
+      & \rholref \brac{\tempup{ \vit } + \frac{1}{\gl} \nabvec \cdot \brac{\vit \times \vit}} = \\
 	  &- \gl\nabvec \pl - 2 \mul \nabvec \cdot \brac{\nabmat \vit + \nabmattransp \vit}
 	  - \gl \mul \K^{-1} \vit + \gl \rhol \gravity\\ \\
       & \nabvec \cdot \vit = -\frac{1}{\rhol} \brac{\tempup{\avg{\rho}^M} + \vit \cdot  \nabvec \rhol}
@@ -396,6 +396,7 @@ any reference value for density and assuming a fixed solid phase:
 %------------
 
 %====================================================================
+
 \subsubsection{Energy conservation}
 % ======================
 In the energy equation, a volumetric source term accounts for the heat dissipation 
@@ -465,11 +466,11 @@ The energy conservation equation writes:
 %--------------
 %\begin{align}
 %\label{eq:gradient_liquid_enthalpy}
-%& \nabvec \hl = C_p^l \nabvec T
+%& \nabvec \hl = c_p^l \nabvec T
 %\end{align}
 %--------------
 %
-%assuming that the phase mass specific heat, $ C_p^l $, is constant. Therefore, the liquid enthalpy
+%assuming that the phase mass specific heat, $ c_p^l $, is constant. Therefore, the liquid enthalpy
 %is advected in the case where the velocity vector is not orthogonal to the temperatre gradient.
 %The advection reaches its maximum when the two vectors have the same direction. Consider, for instance,
 %a filled ingot with a cooling flux applied to its bottom surface. If the density variation with temperature
@@ -480,7 +481,7 @@ The energy conservation equation writes:
 %--------------
 %\begin{align}
 %\label{eq:enthalpy_advection}
-%& \rhol \vit \cdot \nabvec \hl = - \rhol C_p^l \norm{\vit} \norm{\nabvec T}
+%& \rhol \vit \cdot \nabvec \hl = - \rhol c_p^l \norm{\vit} \norm{\nabvec T}
 %\end{align}
 %--------------
 %
@@ -849,7 +850,7 @@ The mechanical properties are mixed as follows:
 \begin{align}
 %
 \label{eq:monolithic_density}
-\text{Density}&: \mix{\rho} = \heavisideM \rhol + \heavisideA \rhoa \\
+\text{Fluid density}&: \mix{\rho^F} = \heavisideM \rhol + \heavisideA \rhoa \\
 							%= \heavisideM \brac{\gl \rhol + \gs \rhos} + \heavisideA \rhoa \\
 %
 \label{eq:monolithic_viscosity}
@@ -869,7 +870,7 @@ The momentum balance can now be obtained from $\heavisideM \times$\cref{eq:momen
 \label{eq:monolithic_momentum}
    \left\{
    \begin{aligned}
-      & \mix{\rho} \brac{\tempup{ \vitf } + \frac{1}{\gf} \nabvec \cdot \brac{\vitf \times \vitf}} = \\
+      & \mix{\rho^F} \brac{\tempup{ \vitf } + \frac{1}{\gf} \nabvec \cdot \brac{\vitf \times \vitf}} = \\
 	  &- \gf\nabvec p - 2 \mix{\mu} \nabvec \cdot \brac{\nabmat \vitf+ \nabmattransp \vitf}
 	  - \gf \mix{\mu} \Kmodif^{-1} \vitf + \mix{\rho g} \gravity\\ \\
       & \nabvec \cdot \vitf = \heavisideM \brac{-\frac{1}{\rhol} \brac{\tempup{\avg{\rho}^M }+ \vit \cdot  \nabvec \rhol}}
@@ -1153,11 +1154,11 @@ Liquid density			 			& $\rhol$ 			& \num{2600} 	& \si{\udensity} 		\\
 Solid density	 					& $\rhos$ 			& \num{2800} 	& \si{\udensity} 		\\  
 Air density 						& $\rhoa$ 			& \num{1.3} 	& \si{\udensity} 		\\  
 Liquid viscosity			 		& $\mul$ 			& \num{d-3} 	& \si{\uviscosity} 		\\  
-Solid viscosity	 					& $\mus$ 			& (Darcy) 			& \si{\uviscosity} 	\\  
+% Solid viscosity	 					& $\mus$ 			& (Darcy) 			& \si{\uviscosity} 	\\  
 Air viscosity 						& $\mua$ 			& \num{d-4} 	& \si{\uviscosity} 		\\  
-Liquid heat capacity 		 		& $C_p^l$ 			& \num{1000} 	& \si{\umasscapacity} 	\\  
-Solid heat capacity 		 		& $C_p^s$ 			& \num{928.57} 	& \si{\umasscapacity} 	\\  
-Air heat capacity 		 			& $C_p^a$ 			& \num{1000} 	& \si{\umasscapacity} 	\\  
+Liquid heat capacity 		 		& $c_p^l$ 			& \num{1000} 	& \si{\umasscapacity} 	\\  
+Solid heat capacity 		 		& $c_p^s$ 			& \num{928.57} 	& \si{\umasscapacity} 	\\  
+Air heat capacity 		 			& $c_p^a$ 			& \num{1000} 	& \si{\umasscapacity} 	\\  
 Enthalpy of fusion 				 	& $L$ 				& \num{365384} 	& \si{\umassenergy} 	\\ 
 Thermal conductivity 				& $\kappa$ 			& \num{70} 		& \si{\uconductivity}	\\
 Solute diffusion in the liquid		& $\Dl$ 			& \num{e-9} 	& \si{\udiffusivity} 	\\  
@@ -1291,7 +1292,7 @@ The thick blue line represents the zero isovalue of the distance function.}
 \addplot table [x=Temperature, y expr=\thisrow{ALPHA}] {Chapter5/Data/1d_alsi7_nominalSP/sp.csv};%\closedcycle;
 \addplot table [x=Temperature, y expr=\thisrow{BETA}] {Chapter5/Data/1d_alsi7_nominalSP/sp.csv};%\closedcycle;
 
-\legend{Liquid, $\alpha$, $\beta$}
+\legend{Liquid, $\alpha$, Eutectic}
 \end{axis}
 \end{tikzpicture}
 
@@ -1696,7 +1697,7 @@ with linear liquidus and solidus lines, whose properties are reminded in \cref{t
 \tabucline[1pt]{-}
 \textbf{Parameter} & \textbf{Symbol} & \textbf{Value} & \textbf{Unit} \\\tabucline[1pt]{-}
 %-----------------------------
-Nominal composition 	& $\avg{w}_0$ 	& \num{7} 		& \si{\ucomposition} \\ 
+Nominal composition 	& $w_0$ 	& \num{7} 		& \si{\ucomposition} \\ 
 Liquidus temperature 	& $T_l$ 		& \num{618} 	& \si{\udegC} \\ 
 Eutectic temperature 	& $T_E$ 		& \num{577}	 	& \si{\udegC} \\  
 Segregation coefficient & $k$ 			& \num{0.13} 	& $-$  \\  
@@ -1915,7 +1916,7 @@ on larger distances and destabilising the computation.
 	ymin=6.45, ymax=7.55,
 	%xmax=0.0928,
 	mark repeat	= {142},
-	cycle list name=mycycle, %exotic,
+	cycle list name=nodotscycle, %exotic,
 ]
 	\coordinate (spypoint) at (0.002,7.25);
 	\coordinate (magnifyglass) at (0.06,7.3);
@@ -1947,7 +1948,7 @@ on larger distances and destabilising the computation.
 	%xmax=0.0928,
 	mark repeat	= {142},
 	mark=none,
-	cycle list name=mycycle, %exotic,
+	cycle list name=nodotscycle, %exotic,
 ]
 	\addplot table [x=arc_length, y=Concentration] {Chapter5/Data/1d_alsi7_composition/ModifyVitLiq.csv}; %\closedcycle ;
 	%\addplot[thick, samples=50, smooth,magenta, name path=ls] coordinates {(0.09268,\pgfkeysvalueof{/pgfplots/ymin})(0.09268,\pgfkeysvalueof{/pgfplots/ymax})};
@@ -1976,7 +1977,7 @@ on larger distances and destabilising the computation.
 	ymin=6.45, ymax=7.55,
 	%xmax=0.0928,
 	mark repeat	= {142},
-	cycle list name=mycycle, %exotic,
+	cycle list name=nodotscycle, %exotic,
 ]
 	\addplot table [x=arc_length, y=Concentration] {Chapter5/Data/1d_alsi7_composition/NewSolute.csv}; %\closedcycle ;
 	%\addplot table [x=arc_length, y=Concentration] {Chapter5/Data/1d_alsi7_composition/ModifyVitLiq_ModifyDiffSoluteAir_NoSolute.csv}; %\closedcycle ;
@@ -2303,7 +2304,6 @@ $\varepsilon_\text{er.}$	&  500				 \\
 Remeshing criteria 	 	&   $\norm{\vitf}$, $\vitf _x$, $\vitf_y$, $\levelset$, $\gf$\\
 Number of nodes 	(\emph{Grid A}) 	&   $\approx$ \num{e4} \\ 
 Number of elements  (\emph{Grid A})		&   $\approx$ \num{2e4} \\\tabucline[1pt]{-}
-\hline 
 %-------------------------------------------------------------------
 Number of nodes 	(\emph{Grid B}) 	&   $\approx$ \num{e5} \\ 
 Number of elements  (\emph{Grid B})		&   $\approx$ \num{2e5} \\\tabucline[1pt]{-}
@@ -2368,11 +2368,11 @@ Liquid density			 			& $\rhol$ 			& \num{7130} 	& \si{\udensity} 		\\
 Solid density	 					& $\rhos$ 			& \num{7530} 	& \si{\udensity} 		\\  
 Air density 						& $\rhoa$ 			& \num{1.3} 	& \si{\udensity} 		\\  
 Liquid viscosity			 		& $\mul$ 			& \num{d-3} 	& \si{\uviscosity} 		\\  
-Solid viscosity	 					& $\mus$ 			& (Darcy) 			& \si{\uviscosity} 	\\  
+% Solid viscosity	 					& $\mus$ 			& (Darcy) 			& \si{\uviscosity} 	\\  
 Air viscosity 						& $\mua$ 			& \num{d-4} 	& \si{\uviscosity} 		\\  
-% Liquid heat capacity 		 		& $C_p^l$ 			& \num{1000} 	& \si{\umasscapacity} 	\\  
-% Solid heat capacity 		 		& $C_p^s$ 			& \num{928.57} 	& \si{\umasscapacity} 	\\  
-% Air heat capacity 		 			& $C_p^a$ 			& \num{1000} 	& \si{\umasscapacity} 	\\  
+% Liquid heat capacity 		 		& $c_p^l$ 			& \num{1000} 	& \si{\umasscapacity} 	\\  
+% Solid heat capacity 		 		& $c_p^s$ 			& \num{928.57} 	& \si{\umasscapacity} 	\\  
+% Air heat capacity 		 			& $c_p^a$ 			& \num{1000} 	& \si{\umasscapacity} 	\\  
 % Enthalpy of fusion 				 	& $L$ 				& \num{365384} 	& \si{\umassenergy} 	\\ 
 Air thermal conductivity			& $\kappa^a$ 		& \num{0.01} 		& \si{\uconductivity}	\\
 Liquid thermal conductivity 		& $\kappa^l$ 		& \num{33} 		& \si{\uconductivity}	\\
@@ -2831,8 +2831,8 @@ $h_{\vec{n}} = h_{\vec{\tau}}$			&	\SI{2e-5}{\metre}		\\
 $h_M$  									&	\SI{1e-4}{\metre}		\\
 $h_A$  									&	\SI{6e-4}{\metre} 		\\
 Remeshing frequency  					&	1 s 		\\
-Number of nodes 						&   $\approx$\num{e5} \\ 
-Number of elements 						&   $\approx$\num{5e5} \\\tabucline[1pt]{-}
+Number of nodes 				&   $\approx$ \num{e5} \\ 
+Number of elements 			&   $\approx$ \num{5e5} \\\tabucline[1pt]{-}
 %-----------------------------
 \end{tabu}}
 \end{table}
@@ -3283,17 +3283,17 @@ in 2009 and TEMPUS 2014 measurements \citep{gandin_project_2014}.}
 {Nominal composition 				& $w_0$ 			& \num{0.105}   & \si{\ucomposition} \\ 
 % Liquidus temperature 				& $T_L$ 			& \num{618} 	& \si{\udegC} \\ 
 % Eutectic temperature 				& $T_E$ 			& \num{577}	 	& \si{\udegC} \\  
-Segregation coefficient 			& $k$ 				& \scriptsize{tabulations (\citep{andersson_thermo-calc_2002})} 	& $-$  \\  
-Liquidus slope 						& $m_L$ 			&  \scriptsize{tabulations (\citep{andersson_thermo-calc_2002})} 	& \si{\uslope} \\ 
-Liquid density			 			& $\rhol$ 			& \scriptsize{tabulations (\citep{andersson_thermo-calc_2002})}	& \si{\udensity} 		\\ 	 
+Segregation coefficient 			& $k$ 				& \scriptsize{Tabulations (\citep{andersson_thermo-calc_2002})} 	& $-$  \\  
+Liquidus slope 						& $m_L$ 			&  \scriptsize{Tabulations (\citep{andersson_thermo-calc_2002})} 	& \si{\uslope} \\ 
+Liquid density			 			& $\rhol$ 			& \scriptsize{Tabulations (\citep{andersson_thermo-calc_2002})}	& \si{\udensity} 		\\ 	 
 Solid density	 					& $\rhos$ 			& \num{2800} 	& \si{\udensity} 		\\  
 Air density 						& $\rhoa$ 			& \num{1.3} 	& \si{\udensity} 		\\  
 Liquid viscosity			 		& $\mul$ 			& \num{d-3} 	& \si{\uviscosity} 		\\  
-Solid viscosity	 					& $\mus$ 			& (Darcy) 			& \si{\uviscosity} 	\\  
+% Solid viscosity	 					& $\mus$ 			& (Darcy) 			& \si{\uviscosity} 	\\  
 Air viscosity 						& $\mua$ 			& \num{d-4} 	& \si{\uviscosity} 		\\  
-% Liquid heat capacity 		 		& $C_p^l$ 			& \num{1000} 	& \si{\umasscapacity} 	\\  
-% Solid heat capacity 		 		& $C_p^s$ 			& \num{928.57} 	& \si{\umasscapacity} 	\\  
-% Air heat capacity 		 			& $C_p^a$ 			& \num{1000} 	& \si{\umasscapacity} 	\\  
+% Liquid heat capacity 		 		& $c_p^l$ 			& \num{1000} 	& \si{\umasscapacity} 	\\  
+% Solid heat capacity 		 		& $c_p^s$ 			& \num{928.57} 	& \si{\umasscapacity} 	\\  
+% Air heat capacity 		 			& $c_p^a$ 			& \num{1000} 	& \si{\umasscapacity} 	\\  
 % Enthalpy of fusion 				& $L$ 			& \num{365384} 	& \si{\umassenergy} 	\\ 
 Air thermal conductivity			& $\kappa^a$ 		& \num{0.01} 		& \si{\uconductivity}	\\
 Liquid thermal conductivity 		& $\kappa^l$ 		& \num{42} 		& \si{\uconductivity}	\\
@@ -3305,7 +3305,7 @@ Solute diffusion in the air	(fictitious)	& $\Da$ 	& (Non monolithic) 	& \si{\udi
 Gravity acceleration 	 			& $\norm{\gravity}$  & \num{5e-5} 	& \si{\uacceleration} 		\\ 
 Heat transfer coefficient 			& $\hext$ 			& \num{6e4} 	& \si{\uhconvec} 		\\ 
 External temperature 				& $\Text$ 			& \num{25} 	& \si{\udegC} 				\\ 
-Initial temperature 				& $T_0$ 			& \num{800} 	& \si{\udegC} 			\\ 
+Initial temperature 				& $T_0$ 			& \num{1530} 	& \si{\udegC} 			\\ 
 % Ingot length 						&  					& \num{0.1} 	& \si{\metre} 		\\ 
 \hline %------------------------------------------------------------------------------------------
 % FE mesh size 						&  					& \num{e-3} 	& \si{\metre} 		\\ 

@@ -12,18 +12,18 @@ Fluid flow is an important part in understanding the evolution of an alloy syste
 undergoing phase change. It is attributed to the convective transport in fluids
 where the time scale is much smaller than other transport mechanisms (e.g. diffusive transport). 
 To understand how fluid motion contributes to the heat and mass transfer, we have 
-swiftly presented the momentum conservation equation in a solidifying liquid, \cref{eq:Navier-Stokes2}.
+swiftly presented the momentum conservation equation in a solidifying liquid, \cref{eq:conservation_momentum}.
 In this chapter, we will first give a quick overview of the numerical treatment of this system of 
 Navier-Stokes equations, then comment on some computational aspects such as the choice of a suitable time step and
 the conditions that impose minimum and maximum bounds on both time step and mesh size. 
 Then, we shall present soldification applications
-where macrosegregation is mainly induced by thermosolutal convection.
+where macrosegregation is mainly induced by thermosolutal convection without any volume change for the metal domain.
 
 %-----------------------------
 \section{Formulation stability}
 %-----------------------------
 
-A wide array of numerical methods can be used to solve systems like \cref{eq:Navier-Stokes2}. 
+A wide array of numerical methods can be used to solve systems like \cref{eq:conservation_momentum}. 
 When speaking about Navier-Stokes equations, the choice can be narrowed to two famous
 approaches with some similarities: stable mixed finite element method and \textbf{V}ariational \textbf{M}utli\textbf{S}cale (VMS) method.
 When two finite element spaces are introduced (e.g. one for velocity and another for pressure), 
@@ -77,7 +77,7 @@ formulation, these fields are decomposed according to these scales as follows:
 where $\vit_h$ and $p_h$ are the coarse scale velocity and pressure discretised on the finite element mesh (hence the subscript $h$), 
 while the remaining terms represent the fine scale velocity and pressure that cannot be captured at the scale of the FE grid. Instead 
 of defining a finer grid to model the effect of these terms, one can solve the fine scale equations obtained once \cref{eq:vms_multiscale_v,eq:vms_multiscale_p}
-are injected in \cref{eq:Navier-Stokes2} then use the output in the coarse scale equations. 
+are injected in \cref{eq:conservation_momentum} then use the output in the coarse scale equations. 
 Further technical details about the method and the equations are found in the PhD work of \citet{hachem_stabilized_2009}. 
 
 The added value of the VMS method is the time gain that we get 
@@ -110,22 +110,22 @@ to solve a stabilised Navier-Stokes system with Darcy terms.
 \subsection{Strong and weak formulations}
 %-------------------------------------------------------
 
-The strong form of the fluid mechanics problem has been previously established in chapter 2 (\cref{fig:algo_monodomain}),
-where we obtained the following system of mass and liquid momentum conservation equations:
-%------
-\begin{equation}
-   \label{eq:vms_strong}
-   \left\{
-   \begin{aligned}
-      & \rholref \brac{\tempup{ \vit } + \frac{1}{\gl} \nabvec \cdot \brac{\vit \times \vit}} = \\
-	  &- \gl\nabvec \pl - \nabvec \cdot \brac{2 \mul \strainrateliq}
-	  - \gl \mul \K^{-1} \vit + \gl \rhol \gravity\\ \\
-      & \nabvec \cdot \vit =0
-    \end{aligned}
-    \right.
-\end{equation}
-%------
-The strong solution consists of finding the pair 
+% The strong form of the fluid mechanics problem has been previously established in chapter 2 (\cref{fig:algo_monodomain}),
+% where we obtained the following system of mass and liquid momentum conservation equations:
+% %------
+% \begin{equation}
+%    \label{eq:vms_strong}
+%    \left\{
+%    \begin{aligned}
+%       & \rholref \brac{\tempup{ \vit } + \frac{1}{\gl} \nabvec \cdot \brac{\vit \times \vit}} = \\
+% 	  &- \gl\nabvec \pl - \nabvec \cdot \brac{2 \mul \strainrateliq}
+% 	  - \gl \mul \K^{-1} \vit + \gl \rhol \gravity\\ \\
+%       & \nabvec \cdot \vit =0
+%     \end{aligned}
+%     \right.
+% \end{equation}
+% %------
+The solution of the strong form of \cref{eq:conservation_momentum} consists of finding the pair 
 $\brac{\vit, \pl}$ of the previous system, when the following essential (Dirichlet type) and natural (Neumann type) boundary 
 conditions are applied :
 %----------------
@@ -255,7 +255,11 @@ Replacing \cref{eq:supg_test} in \cref{eq:weakform_before}, we get the final wea
     \right.
 \end{equation}
 %----------------
+
+
+% -------------------------------------
 \subsection{Stabilisation parameters}
+% -------------------------------------
 
 Several expressions for $\tausupg$ were derived by \citet{tezduyar_incompressible_1992,tezduyar_finite_2000}, from which
 we retain the following:
@@ -283,6 +287,7 @@ $\nu^l$ is the liquid's kinematic viscosity ($\si{\udiffusivity}$), equal to the
  and $\Delta t$ is the time step.
 The transient term stabilisation was initially derived for Navier-Stokes equations without Darcy term.
 As the latter has a significant role in the weak form \cref{eq:weakform_after}, it needs to be stabilised.
+
 The current thesis is based on several past projects that either considered \cref{eq:supg_transient}
 like \citet{liu_finite_2005} or modified it like \citet{gouttebroze_modelisation_2005,rivaux_simulation_2011} 
 to take account the Darcy term as follows:
@@ -292,6 +297,7 @@ to take account the Darcy term as follows:
 & \tau_\text{trans-darcy} = \frac{\Delta t}{2\brac{1+\Delta t \frac{\mul}{\rholref \K}}}
 \end{align}
 %----------------
+
 In the literature, no substantial references were found to backup the formulation of \cref{eq:supg_transient_darcy}, it will
 be used in the current work though. It is worth mentioning that \citet{zabaras_stabilized_2004} has invoked the necessity
 to stabilise Darcy terms in a generalised Navier-Stokes/Darcy P1/P1 formulation, 
@@ -304,7 +310,8 @@ momentum diffusivity, $\nu^l$, to heat diffusivity in the liquid, $\alpha^l$:
 & \tau_\text{darcy} = \frac{Da}{Pr} \brac{\frac{\gl}{1-\gl}}^2= \frac{\alpha^l \K}{\nu^l L_c^2} \brac{\frac{\gl}{1-\gl}}^2
 \end{align}
 %----------------
-Last, the definitions of the remaining stabilisation parameters are given as follows:
+
+The definitions of the remaining stabilisation parameters are given as follows:
  %----------------
 \begin{align}
 \label{eq:pspg}
@@ -347,7 +354,7 @@ Re_{\Ohm_E} = \frac{\norm{\vit_{\Ohm_E}} h_\text{stream}}{2 \nu^l}
 % = \binom{B_{v}}{B_{p}}
 % \end{align}
 %----------------
-%
+
 
 %--------------------------------------------------
 \subsubsection{Time step}
@@ -522,7 +529,7 @@ the segregated channel, negative segregation then becoming less pronounced.
 
 %--------------------------------
 \begin{figureth}
-{0.5}
+{0.65}
 {Chapter4/Graphics/multicomponent/interior/final_interior_ZZ_FF.pdf}
 {Average composition map on a vertical section inside the sample, along two vertical lines: the cylinder revolution axis
 and another axis parallel to the latter but passing through a segregated solidified channel.}
@@ -911,7 +918,7 @@ These two channels are stable for a long time since they remain at time \SI{1000
 develops further to become the main one at \SI{1500}{\utime}, while the mid-width channel decreases in intensity, changes 
 orientation and subsequently disappears (not shown here). Thus, the birth and death of very few channels is observed in this 
 simulation, mainly due to solutal instability, as the temperature field shown in \cref{fig:planche_fe} clearly remains stable despite 
-the low lateral heat flux. As shown in \cref{fig:freckles_fe}, instability is yet required to create these chemical plumes and channels. 
+the low lateral heat flux. As shown in \cref{fig:freckles_fe}, instability is still required to create solutal plumes. 
 Here, it is created by a very small lateral heat flow but other sources of instability could be involved, as shown with the grain structure in the next section.
 
 %=====================================BIG LANDSCAPE FIGURE =====================================
@@ -927,7 +934,6 @@ on a cut plane at the center of the cell at 500 s, 1000 s and 1500 s.}
 \end{figureth}
 \end{landscape}
 %=====================================BIG LANDSCAPE FIGURE =====================================
-
 
 %--------------------------
 \subsubsection{Discussion}
@@ -978,6 +984,8 @@ Cell information, such as the temperature, the average composition or the veloci
 the nodes of the FE mesh. State indices are also defined for each CA cell, providing the presence of liquid or solid phases. 
 
 \subsubsection{Nucleation}
+% -----------------------------
+
 Initially, cells are in a fully liquid state. In the present situation, random nucleation sites are 
 chosen based on a nucleation density, $n_\text{max}$ (expressed in surface density inverse \si{\per \uarea}), at the 
 bottom surface of the geometry in contact with the cooler. Nucleation occurs in a cell only if the 
@@ -989,6 +997,8 @@ frame to the $\avg{100}$ directions that define the main growth axes of the dend
 selection is therefore solely controlled by growth competition.
 
 \subsubsection{Growth}
+% -----------------------------
+
 Dendrite growth is driven by the chemical supersaturation, $\Omega_\text{sat}$, which is a 
 dimensionless number proportional to the difference between the liquid composition at the dendrite 
 tip and the melt composition far away from the tip. The higher the supersaturation, the faster the 
@@ -1002,6 +1012,8 @@ The main parameters for this growth kinetics models are the Gibbs Thomson coeffi
 coefficient for Ga in In, $\Dl$.
 
 \subsubsection{Solidification path}
+% -----------------------------
+
 The CA model gives the presence of the grains in the liquid as well as its growth undercooling. 
 For coupling with macroscopic scale modelling, the fraction of phases needs to be fed back to the 
 FE model. This is now done by accounting for the information provided by the CA model. Thus, the 
@@ -1010,6 +1022,8 @@ composition assuming thermodynamic equilibrium. It also includes the solidificat
 the kinetics of the development of the grains as detailed in the work of \citet{carozzani_direct_2013}.
 
 \subsubsection{Numerical method}
+% -----------------------------
+
 Both the finite element mesh and the cellular automaton grid play a role in predicting channel segregation inasmuch as 
 this type of defect originate from interplays between hydrodynamic instabilities on the scale of the dendrites 
 and macroscopic flows defined by the geometry of the experimental cell \citep{shevchenko_chimney_2013}. One has to 

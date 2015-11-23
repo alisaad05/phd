@@ -28,7 +28,9 @@
 
 %% ------------------------ MATHs commands--------------------------
 %\renewcommand{matrix}[1]{#1 \rangle} 
-\newcommand{\avg}[1]{\ensuremath{\left \langle  #1 \right \rangle}}
+\newcommand{\avg}[1]{\ensuremath{\langle #1  \rangle}}
+% \newcommand{\avg}[1]{\ensuremath{\left <  #1 \right >}}
+% \newcommand{\avg}[1]{\ensuremath{\left \langle  #1 \right \rangle}}
 \newcommand{\brac}[1]{\ensuremath{\left(  #1 \right)}} 
 \newcommand{\curly}[1]{\ensuremath{\left\{  #1 \right\}}}
 \newcommand{\crochet}[1]{ \left[  #1  \right] } 
@@ -114,9 +116,10 @@
 
 \newcommand\w{\ensuremath{\avg{w}}}
 \newcommand\wi{\ensuremath{\avg{w_i}}}
-%\newcommand\wil{\ensuremath{\avg{w_i}^l}}
-\newcommand\wil{\ensuremath{w_i^l}}
-\newcommand\wis{\ensuremath{w_i^s}}
+\newcommand\wil{\ensuremath{\avg{w_i}^l}}
+\newcommand\wis{\ensuremath{\avg{w_i}^s}}
+% \newcommand\wil{\ensuremath{w_i^l}}
+% \newcommand\wis{\ensuremath{w_i^s}}
 \newcommand\gphi{\ensuremath{{g^{\phi}} }}
 \newcommand\wiphi{\ensuremath{\wi^\phi}}
 \newcommand\rphi{\ensuremath{\avg{\rho}^{\phi} }}
@@ -150,6 +153,7 @@
 \newcommand\rhoref{\ensuremath{\rho_{\text{ref}}}}
 \newcommand\rref{\ensuremath{\rho_{\text{ref}}}}
 \newcommand\rholref{\ensuremath{\rho_{0}^{l}}}
+\newcommand\rhoaref{\ensuremath{\rho_{0}^{a}}}
 \newcommand\Tref{\ensuremath{T_{0}}}
 \newcommand\wlref{\ensuremath{w_{0}^l}}
 \newcommand\wilref{\ensuremath{\wi_{0}^l}}
@@ -196,10 +200,10 @@
 \newcommand\rhov{\ensuremath{\avg{\rho \vec{v}}}}
 \newcommand\rholvl{\ensuremath{\rho^l \vl}}
 \newcommand\rhosvs{\ensuremath{\rho^s \vs}}
-\newcommand\cp{\ensuremath{C_p}}
-\newcommand\cpl{\ensuremath{C_p^l}}
-\newcommand\cps{\ensuremath{C_p^s}}
-\newcommand\cpa{\ensuremath{C_p^A}}
+\newcommand\cp{\ensuremath{c_p}}
+\newcommand\cpl{\ensuremath{c_p^l}}
+\newcommand\cps{\ensuremath{c_p^s}}
+\newcommand\cpa{\ensuremath{c_p^A}}
 \newcommand\ka{\ensuremath{\avg{\kappa}^a}}  % I added \avg
 \newcommand\kl{\ensuremath{\avg{\kappa}^l}}  % I added \avg
 \newcommand\ks{\ensuremath{\avg{\kappa}^s}}	 % I added \avg

@@ -4,11 +4,12 @@
 \minitoc
 \end{nolinkcolors}
 \newpage
-%
-%
+
+
 %=====================================
 \section{State of the art}
 %=====================================
+
 To model macrosegregation during solidification, a minimum of four conservation equations are necessary:
 conservation  of  mass, momentum,  chemical  species and  energy. The  phase  change
 literature  contains a  wealth of numerical methods to solve energy conservation
@@ -951,9 +952,9 @@ boundary condition) from one side, the other side being adiabatic. The initial c
 boundary conditions and alloy properties are all listed in \cref{table:data_case_alsi7}.
 
 For this simple test case, 
-we use linear temperature dependence of the intrinsic phase enthalpies, that is $\rh^s= \rho C_p T$ and $\rh^l= \rho (C_p T + L)$, 
-where $\rho$ is the alloy density, $C_p$ is the heat capacity per unit mass and $L$ is the latent heat per unit mass. 
-Values for $\rho$, $C_p$ and $L$, as well as for the thermal conductivities, $\kappa = \kl = \ks$, are taken constant. 
+we use linear temperature dependence of the intrinsic phase enthalpies, that is $\rh^s= \rho c_p T$ and $\rh^l= \rho (c_p T + L)$, 
+where $\rho$ is the alloy density, $c_p$ is the heat capacity per unit mass and $L$ is the latent heat per unit mass. 
+Values for $\rho$, $c_p$ and $L$, as well as for the thermal conductivities, $\kappa = \kl = \ks$, are taken constant. 
 
 A Gulliver-Scheil approximation is used to compute a single relationship between temperature and volume solid fraction, $\gs$, in the 
 absence of macrosegregation. This is done assuming a linear binary phase diagram and thus requires using the 
@@ -983,7 +984,7 @@ Eutectic temperature 				& $T_E$ 			& \num{577}	 	& \si{\udegC} \\
 Segregation coefficient 			& $k$ 				& \num{0.13} 	& $-$  \\  
 Liquidus slope 						& $m_L$ 			& \num{-6.5} 	& \si{\uslope} \\ 
 Density			 					& $\rho$ 			& \num{2600} 	& \si{\udensity} \\  
-Liquid heat capacity 		 		& $C_p$ 			& \num{1000} 	& \si{\umasscapacity} \\  
+Liquid heat capacity 		 		& $c_p$ 			& \num{1000} 	& \si{\umasscapacity} \\  
 Enthalpy of fusion 				 	& $L$ 				& \num{365384} 	& \si{\umassenergy} \\ 
 Thermal conductivity 				& $\kappa$ 			& \num{70} 		& \si{\uconductivity}	\\
 \hline  %------------------------------------------------------------------------------------------
@@ -1093,14 +1094,15 @@ in \cref{fig:mutlicomponent_bc}.
 Full thermodynamic equilibrium is considered in the present case. Due to macrosegregation, 
 the average composition is expected to continuously vary in time and space during casting. 
 Transformation paths are thus determined a priori for a set of average compositions around 
-the nominal value. Hence, carbon content varies in the interval [\SI{1.8}{\ucomposition}, \SI{2.2}{\ucomposition}] 
-while chromium content variation is in the interval [\SI{27}{\ucomposition}, \SI{33}{\ucomposition}]. The offset of $\pm$ 10\%  with 
+the nominal value. Hence, carbon content varies in the interval [1.8,2.2]\si{\ucomposition} 
+while chromium content variation is in the interval [27,33]\si{\ucomposition}. 
+The offset of $\pm$ 10\%  with 
 respect to the nominal composition value allows tabulating relatively small composition steps
 to ensure a fairly accurate mapping when compared to the corresponding ternary phase diagram. 
 
 The average composition step is \SI{0.04}{\ucomposition} for carbon and \SI{0.6}{\ucomposition} for chromium, thus representing 2\% 
 intervals with respect to the nominal composition. The temperature varies in the interval 
-[\SI{100}{\udegC}, \SI{1600}{\udegC}] by \SI{5}{\udegC} steps. For each triplet (carbon content 
+[100,1600]\si{\udegC} by \SI{5}{\udegC} steps. For each triplet (carbon content 
 in \si{\ucomposition} C, ${w_\text{C}}_0$ , chromium content in \si{\ucomposition} Cr,  ${w_\text{Cr}}_0$, temperature in \si{\udegK}) 
 corresponds a phase fraction $g^\phi$ and a pair of intrinsic phase composition ($\wC^\phi$,$\wCR^\phi$), $\phi$ representing a phase. For the 5 
 phases listed in \cref{fig:ternary_nominalpath} (LIQ$\equiv$liquid, BCC$\equiv$ferrite, FCC$\equiv$austenite, 
@@ -1194,8 +1196,8 @@ Ingot length 			&   	& \num{75e-3} 	& \si{\metre}  \\
 \hline 
 FE mesh size 			&  		& \num{e-3} 	& \si{\metre}  \\ 
 Time step 				& $\dt$ & \num{0.1} 	& \si{\second}  \\ 
-Convergence criterion (residual) 	& $\varepsilon_R$ & \num{e-6} & $-$ \\ 
-Convergence criterion (temperature) & $\varepsilon_T$ & \num{e-2} & \si{\udegK} 
+Convergence criterion (residual) 	& $\varepsilon_R$ & \num{e-5} & $-$ \\ 
+Convergence criterion (temperature) & $\varepsilon_T$ & \num{e-1} & \si{\udegK} 
 }
 %
 \end{tabulate}

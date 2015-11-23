@@ -1422,7 +1422,7 @@ along with the accurate capturing of the interface using highly stretched anisot
 
 This remeshing technique relies on the parameter input defined in \cref{table:remesh4_params}.
 Among the parameters, $h_\text{min}$ and $\varepsilon_\text{er.}$ are the most important.
-The first one sets the minimum limit for the mesh algorithm to take while topoligically optimising the grid. The seconds parameter controls the error, and hence globally the elements shape may vary from highly anisotropic shapes (low values of $\varepsilon_\text{er.}$, while highly isotropic (high values of $\varepsilon_\text{er.}$).
+The first one sets the minimum limit for the mesh algorithm to take while topoligically optimising the grid. The seconds parameter controls the error, and hence globally the elements shape may vary from highly anisotropic shapes (low values of $\varepsilon_\text{er.}$), to isotropic (high values of $\varepsilon_\text{er.}$).
 We prefer to limit this parameter by using a reasonble value, between 10 and 500, depending on the case and the final results. 
 
 %--------------------------------
@@ -1438,8 +1438,8 @@ $\varepsilon $			&	level set mixing thickness			\\
 $h_\text{min}$			&   minimum mesh size \\
 $\varepsilon_\text{er.}$	&  minimum error limit \\
 Remeshing criteria 	 	&   physical quantities of interest \\
-Number of elements 		&   imposed number of elements needed for the remesh optimisation  \\\tabucline[1pt]{-}
-Number of nodes 		&   resulting number of nodes after remeshing is done \\
+Number of nodes 		&   resulting number of nodes after remeshing is done \\\tabucline[1pt]{-}
+Number of elements 		&   imposed number of elements needed for the remesh optimisation  \\
 %-----------------------------
 \end{tabu}}
 \end{table}
