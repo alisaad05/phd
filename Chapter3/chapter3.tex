@@ -537,10 +537,10 @@ is solved at iteration $\iterplus$, this term is written using a finite differen
 \begin{align}
 %--------
 \label{eq:finite_difference_Hsolver}
-& \textbf{Hsolver} \qquad \brac{\dTdH}^{\iterplus}_{j} = \frac{T_j^\iterplus - T_j^\iter}{\rhoh_j^\iterplus - \rhoh_j^\iter} \\ 
+& \textbf{Hsolver} \qquad \brac{\dTdH}^{\iterplus}_{j} = \frac{T_j^\iterplus - T_j^\iter}{H_j^\iterplus - H_j^\iter} \\ 
 %--------
 \label{eq:finite_difference_Tsolver}
-& \textbf{Tsolver} \qquad \brac{\dHdT}^{\iterplus}_{j} = \frac{\rhoh_j^\iterplus - \rhoh_j^\iter}{T_j^\iterplus - T_j^\iter}
+& \textbf{Tsolver} \qquad \brac{\dHdT}^{\iterplus}_{j} = \frac{H_j^\iterplus - H_j^\iter}{T_j^\iterplus - T_j^\iter}
 \end{align}
 %------------
 
@@ -953,8 +953,8 @@ boundary conditions and alloy properties are all listed in \cref{table:data_case
 
 For this simple test case, 
 we use linear temperature dependence of the intrinsic phase enthalpies, that is $\rh^s= \rho c_p T$ and $\rh^l= \rho (c_p T + l)$, 
-where $\rho$ is the alloy density, $c_p$ is the heat capacity per unit mass and $L$ is the latent heat per unit mass. 
-Values for $\rho$, $c_p$ and $L$, as well as for the thermal conductivities, $\kappa = \kl = \ks$, are taken constant. 
+where $\rho$ is the alloy density, $c_p$ is the heat capacity per unit mass and $l$ is the latent heat per unit mass. 
+Values for $\rho$, $c_p$ and $l$, as well as for the thermal conductivities, $\kappa = \kl = \ks$, are taken constant. 
 
 A Gulliver-Scheil approximation is used to compute a single relationship between temperature and volume solid fraction, $\gs$, in the 
 absence of macrosegregation. This is done assuming a linear binary phase diagram and thus requires using the 
