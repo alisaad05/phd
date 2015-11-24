@@ -25,9 +25,9 @@
      borderopacity="1.0"
      inkscape:pageopacity="0.0"
      inkscape:pageshadow="2"
-     inkscape:zoom="0.7"
-     inkscape:cx="697.72924"
-     inkscape:cy="95.74064"
+     inkscape:zoom="0.98994949"
+     inkscape:cx="308.26704"
+     inkscape:cy="465.821"
      inkscape:document-units="px"
      inkscape:current-layer="layer1"
      showgrid="false"
@@ -39,7 +39,7 @@
      inkscape:window-height="976"
      inkscape:window-x="-8"
      inkscape:window-y="-8"
-     inkscape:window-maximized="1" />
+     inkscape:window-maximized="0" />
   <metadata
      id="metadata7">
     <rdf:RDF>
@@ -66,7 +66,7 @@
        width="938" />
     <path
        style="fill:none;stroke:#ffffff;stroke-width:2.5;stroke-linecap:butt;stroke-linejoin:miter;stroke-miterlimit:4;stroke-opacity:1;stroke-dasharray:none;stroke-dashoffset:0"
-       d="m 854.63235,347.36218 -223.57143,5 -715.000041,0"
+       d="m 854.63235,343.36218 -223.57143,5 -715.000041,0"
        id="path2996"
        inkscape:connector-curvature="0"
        sodipodi:nodetypes="ccc" />
