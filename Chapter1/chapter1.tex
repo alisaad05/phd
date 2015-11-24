@@ -12,7 +12,7 @@ in metallurgy it means a non uniform distribution of chemical species. Depending
 when the heterogeneity spans some few hundred microns, whereas the term \emph{macrosegregation} refers to a much coarser length scale, ranging
 from some millimetres to some meters! The solidified structure has intrinsic thermophysical and thermomechanical properties directly influenced by the segregation pattern. 
 
-In casting processes, such as continuous casting (\cref{fig:casting}) and ingot casting, it is crucial to apprehend 
+In casting processes, such as continuous casting (\cref{fig:continuous_casting}) and ingot casting (\cref{fig:ingot_casting}), it is crucial to apprehend 
 the intricate phenomena leading to macrosegregation. Its influence on intermediate processing steps (e.g. forging, coating, welding,...)
 to reach a manufactured product, also needs to be understood.
 In this introductory chapter, we give a quick overview of solidification phenomena and microstructure, then present the factors which
@@ -44,8 +44,9 @@ promote segregation, on both microscopic and macroscopic scales. Aside from macr
 %
 
 In a continuous casting process (\cref{fig:continuous_casting}), the partially solidified slab is carried through a series of rolls that exert contact forces to straighten it.
-When a slab enters through these rolls after exiting the open copper mold, it consists of a thin solid shell made of a mixture of solid and liquid phases known as the mushy zone, whose core is still fully liquid.
-as the slab edges solidify earlier than the centre, the enriched liquid accumulates halfway in thickness, forming a centreline macrosegregation
+When a slab enters through these rolls after exiting the open copper mould, it consists of a thin solid shell that contains a mixture of solid and liquid phases known as the mushy zone, 
+with a core still fully liquid.
+Enriched liquid accumulates halfway in thickness, forming a centreline macrosegregation
 as shown in \cref{fig:macroseg_centreline}.  
 
 Other types of segregation patterns can be encountered while casting heavy ingots, as schematised in \cref{fig:macrosegregation_ingot}: 
@@ -138,8 +139,8 @@ In a casting process, the vicinity of the chill surface where the contact betwee
 Thermal gradient, $\vec{G}$, and cooling rate, $R$, are two crucial parameters that define the solid-liquid interface velocity, $\vstar$, which in turn
 affects the initial microstructure. Although it may not be easy to control them, their role in solidification is well established.
 
-The solid-liquid interface fluctuates when solidifying, thus perturbations may appear on the front, locally destabilizing it. 
-Two outcome scenarios are possible.
+% The solid-liquid interface fluctuates when solidifying, thus perturbations may appear on the front, locally destabilizing it. 
+% Two outcome scenarios are possible.
 
 %----------------------
 \begin{figureth}
@@ -150,15 +151,15 @@ Two outcome scenarios are possible.
 % caption
 {Experimental time evolution of a solidifying \bin{Al}{4}{Cu} sample, showing interface destabilisation 
 and subsequent dendritic solidification \citep{buffet_measurement_2010}.
-The liquid far from the interface and having a blue color is at nominal composition, 
-while the one near the dendritic structure with the yellow and red colors, is richer in solute.}
+The liquid far from the interface and having a blue colour is at nominal composition, 
+while the one near the dendritic structure with the yellow and red colours, is richer in solute.}
 % label
 \label{fig:dendrite_evolution}
 \end{figureth}
 %-----------------------------------
 %
 
-The first scenario is characterized by low values of $\vstar$ where the interface maintains a planar shape, hence we speak of \emph{planar growth}. 
+At low values of $\vstar$ where the interface maintains a planar shape, hence we speak of \emph{planar growth}. 
 With this kind of growth, a random protuberance appearing at the interface, has a low tip velocity (low driving force of solidification). As such,
 the rest of the interface catches up, maintaining the planar geometry.
 In another scenario more representative of a real casting, the interface velocity leads to its instability.
@@ -274,7 +275,8 @@ by industrial research that aimed at reducing defective production caused by mac
 However, steels were not the only alloys that were investigated for segregation defects. 
 Many studies relied on other metallic alloys as a replacement recourse, for their low
 melting points and well-known physical and mechanical properties. Examples are aluminium-based alloys 
-(aluminium-copper or aluminium-silicon) \citep{lesoult_equi-axed_2001,ferreira_macrosegregation_2004,ferreira_modeling_2009} and lead-tin/tin-lead alloys\citep{hebditch_observations_1974,prescott_convective_1994,hachani_experimental_2012}. Investigating macrosegregation 
+(aluminium-copper or aluminium-silicon) \citep{lesoult_equi-axed_2001,ferreira_macrosegregation_2004,ferreira_modeling_2009} 
+and lead-tin/tin-lead alloys\citep{hebditch_observations_1974,prescott_convective_1994,hachani_experimental_2012}. Investigating macrosegregation 
 is also common in organic compounds like the well-known 
 sodium chloride \citep{wanqi_formation_1989,sarazin_studies_1992,ludwig_advanced_2012}, which have the advantage of being transparent.
 
@@ -353,7 +355,7 @@ In contrast to liquid thermosolutal convection, shrinkage flow may cause macrose
 %
 %
 
-\subsection{Movement of equiaxed grains}
+\subsection{Movement of grains}
 % ---------------------------------------
 
 %read pickering2013: http://www.msm.cam.ac.uk/phase-trans/2013/macro.pdf
@@ -390,7 +392,7 @@ From an economic point view, these operations are very expensive.
    %------------
   \begin{subfigure}[t]{0.3\textwidth}
     \centering
-	\includegraphics[height=3.5cm]{Chapter1/Graphics/cracks.png}
+	\includegraphics[height=3.5cm]{Chapter1/Graphics/cracks.pdf}
 	\caption{}
     \label{fig:crack}
   \end{subfigure}
@@ -398,7 +400,7 @@ From an economic point view, these operations are very expensive.
    %\hspace{1cm}
    \begin{subfigure}[t]{0.35\textwidth}
     \centering
-	\includegraphics[height=3.5cm]{Chapter1/Graphics/porosity5.jpg}
+	\includegraphics[height=3.5cm]{Chapter1/Graphics/porosity.pdf}
 	\caption{}
     \label{fig:porosity}
   \end{subfigure}
@@ -406,7 +408,7 @@ From an economic point view, these operations are very expensive.
    %\hspace{1cm}
    \begin{subfigure}[t]{0.3\textwidth}
     \centering
-	\includegraphics[height=3.5cm]{Chapter1/Graphics/freckle4.png} 
+	\includegraphics[height=3.5cm]{Chapter1/Graphics/freckle.pdf} 
 	\caption{}
     \label{fig:freckle}
   \end{subfigure}
@@ -423,12 +425,12 @@ and (c) freckle in the form of a chain of equiaxed crystals in Ni-base superallo
 
 Hot tearing, also denoted solidification cracking or hot cracking, occurs in the mushy zone 
 at high solid fractions when a failure or crack appears in the cast part. 
-They refer to liquid regions enclosed in the solid, where feeding stops, 
+They refer to liquid regions enclosed in the solid, where feeding stops. 
 Preferential sites for crack initiation are localised in regions where liquid feeding is difficult.
 The volume change combined with thermal stresses or external 
 strains, may lead to cracks as shows \cref{fig:crack}. 
 The temperature range in which the steel is vulnerable to hot tearing is known as the brittle 
-temperature range (BTR), where the solid fraction is typically greater than \num{90}\%.
+temperature range, where the solid fraction is typically greater than \num{90}\%.
 %\begin{figureth}
 % hottearing1: JM drezet, GDR 2013 Lausanne, contraintes residuelles.
 % textwidth 
@@ -533,7 +535,7 @@ clear rise of the Chinese production. Quality constraints have also increased wh
 grades of steel are needed in critical applications such as mega-structures
 in construction and  heavy machinery. Other domains like the nuclear, are good examples showing the relevance of macrosegregation
 studies in developing nuclear components for the new generation Evolutionary Power Reactor, manufactured by Areva. Therefore, alloys with defects are considered vulnerable 
-and should be avoided as much as possible during the casting process. As such, steelmakers have been investing
+and should be avoided as much as possible during the casting process. As such, steel makers have been investing
 in research, with the aim of understanding better the phenomena leading to casting problems, 
 and improve the processes when possible.
 
@@ -575,8 +577,7 @@ and improve the processes when possible.
 Simulation software dedicated to alloy casting is one of the main research investments undertaken by steelmakers. 
 These tools originating from academic research, are actively used to optimize the process. 
 However, few are the tools that take into account the casting environment. 
-For instance, the continuous casting process, in
-\cref{fig:casting}, is a chain process where the last steps involve rolling, heat treatments, forging, etc. The continuous casting
+For instance, the continuous casting process, is a chain process where the last steps involve rolling, heat treatments, forging, etc. The continuous casting
 machine itself not only consists of an open mould where solidification starts, but also includes rolls, water sprays and other components. 
 A dedicated software is one that can provide the geometric requirements with suitable meshing capabilities, 
 as well as respond to metallurgical and mechanical requirements, mainly by handling:
@@ -678,7 +679,7 @@ giving the interface position.
 The current thesis developments are done using C++ language as a part of the
 in-house code, known as \cimlib \citep{digonnet_cimlib:_2007,mesri_advanced_2009}. It's a finite element library with an object-oriented hierarchy
 consisting of global finite element solvers for physical differential equations, also point-wise and element-wise solvers for 
-preprocessing and postprocessing the finite element solution. It is also highly parallelised with MPICH2, which makes it possible
+preprocessing and post-processing the finite element solution. It is also designed with a highly parallel architecture with MPICH2, which makes it possible
 to handle large meshes with heavy operations like mesh partitioning and adaptation. Side utilities for plotting and analysis
 are also developed, using python language.
 

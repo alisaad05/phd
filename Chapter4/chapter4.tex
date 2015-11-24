@@ -20,7 +20,7 @@ Then, we shall present soldification applications
 where macrosegregation is mainly induced by thermosolutal convection without any volume change for the metal domain.
 
 %-----------------------------
-\section{Formulation stability}
+\section{Navier-Stokes solvers}
 %-----------------------------
 
 A wide array of numerical methods can be used to solve systems like \cref{eq:conservation_momentum}. 
@@ -384,10 +384,12 @@ degree to solve the previous Navier-Stokes system.
 
 
 %-------------------------------------------------------------
-\section{Application to multicomponent alloys}
+\section{\emph{Tsolver} validation with fluid flow}  \label{sec:tsolver_validation}
 %-------------------------------------------------------------
 
-\subsection{\emph{Tsolver} validation with fluid flow}  \label{sec:tsolver_validation}
+%-------------------------------------------------------------
+\subsection{Application to a binary alloy}
+%-------------------------------------------------------------
 
 To validate the \emph{Tsolver} with fluid flow, we consider average conservation equations
 already defined presented in \cref{sec:monodomain}. An assumption 
@@ -475,6 +477,11 @@ The left (LHE) and right (RHE) heat exchangers impose the boundary temperature i
 \end{figureth}
 %------------------------------------------------------
 
+
+%-------------------------------------------------------------
+\subsection{Application to a multicomponent alloy}
+%-------------------------------------------------------------
+
 In the previous chapter, we have considered a static melt upon solidification of multicomponent alloy. 
 This artificial assumption is dropped in this chapter, hence taking into account solute transport 
 caused by fluid motion, using realistic values of thermal and solutal expansion coefficients given in \cref{table:ternary_data_case}.
@@ -489,7 +496,7 @@ previously defined in \cref{fig:mutlicomponent_geobc}. Moreover, we solve the li
 on all external sides of the cylinder.
 
 %----------------------
-\subsection{Results}
+% \subsection{Results}
 %----------------------
 
 Solidification starts at 407 s when the cylinder’s bottom base temperature 
@@ -715,12 +722,15 @@ The resulting temperature gradient, $\vec{G}$, is parallel to the vertical z-axi
 \subsection{Macroscopic scale simulations}
 %--------------------------
 
+%--------------------------
 \subsubsection{Configuration}
+%--------------------------
+
 The focus of this section is on qualitative comparison between numerical simulation and the previously mentioned experiment. 
-The experimental cell geometry shown in \cref{fig:freckle} is hexagonal. With adiabatic lateral sides, it results in a 
-bending of the isotherm surfaces as shown in the experiment. The metallic cooling plates shown in \cref{fig:experimental_setup}
-partly compensate for this effect. However, a residual horizontal component of the temperature gradient 
-remains. 
+% The experimental cell geometry shown in \cref{fig:freckle} is hexagonal. With adiabatic lateral sides, it results in a 
+% bending of the isotherm surfaces as shown in the experiment. The metallic cooling plates shown in \cref{fig:experimental_setup}
+% partly compensate for this effect. However, a residual horizontal component of the temperature gradient 
+% remains. 
 
 To qualitatively replicate this effect while simplifying the cell geometry, a cuboid cell measuring \SI{22 x 22 x 1}{\milli \uvolume}  
 is considered. On the lateral vertical side surfaces, small cooling fluxes are imposed, after being computed from a constant heat transfer 
@@ -729,13 +739,15 @@ temperatures at the bottom and top surfaces, respectively $\Ttop$  and $\Tbottom
 constant vertical gradient, $\vec{G}$, thus linearly 
 decreasing over time with the same cooling rate $R$. Both square faces of the geometry, having an area of \SI{22 x 22}{\milli \uarea}, 
 are adiabatic. In spite of taking cell dimensions similar to benchmark experiments presented above, the cell thickness 
-is increased from \SI{150}{\micro \metre} to \SI{1}{\milli \metre}. One of the main obstacles of simulating a \SI{150}{\micro \metre}-thick
-cell is the number of elements in the thickness. An insufficient number may lead to incorrect velocity computation in the cell thickness,
-resulting in inaccurate channel segregation prediction. In general, a number around 5 to 8 elements is needed to get a better representation of the fluid motion.
+is increased from \SI{150}{\micro \metre} to \SI{1}{\milli \metre}. 
+% One of the main obstacles of simulating a \SI{150}{\micro \metre}-thick
+% cell is the number of elements in the thickness. An insufficient number may lead to incorrect velocity computation in the cell thickness,
+% resulting in inaccurate channel segregation prediction. 
+In general, a minimum of 5 to 8 elements is practically needed to get a better representation of the fluid motion.
 When the domain thickness is \SI{150}{\micro \metre}, imposing 8 elements in the thickness results in a huge homogeneous isotropic mesh containing
 about \num{e9} elements, the mesh size being equal to \SI{0.018}{\milli \metre}. % 0.01875
-For now, this would only lead to slower simulations 
-and therefore more complicated analysis with the large data files. Instead, we choose to keep the same number of thickness elements,
+This leads to slower simulations and therefore more complicated analysis with the large data files. 
+Instead, we choose to keep the same number of thickness elements,
 but increase the thickness instead. That way, the resulting isotropic mesh would reduce to \num{2.5e4} elements. Therefore, we keep the latter
 thickness as the current study is limited to qualitative comparisons, but the mesh size is imposed to about $2\sdas$=\SI{140}{\micro \metre}, and 
 the fixed finite element grid contains around \num{2e6} elements and \num{3e5} degrees of freedom. 
@@ -761,28 +773,30 @@ FE-G2R1L1  & G2:1.5 & R1:-0.01 & L1:(20,0) & (58.25, 25.25)  \\\tabucline[1pt]{-
 \end{tabu}}
 }
 \end{table}
-%--------------------------------
+%-------------------------------
+-
 
-
-Materials properties are provided in \cref{table:data_case_InGa} while initial and boundary conditions are given in \cref{table:simulation_InGa_fe}. 
+Initial and boundary conditions are given in \cref{table:simulation_InGa_fe} while materials properties are provided in \cref{table:data_case_InGa}. 
 A series of computations is performed to understand the influence of process parameters on the final macrosegregation pattern. 
 In directional growth, the main parameters are the vertical temperature gradient, $\vec{G}$, and the cooling rate, $R$, since they control the isotherms 
 speed. However, the effect of a higher lateral cooling is also considered below by increasing the heat transfer coefficient,
-$\hext$. Finally, the grain structure is another crucial parameter that drastically changes the analysis inasmuch as growth 
-undercooling is fundamental to determine the onset of solidification. 
+$\hext$. 
+% Finally, the grain structure is another crucial parameter that drastically changes the analysis inasmuch as growth 
+% undercooling is fundamental to determine the onset of solidification. 
 
 The computation cases used in this study are presented 
-in \cref{table:simulation_InGa_fe}. The label of each case allows direct access to the simulation parameters as explained in the caption. Values for 
-these parameters are inspired from the above experiments (\cref{sec:freckle_exp}). Initial conditions consider a quiescent 
-liquid at uniform composition given by the nominal alloy composition $\avg{\Cnominal}$. The temperature field is also initially uniform 
+in \cref{table:simulation_InGa_fe}. The label of each case allows direct access to the simulation parameters as explained in the table caption. 
+Values for these parameters are inspired from the above experiments (\cref{sec:freckle_exp}). Initial conditions consider a quiescent 
+liquid at uniform composition given by the nominal alloy composition $\Cnominal$. The temperature field is also initially uniform 
 at a temperature averaged between the top and bottom initial values provided in \cref{table:simulation_InGa_fe}. It has been checked that a uniform 
 temperature gradient is swiftly reached, and that the unsteady regime to settle a vertical temperature gradient does not affect 
-the phenomena studied. For simulations with grain structures, boundary conditions for nucleation at the bottom horizontal \SI{22 x 1}{\milli \uarea} 
-surface are kept constant as given in \cref{table:simulation_InGa_fe}.
+the phenomena studied. 
+% For simulations with grain structures, boundary conditions for nucleation at the bottom horizontal \SI{22 x 1}{\milli \uarea} 
+% surface are kept constant as given in \cref{table:simulation_InGa_fe}.
 
-The macroscale approach employs the finite element method to compute the temperature and composition fields at FE nodes. 
-The liquid fraction is then determined directly from the former fields, assuming a linear phase diagram, i.e. linear liquidus 
-with full thermodynamic equilibrium between phases or lever rule approximation. This linear approximation is made available by 
+The liquid fraction is determined directly from temperature and average composition fields which are deduced from the FE solution, 
+assuming a linear phase diagram, i.e. linear liquidus with full thermodynamic equilibrium between phases or lever rule approximation. 
+This linear approximation is made available by 
 the dotted line provided in \cref{fig:phasediagram_InGa}. Note that this line defines a phase diagram that seems very different from the correct one. 
 However, this linear fit is only used in a composition region located around the nominal composition of the alloy. It is also worth 
 noticing that the eutectic microstructure is expected to appear at \SI{15.3}{\udegC}. Nevertheless, experimental observations revealed that large 
@@ -817,14 +831,14 @@ The dashed and dotted lines are linear liquidus and solidus approximations near 
 {\textbf{Parameter} & \textbf{Symbol} & \textbf{Value} & \textbf{Unit}}
 % cells content (should use the & and // to switch columns and rows)
 {
-Nominal composition 			& $\avg{\Cnominal}$		& 75 					& \si{\ucomposition} 	\\ 
-Liquidus temperature			& $T_l$ 				& \num{25.25} 			& \si{\udegC} 			\\
+Nominal composition 			& $\Cnominal$		& 75 					& \si{\ucomposition} 	\\ 
+Liquidus temperature			& $T_L$ 				& \num{25.25} 			& \si{\udegC} 			\\
 Segregation coefficient			& $\k$					& \num{0.0165}			&      					\\
-Liquidus slope					& $m_l$					& \num{-2.73}			& \si{\udegK \per \ucomposition} \\
+Liquidus slope					& $m_L$					& \num{-2.73}			& \si{\udegK \per \ucomposition} \\
 \hline
 Gibbs-Thomson coefficient		&$\Gamma_{\text{GT}}$	&\num{2e-7}			& \si{\udegK \per \metre} 		\\ 	
-Heat capacity					&$C_p$ 					&\num{380.74}		& \si{\umasscapacity} 		\\ 	
-Enthalpy of fusion					&$L$ 					&\num{8.02d-4}		& \si{\umassenergy} 	\\ 	
+Heat capacity					&$c_p$ 					&\num{380.74}		& \si{\umasscapacity} 		\\ 	
+Enthalpy of fusion					&$l$ 					&\num{8.02d-4}		& \si{\umassenergy} 	\\ 	
 Diffusion coefficient of Ga in liquid In 		& $\Dl$ 	& \num{1.525d-9} 	& \si{\udiffusivity}  	\\ 
 Dynamic viscosity  				& $\mul$ 					& \num{2e-3} 		& \si{\uviscosity}  	\\ 
 Thermal expansion coefficient 	& \betaT 					& \num{0.0978e-3} 	& \si{\ubetaT}  		\\ 
@@ -855,15 +869,15 @@ Time step 				& $\dt$ & \num{0.1} 	& \si{\second}
 
 The first case labeled FE-G1R1L0 is a reference case that features a low gradient (G1), low cooling rate (R1), 
 and without any lateral cooling (L0), ensuring that isotherms retain a planar shape. These simulation parameters 
-defined in \cref{table:data_case_InGa}, result in a negligible fluid flow reaching a maximum velocity of \SI{4d-8}{\milli\uvelocity} in the bulk. 
+defined in \cref{table:simulation_InGa_fe}, result in a negligible fluid flow reaching a maximum velocity of \SI{4d-8}{\milli\uvelocity} in the bulk. 
 Accordingly, the solidification front remains stable and follows the planar isotherms; no convective plumes are observed. 
-The average composition field is thus only little modified in the mushy zone as shown in \cref{fig:freckles_fe} (mind the values of the scale limits). 
+The average composition field is thus only little modified in the mushy zone as shown in \cref{fig:freckles_fe}a (mind the values of the scale limits). 
 
 It is concluded that velocity in the bulk is not high enough to initiate instabilities. In the next case, FE-G1R1L1, 
 a cooling flux with a constant and very low value of the heat transfer coefficient is imposed on both vertical lateral 
 surfaces to initiate a downward fluid flow due to thermal buoyancy. Once solidification starts, solute-rich regions start 
 to appear on the sides of the domain. Despite the visible concentration difference between these lateral regions and 
-the central mush seen in \cref{fig:freckles_fe}, their diffuse and uniform aspect indicates no resemblance to channel segregations. We keep the 
+the central mush seen in \cref{fig:freckles_fe}b, their diffuse and uniform aspect indicates no resemblance to channel segregations. We keep the 
 same configuration but increase the vertical gradient from \SI{0.2}{\ugradT} (G1) to \SI{1.5}{\ugradT} (G2) in the case FE-G2R1L1. 
 
 The isotherms become closer to each over hence reducing the depth of the mushy zone for the same time increment compared 
@@ -910,7 +924,7 @@ The black line represents the liquidus isotherm given in \cref{table:data_case_I
 %-----------------
 
 \Cref{fig:planche_fe} gives a series of snapshots for case FE-G2R1L1 at three different times. Among the two clear distinct 
-plumes that are visible at \SI{250}{\utime} in \cref{fig:freckles_fe}, only one has led to the formation of a segregated channel
+plumes that are visible at \SI{250}{\utime} in \cref{fig:freckles_fe}c, only one has led to the formation of a segregated channel
 that remains in \cref{fig:planche_fe} at \SI{500}{\utime}. 
 In fact, an animation between \SI{250}{\utime} and \SI{500}{\utime} (not shown here) reveals that one plume vanishes, 
 thus permitting the first one to further develop. A second segregated channel is also seen on the left hand side of the cell. 
@@ -934,23 +948,19 @@ on a cut plane at the center of the cell at 500 s, 1000 s and 1500 s.}
 \end{figureth}
 \end{landscape}
 %=====================================BIG LANDSCAPE FIGURE =====================================
-
 %--------------------------
 \subsubsection{Discussion}
 %--------------------------
-
 In \cref{sec:intro_freckle}, we have introduced some successful attempts of channel segregation predictions. 
-The authors tackled the problem from an qualitative perspective. 
+The authors tackled the problem from a qualitative perspective. 
 To our knowledge, the closest work to quantitative prediction of segregated channels in solidification literature was done by \citet{ramirez_evaluation_2003}.
 They attempted to draw a correlation (\emph{freckling} criterion) between the process parameters and the occurrence of segregated channels, 
 without any size or shape constraints, i.e. any flow instability that may appear and form the smallest channel segregate is considered. 
-
 To accomplish this, they took a number of experiments done independently by \citet{pollock_breakdown_1996} and \citet{auburtin_freckle_2000} 
 where the casting parameters vary one at a time: casting speed ($R$), thermal gradient ($\vec{G}$), angle ($\theta$) with respect to vertical 
-orientation and nominal composition ($\avg{w_0}$), giving a database for 6 different superalloys. The experimental results were 
+orientation and nominal composition ($\Cnominal$), giving a database for 6 different superalloys. The experimental results were 
 compared to a modified Rayleigh number that accounts for the various parameters. It allowed them to define a threshold for the formation
 of channel segregation in nickel-base superalloys, as well as in Pb-Sn alloys.
-
 Other contributions by \citet{yuan_new_2012} (Pb-Sn alloy) and  \citet{karagadde_3-d_2014} (In-Ga alloy) relied on a Cellular Automata Finite Difference
 (CAFD) model developed by \citet{lee_modeling_2002}, which  solves the dendrite tip growth kinetics at 
 the solid-liquid interface together with macroscopic conservation equations. 
@@ -960,10 +970,9 @@ therefore limited as far as to predict the liquid behaviour outside the mushy zo
 On another hand, experimental observations reveal a great deal of information 
 regarding solute redistribution, first in the chimneys that wash the dendrites in their 
 way and then convective plumes that expel chemical species outside the mush, resulting in a global complex phenomenon.
-
 In order to capture simultaneously the interaction between the mushy zone and the free liquid, we use 
 the Cellular Automata Finite Element (CAFE) method to combine the macroscopic and mesoscopic length scales
-and predict more realistic channel segregation.
+and predict more realistic channel segregation in the next section.
 
 %-----------------------------------------------
 \section{Meso-Macro prediction of channel segregates}
@@ -973,7 +982,10 @@ and predict more realistic channel segregation.
 \subsection{Numerical method}
 %-----------------------------------------------
 
+%-----------------------------------------------
 \subsubsection{Microscopic scale}
+%-----------------------------------------------
+
 The CAFE model introduces a grid of regular and structured cubic cells, with a constant size 
 in all space directions, referred to as the cellular automaton (CA) grid. It is different from 
 the unstructured finite element mesh previously mentioned for the solution of the average conservation 
@@ -983,6 +995,7 @@ primary dendritic grains. Details about the CAFE model can be found in \citep{ca
 Cell information, such as the temperature, the average composition or the velocity of the liquid phase, is interpolated from 
 the nodes of the FE mesh. State indices are also defined for each CA cell, providing the presence of liquid or solid phases. 
 
+%-----------------------------------------------
 \subsubsection{Nucleation}
 % -----------------------------
 
@@ -1001,7 +1014,8 @@ selection is therefore solely controlled by growth competition.
 
 Dendrite growth is driven by the chemical supersaturation, $\Omega_\text{sat}$, which is a 
 dimensionless number proportional to the difference between the liquid composition at the dendrite 
-tip and the melt composition far away from the tip. The higher the supersaturation, the faster the 
+tip and the melt composition far away from the tip, scaled by the composition jump at the interface. 
+The higher the supersaturation, the faster the 
 dendrite tip velocity. However, in the presence of a convective fluid, the chemical supersaturation 
 is highly influenced by the intensity and the direction of the flow with respect to the growth direction 
 of the dendrites. In the current model, convection is central in studying the formation of channel segregation. Therefore, 
@@ -1009,14 +1023,14 @@ the purely diffusive Ivantsov relation used to determine the Peclet number $Pe$ 
 is replaced by a modified relation using a boundary layer correlation model that accounts for both the intensity 
 and the misorientation of the liquid velocity with respect to the growth direction of the dendrites \citep{gandin_boundary_2003}. 
 The main parameters for this growth kinetics models are the Gibbs Thomson coefficient, $\Gamma_{\text{GT}}$, and the diffusion 
-coefficient for Ga in In, $\Dl$.
+coefficient for Ga in In, $\Dl$, all given in \cref{table:data_case_InGa}.
 
 \subsubsection{Solidification path}
 % -----------------------------
 
 The CA model gives the presence of the grains in the liquid as well as its growth undercooling. 
 For coupling with macroscopic scale modelling, the fraction of phases needs to be fed back to the 
-FE model. This is now done by accounting for the information provided by the CA model. Thus, the 
+FE model. This is done by accounting for the information provided by the CA model. Thus, the 
 fraction of solid is no longer the consequence of a simple conversion of the temperature and 
 composition assuming thermodynamic equilibrium. It also includes the solidification delay due to 
 the kinetics of the development of the grains as detailed in the work of \citet{carozzani_direct_2013}.
@@ -1032,7 +1046,7 @@ rise to solutal buoyancy forces can be captured. This limits consequently the CA
 of cells is required in each finite element. In the array of simulations that will be presented in the next section, 
 the value of $\sdas$ was considered. We have chosen a fixed mesh element size of 2$\sdas$ and a CA cell size of $\sdas/2$. 
 An average of 4 CA cells per unit length of a finite element is enough to accurately compute the development of the 
-grain envelopes together with the solutal, thermal and mechanical interactions.
+grain envelopes together with the solutal, thermal and mechanical interactions. Values are given in \cref{fig:data_case_InGa}.
 
 %----------------
 \subsection{Configuration}
@@ -1044,8 +1058,7 @@ in \cref{fig:planche_cafe} for comparison with \cref{fig:planche_fe}. A striking
 perturbed as shown by the formation of numerous plumes when coupling with grain structure is active. The growing 
 front displayed on the grain structure at the right most column of \cref{fig:planche_cafe} dictates the leading position of the 
 mushy zone shown in the third column. Note that each color corresponds to one grain, with 17 grains having nucleated 
-at the cell’s bottom surface. However, comparison of the solid fraction maps between \cref{fig:planche_fe} and \cref{fig:planche_cafe} at the 
-same times reveals a delay in the growing front position. 
+at the cell’s bottom surface. However, comparison of the solid fraction maps between \cref{fig:planche_fe} and \cref{fig:planche_cafe} at the same times reveals a delay in the growing front position. 
 
 Values of the nucleation parameters in \cref{table:simulation_InGa_cafe} are such 
 that few grains rapidly form below the nominal liquidus isotherm. The delay is therefore not due to the nucleation 
@@ -1089,7 +1102,7 @@ rate and (L0) no, (L1) low and (L2) high lateral cooling.}
 CAFE-G2R1L1  & G2:1.5 & R1:-0.01 & L1:(20,0) & (58.25, 25.25)  & (\num{e6}, 1, \num{0.2}) \\ 
 CAFE-G1R1L1  & G1:0.2 & R1:-0.01 & L1:(20,0) & (29.75, 25.25)  & (\num{e6}, 1, \num{0.2}) \\ 
 CAFE-G1R1L2  & G1:0.2 & R1:-0.01 & L2:(500,0) & (29.75, 25.25) & (\num{e6}, 1, \num{0.2}) \\ 
-CAFE-G2R2L1  & G1:0.2 & R2:-0.05 & L1:(20,0) & (29.75, 25.25)  & (\num{e6}, 1, \num{0.2}) \\\tabucline[1pt]{-}
+CAFE-G1R2L1  & G1:0.2 & R2:-0.05 & L1:(20,0) & (29.75, 25.25)  & (\num{e6}, 1, \num{0.2}) \\\tabucline[1pt]{-}
 %-----------------------------
 \end{tabu}}
 }

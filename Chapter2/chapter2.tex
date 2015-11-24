@@ -12,7 +12,8 @@
 \subsubsection{Microsegregation models}
 %***********************************************
 Solid formation depends greatly on the ability of chemicals species to diffuse within each of 
-the solid and liquid phases, but also across the solid-liquid interface. Furthermore, chemical diffusion like all other 
+the solid and liquid phases, %but also across the solid-liquid interface. 
+Furthermore, chemical diffusion like all other 
 diffusional processes, is a time-dependent phenomenon. One can thus conclude that two factors
 influence the amount of solid formation: cooling rate and diffusion coefficients. However, 
 convection and other mechanical mixing sources, homogenise the composition much faster than atomic diffusion. 
@@ -22,7 +23,7 @@ solidification time. Thus, we speak of infinite diffusion in the liquid. Diffusi
 also known as \emph{back diffusion}, is the only transport mechanism with very low diffusion coefficients. 
 Therefore, chemical species require a long time, i.e. low cooling rate, to completely diffuse within the solid.
 The difference in diffusional behaviour at the scale of a secondary dendrite arm, is summarised by two limiting 
-segregation models of perfect equilibrium  and nonequilibrium, which are the lever rule and Gulliver-Scheil models, respectively. 
+segregation models of perfect equilibrium  and non-equilibrium, which are the lever rule and Gulliver-Scheil models, respectively. 
 Afterwards, models with finite back diffusion are presented. 
 %------------
 
@@ -40,7 +41,8 @@ These compositions are given by:
 & \Cs= \Csstar = \frac{\k \Cnominal}{\k\fs + (1-\fs)}
 \end{align}
 %----------------------
-where $\Cl$ and $\Cs$ are the phase compositions and $\Clstar$ and $\Csstar$ are values at the solid-liquid interface in the liquid and solid phases, respectively.  At the end of solidification, if a single solid phase forms, its composition is equal to the nominal composition, $\Cs = \Cnominal$.
+where $\Cl$ and $\Cs$ are the phase compositions and $\Clstar$ and $\Csstar$ are values at the solid-liquid interface in 
+the liquid and solid phases, respectively.  At the end of solidification, if a single solid phase forms, its composition is equal to the nominal composition, $\Cs = \Cnominal$.
 %------------
 
 %***********************************************
@@ -48,7 +50,7 @@ where $\Cl$ and $\Cs$ are the phase compositions and $\Clstar$ and $\Csstar$ are
 %***********************************************
 
 The other limiting case is the absence of diffusion in the solid or its limitation due to fast cooling.
-For a segregation coeffcicient less than unity, the consequence is a steady increase  of the homogeneous liquid composition
+For a segregation coefficient less than unity, the consequence is a steady increase  of the homogeneous liquid composition
 upon cooling while the solid composition continuously increases and becomes non-uniform.
 Compared to a full equilibrium approach, higher fractions of liquid will remain. In eutectic systems, liquid may exist until 
 another solid structure forms, e.g. upon reaching the eutectic composition, 
@@ -69,7 +71,7 @@ Assuming phase equilibrium is still valid, i.e. $\Clstar=\k^{-1} \Csstar$, the p
 \subsubsection*{Finite back diffusion}
 %***********************************************
 
-The assumption of a negligeable back diffusion overestimates the liquid composition
+The assumption of a negligible back diffusion overestimates the liquid composition
 and the resulting eutectic fraction. Therefore, many models studied the effect of limited diffusion in the solid. 
 One of the earliest models is the Brody-Flemings models \citep{brody_solute_1966} that is a based on a differential solute balance equation for a parabolic growth rate, as follows:
 %khan_influence_2014
@@ -94,7 +96,7 @@ exhaustive list of publications: \citet{clyne_solute_1981,kobayashi_solute_1988,
 combeau_modeling_1996,martorano_solutal_2003,tourret_generalized_2009}. It is noted that some of these publications consider 
 also a finite diffusion in the liquid phase. It also noted that dealing with some aspects 
 (e.g. multicomponent equilibrium phase diagrams, cross-diffusion of species, ...) is generally difficult
-and received a limited number of studies in the aim of determining a multicomponent segregation model, thus numerical approaches are favored.
+and received a limited number of studies in the aim of determining a multicomponent segregation model, thus numerical approaches are favoured.
 %------------------------------------
 
 %***********************************************
@@ -109,7 +111,8 @@ macrosegregation in single multiphase metal system.
 %***********************************************
 
 It is crucial for a solidification model to represent phenomena on the microscale, then scale up to predict 
-macroscopic phenomena. Nevertheless, the characteristic length of a small scale in solidification may be represented by a dendrite arm spacing, for instance for the mushy zone permeability, as it may also be represented by an atomic distance if one is interested, 
+macroscopic phenomena. Nevertheless, the characteristic length of a small scale in solidification may be represented by a dendrite arm spacing, 
+for instance for the mushy zone permeability, as it may also be represented by an atomic distance if one is interested, 
 for instance in the growth competition between diffusion and surface energy of the solid-liquid interface.
 Modelling infinitely small-scale phenomena could be prohibitively expensive in computation time, if we target industrial scales.
 Therefore, the common volume averaging approach alleviates these difficulties by making assumptions on intermediate scales. 
@@ -172,9 +175,8 @@ To finalize, the averaging is applied to temporal and spatial derivation operato
 where $\vstar$ is the local relative interface velocity and $\Gamma_{\liqsol}$ is the solid-liquid interface, 
 while $n^\phi$ is the normal to $\Gamma_{\liqsol}$, directed outwards. The surface integral terms in 
 \cref{eq:volumeaveraging3,eq:volumeaveraging4} are \emph{interfacial averages} 
-that express exchanges between the phases across the interface. 
-
-The previous equations will be used to derive a set of macroscopic conservation equations. 
+that express exchanges between the phases across the interface. The previous equations will 
+be used to derive a set of macroscopic conservation equations. 
 % It is noted that the intrinsic average $\avg{\psi}^\phi$ may be replaced by ${\psi}^\phi$ 
 % for notation simplicity, whenever the averaging technique applies.
 % This notation is thus compatible with the previously introduced average defined for the solid composition when the latter is non-uniform \cref{eq:scheil3}.
@@ -193,7 +195,7 @@ The general form of such a macroscopic conservation equation is given by:
 = Q_{\psi}
 \end{align}
 %-------
-where the first LHS term is non-stationnary, the second LHS term represents the convective transport
+where the first LHS term is non-stationary, the second LHS term represents the convective transport
 of the quantity $\psi$ while the third LHS term is diffusive transport of $\psi$. The RHS
 term is a source term.
 To determine an general averaged macroscopic equation, we must write
@@ -614,7 +616,7 @@ chemical species (\cref{eq:conservation_solute_init}) and liquid momentum (\cref
 %***********************************************
 In mechanics, it is possible to describe motion using two well-known descriptions: Eulerian and Lagrangian.
 To start with the latter, it describes the motion of a particle by attributing a reference frame that moves with the particle.
-In other words, the particle itself is the center of a reference frame moving at the same speed during time. 
+In other words, the particle itself is the centre of a reference frame moving at the same speed during time. 
 The position vector, denoted by $\vec{x}$, is hence updated as follows:
 %------
 \begin{align}
@@ -687,11 +689,11 @@ Very few models were found in the literature, combining solidification and level
 \citet{du_simulating_2001} applied it to track the interface between two molten alloys in a double casting technique. 
 Welding research, on another hand, has been more active adapting the level set methodology to corresponding applications. 
 Two recent works used the metal-air level set methodology in welding simulations and showed promising results: 
-\citet{desmaison_level_2014} employed this methodolody to simulate a hybrid arc and laser beam welding 
+\citet{desmaison_level_2014} employed this methodology to simulate a hybrid arc and laser beam welding 
 used in high thickness steel sheet welding, then later, \citet{chen_three_2014} applied it to gas metal arc welding (GMAW) to predict 
 the solidification grain structure of remelted zones.
 More recently, \citet{courtois_complete_2014} used the same methodology but this time to predict keyhole defect formation
-in spot laser welding. The tracked interface in this case was that between the molten alloy and the corresponding vapor phase.
+in spot laser welding. The tracked interface in this case was that between the molten alloy and the corresponding vapour phase.
 %----------------------------------
 %
 %
@@ -797,7 +799,7 @@ of $\crochet{-\varepsilon;+\varepsilon}$, is derived as follows:
 \end{align}
 %-------------
 The Heaviside and delta Dirac functions can be readily processed to obtain other geometric properties from the level set,
-which are extremely useful. In the context of a system $\Omega$, containing two domains $F_1$ seperated by an interface $\Gamma$, 
+which are extremely useful. In the context of a system $\Omega$, containing two domains $F_1$ separated by an interface $\Gamma$, 
 the following properties are interesting to study \citep{peng_pde-based_1999}:
 %------------
 \begin{align}
@@ -849,33 +851,34 @@ the harmonic and logarithmic mixing. The first law is maybe the most intuitive a
 from VOF-based methods. If we consider any property $\psi$ (for instance the fluid's dynamic viscosity $\mu$) then the arithmetic 
 law will give a mixed property $\mix{\psi}$ as follows:
 %---
-\begin{subequations}
+% \begin{subequations}
 \begin{align}
 \label{eq:arithmetic}
-\mix{\psi} &= \heaviside^{F_1} \psi^{F_1} + \brac{1-\heaviside^{F_1}} \psi^{F_2} \\
+% \mix{\psi} &= \heaviside^{F_1} \psi^{F_1} + \brac{1-\heaviside^{F_1}} \psi^{F_2} \\
 \mix{\psi} &= \heaviside^{F_1} \psi^{F_1} + \heaviside^{F_2} \psi^{F_2}
 \end{align}
-\end{subequations}
+% \end{subequations}
 %---
+where $\heaviside^{F_2}=1-\heaviside^{F_1}$. 
 Basically, the result is an average property that follows the same trend as the smoothed Heaviside function. As for the harmonic law, it writes:
 %---
-\begin{subequations}
+% \begin{subequations}
 \begin{align}
 \label{eq:harmonic}
-\mix{\psi} &= \brac{\frac{\heaviside^{F_1}}{\psi^{F_1}} + \frac{1-\heaviside^{F_1}}{\psi^{F_2}} }^{-1} \\
+% \mix{\psi} &= \brac{\frac{\heaviside^{F_1}}{\psi^{F_1}} + \frac{1-\heaviside^{F_1}}{\psi^{F_2}} }^{-1} \\
 \mix{\psi} &= \brac{\frac{\heaviside^{F_1}}{\psi^{F_1}} + \frac{\heaviside^{F_2}}{\psi^{F_2}} }^{-1}
 \end{align}
-\end{subequations}
+% \end{subequations}
 %---
 and last, the logarithmic law writes:
 %---
-\begin{subequations}
+% \begin{subequations}
 \begin{align}
 \label{eq:logarithmic}
-\mix{\psi} &=  n^{\brac{\heaviside^{F_1} \log_n \psi^{F_1} + \brac{1-\heaviside^{F_1}} \log_n \psi^{F_2}}} \\
+% \mix{\psi} &=  n^{\brac{\heaviside^{F_1} \log_n \psi^{F_1} + \brac{1-\heaviside^{F_1}} \log_n \psi^{F_2}}} \\
 \mix{\psi} &=  n^{\brac{\heaviside^{F_1} \log_n \psi^{F_1} + \heaviside^{F_2} \log_n \psi^{F_2}}}
 \end{align}
-\end{subequations}
+% \end{subequations}
 %---
 where $n$ is any real number serving as a logarithm base, which often is either the exponential $e$ or $10$.
 
@@ -1114,7 +1117,7 @@ without modifying the latter, as follows:
 %
 \subsubsection{Convective reinitialization}
 %
-A recent work by \citet{ville_convected_2011} introduced another concept for reinialisation 
+A recent work by \citet{ville_convected_2011} introduced another concept for reinitialisation 
 called the \emph{convective reinitialisation}. The idea lies in combining both level set advection 
 and regularisation in a single equation, saving resolution time. The key components of their method
 starts by defining a pseudo time step, $\Delta \tau$, that is linked to the main time variable through
@@ -1380,7 +1383,7 @@ Number of elements 		&   resulting number of elements after remeshing is done  \
 It is essentially an \emph{a posteriori} error estimator. The method consists of estimating the interpolation error for
 one or more nodal fields, then using a statistical concept, the so-called \emph{length distribution tensor}, a stretching factor
 can be determined by solving several constraints like locally minimizing the induced error, limit the number of created nodes to
-a specific  threhold, etc. Finally, the stretching factor is directly used to correct the edge lengths, where the latter varies in such a way to minimize the locally induced error down
+a specific  threshold, etc. Finally, the stretching factor is directly used to correct the edge lengths, where the latter varies in such a way to minimize the locally induced error down
 to a specified error limit, $\varepsilon_\text{er.}$.
 For detailed technical information, the reader is referred to these references: \citep{coupez_metric_2011,coupez_edge-based_2013,el_jannoun_space-time_2014}.
 
@@ -1388,7 +1391,7 @@ This method is readily compatible with multiple scalar or vector input, which re
 for the steepness of each quantity gradient. In solidification, such a technique is appealing since we often need 
 to maintain a sufficiently small mesh size in areas of interest, e.g. narrow mushy zone formation caused by high thermal gradients, areas with composition variations or
 areas where fluid convection is a consequence to combined effects of energy-solute variations. \Cref{fig:remesh4} shows an example of mechanically driven flow,
-along with the accurate capturing of the interface using highly stretched anisotropic elements, at the edges and in the center.
+along with the accurate capturing of the interface using highly stretched anisotropic elements, at the edges and in the centre.
 
 
 %-----------------
@@ -1422,8 +1425,10 @@ along with the accurate capturing of the interface using highly stretched anisot
 
 This remeshing technique relies on the parameter input defined in \cref{table:remesh4_params}.
 Among the parameters, $h_\text{min}$ and $\varepsilon_\text{er.}$ are the most important.
-The first one sets the minimum limit for the mesh algorithm to take while topoligically optimising the grid. The seconds parameter controls the error, and hence globally the elements shape may vary from highly anisotropic shapes (low values of $\varepsilon_\text{er.}$), to isotropic (high values of $\varepsilon_\text{er.}$).
-We prefer to limit this parameter by using a reasonble value, between 10 and 500, depending on the case and the final results. 
+The first one sets the minimum limit for the mesh algorithm to take while topoligically optimising the grid. 
+The seconds parameter controls the error, and hence globally the elements shape may vary from highly anisotropic 
+shapes (low values of $\varepsilon_\text{er.}$), to isotropic (high values of $\varepsilon_\text{er.}$).
+We prefer to limit this parameter by using a reasonable value, between 10 and 500, depending on the case and the final results. 
 
 %--------------------------------
 \begin{table}[htbp]
@@ -1438,8 +1443,8 @@ $\varepsilon $			&	level set mixing thickness			\\
 $h_\text{min}$			&   minimum mesh size \\
 $\varepsilon_\text{er.}$	&  minimum error limit \\
 Remeshing criteria 	 	&   physical quantities of interest \\
-Number of nodes 		&   resulting number of nodes after remeshing is done \\\tabucline[1pt]{-}
-Number of elements 		&   imposed number of elements needed for the remesh optimisation  \\
+Number of nodes 		&   resulting number of nodes after remeshing is done \\
+Number of elements 		&   imposed number of elements needed for the remesh optimisation  \\\tabucline[1pt]{-}
 %-----------------------------
 \end{tabu}}
 \end{table}

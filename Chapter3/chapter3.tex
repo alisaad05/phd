@@ -103,7 +103,7 @@ phases in a given RVE writes:
 %%-------------
 
 Note that the volume average enthalpy is approximated by the product $\avg{\rho h}^{\phi}=\hphi \rphi$ in the current work. As stated 
-in the introduction, it becomes clear from \cref{eq:volume_average_enthalpy} that phase properties, i.e. average phase density, , $\rphi$ and enthalpy, $\hphi$, 
+in the introduction, it becomes clear from \cref{eq:volume_average_enthalpy} that phase properties, i.e. average phase density, $\rphi$ and enthalpy, $\hphi$, 
 are temperature and composition dependent. This equation is the key to convert the average volume enthalpy to temperature (through a procedure named \emph{H2T}) 
 or vice-versa (\emph{T2H}). The values of the different phase fractions $\gphi$ (solidification path) and phase enthalpies $\rh^{\phi}$ are thus needed 
 to close the relation.
@@ -359,7 +359,7 @@ conservation principle is satisfied. Therefore, the weak form writes:
  = 0
 \end{multline}
 %------------
-where $H=\rho h$ is the average volumetric enthalpy, introduced to simplify notations in the following. 
+where $H=\rho h$ is a simplified notation denoting the average volumetric enthalpy, used to derive the weak formulation. 
 Furthermore, we assume a static solid phase and an incompressible liquid phase, which allows recasting the second term of 
 \cref{eq:averaged_energy_eqn} into $\vit \cdot \nabvec \avg{\rho h}^l$. 
 $\avg{\rho h}^l = \rhol \hl$ is not main variable of the energy conservation equation's weak form, \cref{eq:weak_energy}.
@@ -952,7 +952,7 @@ boundary condition) from one side, the other side being adiabatic. The initial c
 boundary conditions and alloy properties are all listed in \cref{table:data_case_alsi7}.
 
 For this simple test case, 
-we use linear temperature dependence of the intrinsic phase enthalpies, that is $\rh^s= \rho c_p T$ and $\rh^l= \rho (c_p T + L)$, 
+we use linear temperature dependence of the intrinsic phase enthalpies, that is $\rh^s= \rho c_p T$ and $\rh^l= \rho (c_p T + l)$, 
 where $\rho$ is the alloy density, $c_p$ is the heat capacity per unit mass and $L$ is the latent heat per unit mass. 
 Values for $\rho$, $c_p$ and $L$, as well as for the thermal conductivities, $\kappa = \kl = \ks$, are taken constant. 
 
@@ -985,7 +985,7 @@ Segregation coefficient 			& $k$ 				& \num{0.13} 	& $-$  \\
 Liquidus slope 						& $m_L$ 			& \num{-6.5} 	& \si{\uslope} \\ 
 Density			 					& $\rho$ 			& \num{2600} 	& \si{\udensity} \\  
 Liquid heat capacity 		 		& $c_p$ 			& \num{1000} 	& \si{\umasscapacity} \\  
-Enthalpy of fusion 				 	& $L$ 				& \num{365384} 	& \si{\umassenergy} \\ 
+Enthalpy of fusion 				 	& $l$ 				& \num{365384} 	& \si{\umassenergy} \\ 
 Thermal conductivity 				& $\kappa$ 			& \num{70} 		& \si{\uconductivity}	\\
 \hline  %------------------------------------------------------------------------------------------
 Heat transfer coefficient 			& $\hext$ 			& \num{500} 	& \si{\uhconvec} \\ 
@@ -1267,16 +1267,17 @@ Although the Newton-Raphson algorithm is known for its quadratic convergence spe
 may easily raise the number of iterations to an average of 5 iterations before convergence can be achieved. In situations without
 phase change but only variable slope of enthalpy versus temperature, from 1 to 2 iterations are needed to converge.
 In some situations where phase change tends to be localised, i.e. taking place at some nodes, due to a local high gradient, convergence of
-the nonlinear system may be become difficult, with residual values occasionally increasing instead of decreasing.  
+the nonlinear system may become difficult, with residual values occasionally increasing instead of decreasing.  
 A possible solution in such situations is to implement a line search method. It consists of interpolating the temperature between the previous temperature
 and the current iteration solution, in order to have a new temperature estimate, leading to a new residual estimate. This method is attractive inasmuch as
 it is not expensive, since no linear system is solved in the sub-iterations, only interpolations and matrices assembly to evaluate the residual.
 
 Regarding the thermodynamic tabulations, they are only obtained by assuming full equilibrium for macrosegregation calculations. 
-For many binary alloys, little differences are usually seen when the macrosegregation is induced by a full equilibrium and a non equilibrium solidification
+For many binary alloys, little differences are usually seen when the macrosegregation is induced by a full equilibrium and a non equilibrium solidification.
 It is clear however that this approximation remains limiting for multicomponent alloys. 
 For steels, a third type of approximation is even required, named partial equilibrium, that considers equal chemical potential 
 of interstitial elements in all phases (e.g., C), while substitutional species in the solid phases (e.g., Cr) are frozen \citep{koshikawa_computation_2014}. 
+General microsegregation models coupled with thermodynamic tabulations (e.g. \citep{tourret_multiple_2011}) for multicomponent alloys is still missing. 
 
 
 
