@@ -168,17 +168,20 @@ or
 \usepackage[top=1cm, bottom=1cm, left=1cm, right=1cm, headheight=15pt]{geometry}
 
 %% --- Margins (Custom layout)
-\setlength{\textwidth}{146.8mm} % = 210mm - 37mm - 26.2mm
+\setlength{\textwidth}{147.8mm} % 146.8 = 210mm - 37mm - 26.2mm
 \setlength{\oddsidemargin}{11.6mm} % 37mm - 1in (from hoffset)
 \setlength{\evensidemargin}{0.8mm} % = 26.2mm - 1in (from hoffset)
 \setlength{\topmargin}{-2.2mm} % = 0mm -1in + 23.2mm 
-\setlength{\textheight}{221.9mm} % = 297mm -29.5mm -31.6mm - 14mm (12 to accomodate footline with pagenumber)
+\setlength{\textheight}{222.9mm} % 221.9mm = 297mm -29.5mm -31.6mm - 14mm (12 to accomodate footline with pagenumber)
 \setlength{\headheight}{14pt}
+
+% \setlength{\parskip}{1cm plus4mm minus3mm}
+\setlength{\parskip}{0pt}
 %% --- Paragraph spacing
 \setlength{\parindent}{0pt}
 %% --- Interline spacing
 \usepackage{setspace} % increase interline spacing slightly
-\setstretch{1.25} %1.15
+\setstretch{1.15} %1.15
 
 %%------------------------ Captions  -------------------------------
 
@@ -198,8 +201,8 @@ or
 	\fancyhf{}
 	\renewcommand{\headrulewidth}{0.4pt}
 	\renewcommand{\footrulewidth}{0pt}
-	\fancyhead[OR]{\bfseries \nouppercase{\rightmark}}
-	\fancyhead[EL]{\bfseries \nouppercase{\leftmark}}
+	\fancyhead[OR]{\nouppercase{\rightmark}} %\bfseries \nouppercase{\rightmark}
+	\fancyhead[EL]{\nouppercase{\leftmark}} %\bfseries \nouppercase{\leftmark}
 	\fancyfoot[EL,OR]{\thepage}
 \fancypagestyle{plain}{
 	\fancyhf{}

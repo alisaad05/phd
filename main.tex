@@ -1,4 +1,4 @@
-\documentclass[11pt,a4paper,twoside,openright]{book}
+\documentclass[10.5pt,a4paper,twoside,openright]{book}
 %\documentclass[a4paper,12pt,fourier,numbered,print,index]
 
 % CHECK https://www.writelatex.com/1283488jybyzp#/3132576/
@@ -15,7 +15,7 @@
 				 Chapter3/chapter3,
 				 Chapter4/chapter4,
 				 Chapter5/chapter5,
-				 % Chapter6/chapter6,
+				 Chapter6/chapter6,
 				 % Backmatter/appendix1,
 				 % Backmatter/appendix2,
 			 } 
@@ -35,11 +35,9 @@
 %\listoffigures
 %\listoftables
 \listofacronyms % in post_commands.tex
-% \printnomenclature[space] space can be set as 2.5cm between symbol and
-% description
-%\printnomencl
 %\listoftodos
 \end{nolinkcolors}
+
 %%------------------------ MAIN MATTER  -------------------------------
 \mainmatter
 \include{Chapter1/chapter1} % Introduction
@@ -47,7 +45,6 @@
 \include{Chapter3/chapter3} % Energy solvers
 \include{Chapter4/chapter4} % Coupling with Fluid Mechanics I: Monodomain
 \include{Chapter5/chapter5} % Coupling with Fluid Mechanics II: Level Set Approach - Application to TEXUS
-
 \include{Chapter6/chapter6} % Conclusion
 
 % ********************************** Appendices ********************************
@@ -56,7 +53,6 @@
 % \include{Backmatter/appendix1}
 % \include{Backmatter/appendix2}
 % \end{appendices}
-
 %%------------------------ BACK MATTER  -------------------------------
 \backmatter 
 \addcontentsline{toc}{chapter}{\bibname}
@@ -64,17 +60,8 @@
 \cleardoublepage
 \renewcommand*{\bibfont}{\footnotesize}
 \printbibliography
-
+\newpage
 \includepdf{Backmatter/FourthPage.pdf}
 % *************************************** Index ********************************
-%\printthesisindex % If index is present
 
 \end{document}
-%TODO
-% simulation Tsolver test case like driven cavity but with solidification of Pn-Sn, Galerkin and SUPG + link to elie thesis 
-% Compare remeshing based on level set gradient (marc bernacki thesis) and remesh4
-% restructure VMS solver from chapter 4 to chapter 2 ? along with SegregationP1 solver and Hsolver ?
-
-% chapter3, Hsolver/Tsolver algorithms, add brackets for fig.
-% in chapter 4, add figures to show the domain and boundary conditions, as well as nucleating surfaces for CAFE (check presentation PAM)
-% Weak form Energy and Solute in chapter 3 while weak form Navier Stokes in chapter 4

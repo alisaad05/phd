@@ -1,4 +1,4 @@
-\chapter{Macrosegregation with liquid metal motion}
+\chapter{Macrosegregation with constant metal volume}
 \begin{nolinkcolors} 
 \minitoc
 \end{nolinkcolors}
@@ -69,7 +69,7 @@ formulation, these fields are decomposed according to these scales as follows:
 %----------------
 \begin{align}
 \label{eq:vms_multiscale_v}
- &\vit = \vit_h + \tilde{\vl} \\ 
+ &\vit = \vit_h + \tilde{\vit} \\ 
 \label{eq:vms_multiscale_p}
  &p = p_h + \tilde{p}
 \end{align}
@@ -109,22 +109,6 @@ to solve a stabilised Navier-Stokes system with Darcy terms.
 %-------------------------------------------------------
 \subsection{Strong and weak formulations}
 %-------------------------------------------------------
-
-% The strong form of the fluid mechanics problem has been previously established in chapter 2 (\cref{fig:algo_monodomain}),
-% where we obtained the following system of mass and liquid momentum conservation equations:
-% %------
-% \begin{equation}
-%    \label{eq:vms_strong}
-%    \left\{
-%    \begin{aligned}
-%       & \rholref \brac{\tempup{ \vit } + \frac{1}{\gl} \nabvec \cdot \brac{\vit \times \vit}} = \\
-% 	  &- \gl\nabvec \pl - \nabvec \cdot \brac{2 \mul \strainrateliq}
-% 	  - \gl \mul \K^{-1} \vit + \gl \rhol \gravity\\ \\
-%       & \nabvec \cdot \vit =0
-%     \end{aligned}
-%     \right.
-% \end{equation}
-% %------
 The solution of the strong form of \cref{eq:conservation_momentum} consists of finding the pair 
 $\brac{\vit, \pl}$ of the previous system, when the following essential (Dirichlet type) and natural (Neumann type) boundary 
 conditions are applied :
@@ -136,7 +120,6 @@ conditions are applied :
 &\text{with } \partial\Ohm_\text{Dirichlet} \cup  \partial\Ohm_\text{Dirichlet} = \partial\Ohm
 \end{align}
 %----------------	
-
 We can comment on the strong form with the following recap points:
 %%%----
 \begin{enumerate}
@@ -155,21 +138,9 @@ We can comment on the strong form with the following recap points:
 		\end{align}
 		%----------------		
 		where $\betaT$ and $\betawil$ are respectively the thermal and solutal expansion coefficients, while
-		$\Tref$ and $\wilref$ represent a reference temperature and a reference liquid composition for each chemical species, respectively.
-%\item	the term $\nabvec \cdot \brac{\vit \times \vit}$ reduces to $\brac{\nabmat \vit}\vit$ as 
-%		consequence of the metal's incompressibility. The latter product is linearised in a semi-implicit
-%		way \citep{gouttebroze_modelisation_2005}, hence		
-%		%----------------
-%		\begin{align}
-%		\label{eq:semi_implicit_velocity}
- %		\brac{\nabmat \vit}\vit = \brac{\nabmat \vit} \vit^{t-\Delta t}
-	%	\end{align}
-		%----------------	
-\end{enumerate}
-%%%----
+		$\Tref$ and $\wilref$ represent a reference temperature and a reference liquid composition for each chemical species, respectively.\end{enumerate}
 The weak form treated by the VMS solver derives from the strong form by multiplying
 by test functions for velocity and pressure belonging to these functional spaces:
-%\citep{hachem_stabilized_2009}
 %----------------
 \begin{align*}
 %\label{eq:}
@@ -226,6 +197,7 @@ Finally, the SUPG-PSPG-LSIC stabilised weak formulation writes:
     \right.
 \end{equation}
 %----------------
+
 Replacing \cref{eq:supg_test} in \cref{eq:weakform_before}, we get the final weak form:
 %---------------
 \begin{equation}
@@ -255,12 +227,9 @@ Replacing \cref{eq:supg_test} in \cref{eq:weakform_before}, we get the final wea
     \right.
 \end{equation}
 %----------------
-
-
 % -------------------------------------
 \subsection{Stabilisation parameters}
 % -------------------------------------
-
 Several expressions for $\tausupg$ were derived by \citet{tezduyar_incompressible_1992,tezduyar_finite_2000}, from which
 we retain the following:
 %----------------
@@ -838,7 +807,7 @@ Liquidus slope					& $m_L$					& \num{-2.73}			& \si{\udegK \per \ucomposition} 
 \hline
 Gibbs-Thomson coefficient		&$\Gamma_{\text{GT}}$	&\num{2e-7}			& \si{\udegK \per \metre} 		\\ 	
 Heat capacity					&$c_p$ 					&\num{380.74}		& \si{\umasscapacity} 		\\ 	
-Enthalpy of fusion					&$l$ 					&\num{8.02d-4}		& \si{\umassenergy} 	\\ 	
+Enthalpy of fusion				&$l_f$ 					&\num{8.02d-4}		& \si{\umassenergy} 	\\ 	
 Diffusion coefficient of Ga in liquid In 		& $\Dl$ 	& \num{1.525d-9} 	& \si{\udiffusivity}  	\\ 
 Dynamic viscosity  				& $\mul$ 					& \num{2e-3} 		& \si{\uviscosity}  	\\ 
 Thermal expansion coefficient 	& \betaT 					& \num{0.0978e-3} 	& \si{\ubetaT}  		\\ 
@@ -948,6 +917,7 @@ on a cut plane at the center of the cell at 500 s, 1000 s and 1500 s.}
 \end{figureth}
 \end{landscape}
 %=====================================BIG LANDSCAPE FIGURE =====================================
+
 %--------------------------
 \subsubsection{Discussion}
 %--------------------------
@@ -967,6 +937,7 @@ the solid-liquid interface together with macroscopic conservation equations.
 The authors compared simulation results to experimental findings obtained by \citet{shevchenko_chimney_2013}.
 However, their simulation follow solidification in a small volume that contains a few dendrites with interdendritic liquid, 
 therefore limited as far as to predict the liquid behaviour outside the mushy zone.
+
 On another hand, experimental observations reveal a great deal of information 
 regarding solute redistribution, first in the chimneys that wash the dendrites in their 
 way and then convective plumes that expel chemical species outside the mush, resulting in a global complex phenomenon.
@@ -991,7 +962,8 @@ in all space directions, referred to as the cellular automaton (CA) grid. It is 
 the unstructured finite element mesh previously mentioned for the solution of the average conservation 
 equations. A typical CA step dimension is smaller than the smallest FE mesh size. The CA grid serves to 
 represent solidification phenomena including nucleation, growth and remelting of the envelope of the 
-primary dendritic grains. Details about the CAFE model can be found in \citep{carozzani_3d_2012,carozzani_direct_2013,carozzani_optimized_2014}. 
+primary dendritic grains. 
+Details about the CAFE model can be found in \citep{carozzani_3d_2012,carozzani_direct_2013,carozzani_optimized_2014}. 
 Cell information, such as the temperature, the average composition or the velocity of the liquid phase, is interpolated from 
 the nodes of the FE mesh. State indices are also defined for each CA cell, providing the presence of liquid or solid phases. 
 
@@ -1065,7 +1037,8 @@ that few grains rapidly form below the nominal liquidus isotherm. The delay is t
 undercooling but to the growth undercooling of the dendrite tips. It should be noticed that, the growth front driven 
 by undercooling in \cref{fig:planche_cafe} also forms with a higher initial solid fraction and hence larger solute segregation occurs 
 at the front. This effect, together with instabilities of the composition field, is caused by a more perturbed fluid flow 
-and more plumes as observed in CAFE-G2R1L1 compared to FE-G2R1L1. Such observations fit to the complicated fluid and solute 
+and more plumes as observed in CAFE-G2R1L1 compared to FE-G2R1L1. 
+Such observations fit to the complicated fluid and solute 
 flow patterns typically occurring in the experiments as shown in \cref{fig:experimental_freckles_gradients}. 
 It becomes obvious that the consideration of grain 
 structure and growth undercooling are vital to accurately simulate chimney formation in these experiments. The reasons for the 
@@ -1073,7 +1046,8 @@ instabilities are discussed hereinafter.
 
 In the present 3D CAFE simulation, each grain shown in \cref{fig:planche_composition_grain} 
 is associated with a crystallographic orientation. 
-The growth kinetics is only given for the $\avg{100}$ crystallographic directions at the grain boundaries with the liquid. The CA growth model 
+The growth kinetics is only given for the $\avg{100}$ crystallographic 
+directions at the grain boundaries with the liquid. The CA growth model 
 is based on the hypothesis that, in a quiescent liquid of uniform temperature distribution and composition, the grain envelop should 
 reproduce an octahedral grain shape with main directions given by the six $\avg{100}$ directions. 
 
@@ -1158,7 +1132,7 @@ on a cut plane at the center of the cell at 500 s, 1000 s and 1500 s.}
 \captionsetup{singlelinecheck=off}
 \caption[.]{Snapshots of dendritic structure and composition field 
 obtained from two solidification experiments at a cooling rate 
-$R$=\SI{-0.01}{\uCR} and temperature gradients of (a) $\norm{\vec{G}}$=\SI{1.1}{\ugradT} and (b) $\norm{\vec{G}}$=\SI{1.3}{\ugradT}.} 
+$R$=\SI{-0.01}{\uCR} and temperature gradients of (a) $\norm{\vec{G}}$=\SI{1.1}{\ugradT} and (b) $\norm{\vec{G}}$=\SI{1.3}{\ugradT} \citep{shevchenko_chimney_2013}.} 
 \label{fig:experimental_freckles_gradients}
 \end{figure}
 %-----------------
@@ -1241,7 +1215,7 @@ regular pattern during some time.
 	}
 	{% else 
 		%-------
-		\includegraphics[height=5cm]{Chapter4/Graphics/freckle_cafe/anim_pulsing/img2.png}
+		\includegraphics[height=10cm]{Chapter4/Graphics/freckle_cafe/anim_pulsing/img2.png}
 		\caption{Snapshot of the pusling mechanism coming from a groove shape in the mushy (check animation in the PDF file).} 
 		%-------
 	}
@@ -1290,7 +1264,7 @@ rising solute-rich liquid with descending In-rich fluid. This mechanism also cau
 \caption[.]{Snapshots of dendrite structure and composition field from two 
 solidification experiments conducted at a cooling rate 
 $R$=\SI{-0.01}{\uCR} and a temperature gradient $\norm{\vec{G}}$=\SI{1}{\ugradT}: (a) “pulsing” plumes, 
-(b) continuous plume, (c) upcoming plume instability.} 
+(b) continuous plume, (c) upcoming plume instability \citep{shevchenko_chimney_2013}.} 
 \label{fig:experimental_freckles_regimes}
 \end{figure}
 %-----------------
@@ -1306,19 +1280,20 @@ with case CAFE-G1R1L1 in \cref{fig:cafe_VG1} with respect to the buckled interfa
 zone as well a plume pulsing effect when a low temperature gradient is applied. On the other hand, segregation inside 
 the mush is more irregular with more pronounced patterns reaching a larger depth. 
 
-One could distinguish alternating V and A shapes patterns in the mushy zone. As for case CAFE-G1R1L1, these patterns are created by a network of pulsing 
+One could distinguish alternating V-shapes and A-shapes patterns in the mushy zone. 
+As for case CAFE-G1R1L1, these patterns are created by a network of pulsing 
 plumes formed by the steps created on the delocalized growth front due to the low temperature gradient. However, these 
 considerations are not sufficient to explain the shape of the growth front. The reason for the protuberances created at 
-the tips of the V shape is the presence of a descending bulk liquid with a low composition seen by the growth front. It 
+the tips of the V-shape is the presence of a descending bulk liquid with a low composition seen by the growth front. It 
 infers that favorable growth conditions are created for a higher working temperature since the dendrite tip undercooling 
 decreases for facing liquid flow and a lower composition; the growth rate is given by the isotherm velocity. The growth 
 front thus adjusts its position to catch up with the corresponding isotherm, the latter being located at the tips of the 
-V shape, i.e. the outmost advanced position of the growth front. It also means that the V shape angle depends on the size 
+V-shape, i.e. the outmost advanced position of the growth front. It also means that the V-shape angle depends on the size 
 and intensity of the convection loops above the front. When the steps are formed on the growth front, the plumes exiting 
-the mushy zone follow a direction normal to the front. They are inclined towards each other above the V shape. As a result, 
+the mushy zone follow a direction normal to the front. They are inclined towards each other above the V-shape. As a result, 
 they may join and form a larger plume as seen in CAFE-G1R1L1 (\cref{fig:cafe_VG1}), thus forming larger and more stable chimneys. 
 The other observation in \cref{fig:cafe_R1R2} is the existence of stable regions of the growth front. For instance, this is seen 
-in between the two V shape forming or on the right hand side of the cell. 
+in between the two V-shape forming or on the right hand side of the cell. 
 
 %-----------------------
 \begin{figureth}
@@ -1333,19 +1308,20 @@ The white contour identifies the zero velocity limit for the vertical component 
 The reason for this stability is the inversion of 
 the composition gradient located ahead. Animation shows that solute coming from the top of the cell is responsible for this 
 accumulation, creating a layering that provides a stabilization effect above the mushy zone. This is verified by the vertical 
-component of the average velocity also made available in \cref{fig:cafe_R1R2}. It is negative outside the path of the plumes. A resulting 
-concurrent effect is the formation of the A shape segregates in between the V shape patterns seen in \cref{fig:cafe_R1R2}. Finally, it can 
+component of the average velocity also made available in \cref{fig:cafe_R1R2}. 
+
+It is negative outside the path of the plumes. A resulting 
+concurrent effect is the formation of the A-shape segregates in between the V-shape patterns seen in \cref{fig:cafe_R1R2}. Finally, it can 
 be observed that these patterns are sustained longer compared to \cref{fig:cafe_G1G2} CAFE-G1R1L1 because, at high cooling rate, 
 the flow in the mushy zone is decreased due to a faster solidification. This is the same effect as described for the large gradient 
 configuration in CAFE-G2R1L1 (\cref{fig:cafe_VG2}).
 
-It is not clear how these observations could be compared with the A  and V  shapes segregates reported for steel ingots 
+It is not clear how these observations could be compared with the A-shapes  and V-shapes segregates reported for steel ingots 
 \citep{pickering_macrosegregation_2013}. Despite the fact that macrosegregation is the main phenomenon leading to these 
 patterns, there has not been a clear explanation yet in the literature for their formation. However, for steel casting, 
-the A and V patterns are believed to form concomitantly. Further investigations would thus be required to quantify the 
+the A and V patterns are believed to form simultaneously. Further investigations would thus be required to quantify the 
 consequences of thermosolutal instabilities simulated here for an \bin{In}{75}{Ga} alloy and check their possible correlation 
 with experimental observations in steel casting.
-
 
 %---------------------------------------------------
 \subsection{Effect of lateral temperature gradient}
@@ -1395,7 +1371,8 @@ following time increments: 450 s, 1000 s and 1500 s.}
 \includegraphics[width=0.6\textwidth]{Chapter4/Graphics/freckle_exp/exp_G1R1.png}
 \captionsetup{singlelinecheck=off}
 \caption[.]{Snapshot of dendritic structure and composition field from a 
-solidification experiment recorded at 1000 s for a cooling rate $R$=\SI{-0.01}{\uCR} and a temperature gradient $\norm{\vec{G}}$=\SI{-1}{\ugradT}.}
+solidification experiment recorded at 1000 s for a cooling rate $R$=\SI{-0.01}{\uCR} 
+and a temperature gradient $\norm{\vec{G}}$=\SI{-1}{\ugradT} \citep{shevchenko_chimney_2013}.}
 \label{fig:exp_G1R1}
 \end{figure}
 %----------------- 

@@ -66,11 +66,9 @@ Assuming phase equilibrium is still valid, i.e. $\Clstar=\k^{-1} \Csstar$, the p
 & \Cs = \int_{0}^{f^s} \Csstar\: \mathrm{d}f^s
 \end{align}
 %------------
-
 %***********************************************
 \subsubsection*{Finite back diffusion}
 %***********************************************
-
 The assumption of a negligible back diffusion overestimates the liquid composition
 and the resulting eutectic fraction. Therefore, many models studied the effect of limited diffusion in the solid. 
 One of the earliest models is the Brody-Flemings models \citep{brody_solute_1966} that is a based on a differential solute balance equation for a parabolic growth rate, as follows:
@@ -104,12 +102,9 @@ and received a limited number of studies in the aim of determining a multicompon
 %***********************************************
 In this section, we will present the macroscopic conservations equations that enable us to predict 
 macrosegregation in single multiphase metal system.
-
- 
 %***********************************************
 \subsubsection{Volume averaging} \label{sec:volumeavg}
 %***********************************************
-
 It is crucial for a solidification model to represent phenomena on the microscale, then scale up to predict 
 macroscopic phenomena. Nevertheless, the characteristic length of a small scale in solidification may be represented by a dendrite arm spacing, 
 for instance for the mushy zone permeability, as it may also be represented by an atomic distance if one is interested, 
@@ -1306,21 +1301,9 @@ stretching the elements, leaving small element lengths in the normal direction, 
 This method is not based on error estimators, but rather on user input to choose the mesh size in
 normal and tangential directions to the interface, as well as the mesh size in each of the domains separated by the level set, as shown in \cref{fig:remesh2}.
 For more details about this method, the reader is referred to \citep{bernacki_development_2007,resk_adaptive_2009,hitti_direct_2011}.
-
-%----------------------
-\begin{figureth}
-% textwidth 
-{0.75}
-%path 
-{Chapter2/Graphics/remesh2.png}
-% caption
-{(a) Multiple level sets used to delimit the grains of an equiaxial polycrystal with (b) a zoom on the anisotropic mesh elements describing the grain boundaries \citep{hitti_direct_2011}. }
-% label
-\label{fig:remesh2}
-\end{figureth}
-%-----------------------------------
-
 This remeshing technique relies on the paramater input defined in \cref{table:remesh2_params}.
+
+
 
 %--------------------------------
 \begin{table}[htbp]
@@ -1343,7 +1326,19 @@ Number of elements 		&   resulting number of elements after remeshing is done  \
 \end{table}
 %--------------------------------
 
+%----------------------
+\begin{figureth}
+% textwidth 
+{0.75}
+%path 
+{Chapter2/Graphics/remesh2.png}
+% caption
+{(a) Multiple level sets used to delimit the grains of an equiaxial polycrystal with (b) a zoom on the anisotropic mesh elements describing the grain boundaries \citep{hitti_direct_2011}. }
+% label
+\label{fig:remesh2}
+\end{figureth}
 
+%-----------------------------------
 % The following parameters are used as input data to determine the final nodal metric field:
 % %------------------------------------
 % \begin{tabbing}
@@ -1393,9 +1388,16 @@ to maintain a sufficiently small mesh size in areas of interest, e.g. narrow mus
 areas where fluid convection is a consequence to combined effects of energy-solute variations. \Cref{fig:remesh4} shows an example of mechanically driven flow,
 along with the accurate capturing of the interface using highly stretched anisotropic elements, at the edges and in the centre.
 
+This remeshing technique relies on the parameter input defined in \cref{table:remesh4_params}.
+Among the parameters, $h_\text{min}$ and $\varepsilon_\text{er.}$ are the most important.
+The first one sets the minimum limit for the mesh algorithm to take while topoligically optimising the grid. 
+The seconds parameter controls the error, and hence globally the elements shape may vary from highly anisotropic 
+shapes (low values of $\varepsilon_\text{er.}$), to isotropic (high values of $\varepsilon_\text{er.}$).
+We prefer to limit this parameter by using a reasonable value, between 10 and 500, depending on the case and the final results.
+
 
 %-----------------
-\begin{figure}[htbp]
+\begin{figure}[H]
 \centering
    %------------
   \begin{subfigure}[t]{0.3\textwidth}
@@ -1423,14 +1425,7 @@ along with the accurate capturing of the interface using highly stretched anisot
 \end{figure}
 %-----------------
 
-This remeshing technique relies on the parameter input defined in \cref{table:remesh4_params}.
-Among the parameters, $h_\text{min}$ and $\varepsilon_\text{er.}$ are the most important.
-The first one sets the minimum limit for the mesh algorithm to take while topoligically optimising the grid. 
-The seconds parameter controls the error, and hence globally the elements shape may vary from highly anisotropic 
-shapes (low values of $\varepsilon_\text{er.}$), to isotropic (high values of $\varepsilon_\text{er.}$).
-We prefer to limit this parameter by using a reasonable value, between 10 and 500, depending on the case and the final results. 
-
-%--------------------------------
+ %--------------------------------
 \begin{table}[htbp]
 \centering
 \caption{Summary of the mesh parameters in order to perform adaptive remeshing based on \emph{Remesh4} technique.}

@@ -4,8 +4,29 @@
 %\minitoc
 %\newpage
 
-\section*{Conclusions}
-\comment{The summary of what we did in the previous chapters}
+% \section*{Conclusions}
+The current thesis proposes a numerical model to predict macrosegregation in different contexts: without or
+with overall metal volume change. The first case considers no average density change during solidification, 
+assuming that the liquid and solid phases in the metal have the same density. 
+On the other hand, the second case considers that the difference in metallic phase densities causes the average density to change, causing the metal's volume to
+change concurrently. 
+% \paragraph{Temperature solver}
+In this thesis, we have introduced and validated a finite element method to solve energy conservation with phase change, based 
+on thermodynamic data mapping and having the temperature as a main variable (\emph{Tsolver}). The algorithm proved to be faster for several computations
+shown in chapters 3 and 4, when compared to the enthalpy-based method (\emph{Hsolver}). The approach is also well suited to predict macrosegregation
+of both binary and multicomponent alloys. Some limitations are met nevertheless. It is important to have prior knowledge of composition variations
+during solidification in order to adapt to limit the mapping size while also keeping fine composition and temperature steps.
+Finer steps ensure more accurate transformation paths. We may also conclude that this thermodynamic mapping approach is still
+to equilibrium assumptions (full equilibrium or solid-liquid interface equilibrium). \citet{tourret_multiple_2011} proposed
+a similar solution but supports more than just a lever rule for microsegregation, by allowing input of diffusion coefficients.
 
-\section*{Future Work}
-\comment{What did we miss in our models that can be potentialy important for the coming years}
+% \paragraph{Channel segregation}
+Using our energy solver, the Navier-Stokes solver and species conservation solver, we attempted modelling an experimental benchmark 
+of indium-gallium solidification. Some of the experimental data was used to a get a closer numerical configuration to the experiment.
+Two scales of modelling were considered. The macroscopic scale considers only average macroscopic conservation equations on a 
+finite-element grid. No information on a lower scale can be determined by the model.
+Later on,  
+
+
+% \section*{Future Work}
+% \comment{What did we miss in our models that can be potentially important for the coming years}

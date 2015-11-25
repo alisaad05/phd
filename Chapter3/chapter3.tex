@@ -142,21 +142,7 @@ the already known phase composition $\wi^{\phi}$. In step 3, the average volume 
 volume fraction, density and mass enthalpy of phases using \cref{eq:volume_average_enthalpy}. 
 A flowchart explaining \emph{T2H} conversion steps is given in \cref{fig:algorithm_t2h}.
 
-%---------------------------
-% this table did not work when using custom tabulate env. because of the call to \cref ?
-\begin{table}[htbp]
-\centering
-\caption{Tabulation processing for a \emph{T2H} procedure}
-\label{table:t2h_data}
-{\tabulinesep=1.0mm
-\begin{tabu}{|c|c|c|c|}
-\tabucline[1pt]{-}
-\textbf{Step Number} 	& 	\textbf{1}		& \textbf{2}		& 	\textbf{3} 				\\\tabucline[1pt]{-}
-\textbf{Inputs} 		&  ${T,\wi}$		& ${T,\wiphi}$		&	${\gphi, \rphi \hphi}$ \\
-\textbf{Outputs} 		&  ${\gphi,\wiphi}$	& ${\rphi,\hphi}$	&	${\avg{\rho h}}$ (\cref{eq:volume_average_enthalpy})  \\\tabucline[1pt]{-}
-\end{tabu}}
-\end{table}
-%---------------------------
+
 
 The methodology to build the tabulations is straightforward. It is based on two main scans. On the one hand, intervals for the variation of the 
 average composition $\wi$ are chosen from the known alloy composition. These variations have to cover the extreme values adopted during the 
@@ -181,6 +167,21 @@ when tabulations increase in size (e.g. large number of temperature and composit
 industrial alloys used in casting), since the search gets more complicated with the increasing number of input 
 columns (one column for each alloying element).
 
+%---------------------------
+% this table did not work when using custom tabulate env. because of the call to \cref ?
+\begin{table}[htbp]
+\centering
+\caption{Tabulation processing for a \emph{T2H} procedure}
+\label{table:t2h_data}
+{\tabulinesep=1.0mm
+\begin{tabu}{|c|c|c|c|}
+\tabucline[1pt]{-}
+\textbf{Step Number} 	& 	\textbf{1}		& \textbf{2}		& 	\textbf{3} 				\\\tabucline[1pt]{-}
+\textbf{Inputs} 		&  ${T,\wi}$		& ${T,\wiphi}$		&	${\gphi, \rphi \hphi}$ \\
+\textbf{Outputs} 		&  ${\gphi,\wiphi}$	& ${\rphi,\hphi}$	&	${\avg{\rho h}}$ (\cref{eq:volume_average_enthalpy})  \\\tabucline[1pt]{-}
+\end{tabu}}
+\end{table}
+%---------------------------
 %-------------------------------------------------------------------------------------
 \begin{figure}[htbp]
 \newlength{\rightcol}
@@ -327,27 +328,19 @@ columns (one column for each alloying element).
 \caption{Algorithm for a single enthalpy to temperature (\emph{H2T}) conversion at node $j$.} \label{fig:algorithm_h2t}
 \end{figure}
 %-------------------------------------------------------------------------------------
-%*************************************************************************************
-%-------------------------------------------------------------------------------------
-%*************************************************************************************
 
 %==================
 \section{Numerical method}
 %==================
-
-% Once the variational form has been discretised in space and time, two possible resolution schemes emerge: the first is an 
-% explicit forward Euler scheme which gives rise to a linear equation where the temperature is known at time $t$, $T^t$. This requires very small 
-% time steps in the current context, which limits the solver's usability at the scale of industrial applications. The second scheme is the 
-% backward Euler or full implicit discretisation where terms are function of $T^{t+\Delta t}$. It leads to a nonlinear equation with 2 interdependent 
-% unknowns, $\rh^{t+\Delta t}$ and  $T^{t+\Delta t}$.
-
 The finite element method is used to solve the energy conservation as expressed by \cref{eq:averaged_energy_eqn}. 
 A test function $\test$ belonging to the Hilbertian Sobolev space $\hilbert(\OhmE)$ of continuous integrable test functions 
 is used to formulate the integral variational form of \cref{eq:averaged_energy_eqn} \citep{suli_lecture_2000}. 
 A Fourier boundary condition is considered on the domain boundary $\partial \OhmE$. The domain $\Ohm$
 is discretised using first-order linear simplexes, $\OhmE$, defined by their number of local nodes, NbLoc: triangles 
 in 2D with NbLoc=3 and tetrahedra in 3D with  NbLoc=4. The outcome is a residual that we aim to minimize so that the 
-conservation principle is satisfied. Therefore, the weak form writes:
+conservation principle is satisfied. 
+
+Therefore, the weak form writes:
 %----------------------
 \begin{multline}
 \label{eq:weak_energy}
@@ -953,8 +946,8 @@ boundary conditions and alloy properties are all listed in \cref{table:data_case
 
 For this simple test case, 
 we use linear temperature dependence of the intrinsic phase enthalpies, that is $\rh^s= \rho c_p T$ and $\rh^l= \rho (c_p T + l)$, 
-where $\rho$ is the alloy density, $c_p$ is the heat capacity per unit mass and $l$ is the latent heat per unit mass. 
-Values for $\rho$, $c_p$ and $l$, as well as for the thermal conductivities, $\kappa = \kl = \ks$, are taken constant. 
+where $\rho$ is the alloy density, $c_p$ is the heat capacity per unit mass and $l_f$ is the latent heat per unit mass. 
+Values for $\rho$, $c_p$ and $l_f$, as well as for the thermal conductivities, $\kappa = \kl = \ks$, are taken constant. 
 
 A Gulliver-Scheil approximation is used to compute a single relationship between temperature and volume solid fraction, $\gs$, in the 
 absence of macrosegregation. This is done assuming a linear binary phase diagram and thus requires using the 
@@ -985,7 +978,7 @@ Segregation coefficient 			& $k$ 				& \num{0.13} 	& $-$  \\
 Liquidus slope 						& $m_L$ 			& \num{-6.5} 	& \si{\uslope} \\ 
 Density			 					& $\rho$ 			& \num{2600} 	& \si{\udensity} \\  
 Liquid heat capacity 		 		& $c_p$ 			& \num{1000} 	& \si{\umasscapacity} \\  
-Enthalpy of fusion 				 	& $l$ 				& \num{365384} 	& \si{\umassenergy} \\ 
+Enthalpy of fusion 				 	& $l_f$ 			& \num{365384} 	& \si{\umassenergy} \\ 
 Thermal conductivity 				& $\kappa$ 			& \num{70} 		& \si{\uconductivity}	\\
 \hline  %------------------------------------------------------------------------------------------
 Heat transfer coefficient 			& $\hext$ 			& \num{500} 	& \si{\uhconvec} \\ 
