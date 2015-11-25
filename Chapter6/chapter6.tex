@@ -10,7 +10,8 @@ with overall metal volume change. The first case considers no average density ch
 assuming that the liquid and solid phases in the metal have the same density. 
 On the other hand, the second case considers that the difference in metallic phase densities causes the average density to change, causing the metal's volume to
 change concurrently. 
-% \paragraph{Temperature solver}
+
+\paragraph{Temperature solver}
 In this thesis, we have introduced and validated a finite element method to solve energy conservation with phase change, based 
 on thermodynamic data mapping and having the temperature as a main variable (\emph{Tsolver}). The algorithm proved to be faster for several computations
 shown in chapters 3 and 4, when compared to the enthalpy-based method (\emph{Hsolver}). The approach is also well suited to predict macrosegregation
@@ -20,12 +21,33 @@ Finer steps ensure more accurate transformation paths. We may also conclude that
 to equilibrium assumptions (full equilibrium or solid-liquid interface equilibrium). \citet{tourret_multiple_2011} proposed
 a similar solution but supports more than just a lever rule for microsegregation, by allowing input of diffusion coefficients.
 
-% \paragraph{Channel segregation}
+\paragraph{Channel segregation}
 Using our energy solver, the Navier-Stokes solver and species conservation solver, we attempted modelling an experimental benchmark 
-of indium-gallium solidification. Some of the experimental data was used to a get a closer numerical configuration to the experiment.
-Two scales of modelling were considered. The macroscopic scale considers only average macroscopic conservation equations on a 
-finite-element grid. No information on a lower scale can be determined by the model.
-Later on,  
+of directional (upward) \bin{In}{75}{Ga} solidification. Some of the experimental data was used to a get a closer numerical configuration to the experiment.
+Two scales of modelling were considered, a purely macroscopic finite-element (FE) approach and a coupled mesoscopic-macroscopic approach
+relying on cellular automata (CA) for the small scales and also on FE for the greater scales, hence the approach name CAFE. 
+The pure FE model considers only average macroscopic conservation equations (mass, energy, species and liquid momentum) 
+on a finite-element grid, with a constant volume for the metal, i.e. no shrinkage is possible. 
+The FE approach resulted in either no channel segregation at all at low temperature gradients, or a limited number of channels when
+the temperature gradient was increased. These numerical observations reveal however discrepancy in the general fluid flow behaviour and 
+subsequent formation of segregation channels, when qualitatively compared to experimental findings.
+This is where the CAFE model is introduced to show the advantage of nurturing the FE scale with feedback information coming from
+the lower scale CA grid, where nucleation and growth of grain envelopes are systematically solved.
+Indeed, CAFE predictions showed a noticeable difference with respect to the pure FE approach. The overall fluid flow pattern is 
+much more complicated and random, many convective plumes form mainly at grain boundaries as a result of solute enrichment inside the mushy zone (solutal convection),
+powered also by the temperature gradient (thermal convection).   
+The comparison between the experimental data and numerical predictions is only qualitative, due to the lack of an array of crucial data, such 
+as the nuclei positions, the undercooling, magnitude of fluid flow inside the rising convective plumes and others.
+In order to conduct a quantitative comparison, such data may be very useful to calibrate the CAFE model.
+The second limitation in this comparison is the difficulty of simulating the real solidification cell with a thickness of \SI{150}{\micro \metre}.
+Therefore, the simulations considered an alternate thickness of \SI{1}{\milli \metre}, due to the huge FE mesh that would be obtained if
+we want at least 5 elements in the thickness to correctly predict the flow. Using adaptive remeshing could be a solution, but should be used
+with care since small elements are almost needed everywhere in the mushy zone where thermosolutal convection is initiated.   
+
+\paragraph{Solidification shrinkage}
+To model this phenomenon, we go from the previous FE model, and reformulate the conservation equations to be compatible with the level set method,
+which helps us track the boundary between the metal and a surrounding gas domain. The presence of the latter is important as its volume should compensate
+for the metal shrinkage. For the monolithic liquid momentum equation, a modified Darcy was defined to account for flow 
 
 
 % \section*{Future Work}
