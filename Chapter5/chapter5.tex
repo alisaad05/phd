@@ -1616,8 +1616,11 @@ removes mass.
 
 In \cref{fig:massconserv_blockingpct2}, we plot again the same curves as in 
 \cref{fig:massconserv_blockingpct}, but keeping the values of $g_{BL}^l$=0\% and $g_{BL}^l$=50\%. 
-We notice that both values produce the same results until about 300 s. Then, when the mushy zone reaches the interface region, differences appear as a consequence
-of the reduced transport for the higher blocking fraction. However, it should be pointed out that the differences between 300 s and 800 s are not important because the permeability predicted by the Carman-Kozeny model, falls to zero quickly for liquid fractions less than about 60\%. 
+We notice that both values produce the same results until about 300 s. 
+Then, when the mushy zone reaches the interface region, differences appear as a consequence
+of the reduced transport for the higher blocking fraction. 
+However, it should be pointed out that the differences between 300 s and 800 s are not important because 
+the permeability predicted by the Carman-Kozeny model, falls to zero quickly for liquid fractions less than about 60\%. 
 
 In the current application, it is not clear whether the idea of the blocking fraction is useful or not, since the feeding flow occurs in a single direction and solidification takes place far from the interface. 
 Since the results obtained zero blocking fraction were better than with increasing values of $g_{BL}^l$,
@@ -2134,7 +2137,7 @@ of the metal's shrunk surface together with the final macrosegregation.
 % textwidth 
 {0.6}
 %path 
-{Chapter5/Graphics/1d/ls_velocity_dt.pdf}
+{Chapter5/Graphics/2d/smacs_exp_grains.png}
 % caption
 {Final ingot shape with grain structure at mid-width obtained experimentally by solidifying a \bin{Sn}{3}{Pb} alloy \citep{carozzani_direct_2013}.}
 % label
@@ -2248,7 +2251,7 @@ which may lead to surface solidification. The initial and boundary thermal condi
 data of \citet{hachani_experimental_2012}. For the mechanical properties, the top wall allows free inflow/outflow of the air in all directions 
 at an imposed atmospheric pressure. This allows the air to follow any volume changes in the metal upon solidifying and shrinking. 
 The geometry and boundary conditions are given in \cref{fig:smacs_geobc}.
-Regarding the species conservation inthe presence of the level set, the non monolithic strategy proved to be good in limiting the 
+Regarding the species conservation in the presence of the level set, the non monolithic strategy proved to be good in limiting the 
 composition instability surrounding the \emph{M-A} boundary, and hence it will be used for this 2D simulation.
 All simulation related parameters are shown in \cref{table:data_case_smacs}.
 % The side walls adjacent to the heat exchangers are given a free tangential slip boundary condition but with a zero normal velocity, which lets the transported 
@@ -2400,7 +2403,7 @@ and then on
 (b) \emph{grid B} where the uniform fine mesh predicts a smoother composition field (line indicates the current interface level). 
 The increased number of segregated channels on the right side of the
 metal is obtained by the successive transport operations performed in 
-(c) a restricted area (\yellow{yellow} color) based on the nodal values of (d) the solid fraction field.}
+(c) a restricted area (\yellow{yellow} colour) based on the nodal values of (d) the solid fraction field.}
 \label{fig:W_mask_1200s}
 \end{figure}
 %------------------
@@ -2452,24 +2455,56 @@ metal is obtained by the successive transport operations performed in
     \label{fig:1700s_gs}
   \end{subfigure}
 \caption{Snapshots at 3550 s of (a) the average composition result obtained on \emph{grid A}, compared to (b) the composition field obtained on \emph{grid B}, 
-(c) theafter being transported in (c) a restricted area (\yellow{yellow} color) based on the nodal values of (d) the solid fraction field.}
+(c) after being transported in (c) a restricted area (\yellow{yellow} colour) based on the nodal values of (d) the solid fraction field.}
 \label{fig:W_mask_1700s}
 \end{figure}
 %------------------
 
 %--------------
-\begin{figureth}
-% textwidth 
-{0.65}
-%path 
-{Chapter5/Graphics/2d/finalseg/finalsegreg.pdf}
-% caption
-{Final macrosegregation pattern showing the positively segregated channels within negative segregation areas to the right,
-while on the left the last liquid to solidify forms a recognisable pipe shrinkage and a positively segregated region underneath it.}
-% label
-\label{fig:smacs_final}
-\end{figureth}
+% \begin{figureth}
+% % textwidth 
+% {0.65}
+% %path 
+% {Chapter5/Graphics/2d/finalseg/finalsegreg.pdf}
+% % caption
+% {Final macrosegregation pattern showing the positively segregated channels within negative segregation areas to the right,
+% while on the left the last liquid to solidify forms a recognisable pipe shrinkage and a positively segregated region underneath it.}
+% % label
+% \label{fig:smacs_final}
+% \end{figureth}
 %--------------
+%-----------------
+\begin{figure}[htbp]
+\centering
+  %------------------------------
+  \begin{subfigure}[t]{1.0\textwidth}
+  \centering
+  \includegraphics[width=8cm]{Chapter5/Graphics/2d/smacs_exp_grains.png}
+  \caption{}
+  \end{subfigure}
+   %------------
+  \vskip\baselineskip  
+  %------------------------------
+  \begin{subfigure}[t]{1.0\textwidth}
+  \centering
+  \includegraphics[width=8cm]{Chapter5/Graphics/2d/smacs_exp_composition.png}
+  \caption{}
+  \end{subfigure}
+   %------------
+  \vskip\baselineskip
+   %------------
+  \begin{subfigure}[t]{1.0\textwidth}
+    \centering
+  \includegraphics[width=8cm]{Chapter5/Graphics/2d/finalseg/finalsegreg.pdf}
+  \caption{}
+  \end{subfigure}
+  %------------------------------
+  
+\caption{Final macrosegregation pattern showing the positively segregated channels within negative segregation areas to the right,
+while on the left the last liquid to solidify forms a recognisable pipe shrinkage and a positively segregated region underneath it.} 
+\label{fig:smacs_final}
+\end{figure}
+%------------------
 
 
 
@@ -2482,14 +2517,14 @@ Additionally, we define the relative volume change for each domain in the system
 %----------------
 \begin{align}
 \label{eq:volume_variation}
-&  v^M_\% = \frac{v^M - v^M_0}{v^M_0} \times 100	
-&  v^A_\% = \frac{v^A - v^A_0}{v^M_0} \times 100	
+&  V^M_\% = \frac{v^M - v^M_0}{v^M_0} \times 100	
+&  V^A_\% = \frac{v^A - v^A_0}{v^M_0} \times 100	
 \end{align}
 %---------------
 where $v^M_0$ and $v^A_0$ are respectively the initial volume for metal and air. 
 This volume is deduced from the level set by using the definition in \cref{eq:levelset_volume}.
 
-All mass and volume data are plotted in \cref{fig:smacs_mass_volume}. The main reason for grouping all plots in a single
+All mass and volume data are plotted in \cref{fig:global_smacs_metal}. The main reason for grouping all plots in a single
 is to be able to analyse the mass variations as function of the solidification advancement, which can be tracked
 by volume changes.
 
@@ -2503,72 +2538,46 @@ While the metal's mass and volume follow the same trend after 3200 s, they are n
 The other unexpected profile is the solute mass from 3600 s to 3800 s, where the ingot is almost completely solidified but still features species transport.
 It can be explained by the new quantities 
 
-%--------------
-\begin{figureth}
-% textwidth 
-{0.75}
-%path 
-{Chapter5/Data/2d_smacs_mass/global_smacs.pdf}
-% caption
-{Global plots showing (left y-axis) the relative mass variation for the metal and its species and (right y-axis) the corresponding relative volume change for the metal and air domains.}
-% label
-\label{fig:smacs_mass_volume}
-\end{figureth}
-%--------------
+% %--------------
+% \begin{figureth}
+% % textwidth 
+% {0.75}
+% %path 
+% {Chapter5/Data/2d_smacs_mass/global_smacs.pdf}
+% % caption
+% {}
+% % label
+% \label{fig:global_smacs_metal}
+% \end{figureth}
+% %--------------
 
+%-----------------
+\begin{figure}[htbp]
+\centering
+   %------------
+  \begin{subfigure}[t]{0.85\textwidth}
+    \centering
+  \includegraphics[width=\textwidth]{Chapter5/Data/2d_smacs_mass/global_smacs_metal.pdf}
+  \caption{}
+    \label{fig:global_smacs_metal}
+  \end{subfigure}
+  %------------------------------
+  \vskip\baselineskip
+  %------------------------------
+  \begin{subfigure}[t]{0.85\textwidth}
+    \centering
+  \includegraphics[width=\textwidth]{Chapter5/Data/2d_smacs_mass/global_smacs_species.pdf}
+  \caption{}
+    \label{fig:global_smacs_species}
+  \end{subfigure}
+   %------------
+\caption{Global plots showing (a) global system of metal and air mass (left y-axis) and volume (right y-axis) variation with time
+and (b) the metal's mass (left y-axis) along with the mass of its metallic species (right y-axis).
+The thickness dimension of the 2D domain is assumed to be \SI{1}{\metre}, hence the use of 3D units.} 
+\label{fig:global_smacs}
+\end{figure}
+%------------------
 
-
-
-% this plot wont fucking work because of the fucking size limit memory in latex, even with shell escaping doesnt work
-% %--------------------------------------
-% \shorthandoff{;:?!} %http://tex.stackexchange.com/questions/74860/unexpected-clash-between-babel-and-pgf-spy
-% \begin{figure}[htbp]
-% \centering
-% %-------
-% \begin{tikzpicture}
-% %-------------------
-%  \begin{axis}
-%   [	name=whatever,
-% 	%title= (c),
-% 	scale only axis,
-% 	table/col sep=tab,  % comma % tab
-% 	enlarge x limits=false,
-% 	%legend pos=north east,
-% 	scaled ticks=true,
-% 	ylabel style={align=center},
-% 	ylabel=  Relative mass change (\%), %Relative mesosegregation,
-% 	xlabel=Time (s),
-% 	%xticklabel style={/pgf/number format/fixed},
-% 	yticklabel style={/pgf/number format/fixed},
-% 	xtick={0,100,...,1000},
-% 	xticklabels={0,100,...,1000},
-% 	ytick={-1,-0.5,...,1},
-% 	yticklabels={-1,-0.5,...,1},
-% 	width=0.75\textwidth,
-% 	% height=8cm,	
-% 	ymin=-1.5, ymax=1.5,
-% 	xmin=0, xmax=1000,
-% 	mark repeat	= {50},
-% 	cycle list name=masscycle,
-% 	% axis y line*=left,
-% 	legend cell align=left,
-% ]
-%   \addplot table [x=Temps, y=mMpct]   			{Chapter5/Data/2d_smacs_mass/smacs_mass.txt};
-%   \addplot table [x=Temps, y=msoluteM_pct]  	{Chapter5/Data/2d_smacs_mass/smacs_mass.txt};
-  
-%   \legend{m^M_\%,m^\text{sp}_\%}  	
-  
-%   \end{axis}
-%   	%------------------
-% \end{tikzpicture}
-% %-------
-% \caption{Mass variation plots for the metal and its chemical species}
-% \label{fig:mass_species_smacs}
-% \end{figure}
-% %--------------------------------------
-% \shorthandon{;:?!} %http://tex.stackexchange.com/questions/74860/unexpected-clash-between-babel-and-pgf-spy
-
-% \cleardoublepage
 \newpage
 \newpage
 
@@ -2602,7 +2611,7 @@ The main difference with respect to parabolic flight experiments,
 TEXUS features solidification in near-zero gravitational fields and for extended periods of time (3 minutes). 
 We do not have an exact measurement of the gravitational field magnitude, but it is several orders
 less than Earth's gravity magnitude ($\norm{\gravity} \in \crochet{10^{-5};10^{-8}}$\si{\uacceleration}).
-It should be mentionned that the experimental setup is comparable between parabolic flights and sounding rocket experiments. That is to say
+It should be mentioned that the experimental setup is comparable between parabolic flights and sounding rocket experiments. That is to say
 that the dimensions of the steel sample, the substrate and the container are almost the same. Nevertheless, different steel compositions were
 considered in each type of experiment.
 
@@ -2629,7 +2638,7 @@ is similar to the one used for TEMPUS experiments.}
 
 The TEMPUS experiment came as a first alternative for EML experiments on ground during which accurate thermophysical and rheological characterisation were difficult to achieve.
 Each flight consists of several cycles of free fall, a reduced-gravity environment is hence created, 
-allowing to use only a single radiofrequency (RF) coil to stabilise the position of the droplet, while the substrate comes into contact with the molten sample
+allowing to use only a single radio frequency (RF) coil to stabilise the position of the droplet, while the substrate comes into contact with the molten sample
 from above it. An axial pyrometer measures the sample temperature during the process. 
 Also, a high-speed camera records the solidification process, producing frames as shown in \cref{fig:camera}.
 This is useful to measure the front growth speed. 
@@ -2761,9 +2770,9 @@ Number of elements 			&   $\approx$ \num{5e5} \\\tabucline[1pt]{-}
 \subsubsection{Initial and boundary conditions}
 % -----------------------------------------------
 
-The thermal boundary conditions are set as follows: heat loss by radiation is experimentally avoided, 
-therefore it is not considered in our model, hence all boundaries are considered adiabatic, except for the metal-substrate contact area,
-as previously mentioned. 
+The thermal boundary conditions are set as follows: heat loss by radiation is not considered in our model, 
+hence all boundaries are considered adiabatic, except for the metal-substrate contact area which is substituted by
+an equivalent convection boundary condition.
 
 % -----------  DISPLACED TEXT
 % This surface is modelled by a Fourier condition with $\Text$=\SI{25}{\udegC} 
@@ -2906,7 +2915,8 @@ respectively \emph{b1Bin}, \emph{b1Tern} and \emph{b1Quat}. }
 % -------------------------------
 
 In this subsection, we focus on obtaining a comparable finale shape of the droplet between the experiment and simulation.
-To do so, we study the variations of 2 main important parameters: first, the heat transfer coefficient of the metal-substrate contact surface that controls the heat extraction and hence the solidification rate. 
+To do so, we study the variations of 2 main important parameters: first, the heat transfer coefficient of the metal-substrate 
+contact surface that controls the heat extraction and hence the solidification rate. 
 The second parameter is the magnitude if the gravitational field,
 which has a great influence on the fluid flow inside the molten droplet.
 The importance of this parametric study is two-fold: 
@@ -3018,11 +3028,12 @@ reaching -11\%. We are particularly interested in case H3G0, which shows a good 
 	mark repeat	= {50},
 	cycle list name=mycycle, %exotic,
 ]
-\addplot table [x=Temps, y expr=100*(\thisrow{mM}-0.00022585082)/0.00022585082] {Chapter5/Data/3d_parametric/H1G0.txt};
-\addplot table [x=Temps, y expr=100*(\thisrow{mM}-0.00022585082)/0.00022585082] {Chapter5/Data/3d_parametric/H2G0.txt};
-\addplot table [x=Temps, y expr=100*(\thisrow{mM}-0.00022585082)/0.00022585082] {Chapter5/Data/3d_parametric/H3G0.txt};
-\addplot table [x=Temps, y expr=100*(\thisrow{mM}-0.00022585082)/0.00022585082] {Chapter5/Data/3d_parametric/H4G0.txt};
-\legend{H1G0,H2G0,H3G0,H4G0}
+\addplot table [x=Temps, y expr=100*(\thisrow{mM}-0.000229394)/0.000229394] {Chapter5/Data/3d_binternquatern/a_bin.txt};
+\addplot table [x=Temps, y expr=100*(\thisrow{mM}-0.000229326)/0.000229326] {Chapter5/Data/3d_parametric/H1G0.txt};
+\addplot table [x=Temps, y expr=100*(\thisrow{mM}-0.000229326)/0.000229326] {Chapter5/Data/3d_parametric/H2G0.txt};
+\addplot table [x=Temps, y expr=100*(\thisrow{mM}-0.000229326)/0.000229326] {Chapter5/Data/3d_parametric/H3G0.txt};
+\addplot table [x=Temps, y expr=100*(\thisrow{mM}-0.000229326)/0.000229326] {Chapter5/Data/3d_parametric/H4G0.txt};
+\legend{H0G0,H1G0,H2G0,H3G0,H4G0}
 \end{axis}
 \end{tikzpicture}
 \caption{}
@@ -3038,38 +3049,40 @@ reaching -11\%. We are particularly interested in case H3G0, which shows a good 
     /pgf/number format/set thousands separator = {}}
 %================================================
 \begin{axis}
-[	name=mass curves,
-	%title= mass conservation,
-	scale only axis,
-	table/col sep=tab,
-	enlarge x limits=false,
-	legend pos=south west,
-	scaled ticks=true,
-	xlabel=Time (s),
-	ylabel={},
-	xticklabel style={/pgf/number format/fixed},
-	xtick={0,3,6,9,12,15},
-	ytick={-8,-4,0,2},
-	yticklabels={,,},
-	%x tick label style={rotate=45,anchor=east},
-	width=\textwidth,
-	height=5cm,	
-	ymin=-10, ymax=2,
-	mark repeat	= {50},
-	cycle list name=mycycle, %exotic,
+[ name=mass curves,
+  %title= mass conservation,
+  scale only axis,
+  table/col sep=tab,
+  enlarge x limits=false,
+  legend pos=south west,
+  scaled ticks=true,
+  xlabel=Time (s),
+  ylabel={},
+  xticklabel style={/pgf/number format/fixed},
+  xtick={0,3,6,9,12,15},
+  ytick={-8,-4,0,2},
+  yticklabels={,,},
+  %x tick label style={rotate=45,anchor=east},
+  width=\textwidth,
+  height=5cm, 
+  ymin=-10, ymax=2,
+  mark repeat = {50},
+  cycle list name=mycycle, %exotic,
 ]
+\addplot table [x=Temps, y expr=100*(\thisrow{mM}-0.000229394)/0.000229394] {Chapter5/Data/3d_binternquatern/a_bin.txt};
 \addplot table [x=Temps, y expr=100*(\thisrow{mM}-0.000229326)/0.000229326] {Chapter5/Data/3d_parametric/H0G1.txt};
 \addplot table [x=Temps, y expr=100*(\thisrow{mM}-0.000229326)/0.000229326] {Chapter5/Data/3d_parametric/H0G2.txt};
 \addplot table [x=Temps, y expr=100*(\thisrow{mM}-0.000229326)/0.000229326] {Chapter5/Data/3d_parametric/H0G3.txt};
 \addplot table [x=Temps, y expr=100*(\thisrow{mM}-0.000229326)/0.000229326] {Chapter5/Data/3d_parametric/H0G4.txt};
-\legend{H0G1,H0G2,H0G3,H0G4}
+\legend{H0G0,H0G1,H0G2,H0G3,H0G4}
 \end{axis}
 \end{tikzpicture}
 \caption{}
 \label{fig:mass_parametricG}
   \end{subfigure}
   %
-\caption{Mass conservation analysis for (a) cases HxG0 (x=1,2,3,4) and (b) cases H0Gx (x=1,2,3,4).}
+\caption{Mass conservation analysis for (a) cases H0G0 (reference) and HxG0 (x=1,2,3,4) and (b) cases H0G0 (reference) and H0Gx (x=1,2,3,4),
+where Hx increases for an increasing x, while G decreases for increasing x. All values are defined in \cref{table:parametric_study}.}
 \label{fig:mass_parametric_texus}
 \end{figure}
 %
@@ -3162,7 +3175,7 @@ of the binary alloy given previously in \cref{table:texus_b1}.
 	%xtick={0,200,400,600,800,1000},
 	%ytick={-0.1,0,0.1,0.2},
 	%x tick label style={rotate=45,anchor=east},
-	width=0.6\textwidth,
+	width=0.4\textwidth,
 	%height=5cm,	
 	%ymin=-0.1, ymax=0.2,
 	%mark repeat	= {30},
@@ -3186,7 +3199,7 @@ in 2009 and TEMPUS 2014 measurements \citep{gandin_project_2014}.}
 %------------------------
 \begin{tabulate}
 % caption 
-{Parameters for the 3D simulation of the TEXUS droplet solidification under mcirogravity conditions.}
+{Parameters for the 3D simulation of the TEXUS droplet solidification under microgravity conditions.}
 % label
 {table:data_case_texus}
 % line separation (e.g. 1.5mm)
@@ -3223,7 +3236,6 @@ Solute diffusion in the air	(fictitious)	& $\Da$ 	& (Non monolithic) 	& \si{\udi
 Gravity acceleration 	 			& $\norm{\gravity}$  & \num{5e-5} 	& \si{\uacceleration} 		\\ 
 Heat transfer coefficient 			& $\hext$ 			& \num{6e4} 	& \si{\uhconvec} 		\\ 
 External temperature 				& $\Text$ 			& \num{25} 	& \si{\udegC} 				\\ 
-Initial temperature 				& $T_0$ 			& \num{1530} 	& \si{\udegC} 			\\ 
 % Ingot length 						&  					& \num{0.1} 	& \si{\metre} 		\\ 
 \hline %------------------------------------------------------------------------------------------
 % FE mesh size 						&  					& \num{e-3} 	& \si{\metre} 		\\ 
@@ -3258,21 +3270,38 @@ it counters the gravitational force by stabilising the \emph{M-A} boundary.
 %--------------
 \begin{figureth}
 % textwidth 
-{1.0}
+{0.8}
 %path 
 {Chapter5/Graphics/3d/bin/bin_vs_exp.pdf}
 % caption
 {Comparison of experimental (\blue{blue}) and numerical (\red{red}) shrinkage profiles, compared to their respective initial shapes (\green{green}). 
-A vector image processing algorithm is used to extract the droplet outlines from the experimental images. 
-The experimental displacement at the top of the droplet was estimated by scaling 
-the initial numerical profile to the experimental one, and then comparing the final profiles.
-The direction of the gravitational fields points downwards, depicted
-  by the arrow (note that the vector length is not scaled to its magnitude).}
+An image processing algorithm is used to extract the droplet outlines from the experimental images. 
+The experimental displacement of the droplet was estimated by scaling 
+the initial numerical profile to the initial experimental profile, and then comparing the final profiles.
+The gravitational field points downwards, depicted
+by the arrow (note that the vector length is not scaled to its magnitude).}
 % label
 \label{fig:bin_vs_exp}
 \end{figureth}
 %--------------
-
+%--------------
+\begin{figureth}
+% textwidth 
+{0.8}
+%path 
+{Chapter5/Graphics/3d/bin/flow.pdf}
+% caption
+{Flow patterns in reduced-gravity solidification with shrinkage: 
+deviation towards the solidification front at 0.25 s and 1 s, contributing to solute transport in gravity's opposite direction.
+At 8 sec, the mushy zone reaches the droplet vertex marking a flow pattern change. 
+At 20 s, the argon flows freely in the domain around the completely solidified and rigid sample.
+Yellow arrows help visualise the directions of the velocity field. 
+Please note that the scale of latter snapshot has a maximum magnitude of \SI{e-6}{\uvelocity}, not shown
+for illustrative simplicity.}
+% label
+\label{fig:texus_flow}
+\end{figureth}
+%--------------
 Three solid phases are considered for the \emph{b1Bin} alloy: a primary BCC phase, a peritectic FCC phase and a cementite phase. 
 The latter can be obtained by cooling the sample at low temperatures to achieve solid-state transformation.
 The next point to discuss is segregation and fluid flow. With the chosen gravity acceleration, the liquid metal moves in the downward direction when the
@@ -3309,24 +3338,7 @@ We may correlate this flow pattern once again to the segregation profile in \cre
 As of 4.3 mm and down to the tip of the deformed sample, we observe a steady rise in solute content caused 
 by the shrinkage-dominated flow between dendrites compensating for density differences. 
 % This rise in solute content is however not strictly correct, says the species mass conservation study, shown in FIG.
-%--------------
-\begin{figureth}
-% textwidth 
-{0.85}
-%path 
-{Chapter5/Graphics/3d/bin/flow.pdf}
-% caption
-{Flow patterns in reduced-gravity solidification with shrinkage: 
-deviation towards the solidification front at 0.25 s and 1 s, contributing to solute transport in gravity's opposite direction.
-At 8 sec, the mushy zone reaches the droplet vertex marking a flow pattern change. 
-At 20 s, the argon flows freely in the domain around the completely solidified and rigid sample.
-Yellow arrows help visualise the directions of the velocity field. 
-Please note that the scale of latter snapshot has a maximum magnitude of \SI{e-6}{\uvelocity}, not shown
-for illustrative simplicity.}
-% label
-\label{fig:texus_flow}
-\end{figureth}
-%--------------
+
 In \cref{fig:texus_segreg_profile}, the final phase distribution along the vertical revolution axis is plotted.
 The plots show that in the upper part of the droplet close to the chill, a eutectoid product (we may not speak of eutectoid microstructure as the current approach is only macroscopic, without
 information on the smaller scale) that results from the hypoeutectoid composition, consisting of 98\% of $\alpha$-BCC phase together and 2\% of CEM between 0 and 2.9 mm away from the substrate.
@@ -3393,7 +3405,7 @@ Each column depicts a definite time with temperature and phase distribution.
 	%legend pos=north east,
 	scaled ticks=true,
 	ylabel style={align=center},
-	ylabel=  Relative content $\frac{\mix{\avg{w}}-w_0}{w_0}$ (\%), %Relative mesosegregation,
+	ylabel=  Relative \blue{carbon} content $\frac{\mix{\avg{w}}-w_0}{w_0}$ (\%), %Relative mesosegregation,
 	xlabel=Distance from chill (mm),
 	%xticklabel style={/pgf/number format/fixed},
 	yticklabel style={/pgf/number format/fixed},
@@ -3482,7 +3494,8 @@ Therefore the final predicted shape is different, as shown earlier in the parame
 %path 
 {Chapter5/Graphics/3d/tern_quatern/gl15s.pdf}
 % caption
-{Snapshots showing the remaining volume fraction of liquid at 15 s in each sample of the binary, ternary and quaternary \emph{b1} alloy.}
+{Snapshots showing the remaining volume fraction of liquid at 15 s in each sample of the binary, ternary and quaternary \emph{b1} alloy.
+The dashed lines delimit the upper and lower limits of the droplets in the vertical direction.}
 % label
 \label{fig:multicomp_liquid}
 \end{figureth}
@@ -3505,7 +3518,7 @@ where the transformation path is not complex as a result of the smaller number o
 %--------------
 \begin{figureth}
 % textwidth 
-{0.9}
+{1.0}
 %path 
 {Chapter5/Graphics/3d/tern_quatern/profiles_comparison.pdf}
 % caption
@@ -3531,15 +3544,8 @@ compared to \emph{b1Quat}. The file size, proportional to the number of tabulate
 is called. However, \cref{table:mapping_stat} reveals that the multi-variable interpolation overhead is even more important, resulting in longer computation times.
 This may be considered as a limitation of the thermodynamic mapping approach.
 
-%is another cause of the shape discrepancy, and the thermodynamic mapping
-% of the binary alloy has the advantage: less solute elements means less 
-% It becomes then clear that a multicomponent mapping has a greater number of combinations to scan in order to get the corresponding transformation paths, compared
-% to a binary mapping. For that reason, the multicomponent mapping is often coarser than the binary one to limit the search and interpolations overhead, 
-% leading to smaller tabulation files but less accurate path prediction. This is may be considered as a limitation of the thermodynamic mapping approach.
-
-
 %--------------------------------
-\begin{table}[htbp]
+\begin{table}[H]
 \centering
 \caption{Information table showing the tabulations size  for each alloy obtained by the same mapping resolution for temperature and composition, 
 depending on the number of solute elements and phases. The temperature step is \SI{1}{\udegC} and the range is the range is [20-1620]\si{\udegC} for all four cases . 
@@ -3550,18 +3556,18 @@ The computation time corresponds to the CPU time of a simulation running on 20 c
 \tabucline[1pt]{-}
 \textbf{Alloy} & \textbf{Nb} &  \textbf{Composition}  & \textbf{Composition}  & \textbf{Nb}  
 & \textbf{Tabulation}  & \textbf{Size} & \textbf{Computation}  \\
- 				 & \textbf{solutes} &  \textbf{range (\si{\ucomposition})}  & \textbf{step (\si{\ucomposition})}  & \textbf{phases}  
+         & \textbf{solutes} &  \textbf{range (\si{\ucomposition})}  & \textbf{step (\si{\ucomposition})}  & \textbf{phases}  
 & \textbf{lines}  & \textbf{(MB)} & \textbf{time (s)}  \\\tabucline[1pt]{-}
 %-----------------------------
-      \emph{b1Bin}  	& 1 &	C: [0.0945-0.1155] &   0.00525  &  4 &  \num{185010} &    \num{4.37}   &  \num{59461.5}  \\   %78003.9
-      \emph{b1Tern} 	& 2 &	C: [0.0945-0.1155] &   0.00525  &  5 &  \num{220250} &    \num{10.18}  &  \num{62644.4}  \\    
-      					&   &  Si: [0.2412-0.2948] &   0.0134   &    &               &                 &                 \\    
-      \emph{b1Quat} 	& 3 &	C: [0.0945-0.1155] &   0.00525	&  5 &  \num{1101250}&    \num{66.89}  &  \num{85476.7}  \\     
-      					&   &  Mn: [0.5724-0.6996] &   0.0318   &    &               &                 &                 \\    
-      					&   &  Si: [0.2412-0.2948] &   0.0134   &    &               &                 &                 \\    
-      \emph{b1QuatLite} & 3 & 	C: [0.0945-0.1155] &   0.00525	&  5 &  \num{326014} &    \num{20.93}  &  \num{84104.8}  \\
-      					&   &  Mn: [0.5724-0.6996] &   0.0318   &    &               &                 &                 \\    
-      					&   &  Si: [0.2412-0.2948] &   0.0134   &    &               &                 &                 \\\tabucline[1pt]{-}
+      \emph{b1Bin}    & 1 & C: [0.0945-0.1155] &   0.00525  &  4 &  \num{185010} &    \num{4.37}   &  \num{59461.5}  \\   %78003.9
+      \emph{b1Tern}   & 2 & C: [0.0945-0.1155] &   0.00525  &  5 &  \num{220250} &    \num{10.18}  &  \num{62644.4}  \\    
+                &   &  Si: [0.2412-0.2948] &   0.0134   &    &               &                 &                 \\    
+      \emph{b1Quat}   & 3 & C: [0.0945-0.1155] &   0.00525  &  5 &  \num{1101250}&    \num{66.89}  &  \num{85476.7}  \\     
+                &   &  Mn: [0.5724-0.6996] &   0.0318   &    &               &                 &                 \\    
+                &   &  Si: [0.2412-0.2948] &   0.0134   &    &               &                 &                 \\    
+      \emph{b1QuatLite} & 3 &   C: [0.0945-0.1155] &   0.00525  &  5 &  \num{326014} &    \num{20.93}  &  \num{84104.8}  \\
+                &   &  Mn: [0.5724-0.6996] &   0.0318   &    &               &                 &                 \\    
+                &   &  Si: [0.2412-0.2948] &   0.0134   &    &               &                 &                 \\\tabucline[1pt]{-}
       % http://grammarist.com/words/lite/
 %-----------------------------
 \end{tabu}}
@@ -3569,6 +3575,11 @@ The computation time corresponds to the CPU time of a simulation running on 20 c
 \end{table}
 %--------------------------------
 
+%is another cause of the shape discrepancy, and the thermodynamic mapping
+% of the binary alloy has the advantage: less solute elements means less 
+% It becomes then clear that a multicomponent mapping has a greater number of combinations to scan in order to get the corresponding transformation paths, compared
+% to a binary mapping. For that reason, the multicomponent mapping is often coarser than the binary one to limit the search and interpolations overhead, 
+% leading to smaller tabulation files but less accurate path prediction. This is may be considered as a limitation of the thermodynamic mapping approach.
 Finally we are interested in comparing the macrosegregation levels obtained in all three solidification cases. Segregation maps
 are presented in \cref{fig:final_segreg_ternquat} on a symmetry plane section. First, we compare the carbon segregation as it is the common species among the presented alloys.
 The first difference is a remarkable positive macrosegregation of 3.5\% at the chill contact of the  \emph{b1Tern} and \emph{b1Quat} samples, 
@@ -3583,28 +3594,28 @@ is related to the solidification path varying with the number of species.
 Two regions of negative macrosegregation are observed across the samples, with various amplitudes. The first region lies just below the chill contact.
 It corresponds to the solute depletion caused by an upward shrinkage flow and a downward gravity flow. 
 With the advancement of the solidification front,
-the gravity flow dominates forcing the remaining liquid to fall down while dragging the species from the sides of the droplet to the center.
+the gravity flow dominates forcing the remaining liquid to fall down while dragging the species from the sides of the droplet to the centre.
 This creates a radial negative segregation pattern, as seen in \cref{fig:final_segreg_ternquat}. 
-
-
-%--------------
-\begin{figureth}
-% textwidth 
-{1.0}
-%path 
-{Chapter5/Graphics/3d/tern_quatern/final_segreg.pdf}
-% caption
-{Segregation maps relative to each alloy, showing positive and negative mesosegregations 
-of each chemical species for \emph{b1Bin}, \emph{b1Tern} and \emph{b1Quat} samples.}
-% label
-\label{fig:final_segreg_ternquat}
-\end{figureth}
-%--------------
 
 The last result regarding the multicomponent solidification application in reduced-gravity conditions 
 is a composition plot in \cref{fig:3d_segregation_multicomponent} for each species in the solidified samples. 
 This is basically similar to the analysis we made for \cref{fig:final_segreg_ternquat}, 
 but this plot show the composition profile along the revolution axis.
+
+
+%--------------
+\begin{figureth}
+% textwidth 
+{0.8}
+%path 
+{Chapter5/Graphics/3d/tern_quatern/final_segreg.pdf}
+% caption
+{Segregation maps relative to each alloy, showing positive and negative mesosegregation
+of each chemical species for \emph{b1Bin}, \emph{b1Tern} and \emph{b1Quat} samples.}
+% label
+\label{fig:final_segreg_ternquat}
+\end{figureth}
+%--------------
 
 %--------------------------------------
 \shorthandoff{;:?!} %http://tex.stackexchange.com/questions/74860/unexpected-clash-between-babel-and-pgf-spy

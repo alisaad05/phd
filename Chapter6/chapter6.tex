@@ -11,7 +11,7 @@ assuming that the liquid and solid phases in the metal have the same density.
 On the other hand, the second case considers that the difference in metallic phase densities causes the average density to change, causing the metal's volume to
 change concurrently. 
 
-\paragraph{Temperature resolutionT compatible with thermodynamic mapping:}
+\paragraph{Temperature resolution compatible with thermodynamic mapping:}
 In this thesis, we have introduced and validated a finite element method to solve energy conservation with phase change, based 
 on thermodynamic data mapping and having the temperature as a main variable (\emph{Tsolver}). The algorithm proved to be faster for several computations
 shown in chapters 3 and 4, when compared to the enthalpy-based method (\emph{Hsolver}). The approach is also well suited to predict macrosegregation
@@ -82,16 +82,14 @@ fluid and solid mechanics in the same simulation.
 The 3D application simulates solidification of a small steel droplet in a reduced-gravity environment, as
 an extension to the work of \citet{rivaux_simulation_2011}. A parametric study is performed to determine
 the best heat transfer coefficient values of the contact surface with the ceramic chill, and the magnitude of the microgravity vector
-resulting.The optimal values were used to simulate solidification of the steel droplet, but approximating the composition by a binary equivalent.
-Segregation and subsequent phase distributions analysis is given. Later, the same simulation is conducted but considering
-ternary and quaternary approximations of the steel. Segregation profiles do not high segregation intensities due to the limited flow under
-reduced gravity. An analysis of the competition of fluid motion between microgravity forces and suction to shrinkage inside the droplet is given.   
-
-
-
-
-
-
-
+resulting. The optimal values were used to simulate solidification of the steel droplet, but approximating the composition by a binary equivalent.
+Segregation and subsequent phase distributions analysis is given. 
+The final droplet shape is compared to the experimental observation obtained with a high speed camera, by
+image processing the latter then scaling the initial experimental and numerical profiles, and finally comparing the fully solidified profiles.
+The agreement is acceptable. However, it is useful to accurate compare in the future the simulation performance to the experiment by
+physically processing the solidified sample to obtain the final length and chemical composition. These data are still not made available.  
+Later, the same simulation is conducted but considering ternary and quaternary approximations of the same steel. 
+Segregation profiles do not reveal high segregation intensities due to the limited flow under
+reduced gravity. An analysis of the competition of fluid motion between microgravity forces and suction to shrinkage inside the droplet is given.
 % \section*{Future Work}
 % \comment{What did we miss in our models that can be potentially important for the coming years}

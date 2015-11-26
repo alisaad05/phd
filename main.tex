@@ -1,4 +1,4 @@
-\documentclass[10.5pt,a4paper,twoside,openright]{book}
+\documentclass[10.5pt,a4paper,twoside]{book}
 %\documentclass[a4paper,12pt,fourier,numbered,print,index]
 
 % CHECK https://www.writelatex.com/1283488jybyzp#/3132576/
@@ -23,17 +23,30 @@
 \begin{document}
 
 \frontmatter
+\clearpage
+\phantomsection
+\pdfbookmark[0]{Front cover}{frontcover}
 \mytitlepage % personal command
+
+% \pdfbookmark{\contentsname}{Acknowledgement}
 % \input{Frontmatter/acknowledgement}
+
+% \pdfbookmark{\contentsname}{Abstract}
 %\include{Frontmatter/abstract}
 
 % *********************** Adding TOC and List of Figures ***********************
 \dominitoc
 \begin{nolinkcolors}	
 %\setcounter{tocdepth}{2} % decrease to hide levels from TOC
+\clearpage
+\phantomsection
+\pdfbookmark[0]{\contentsname}{contents}
 \tableofcontents
 %\listoffigures
 %\listoftables
+\clearpage
+\phantomsection
+\pdfbookmark[0]{List of acronyms}{loa}
 \listofacronyms % in post_commands.tex
 %\listoftodos
 \end{nolinkcolors}
@@ -55,12 +68,14 @@
 % \end{appendices}
 %%------------------------ BACK MATTER  -------------------------------
 \backmatter 
-\addcontentsline{toc}{chapter}{\bibname}
-%\bibliographystyle{References/plainnatBIS} % plainnat %\mycustomstyle
-\cleardoublepage
 \renewcommand*{\bibfont}{\footnotesize}
-\printbibliography
-\includepdf{Backmatter/FourthPage.pdf}
-% *************************************** Index ********************************
+\printbibliography[heading=bibintoc]
 
+\cleardoublepage
+\phantomsection
+\pdfbookmark[0]{Back cover}{backcover}
+\includepdf{Backmatter/FourthPage.pdf}
+% \includepdf[pages=1, openright]{Backmatter/FourthPage.pdf}
+\thispagestyle{empty}
+% *************************************** Index ********************************
 \end{document}
