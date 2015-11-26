@@ -1482,22 +1482,28 @@ $l^M_f= \brac{1-\beta_{SS}} l^M_0 =$\SI{92.86}{\milli\metre}.
 \label{fig:shrinkage_nomacro_massconserv}
 \end{figure}
 %--------------------------------------
-In the previous section, we observed \emph{M-A} boundary instability problems taking place around 400 s of cooling, where the flow begins slightly losing it one-dimensional
+In the previous section, we observed \emph{M-A} boundary instability problems taking place around 400 s of cooling, 
+where the flow begins slightly losing it one-dimensional
 shape. Although it was clearly seen in \cref{fig:1dalsi7_equalprops}, it applies
 for both cases, whether air properties are equal to (cases A1 and A2) or different than (case R) the liquid's properties across the interface. 
 The mass variation plots in \cref{fig:shrinkage_nomacro_massconserv} confirm these observations, since the metal's mass does not remain 
-constant during simulations.
-Therefore, we can deduce that regardless of the time step and the level set mixing of properties, 
-transport problems may occur. 
-
-The level set method is known to have poor mass conservation properties. However, the mass variation
-we see in the previous plots is more related to a physical problem: at which velocity does the \emph{M-A} boundary move?
-% In our simulations, we systemically considered the Navier-Stokes solution, $\vitf$,
-% to transport the metal-air boundary. This solution is equal to $\vit= \gl \vl$ in the metal domain. 
+constant during simulations. Indeed, in both cases A1 and R, the mass variation curves shown in \cref{fig:shrinkage_nomacro_massconserv} reveal
+a general behaviour of increase then decrease below zero. The increase corresponds to gain in metal mass.
+Such gain is the result of a limited motion of the level set while the metal density is increasing and the latter needs to shrink even more.
+The cause leading to the limited motion is not identified, no further testing was made.
+On the other hand, the decrease corresponding to a mass loss can be attributed to the
+contact between the mushy zone and the level set boundary. 
 We showed in the introduction of this chapter that the \emph{M-A} boundary actually consists of several interfaces, 
 and when the mushy zone overlaps with the level set mixing zone, we cannot track the boundary between the porous medium 
 (described in \cref{fig:1dalsi7_interface_stages}), which induces concept errors.
-In the light of these facts, we can try to limit as much as possible the motion of the porous medium boundaries, once the mushy zone has reached the level set mixing zone,
+
+% The level set method is known to have poor mass conservation properties. However, the mass variation
+% we see in the previous plots is more related to a physical problem: at which velocity does the \emph{M-A} boundary move?
+% In our simulations, we systemically considered the Navier-Stokes solution, $\vitf$,
+% to transport the metal-air boundary. This solution is equal to $\vit= \gl \vl$ in the metal domain. 
+
+In the light of these facts, we can try to limit as much as possible the motion of the porous medium boundaries, 
+once the mushy zone has reached the level set mixing zone,
 and test the influence on mass conservation.
 To do so, we firstly advise to keep a very small thickness interface, in order to delay the previously explained overlap. Moreover, we deducing the 
 transport velocity, used in the level set transport equation (\cref{eq:transport_weak1}), at each node as follows:
@@ -2011,6 +2017,23 @@ Physical quantities are plotted along a line passing through the centre of the s
 % textwidth 
 {1.5}
 %path 
+{Chapter5/Data/1d_alsi7_arc_compositions/MDA_subplots.pdf}
+% caption
+{Group of plots where each row is a given time increment (t=200 s, t=600 s and t=800 s) of the 1D solidification shrinkage simulation with macrosegregation
+applying the \textbf{MDA strategy} (\cref{fig:1dalsi7_wVSlength}b).
+Physical quantities are plotted along a line passing through the centre of the sample and parallel to the gravity vector.}
+% label
+\label{fig:NM_subplots}
+\end{figureth}
+\end{landscape}
+%=====================================BIG LANDSCAPE FIGURE  -- NM PLOTS =====================================
+
+%=====================================BIG LANDSCAPE FIGURE -- NM PLOTS =====================================
+\begin{landscape}
+\begin{figureth}
+% textwidth 
+{1.5}
+%path 
 {Chapter5/Data/1d_alsi7_arc_compositions/NM_subplots.pdf}
 % caption
 {Group of plots where each row is a given time increment (t=200 s, t=600 s and t=800 s) of the 1D solidification shrinkage simulation with macrosegregation
@@ -2054,10 +2077,19 @@ resolution technique, time step, boundary conditions ...
 In our case, we first compared the mass conservation for the metal with all three methods for species conservation:
 MD (monolithic with low diffusion), MDA (monolithic with low diffusion and advection) and last NM (non monolithic).
 We cannot see a noticeable difference when comparing mass analysis for all three techniques, as shown by the dotted lines in \cref{fig:mass_species_alsi7}.
-This conclusion goes for both the metal and its species. Nevertheless, the MD and MDA plots display some agreement, 
-while the NM curves have the same variations trends but with values shifted down to $\approx$ 0.1\%.
-Although it is not a noticeable difference, but it should be explained.
-The metal mass variation is a direct consequence of volume variation due to level motion as a response to average density changes.
+This conclusion goes for both the metal and its species. 
+Nevertheless, we see the main behaviour discussed earlier in \cref{fig:shrinkage_nomacro_massconserv} regarding the increase then decrease of the 
+metal mass. As for the species mass, it can be lost due to 2 causes mainly: the species mass is computed from the volume of the metal,
+and therefore any changes in the metal volume are directly reflected on metallic species. The other cause is the species resolution
+equation which gradually loses mass of species during the simulation, possibly leading to negative composition
+in some cases. The solute rise observed in the same figure (\cref{fig:shrinkage_nomacro_massconserv}) for all three strategies
+is the result of taking into account some solute in the air which may slightly transported from the air into the metal.
+We may think of a competition between the species mass increase due a damped level set motion and a species mass decrease
+due to the previously explained reason.
+% the MD and MDA plots display some agreement, 
+% while the NM curves have the same variations trends but with values shifted down to $\approx$ 0.1\%.
+% Concerning the slight difference various species resolution strategies, it should be explained.
+% The metal mass variation is a direct consequence of volume variation due to level motion as a response to average density changes.
 Changing the species resolution strategy affects only the area surrounding the \emph{M-A} boundary (as earlier seen in 
 \cref{fig:1dalsi7_wVSlength}) and thus the predicted average composition varies. The latter variation impacts the phase fractions,
 namely the liquid, which is an input of the fluid fraction used to evaluate the transport velocity in Navier-Stokes.
@@ -2351,8 +2383,12 @@ The weak macrosegregation observed in \cref{fig:1200s_compo} are now lost in \cr
 side. Fortunately, the macrosegregation distribution is stored in the fixed grid (\cref{fig:1700s_compobis}) and shows more details with the advancement of solidification. 
 The shrinkage due to phase density difference, is now clearly visible judging from interface shape, which still almost planar above the last liquid pool. 
 
+At the end of solidification, the ingot top surface has shrunk, showing greater boundary displacement in the last liquid region to solidify, as shown
+in \cref{fig:smacs_planche}. In this figure, it is interesting to compare the final experimental shape (\cref{fig:smacs_planche}) to the numerical one
+(\cref{fig:smacs_planche_c}), while comparing the final obtained segregation maps (\cref{fig:smacs_planche_b}) to the numerical result of (\cref{fig:smacs_planche_c}).
+
 %-----------------
-\begin{figure}[H]
+\begin{figure}[htbp]
 \centering
    %------------
   \begin{subfigure}[t]{0.4\textwidth}
@@ -2403,13 +2439,14 @@ and then on
 (b) \emph{grid B} where the uniform fine mesh predicts a smoother composition field (line indicates the current interface level). 
 The increased number of segregated channels on the right side of the
 metal is obtained by the successive transport operations performed in 
-(c) a restricted area (\yellow{yellow} colour) based on the nodal values of (d) the solid fraction field.}
+(c) a restricted area (\yellow{yellow} colour) based on the nodal values of (d) the solid fraction field.
+The white line represents the zero isovalue of the level set function.}
 \label{fig:W_mask_1200s}
 \end{figure}
 %------------------
 
 %-----------------
-\begin{figure}[H]
+\begin{figure}[htbp]
 \centering
    %------------
   \begin{subfigure}[t]{0.4\textwidth}
@@ -2455,7 +2492,8 @@ metal is obtained by the successive transport operations performed in
     \label{fig:1700s_gs}
   \end{subfigure}
 \caption{Snapshots at 3550 s of (a) the average composition result obtained on \emph{grid A}, compared to (b) the composition field obtained on \emph{grid B}, 
-(c) after being transported in (c) a restricted area (\yellow{yellow} colour) based on the nodal values of (d) the solid fraction field.}
+(c) after being transported in (c) a restricted area (\yellow{yellow} colour) based on the nodal values of (d) the solid fraction field.
+The white line represents the zero isovalue of the level set function.}
 \label{fig:W_mask_1700s}
 \end{figure}
 %------------------
@@ -2481,6 +2519,7 @@ metal is obtained by the successive transport operations performed in
   \centering
   \includegraphics[width=8cm]{Chapter5/Graphics/2d/smacs_exp_grains.png}
   \caption{}
+  \label{fig:smacs_planche_a}
   \end{subfigure}
    %------------
   \vskip\baselineskip  
@@ -2489,6 +2528,7 @@ metal is obtained by the successive transport operations performed in
   \centering
   \includegraphics[width=8cm]{Chapter5/Graphics/2d/smacs_exp_composition.png}
   \caption{}
+  \label{fig:smacs_planche_b}
   \end{subfigure}
    %------------
   \vskip\baselineskip
@@ -2497,12 +2537,22 @@ metal is obtained by the successive transport operations performed in
     \centering
   \includegraphics[width=8cm]{Chapter5/Graphics/2d/finalseg/finalsegreg.pdf}
   \caption{}
+  \label{fig:smacs_planche_c}
+  \end{subfigure}
+  %------------------------------   
+  %------------
+  \vskip\baselineskip
+   %------------
+  \begin{subfigure}[t]{0.5\textwidth}
+    \centering
+  \includegraphics[width=0.5\textwidth]{Chapter5/Graphics/2d/colorbar_w_horizontal.pdf}
   \end{subfigure}
   %------------------------------
   
-\caption{Final macrosegregation pattern showing the positively segregated channels within negative segregation areas to the right,
-while on the left the last liquid to solidify forms a recognisable pipe shrinkage and a positively segregated region underneath it.} 
-\label{fig:smacs_final}
+\caption{(a) Final ingot shape with grains structure with (b) experimental macrosegregation patterns showing the positively segregated 
+channels within negative segregation areas to the right, while on the left the last liquid to solidify 
+forms a recognisable pipe shrinkage and a positively segregated region underneath it as predicted by (c) the corresponding simulation.} 
+\label{fig:smacs_planche}
 \end{figure}
 %------------------
 
@@ -2512,24 +2562,24 @@ while on the left the last liquid to solidify forms a recognisable pipe shrinkag
 \subsection{Mass conservation}
 % ****************************************
 
-For this analysis, we use the same definitions for the mass variation of the metal (\cref{eq:metal_mass_variation}) and the chemical species (\cref{eq:solute_mass_variation}).
-Additionally, we define the relative volume change for each domain in the system as follows:
-%----------------
-\begin{align}
-\label{eq:volume_variation}
-&  V^M_\% = \frac{v^M - v^M_0}{v^M_0} \times 100	
-&  V^A_\% = \frac{v^A - v^A_0}{v^M_0} \times 100	
-\end{align}
-%---------------
-where $v^M_0$ and $v^A_0$ are respectively the initial volume for metal and air. 
-This volume is deduced from the level set by using the definition in \cref{eq:levelset_volume}.
+% For this analysis, we use the same definitions for the mass variation of the metal (\cref{eq:metal_mass_variation}) and the chemical species (\cref{eq:solute_mass_variation}).
+% Additionally, we define the relative volume change for each domain in the system as follows:
+% %----------------
+% \begin{align}
+% \label{eq:volume_variation}
+% &  V^M_\% = \frac{v^M - v^M_0}{v^M_0} \times 100	
+% &  V^A_\% = \frac{v^A - v^A_0}{v^M_0} \times 100	
+% \end{align}
+% %---------------
+% where $v^M_0$ and $v^A_0$ are respectively the initial volume for metal and air. 
+% This volume is deduced from the level set by using the definition in \cref{eq:levelset_volume}.
 
-All mass and volume data are plotted in \cref{fig:global_smacs_metal}. The main reason for grouping all plots in a single
+All mass and volume data related to both air and metal are plotted in \cref{fig:global_smacs_metal}. The main reason for grouping all plots in a single
 is to be able to analyse the mass variations as function of the solidification advancement, which can be tracked
 by volume changes.
 
 We see in the figure that no mass/volume variations are detected before 1900 s, seconds before solidification onset. Once the phase change starts, the average metal density decreases. Since air is incompressible, it is sucked towards the shrinking metallic front.
-With our free velocity boundary condition, an air intake thus takes places, which is confirmed by the blue curve corresponding to the relative air volume variation, starting from 2400 s. However between 1900 s and 2400 s, an unexpected slight volume increase of the metal takes place, although it should be decreasing under the action of the decreasing average density by solidification. This behaviour can be attributed to the competition between the flow due to thermosolutal convection and another flow due to shrinkage, and obviously the former is more  imposing than the latter. Therefore, it forces the level set to slightly move upwards, letting the metal gain some volume at the expense of air, whose volume is seen temporarily decreasing between 1900 s and 2500 s.
+With our free velocity boundary condition, an air intake thus takes places, which is confirmed by the green curve corresponding to the relative air volume variation, starting from 2400 s. However between 1900 s and 2400 s, an unexpected slight volume increase of the metal takes place, although it should be decreasing under the action of the decreasing average density by solidification. This behaviour can be attributed to the competition between the flow due to thermosolutal convection and another flow due to shrinkage, and obviously the former is more  imposing than the latter. Therefore, it forces the level set to slightly move upwards, letting the metal gain some volume at the expense of air, whose volume is seen temporarily decreasing between 1900 s and 2500 s.
 The metal's mass curve confirms also a positive variation, which is also reflected on the solute mass.
 After 2500 s, we can see that the metal volume is beginning its descent until it reaches the final volume corresponding to $-6\%$ of the initial volume. This value can also be deduced from the solidification shrinkage coefficient, $\beta_{SS}$, deduced from $\rhol$ and $\rhos$ included in \cref{table:data_case_smacs}.
 However between 2500 s and 3000 s, the metal and species mass do not show any sign of stability, but still rising. Until around 3200 s, both mass percentages decrease again as expected.
@@ -2574,7 +2624,7 @@ It can be explained by the new quantities
 \caption{Global plots showing (a) global system of metal and air mass (left y-axis) and volume (right y-axis) variation with time
 and (b) the metal's mass (left y-axis) along with the mass of its metallic species (right y-axis).
 The thickness dimension of the 2D domain is assumed to be \SI{1}{\metre}, hence the use of 3D units.} 
-\label{fig:global_smacs}
+\label{fig:smacs_global}
 \end{figure}
 %------------------
 
@@ -2900,7 +2950,7 @@ respectively \emph{b1Bin}, \emph{b1Tern} and \emph{b1Quat}. }
 \tabucline[1pt]{-}
 \textbf{Alloy} & \textbf{C} & \textbf{Si} & \textbf{Mn} & \textbf{Al} & \textbf{S} & \textbf{P} \\\tabucline[1pt]{-}
 %-----------------------------
-\emph{b1}		&	0.105 	&	0.268	&	0.636	&	\num{0.0067} 	&		0.009		&	0.0189		\\
+\emph{b1}		  &	0.105 	&	0.268	&	0.636	&	\num{0.0067} 	&		0.009		&	0.0189		\\
 \emph{b1Bin}	&	0.105 	&    -		&	 -		&		-			&		-			&		-		\\
 \emph{b1Tern}	&	0.105 	&	0.268	&	 -		&		-			&		-			&	 	-		\\		
 \emph{b1Quat}	&	0.105 	&	0.268	&	0.636 	&		-			&		-			& 		- 		\\\tabucline[1pt]{-}
@@ -3270,7 +3320,7 @@ it counters the gravitational force by stabilising the \emph{M-A} boundary.
 %--------------
 \begin{figureth}
 % textwidth 
-{0.8}
+{0.7}
 %path 
 {Chapter5/Graphics/3d/bin/bin_vs_exp.pdf}
 % caption
@@ -3287,7 +3337,7 @@ by the arrow (note that the vector length is not scaled to its magnitude).}
 %--------------
 \begin{figureth}
 % textwidth 
-{0.8}
+{0.7}
 %path 
 {Chapter5/Graphics/3d/bin/flow.pdf}
 % caption
