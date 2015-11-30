@@ -1497,11 +1497,6 @@ We showed in the introduction of this chapter that the \emph{M-A} boundary actua
 and when the mushy zone overlaps with the level set mixing zone, we cannot track the boundary between the porous medium 
 (described in \cref{fig:1dalsi7_interface_stages}), which induces concept errors.
 
-% The level set method is known to have poor mass conservation properties. However, the mass variation
-% we see in the previous plots is more related to a physical problem: at which velocity does the \emph{M-A} boundary move?
-% In our simulations, we systemically considered the Navier-Stokes solution, $\vitf$,
-% to transport the metal-air boundary. This solution is equal to $\vit= \gl \vl$ in the metal domain. 
-
 In the light of these facts, we can try to limit as much as possible the motion of the porous medium boundaries, 
 once the mushy zone has reached the level set mixing zone,
 and test the influence on mass conservation.
@@ -1628,7 +1623,8 @@ of the reduced transport for the higher blocking fraction.
 However, it should be pointed out that the differences between 300 s and 800 s are not important because 
 the permeability predicted by the Carman-Kozeny model, falls to zero quickly for liquid fractions less than about 60\%. 
 
-In the current application, it is not clear whether the idea of the blocking fraction is useful or not, since the feeding flow occurs in a single direction and solidification takes place far from the interface. 
+In the current application, it is not clear whether the idea of the blocking fraction is useful or not, 
+since the feeding flow occurs in a single direction and solidification takes place far from the interface. 
 Since the results obtained zero blocking fraction were better than with increasing values of $g_{BL}^l$,
 further simulations will adopt this strategy.
 
@@ -1665,8 +1661,9 @@ Liquidus slope 			& $m_L$ 		& \num{-6.5} 	& \si{\uslope}\\\tabucline[1pt]{-}
 Using the values from \cref{table:1dalsi7_macro_diagram}, a python program generates a \cimlib-compatible tabulation assuming lever rule as microsegregation law, 
 with a \SI{0.1}{\ucomposition} step for average composition within an offset of 20\% around the nominal value, i.e.
 29 composition values within the interval [5.6,8.4]\si{\ucomposition}Si.
-For temperature, a range between $T_E$=\SI{577}{\udegC} and \SI{630}{\udegC} is considered with a step of \SI{1}{\udegC}, corresponding to 54 values. It is noted that for this application,
-the phase enthalpies are deduced from constant specific heat of each phase as well as constant latent heat, given in \cref{table:data_case_inverseseg}.
+For temperature, a range between $T_E$=\SI{577}{\udegC} and \SI{630}{\udegC} is considered with a step of \SI{1}{\udegC}, corresponding to 54 values. 
+It is noted that for this application, the phase enthalpies are deduced from constant 
+specific heat of each phase as well as constant latent heat, given in \cref{table:data_case_inverseseg}.
 
 In order to understand better the effect of shrinkage combined with macrosegregation, we plot in \cref{fig:1dalsi7_macro_shrinkage},
 the cooling curves from 4 different simulations: 
@@ -1762,7 +1759,8 @@ and non monolithic strategy with composition reinitialisation in the air (NM).}
 \resizebox{\columnwidth}{!}{%
 {\tabulinesep=1.0mm \begin{tabu}{lccc}
 \tabucline[1pt]{-}
-\textbf{Configuration} & \textbf{Diffusion in air [\si{\udiffusivity}]} & \textbf{Advection in air [\si{\uvelocity}]} & \textbf{Composition reinitialisation} \\\tabucline[1pt]{-}
+\textbf{Configuration} & \textbf{Diffusion in air [\si{\udiffusivity}]} & 
+\textbf{Advection in air [\si{\uvelocity}]} & \textbf{Composition reinitialisation} \\\tabucline[1pt]{-}
 %-----------------------------
 MD	&	\num{1.5e-12} &  $\vitf$  	&  -	\\ 
 MDA	&	\num{1.5e-12} &  $\vec{0}$  &  -	\\ 
@@ -1789,8 +1787,6 @@ in the first solidified nodes. This phenomenon is better known as inverse segreg
 As the transport continues in the same direction, 
 solute is progressively depleted in the remaining liquid, causing negative macrosegregation at nodes located between 2 cm and 7 cm from the chill.
 
-
-
 %--------------
 \begin{figureth}
 % textwidth 
@@ -1808,7 +1804,8 @@ clearly changing behind the eutectic front.}
 \end{figureth}
 %--------------
 
-\Cref{fig:1dalsi7_gs_w} shows only the first 1.5 cm of the solidifying sample, therefore a complete segregation profile is plotted along the sample length in \cref{fig:1dalsi7_wVSlength}.
+\Cref{fig:1dalsi7_gs_w} shows only the first 1.5 cm of the solidifying sample, 
+therefore a complete segregation profile is plotted along the sample length in \cref{fig:1dalsi7_wVSlength}.
 Three curves are plotted in the latter figure: the first curve, \cref{fig:1dalsi7_wVSlength}a, uses the monolithic species conservation (\cref{sec:monolithic_species})
 with limited diffusion in the air, the second curve \cref{fig:1dalsi7_wVSlength}b employs the same strategy but with both limited diffusion and advection in the air, and
 finally \cref{fig:1dalsi7_wVSlength}c is given by the non monolithic strategy for species conservation.
@@ -1833,15 +1830,6 @@ but worse than the second result (\cref{fig:1dalsi7_wVSlength}b).
 To conclude on the effect of shrinkage on macrosegregation, we may say that the non monolithic gives the best compromise in terms of composition solution
 quality. We may also conclude that the mesh should remain fine around the level set boundary, in order to prevent any composition instability from spanning
 on larger distances and destabilising the computation.
-
-% Bearing in mind that a reduced solute diffusion coefficient is imposed in the air domain \SI{1.5e-12}{\udiffusivity} compared to 
-% \SI{1.5e-9}{\udiffusivity} in the metal, we investigate into this instability by proposing two test cases: first, we try to limit the solute advection in the transition
-% zone where flow instabilities may form as seen previously in the segregation-free sample but keeping equal solute diffusion coefficients in both domains to \SI{1.5e-9}{\udiffusivity},
-% while for the second test case, we combine both low solute diffusion and low solute advection. The average composition results of these two test cases
-% are respectively plotted in \cref{fig:1dalsi7_wVSlength}b and \cref{fig:1dalsi7_wVSlength}c.
-% These results (second plot in \cref{fig:1dalsi7_wVSlength})  clearly show that just by reducing solute advection in the mixing zone reduce the amplitude of the composition instability.
-% In contrast, changing solute diffusion properties for the air coupled with reduced solute advection (third plot in \cref{fig:1dalsi7_wVSlength}) offers no further stability
-% in the segregation profile, which should normally stay below the nominal value near the interface.
 
 %--------------------------------------
 \shorthandoff{;:?!} %http://tex.stackexchange.com/questions/74860/unexpected-clash-between-babel-and-pgf-spy
@@ -1976,7 +1964,7 @@ The density graphs show only values in the interval [2550, 2850] \si{\udensity},
 drops to $\rhoa$. 
 
 Finally, the third column of \cref{fig:MD_subplots} describes the temporal evolution of mixed fluid velocity solutions, namely the average fluid velocity, $\vitf$,
-and the intrinsic average fluid velocity, $\vec{\avg{v}^F}$. At 200s, we see that the suction effect created by the density change in the mushy zone creates a
+and the intrinsic average fluid velocity, $\vec{\avg{v}^F}$. At 200 s, we see that the suction effect created by the density change in the mushy zone creates a
 unidirectional flow of constant velocity, in both the liquid and air, with a magnitude of about \SI{0.9e-5}{\uvelocity}. At the \emph{M-A} boundary, we see a velocity
 jump caused by the ratio of metal density to air density. Closer to the chill, we can distinguish average and intrinsic velocity profiles in the mushy zone. The latter decreases
 more slowly than the former and showing a slight sharp increase in magnitude (not very visible on the plot) when at the intersection between the mushy zone and the eutectic front.
@@ -2891,21 +2879,6 @@ which may spuriously alter its final shape. The pressure condition for the argon
 %as the experiment does not provide any pressure measurement of the confined argon.
 The adopted time step is 0.01 s.
 
-% %--------------
-% \begin{figureth}
-% % textwidth 
-% {0.25}
-% %path 
-% {Chapter5/Graphics/3d/transport_instability.png}
-% % caption
-% {2D view showing a transport instability at the top. The green line is the initial metal-gas interface, while the blue line represents
-% the transported zero-level of the distance.}
-% % label
-% \label{fig:transport_instability}
-% \end{figureth}
-% %--------------
-
-
 %--------------
 \begin{figureth}
 % textwidth 
@@ -3039,8 +3012,8 @@ to propagate further before deformation occurs by gravity. We see a global defor
 results: an ellipsoidal form with a longer vertical axis (i.e. in the direction of the microgravity vector) 
 with respect to the initial shape, while the horizontal axis decreases compared to the original
 sample diameter. Finally, we observe the same deformation tendency if we compare cases H3G0 and H4G0. 
-The latter becomes closer to a situation of pure shrinkage flow. Consequently, its final shape corresponds to a global shrinkage of the initial one.
-% on the sides, which is the direct result of the fast cooling rate.
+The latter becomes closer to a situation of pure shrinkage flow. 
+Consequently, its final shape corresponds to a global shrinkage of the initial one.
 
 In order to have a clear idea on the effect of varying the cooling rate parameter on mass conservation, we plot in \cref{fig:mass_parametricH}
 the mass variation versus time for all four cases. We can notice that mass variation for case H4G0 occurs between 2\% and -1\% near the solidification end,
@@ -3153,7 +3126,6 @@ are plotted in \cref{fig:mass_parametricG}. The plots show, as expected, better 
 from case H0G1 to H0G4. We think however that surface tension would change this analysis, and non-convergence obtained in case H0G1
 may be prevented.
 
-
 %--------------
 \begin{figureth}
 % textwidth 
@@ -3187,7 +3159,7 @@ The gravity vector points downwards.}
 
 
 % --------------------------------
-\subsection{Texus binary alloy}
+\subsection{TEXUS binary alloy}
 % --------------------------------
 
 \subsubsection{Optimal configuration}
@@ -3265,11 +3237,11 @@ in 2009 and TEMPUS 2014 measurements \citep{gandin_project_2014}.}
 % Liquidus temperature 				& $T_L$ 			& \num{618} 	& \si{\udegC} \\ 
 % Eutectic temperature 				& $T_E$ 			& \num{577}	 	& \si{\udegC} \\  
 Segregation coefficient 			& $k$ 				& \scriptsize{Tabulations (\citep{andersson_thermo-calc_2002})} 	& $-$  \\  
-Liquidus slope 						& $m_L$ 			&  \scriptsize{Tabulations (\citep{andersson_thermo-calc_2002})} 	& \si{\uslope} \\ 
-Liquid density			 			& $\rhol$ 			& \scriptsize{Tabulations (\citep{andersson_thermo-calc_2002})}	& \si{\udensity} 		\\ 	 
-Solid density	 					& $\rhos$ 			& \num{2800} 	& \si{\udensity} 		\\  
-Air density 						& $\rhoa$ 			& \num{1.3} 	& \si{\udensity} 		\\  
-Liquid viscosity			 		& $\mul$ 			& \num{d-3} 	& \si{\uviscosity} 		\\  
+Liquidus slope 						   & $m_L$ 			&  \scriptsize{Tabulations (\citep{andersson_thermo-calc_2002})} 	& \si{\uslope} \\ 
+Liquid density			 			   & $\rhol$ 			& \scriptsize{Tabulations (\citep{andersson_thermo-calc_2002})}	& \si{\udensity} 		\\ 	 
+Solid density	 					    & $\rhos$ 			& \num{2800} 	& \si{\udensity} 		\\  
+Air density 						    & $\rhoa$ 			& \num{1.3} 	& \si{\udensity} 		\\  
+Liquid viscosity			 		  & $\mul$ 			& \num{d-3} 	& \si{\uviscosity} 		\\  
 % Solid viscosity	 					& $\mus$ 			& (Darcy) 			& \si{\uviscosity} 	\\  
 Air viscosity 						& $\mua$ 			& \num{d-4} 	& \si{\uviscosity} 		\\  
 % Liquid heat capacity 		 		& $c_p^l$ 			& \num{1000} 	& \si{\umasscapacity} 	\\  
@@ -3437,7 +3409,6 @@ Each column depicts a definite time with temperature and phase distribution.
 %--------------
 
 
-
 %--------------------------------------
 \shorthandoff{;:?!} %http://tex.stackexchange.com/questions/74860/unexpected-clash-between-babel-and-pgf-spy
 \begin{figure}[htbp]
@@ -3515,9 +3486,8 @@ Phase fractions are superimposed on the same graph and their values are read on 
 
 
 
-
 % ------------------------------------------------------
-\subsection{Texus ternary and quaternary alloys}
+\subsection{TEXUS ternary and quaternary alloys}
 % ------------------------------------------------------
 
 In this section, the aim is to predict macrosegregation in reduced-gravity solidification of the \emph{b1} alloy, the latter being considered 
@@ -3656,7 +3626,7 @@ but this plot show the composition profile along the revolution axis.
 %--------------
 \begin{figureth}
 % textwidth 
-{0.9}
+{1.0}
 %path 
 {Chapter5/Graphics/3d/tern_quatern/final_segreg.pdf}
 % caption
