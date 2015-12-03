@@ -179,10 +179,12 @@ be used to derive a set of macroscopic conservation equations.
 %***********************************************
 \subsubsection{Macroscopic equations}
 %***********************************************
+
 A monodomain macroscopic model relies on four main conservation equations to predict 
 macrosegregation in a single alloy where the latter is considered without any direct representation of interactions with another
 domain (moulds, air, ...). 
 The general form of such a macroscopic conservation equation is given by:
+
 %-----------
 \begin{align}
 \label{eq:conservation_equation_noavg}
@@ -193,6 +195,7 @@ The general form of such a macroscopic conservation equation is given by:
 where the first LHS term is non-stationary, the second LHS term represents the convective transport
 of the quantity $\psi$ while the third LHS term is diffusive transport of $\psi$. The RHS
 term is a source term.
+
 To determine an general averaged macroscopic equation, we must write
 a phase-averaged conservation equation, for any volumetric physical quantity $\psi$ using the phase indicator function
 $\chi^\phi$ for phase $\phi$ as follows: 
@@ -220,8 +223,11 @@ $\chi^\phi$ for phase $\phi$ as follows:
 % \end{tabu}}
 % \end{tableth}
 % %-----
+
 We may then write each averaged macroscopic conservation
-equation as the sum of local conservation equations for each phase in the RVE using the interfacial average terms previously defined in \cref{eq:volumeaveraging3,eq:volumeaveraging4}.
+equation as the sum of local conservation equations for each phase in the RVE using the 
+interfacial average terms previously defined in \cref{eq:volumeaveraging3,eq:volumeaveraging4}.
+
 For instance, if we replace $\psi$ by $\rho$ for each phase $\phi \in \{l,s\}$, \cref{eq:conservation_equation_avg} 
 gives two phase-averaged mass balances, with interfacial terms:
 %----
@@ -237,6 +243,7 @@ gives two phase-averaged mass balances, with interfacial terms:
 %----
 where $\vec{v}^{l^*}$ and $\vec{v}^{s^*}$ are respectively, the liquid 
 and solid phase velocity at the interface and $\vec{v}^*$ is the previously introduced solid-liquid interface velocity, while vector $\vec{n}$ is the the normal to the solid-liquid interface, with $\vec{n}=\vec{n^s}=-\vec{n^l}$.
+
 Summing equations \eqref{eq:mass_liquid} and \eqref{eq:mass_solid}, results in the overall mass balance
 in the RVE:
 %----
@@ -249,23 +256,45 @@ in the RVE:
 %----
 where the RHS cancels to zero as shown by \citet{ni_volume-averaged_1991}. Moreover, the authors show that with their averaging technique, 
 interfacial exchanges for energy, chemical species and momentum cancel out as they are equal in absolute value but opposite in sign. 
+
 Regarding the LHS terms, their sum is defined along other variables as follows:
 %-------
 \begin{align}
 \label{eq:mainingredients1}
-& \avg{\rho} = \gl \rhol + \gs \rhos \\
+& \avg{\rho} = \gl \rhol + \gs \rhos
+\end{align}
+
+\begin{align}
 \label{eq:mainingredients2}
-& \avg{\rho \vec{v}} = \gl \rhol \vl + \cancel{\gs \rhos \vs} \\
+& \avg{\rho \vec{v}} = \gl \rhol \vl + \cancel{\gs \rhos \vs}
+\end{align}
+
+\begin{align}
 \label{eq:mainingredients3}
-& \avg{\rho h} = \gl \rhol \hl + \gs \rhos \hs \\
+& \avg{\rho h} = \gl \rhol \hl + \gs \rhos \hs
+\end{align}
+
+\begin{align}
 \label{eq:mainingredients4}
-& \avg{\rho h \vec{v}} = \gl \rhol \hl \vl + \cancel{\gs \rhos \hs \vs} \\
+& \avg{\rho h \vec{v}} = \gl \rhol \hl \vl + \cancel{\gs \rhos \hs \vs}
+\end{align}
+
+\begin{align}
 \label{eq:mainingredients5}
-& \avg{\rho w_i} = \gl \rhol \wil + \gs \rhos \wis \\
+& \avg{\rho w_i} = \gl \rhol \wil + \gs \rhos \wis
+\end{align}
+
+\begin{align}
 \label{eq:mainingredients6}
-& \avg{\rho w_i \vec{v}} = \gl \rhol \wil \vl + \cancel{\gs \rhos \wis \vs} \\
+& \avg{\rho w_i \vec{v}} = \gl \rhol \wil \vl + \cancel{\gs \rhos \wis \vs}
+\end{align}
+
+\begin{align}
 \label{eq:mainingredients7}
-& \avg{\rho^l \vec{v^l}} = \gl \rhol \vl \\
+& \avg{\rho^l \vec{v^l}} = \gl \rhol \vl
+\end{align}
+
+\begin{align}
 \label{eq:mainingredients8}
 & \avg{\rho^l \vec{v^l} \times \vec{v}} = \gl \rhol \vl \times \vl + \cancel{\gs \rhos \vl \times \vs}
 \end{align}
@@ -731,9 +760,11 @@ Those outside are signed negative whereas inside they are signed positive.}
 \label{fig:distance_function}
 \end{figureth}
 %-----------------------------------
+
 %***********************************************
 \subsection{Diffuse boundary} \label{sec:heaviside}
 %***********************************************
+
 The level set has many attractive properties that allows seamless implementation in 2D and 3D models. 
 It is a continuously differentiable $C^1$-function. 
 %For instance, a \emph{Heaviside} function, denoted $\heaviside$, can be obtained by first order derivation of the level set function. 
@@ -749,9 +780,11 @@ across the boundary, defining the presence of domain $F_1$ as follows:
 \end{cases}
 \end{align}
 %----------
+
 This is better known as the non-smoothed Heaviside function relative to domain $F_1$.
 It is established that a steep transition can lead to numerical problems, 
 so the Heaviside function should be smoothed in a volume of fixed thickness around the boundary.
+
 Sinusoidal smoothing in \cref{eq:sinusoidal_smoothing} is widely used with level set formulations.
 %------------
 \begin{align}
@@ -774,6 +807,7 @@ analysis of a diffuse boundary and the optimal thickness by thoroughly studying 
 intricate phenomena happening at the scale of the boundary. However, for level set methods, 
 there has not been a formal work leading the same type of analysis. For this reason, 
 many aspects of the level set method lack physical meanings but remain computationally useful.
+
 In a recent paper by \citet{gada_derivation_2009}, the authors respond partially to this problem 
 by analysing and deriving conservation equations using a level set in a more meaningful way, but 
 do not discuss the diffuse boundary aspect.
@@ -793,23 +827,29 @@ of $\crochet{-\varepsilon;+\varepsilon}$, is derived as follows:
 \end{cases}
 \end{align}
 %-------------
+
 The Heaviside and delta Dirac functions can be readily processed to obtain other geometric properties from the level set,
 which are extremely useful. In the context of a system $\Omega$, containing two domains $F_1$ separated by an interface $\Gamma$, 
 the following properties are interesting to study \citep{peng_pde-based_1999}:
 %------------
 \begin{align}
 \label{eq:levelset_normal}
-\text{normal vector to the boundary }\Gamma: \vec{n} &= \frac{\nabvec \levelset}{\norm{\nabvec \levelset} } \\
+\text{normal vector to the boundary }\Gamma: \vec{n} &= \frac{\nabvec \levelset}{\norm{\nabvec \levelset} }
+\end{align}
 %
+\begin{align}
 \label{eq:levelset_curvature}
-\Gamma \text{ boundary curvature}: \zeta &= - \nabvec \cdot \vec{n} \\
+\Gamma \text{ boundary curvature}: \zeta &= - \nabvec \cdot \vec{n}
+\end{align}
 %
+\begin{align}
 \label{eq:levelset_interface}
-\text{surface area of the boundary }\Gamma: A^\Gamma &= \integral{\Omega}{\dirac \norm{\nabvec \levelset}}{\Omega} \\
+\text{surface area of the boundary }\Gamma: A^\Gamma &= \integral{\Omega}{\dirac \norm{\nabvec \levelset}}{\Omega}
+\end{align}
 %
+\begin{align}
 \label{eq:levelset_volume}
 \text{volume of fluid 1}: V^{F_1} &= \integral{\Omega}{\heaviside^{F_1}}{\Omega}
-%
 \end{align}
 %-----------
 
