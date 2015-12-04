@@ -1039,7 +1039,7 @@ namely the conservation of mass, energy, momentum and chemical species as well a
 \subsection{Level set regularisation}
 %==============================
 %
-Upon transport the distance function field, a crucial property of the level set may be partially or totally 
+When the distance function is tranported, a crucial property of the level set may be partially or totally 
 lost over the domain, which is:
 %------
 \begin{align}
@@ -1071,7 +1071,7 @@ is a considerable numerical task. In the first simulation, the distance contours
 are squeezed against the zero-distance contour marked by the 
 thick black line. A closer look to the interface reveals undesired distortions, with a 
 "wavy" shape at some points. This effect is evidently an artefact
-of a level set transport lacking subsequent reinitialisation, inasmuch 
+of a level set transport withour further reinitialisation, inasmuch 
 as the surface tension tends to minimise the total surface area and make it as smooth
 as possible. Nevertheless, the second simulation unveils much better results, especially 
 how the interface shows no sign of destabilisation. We also note the regular spacing between contours,
@@ -1086,9 +1086,9 @@ In the forthcoming sections, we present three regularisation methods, then show 
 {Chapter2/Graphics/regularization.pdf}
 % caption
 {Schematic of the influence of level set regularisation on the distance function at the same time frame: 
-a) without any regularisation step, the isovalue contours are distorted in the wake of the rising air 
+(a) without any regularisation step, the isovalue contours are distorted in the wake of the rising air 
 bubble while being squeezed ahead of it, 
-b) in contrast to regularising the distance function, where the contours maintain their spacing and geometric 
+in contrast to (b) regularising the distance function, where the contours maintain their spacing and geometric 
 properties with respect to the tracked interface.}
 % label
 \label{fig:reinit_influence}
