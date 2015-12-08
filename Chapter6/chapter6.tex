@@ -8,22 +8,27 @@
 The current thesis proposes a numerical model to predict macrosegregation in different contexts: without or
 with overall metal volume change. The first case considers no average density change during solidification, 
 assuming that the liquid and solid phases in the metal have the same density. 
-On the other hand, the second case considers that the difference in metallic phase densities causes the average density to change, causing the metal's volume to
-change concurrently. 
+On the other hand, the second case considers that the difference in metallic 
+phase densities causes the average density to change, causing the metal's volume to
+change accordingly. 
 
 \paragraph{Temperature resolution compatible with thermodynamic mapping:}
 In this thesis, we have introduced and validated a finite element method to solve energy conservation with phase change, based 
 on thermodynamic data mapping and having the temperature as a main variable (\emph{Tsolver}). The algorithm proved to be faster for several computations
 shown in chapters 3 and 4, when compared to the enthalpy-based method (\emph{Hsolver}). The approach is also well suited to predict macrosegregation
 of both binary and multicomponent alloys. Some limitations are met nevertheless. It is important to have prior knowledge of composition variations
-during solidification in order to adapt to limit the mapping size while also keeping fine composition and temperature steps.
+during solidification in order to limit the mapping size while also keeping fine composition and temperature steps.
 Finer steps ensure more accurate transformation paths. We may also conclude that this thermodynamic mapping approach is still
-to equilibrium assumptions (full equilibrium or solid-liquid interface equilibrium). \citet{tourret_multiple_2011} proposed
-a similar solution but supports more than just a lever rule for microsegregation, by allowing input of diffusion coefficients.
+restricted to equilibrium assumptions (full equilibrium). \citet{tourret_multiple_2011} proposed
+a solution that supports more than just full equilibrium, considering a microsegregation model allowing input of diffusion coefficients.
+This is only valid for binary alloys. Further development attempts for multicomponent alloys were recently done \citep{guillemot_analytical_2015}, which
+still have to be generalised for multiple solid phase transformations and have to be made compatible with the present mapping strategy of thermodynamic
+properties.
 
 \paragraph{Channel segregation:}
 Using our energy solver, the Navier-Stokes solver and species conservation solver, we attempted modelling an experimental benchmark 
-of directional (upward) \bin{In}{75}{Ga} solidification. Some of the experimental data was used to a get a closer numerical configuration to the experiment.
+of directional (upward) \bin{In}{75}{Ga} solidification. 
+% Some of the experimental data were used to a get a closer numerical configuration to the experiment.
 Two scales of modelling were considered, a purely macroscopic finite-element (FE) approach and a coupled mesoscopic-macroscopic approach
 relying on cellular automata (CA) for the small scales and also on FE for the greater scales, hence the approach name CAFE. 
 The pure FE model considers only average macroscopic conservation equations (mass, energy, species and liquid momentum) 
@@ -34,18 +39,19 @@ subsequent formation of segregation channels, when qualitatively compared to exp
 This is where the CAFE model is introduced to show the advantage of nurturing the FE scale with feedback information coming from
 the lower scale CA grid, where nucleation and growth of grain envelopes are systematically solved.
 Indeed, CAFE predictions showed a noticeable difference with respect to the pure FE approach. The overall fluid flow pattern is 
-much more complicated and random, many convective plumes form mainly at grain boundaries as a result of solute enrichment inside the mushy zone (solutal convection),
+much more complicated and random, with many convective plumes forming mainly at grain boundaries as a result of solute enrichment inside the mushy zone (solutal convection),
 powered also by the temperature gradient (thermal convection).   
 The comparison between the experimental data and numerical predictions is only qualitative, due to the lack of an array of crucial data, such 
 as the nuclei positions, the undercooling, magnitude of fluid flow inside the rising convective plumes and others.
 In order to conduct a quantitative comparison, such data may be very useful to calibrate the CAFE model.
 The second limitation in this comparison is the difficulty of simulating the real solidification cell with a thickness of \SI{150}{\micro \metre}.
 Therefore, the simulations considered an alternate thickness of \SI{1}{\milli \metre}, due to the huge FE mesh that would be obtained if
-we want at least 5 elements in the thickness to correctly predict the flow. Using adaptive remeshing could be a solution, but should be used
+we want at least 5 elements in the thickness to correctly predict the flow. Using anisotropic adaptive remeshing could be a solution, but should be used
 with care since small elements are almost needed everywhere in the mushy zone where thermosolutal convection is initiated.   
-It is interesting to model the entire thin solidification cell for future research. In addition, it is interesting to compare simulation
-results with real single grain casting experiments, which allow to understand better the basic mechanisms of channel segregation, which
-could precede the formation of freckle defects.
+It would be interesting to model the entire thin solidification cell for future research. In addition, it would be interesting to compare simulation
+results with real single grain casting experiments, which allow to understand better the basic mechanisms of channel segregation, 
+which could precede the formation of freckle defects. This would also permit calibration of an anisotropic permeability of the mushy zone as a 
+function of two-length scales that characterize the dendritic microstructure, the primary and secondary dendrite arm spacing
 
 \paragraph{Solidification shrinkage:}
 To model this phenomenon, we go from the previous FE model, and reformulate the conservation equations to be compatible with the level set method,
@@ -53,32 +59,30 @@ which helps us track the boundary between the metal and a surrounding gas domain
 for the metal's volume shrinkage. A detailed analysis is given to explain the various interfaces which form the metal-air boundary in reality along
 with the necessary assumptions to get the equivalent definition in the model.
 The monolithic energy, fluid momentum and species conservation equations incorporate the volume change in the metal by using the mass balance.
-A modified Darcy was defined to account for the presence of the gas domain in the monolithic fluid momentum equation.
+A modified Darcy law was defined to account for the presence of the gas domain in the monolithic fluid momentum equation.
 Regarding species conservation, three modelling strategies were introduced: if we consider that the gas domain contains fictitious metallic species, 
 then we may define a monolithic strategy with limited solute diffusion known as MD, and a monolithic strategy with limited diffusion and advection in the gas known as MDA.
-The third strategy consists of solving for species conservation in the metal while completely disregarding the gas domain, then making the necessary correction. 
+The third strategy, known as NM, consists of solving for species conservation in the metal while 
+completely disregarding the gas domain, then making the necessary correction. 
 \newline
-\newline
-Three applications cases are presented in the increasing order of modelling dimension: 1D, 2D and 3D. The first application shows the performance of the model
-applied to one-dimensional solidification shrinkage configuration without then with macrosegregation, using each of the 3 proposed strategies.
-The results show an instability in the predicted average composition field surrounding the metal-air boundary, where a positive segregation peak is
+% \newline
+Three applications cases are presented in the increasing order of modelling dimension: 1D, 2D and 3D. 
+The first application shows the performance of the model
+applied to one-dimensional solidification shrinkage configuration without and with macrosegregation, using each of the 3 proposed strategies.
+The results show instability in the predicted average composition field surrounding the metal-air boundary, where a positive segregation peak is
 seen in the air domain. This peak amplitude is reduced when the MDA strategy is used, and almost disappears with the NM strategy. A full analysis 
 made for each strategy reveals that the latter species conservation strategy performs better than the former two, without having a bad effect
 on species mass conservation and metal mass conservation.
 \newline
-\newline
+% \newline
 The 2D application is based on a comparison with a \bin{Sn}{3}{Pb} solidification benchmark that 
-simulates the configuration of \citet{hebditch_observations_1974} experiments. The experiment
-was simulated by \citet{carozzani_direct_2013} assuming a constant volume for the metal. In this work, the level set context allows predicting
+simulates the configuration initially proposed by \citet{hebditch_observations_1974} experiments. The experiment
+was simulated by \citet{carozzani_direct_2013} assuming a constant volume for the metal. 
+In this work, the level set context allows predicting
 the final ingot shape once completely solidified. The added value of this result with respect to previous
 simulation attempts is the prediction of mesosegregation and macrosegregation trends in the shrunk ingot, which is closer to the experimental results.
-As future work, it may be interesting to couple the work done by \citet{chen_3d_2014} for grain structure prediction
-in an increasing metal volume using the level set context with the current developments in order to get more
-accurate predictions compared to the experiment. Knowing that all the previous suggestions are made in the context
-of a fixed and rigid solid phase, it is also interesting to continue research in the direction of coupling the
-fluid and solid mechanics in the same simulation.
 \newline
-\newline
+% \newline
 The 3D application simulates solidification of a small steel droplet in a reduced-gravity environment, as
 an extension to the work of \citet{rivaux_simulation_2011}. A parametric study is performed to determine
 the best heat transfer coefficient values of the contact surface with the ceramic chill, and the magnitude of the microgravity vector
@@ -86,10 +90,23 @@ resulting. The optimal values were used to simulate solidification of the steel 
 Segregation and subsequent phase distributions analysis is given. 
 The final droplet shape is compared to the experimental observation obtained with a high speed camera, by
 image processing the latter then scaling the initial experimental and numerical profiles, and finally comparing the fully solidified profiles.
-The agreement is acceptable. However, it is useful to accurate compare in the future the simulation performance to the experiment by
-physically processing the solidified sample to obtain the final length and chemical composition. These data are still not made available.  
+The agreement is acceptable. However, it is useful to accurately compare in the future the simulation performance to the experiment by
+characterising the solidified sample to obtain the final length and chemical composition. These data are still not made available.  
 Later, the same simulation is conducted but considering ternary and quaternary approximations of the same steel. 
 Segregation profiles do not reveal high segregation intensities due to the limited flow under
 reduced gravity. An analysis of the competition of fluid motion between microgravity forces and suction to shrinkage inside the droplet is given.
 % \section*{Future Work}
 % \comment{What did we miss in our models that can be potentially important for the coming years}
+\newline
+As future work in the context of solidification benchmark discussed previously, it may be interesting to 
+couple the work done by \citet{chen_3d_2014} for grain structure prediction
+in an increasing metal volume using the level set context with the current developments in order to get more
+accurate predictions compared to the experiment. Knowing that all the previous suggestions are made in the context
+of a fixed and rigid solid phase, it is also interesting to continue research in the direction of coupling the
+fluid and solid mechanics in the same simulation.
+This type of coupling is currently a development project done at TRANSVALOR in collaboration with CEMEF.
+The developed finite element model with a level set approach for energy, species, mass and momentum conservation
+in fluid phases will be used in the global solid-fluid mechanics approach.
+The numerical approaches developed in this thesis will be partly implemented in the next commercial version
+of \thercast, namely the nonlinear temperature resolution compatible with thermodynamic databases. In this regard,
+a comparison with other commercial thermodynamic packages would be relevant to determine the effect on temperature results.

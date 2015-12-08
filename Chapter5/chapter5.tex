@@ -1999,7 +1999,7 @@ Physical quantities are plotted along a line passing through the centre of the s
 \end{landscape}
 %=====================================BIG LANDSCAPE FIGURE -- MD PLOTS =====================================
 
-%=====================================BIG LANDSCAPE FIGURE -- NM PLOTS =====================================
+%=====================================BIG LANDSCAPE FIGURE -- MDA PLOTS =====================================
 \begin{landscape}
 \begin{figureth}
 % textwidth 
@@ -2011,10 +2011,10 @@ Physical quantities are plotted along a line passing through the centre of the s
 applying the \textbf{MDA strategy} (\cref{fig:1dalsi7_wVSlength}b).
 Physical quantities are plotted along a line passing through the centre of the sample and parallel to the gravity vector.}
 % label
-\label{fig:NM_subplots}
+\label{fig:MDA_subplots}
 \end{figureth}
 \end{landscape}
-%=====================================BIG LANDSCAPE FIGURE  -- NM PLOTS =====================================
+%=====================================BIG LANDSCAPE FIGURE  -- MDA PLOTS =====================================
 
 %=====================================BIG LANDSCAPE FIGURE -- NM PLOTS =====================================
 \begin{landscape}
@@ -2064,10 +2064,11 @@ However, the latter may also be subject to variations depending on the configura
 resolution technique, time step, boundary conditions ...
 In our case, we first compared the mass conservation for the metal with all three methods for species conservation:
 MD (monolithic with low diffusion), MDA (monolithic with low diffusion and advection) and last NM (non monolithic).
-We cannot see a noticeable difference when comparing mass analysis for all three techniques, as shown by the dotted lines in \cref{fig:mass_species_alsi7}.
+We cannot see a noticeable difference when comparing mass analysis for all three techniques, 
+as shown by the dotted lines in \cref{fig:mass_species_alsi7}.
 This conclusion goes for both the metal and its species. 
 Nevertheless, we see the main behaviour discussed earlier in \cref{fig:shrinkage_nomacro_massconserv} regarding the increase then decrease of the 
-metal mass. As for the species mass, it can be lost due to 2 causes mainly: the species mass is computed from the volume of the metal,
+metal mass. As for the chemical species, mass loss is due to 2 causes mainly: the species mass is computed from the volume of the metal,
 and therefore any changes in the metal volume are directly reflected on metallic species. The other cause is the species resolution
 equation which gradually loses mass of species during the simulation, possibly leading to negative composition
 in some cases. The solute rise observed in the same figure (\cref{fig:shrinkage_nomacro_massconserv}) for all three strategies
@@ -2081,8 +2082,11 @@ due to the previously explained reason.
 Changing the species resolution strategy affects only the area surrounding the \emph{M-A} boundary (as earlier seen in 
 \cref{fig:1dalsi7_wVSlength}) and thus the predicted average composition varies. The latter variation impacts the phase fractions,
 namely the liquid, which is an input of the fluid fraction used to evaluate the transport velocity in Navier-Stokes.
-The predicted transport velocities in \cref{fig:MD_subplots,fig:NM_subplots} show that the flow reaches high
-magnitude during solidification time (from 200 s to 800 s) thus causing the level set to move further but on  
+The predicted transport velocities in \cref{fig:MD_subplots,fig:MDA_subplots,fig:NM_subplots} show that the flow reaches high
+magnitude during solidification time (from 200 s to 800 s) thus causing the level set to temporarily lose stability before
+solidification ends. However, \cref{fig:fig:NM_subplots} shows that the least velocity instability 
+is obtained with the NM strategy, while maintaining an acceptable mass conservation for species, as shown in \cref{fig:mass_species_alsi7}.
+Therefore, this strategy is applied for the 2D and 3D application cases.
 
 %--------------------------------------
 \shorthandoff{;:?!} %http://tex.stackexchange.com/questions/74860/unexpected-clash-between-babel-and-pgf-spy
@@ -2145,8 +2149,8 @@ In this application, we aim at predicting macrosegregation produced by liquid co
 The simulation is the same performed in \cref{sec:tsolver_validation} but now the level set approach is added.
 The importance of the experiment lies in the 
 thermal convection forces arising from temperature gradients, but also solutal buoyancy forces arising from liquid concentration gradients. The final macrosegregation pattern
-strongly depends on density variations caused by each chemical species, but also on the experimental conditions like the lateral thermal gradients as well the cooling rate,
-as shown in \cref{fig:smacs_exp}.
+strongly depends on density variations caused by each chemical species, but also on the experimental conditions like the lateral thermal gradients as well the cooling rate. \Cref{fig:smacs_exp} shows this effect on the final grain structure along with the free surface deformation
+at the top as a result of density variations.
 \citet{hebditch_observations_1974} suggested one of the first experiments working on Sn-Zn and Sn-Pb alloys. 
 More recently, an experimental benchmark was performed by \citet{hachani_experimental_2012} to obtain more accurate 
 composition results with various Sn-Pb and Pb-Sn alloys. In the current section, we are interested in the latter experiment with \bin{Sn}{3}{Pb} especially in the prediction
