@@ -355,7 +355,7 @@ Therefore, the weak form writes:
 where $H=\rho h$ is a simplified notation denoting the average volumetric enthalpy, used to derive the weak formulation. 
 Furthermore, we assume a static solid phase and an incompressible liquid phase, which allows recasting the second convective term of 
 \cref{eq:averaged_energy_eqn} into $\vit \cdot \nabvec \avg{\rho h}^l$. 
-The volume enthalpy of the liquid phase, $\avg{\rho h}^l = \rhol \hl$, is not main variable of the energy conservation equation's weak form, \cref{eq:weak_energy}.
+The volume enthalpy of the liquid phase, $\avg{\rho h}^l = \rhol \hl$, is not the main variable of the energy conservation equation's weak form, \cref{eq:weak_energy}.
 Therefore we express it as a function of temperature, which is related to the main variable
 via the enthalpy-temperature relation: 
 %----------------------
@@ -567,9 +567,9 @@ is re-evaluated with the newly determined temperature vector $\vec{T^\iterplus}$
 %------------
 
 The norm of the current residual, $\norm{\vec{R^\iterplus}}$, is compared to a fixed small 
-value $\varepsilon_R \approx \crochet{\num{d-5};\num{d-4}}$. The resulting temperature variation, 
+value $\varepsilon_R \approx \crochet{\num{d-6};\num{d-4}}$. The resulting temperature variation, 
 $\abval{\Tj^\iter-\Tj^\iterminus}$, should also respond to similar criterion between two consecutive 
-iterations. For that purpose, we compare it to another fixed value $\varepsilon_T \approx \crochet{\num{d-3};\num{d-2}}$.
+iterations. For that purpose, we compare it to another fixed value $\varepsilon_T \approx \crochet{\num{d-3};\num{d-1}}$.
 Convergence is ultimately achieved when the following criteria are simultaneously met:
 
 %------
@@ -1181,7 +1181,7 @@ Dendrite arm spacing 			& $\lambda$ 				& \num{60e-6} 		& \si{\metre}  			\\
 Density 						& $\rholref$ 						& \num{6725} 	& \si{\udensity}  		\\ 
 Reference composition (carbon)	&$\avg{w_\text{C}}_\text{ref}^l$	& \num{2} 		& \si{\ucomposition}  	\\
 Reference composition (chromium)&$\avg{w_\text{Cr}}_\text{ref}^l$	& \num{30} 		& \si{\ucomposition}  	\\
-Reference temperature 			&$\avg{w_\text{C}}_\text{ref}^l$	& \num{1377} 	& \si{\udegC}  	\\
+Reference temperature 			&$\Tref$	& \num{1377} 	& \si{\udegC}  	\\
 \hline 
 Initial temperature 	& $T_0$ & \num{1395}	& \si{\udegC}  \\ 
 Ingot diameter 			&   	& \num{25e-3} 	& \si{\metre}  \\ 
