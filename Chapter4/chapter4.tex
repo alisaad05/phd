@@ -187,7 +187,7 @@ Finally, the SUPG-PSPG-LSIC stabilised weak formulation writes:
 	 - \crochet{\brac{\rhol \gravity},\vec{U}}
 	 - \crochet{p,\nabvec \cdot \vec{U}}
 	 - \crochet{\frac{\vec{N}}{\gl},\vec{U}}^{*} \\
-	 & + \crochet{\taulsic, \brac{\rholref \nabvec \cdot \vit \nabvec \cdot \vec{u} }} = 0\\ \\
+	 & + \crochet{\taulsic, \brac{\rholref \nabvec \cdot \vit \nabvec \cdot \vec{u} }} = \vec{0}\\ \\
 	 &\forall q \in \varrho \\
 	&\crochet{ \nabvec \cdot \vit, q} + \\
 	&\crochet{\taupspg \frac{\nabvec q}{\rholref}, \brac{\frac{\rholref}{\gl} \tempup{\vit} 
@@ -743,7 +743,6 @@ FE-G2R1L1  & G2:1.5 & R1:-0.01 & L1:(20,0) & (58.25, 25.25)  \\\tabucline[1pt]{-
 }
 \end{table}
 %-------------------------------
--
 
 Initial and boundary conditions are given in \cref{table:simulation_InGa_fe} while materials properties are provided in \cref{table:data_case_InGa}. 
 A series of computations is performed to understand the influence of process parameters on the final macrosegregation pattern. 

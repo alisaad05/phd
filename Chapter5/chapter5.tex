@@ -1,6 +1,6 @@
-\chapter{Macrosegregation with changing metal volume}
+\chapter{Macrosegregation with shrinking metal volume}
 %\chaptermark{Nonlinear Temperature Solver}
-\begin{nolinkcolors} 
+\begin{nolinkcolors}
 \minitoc
 \end{nolinkcolors}
 \newpage
@@ -2383,7 +2383,7 @@ The shrinkage due to phase density difference, is now clearly visible judging fr
 
 At the end of solidification, the ingot top surface has shrunk, showing greater boundary displacement in the last liquid region to solidify, as shown
 in \cref{fig:smacs_planche}. In this figure, it is interesting to compare the final experimental shape (\cref{fig:smacs_planche}) to the numerical one
-(\cref{fig:smacs_planche_c}), while comparing the final obtained segregation maps (\cref{fig:smacs_planche_b}) to the numerical result of (\cref{fig:smacs_planche_c}).
+(\cref{fig:smacs_planche_c}), while comparing the final obtained segregation maps (\cref{fig:smacs_planche_b}) to the numerical result of \cref{fig:smacs_planche_c}.
 
 %-----------------
 \begin{figure}[htbp]
@@ -2509,11 +2509,12 @@ The white line represents the zero isovalue of the level set function.}
 % \label{fig:smacs_final}
 % \end{figureth}
 %--------------
+
 %-----------------
 \begin{figure}[htbp]
 \centering
   %------------------------------
-  \begin{subfigure}[t]{1.0\textwidth}
+  \begin{subfigure}[t]{0.85\textwidth}
   \centering
   \includegraphics[width=8cm]{Chapter5/Graphics/2d/smacs_exp_grains.png}
   \caption{}
@@ -2522,7 +2523,7 @@ The white line represents the zero isovalue of the level set function.}
    %------------
   \vskip\baselineskip  
   %------------------------------
-  \begin{subfigure}[t]{1.0\textwidth}
+  \begin{subfigure}[t]{0.85\textwidth}
   \centering
   \includegraphics[width=8cm]{Chapter5/Graphics/2d/smacs_exp_composition.png}
   \caption{}
@@ -2531,7 +2532,7 @@ The white line represents the zero isovalue of the level set function.}
    %------------
   \vskip\baselineskip
    %------------
-  \begin{subfigure}[t]{1.0\textwidth}
+  \begin{subfigure}[t]{0.85\textwidth}
     \centering
   \includegraphics[width=8cm]{Chapter5/Graphics/2d/finalseg/finalsegreg.pdf}
   \caption{}
@@ -2572,19 +2573,24 @@ forms a recognisable pipe shrinkage and a positively segregated region underneat
 % where $v^M_0$ and $v^A_0$ are respectively the initial volume for metal and air. 
 % This volume is deduced from the level set by using the definition in \cref{eq:levelset_volume}.
 
-All mass and volume data related to both air and metal are plotted in \cref{fig:global_smacs_metal}. 
+Mass and volume data related to both air and metal are plotted in \cref{fig:global_smacs_metal}. 
 The main reason for grouping all plots in a single one is to be able to analyse the mass variations as function of the solidification advancement, which can be tracked
 by volume changes.
 
 We see in this figure that no mass/volume variations are detected before 1900 s, seconds before solidification onset. Once the phase change starts, the average metal density decreases. Since air is incompressible, it is sucked towards the shrinking metallic front.
 With our free velocity boundary condition, an air intake thus takes places, which is confirmed by the green curve corresponding to the relative air volume variation, starting from 2400 s. However between 1900 s and 2400 s, an unexpected slight volume increase of the metal takes place, although it should be decreasing under the action of the decreasing average density by solidification. This behaviour can be attributed to the competition between the flow due to thermosolutal convection and another flow due to shrinkage, and obviously the former is more  imposing than the latter. Therefore, it forces the level set to slightly move upwards, letting the metal gain some volume at the expense of air, whose volume is seen temporarily decreasing between 1900 s and 2500 s.
 The metal's mass curve confirms also a positive variation, which is also reflected on the solute mass.
-After 2500 s, we can see that the metal volume is beginning its descent until it reaches the final volume corresponding to $-6\%$ of the initial volume. This value can also be deduced from the solidification shrinkage coefficient, $\beta_{SS}$, deduced from $\rhol$ and $\rhos$ included in \cref{table:data_case_smacs}.
+After 2500 s, the metal volume is beginning its descent until it reaches the final volume corresponding to -6\% of the initial volume. 
+This value can also be deduced from the solidification shrinkage coefficient, $\beta_{SS}$, deduced from $\rhol$ and $\rhos$ included in \cref{table:data_case_smacs}.
 However between 2500 s and 3000 s, the metal and species mass do not show any sign of stability, but still rising. Until around 3200 s, both mass percentages decrease again as expected.
 While the metal's mass and volume follow the same trend after 3200 s, they are not really correlated. The mass is supposed to remain relatively unchanged until the final volume is reached. Therefore this means that the \emph{M-A} is moving towards the metal, with a greater speed than it should have. At about 3800 s, solidification is almost complete, and the remaining liquid is not capable of inducing a significant boundary. 
 
-The other unexpected profile is the solute mass from 3600 s to 3800 s, where the ingot is almost completely solidified but still features species transport.
-It can be explained by the new quantities of solute that adds up incrementally to the system after each species resolution. 
+An unexpected profile is also obtained for solute mass which is plotted along with the metal mass in \cref{fig:global_smacs_species}.
+From 3600 s to 3800 s, the ingot is almost completely solidified but still species transport takes place around the boundary.
+The rise in species mass may be attributed to the new quantities of solute that add up incrementally to the system after each species resolution, when 
+using \cref{eq:nonmonolithic_solute} with the NM strategy. Since the species mass ,$m^{sp}$, is deduced from the metal's mass, $m^M$, variations of the latter
+(e.g. due to level set transport) is directly reflected on the former. Furthermore, it is possible that the variations of $m^M$ masked the variations of 
+$m^{sp}$ when convection is dominant and solidification shrinkage is taking place. This could explain the sudden rise of $m^{sp}$ seen starting from about 3600 s. 
 
 % %--------------
 % \begin{figureth}
@@ -2603,7 +2609,7 @@ It can be explained by the new quantities of solute that adds up incrementally t
 \begin{figure}[htbp]
 \centering
    %------------
-  \begin{subfigure}[t]{0.85\textwidth}
+  \begin{subfigure}[t]{0.75\textwidth}
     \centering
   \includegraphics[width=\textwidth]{Chapter5/Data/2d_smacs_mass/global_smacs_metal.pdf}
   \caption{}
@@ -2612,7 +2618,7 @@ It can be explained by the new quantities of solute that adds up incrementally t
   %------------------------------
   \vskip\baselineskip
   %------------------------------
-  \begin{subfigure}[t]{0.85\textwidth}
+  \begin{subfigure}[t]{0.75\textwidth}
     \centering
   \includegraphics[width=\textwidth]{Chapter5/Data/2d_smacs_mass/global_smacs_species.pdf}
   \caption{}
@@ -2621,12 +2627,12 @@ It can be explained by the new quantities of solute that adds up incrementally t
    %------------
 \caption{Global plots showing (a) global system of metal and air mass (left y-axis) and volume (right y-axis) variation with time
 and (b) the metal's mass (left y-axis) along with the mass of its metallic species (right y-axis).
+The metal mass plot, $m^M$, is the same for (a) and (b).
 The thickness dimension of the 2D domain is assumed to be \SI{1}{\metre}, hence the use of 3D units.} 
 \label{fig:smacs_global}
 \end{figure}
 %------------------
 
-\newpage
 \newpage
 
 % ---------------------------------
@@ -3245,35 +3251,35 @@ in 2009 and TEMPUS 2014 measurements \citep{gandin_project_2014}.}
 % cells content (should use the & and // to switch columns and rows)
 %------------------------------------------------------------------------------------------
 {Nominal composition 				& $w_0$ 			& \num{0.105}   & \si{\ucomposition} \\ 
-% Liquidus temperature 				& $T_L$ 			& \num{618} 	& \si{\udegC} \\ 
-% Eutectic temperature 				& $T_E$ 			& \num{577}	 	& \si{\udegC} \\  
-Segregation coefficient 			& $k$ 				& \scriptsize{Tabulations ()} 	& $-$  \\  
-Liquidus slope 						   & $m_L$ 			&  \scriptsize{Tabulations (\citep{andersson_thermo-calc_2002})} 	& \si{\uslope} \\ 
-Liquid density			 			   & $\rhol$ 			& \scriptsize{Tabulations (\citep{andersson_thermo-calc_2002})}	& \si{\udensity} 		\\ 	 
+% Liquidus temperature 			& $T_L$ 			& \num{618} 	& \si{\udegC} \\ 
+% Eutectic temperature 			& $T_E$ 			& \num{577}	 	& \si{\udegC} \\  
+Segregation coefficient 		& $k$ 				& \scriptsize{Tabulations ()} 	& $-$  \\  
+Liquidus slope 						  & $m_L$ 			&  \scriptsize{Tabulations (\citep{andersson_thermo-calc_2002})} 	& \si{\uslope} \\ 
+Liquid density			 			  & $\rhol$ 			& \scriptsize{Tabulations (\citep{andersson_thermo-calc_2002})}	& \si{\udensity} 		\\ 	 
 Solid density	 					    & $\rhos$ 			& \num{2800} 	& \si{\udensity} 		\\  
 Air density 						    & $\rhoa$ 			& \num{1.3} 	& \si{\udensity} 		\\  
 Liquid viscosity			 		  & $\mul$ 			& \num{d-3} 	& \si{\uviscosity} 		\\  
 % Solid viscosity	 					& $\mus$ 			& (Darcy) 			& \si{\uviscosity} 	\\  
-Air viscosity 						& $\mua$ 			& \num{d-4} 	& \si{\uviscosity} 		\\  
-% Liquid heat capacity 		 		& $c_p^l$ 			& \num{1000} 	& \si{\umasscapacity} 	\\  
-% Solid heat capacity 		 		& $c_p^s$ 			& \num{928.57} 	& \si{\umasscapacity} 	\\  
-% Air heat capacity 		 			& $c_p^a$ 			& \num{1000} 	& \si{\umasscapacity} 	\\  
+Air viscosity 						  & $\mua$ 			& \num{d-4} 	& \si{\uviscosity} 		\\  
+% Liquid heat capacity 		 	& $c_p^l$ 			& \num{1000} 	& \si{\umasscapacity} 	\\  
+% Solid heat capacity 		 	& $c_p^s$ 			& \num{928.57} 	& \si{\umasscapacity} 	\\  
+% Air heat capacity 		 		& $c_p^a$ 			& \num{1000} 	& \si{\umasscapacity} 	\\  
 % Enthalpy of fusion 				& $l_f$ 			& \num{365384} 	& \si{\umassenergy} 	\\ 
-Air thermal conductivity			& $\kappa^a$ 		& \num{0.01} 		& \si{\uconductivity}	\\
-Liquid thermal conductivity 		& $\kappa^l$ 		& \num{42} 		& \si{\uconductivity}	\\
-Solid thermal conductivity 			& $\kappa^s$ 		& \num{42} 		& \si{\uconductivity}	\\
+Air thermal conductivity		& $\kappa^a$ 		& \num{0.01} 		& \si{\uconductivity}	\\
+Liquid thermal conductivity & $\kappa^l$ 		& \num{42} 		& \si{\uconductivity}	\\
+Solid thermal conductivity 	& $\kappa^s$ 		& \num{42} 		& \si{\uconductivity}	\\
 Solute diffusion in the liquid		& $\Dl$ 			& \num{d-9} 	& \si{\udiffusivity} 	\\  
 % Solute diffusion in the solid		& $\Ds$ 			& \num{0} 	& \si{\udiffusivity} 		\\  
 Solute diffusion in the air	(fictitious)	& $\Da$ 	& (NM strategy) 	& \si{\udiffusivity} \\  
 \hline  %------------------------------------------------------------------------------------------
-Gravity acceleration 	 			& $\norm{\gravity}$  & \num{5e-5} 	& \si{\uacceleration} 		\\ 
+Gravity acceleration 	 			    & $\norm{\gravity}$  & \num{5e-5} 	& \si{\uacceleration} 		\\ 
 Heat transfer coefficient 			& $\hext$ 			& \num{6e4} 	& \si{\uhconvec} 		\\ 
-External temperature 				& $\Text$ 			& \num{25} 	& \si{\udegC} 				\\ 
-% Ingot length 						&  					& \num{0.1} 	& \si{\metre} 		\\ 
+External temperature 				    & $\Text$ 			& \num{25} 	  & \si{\udegC} 			\\ 
+Initial temperature             &               & \num{1580}   & \si{\udegC}      \\ 
 \hline %------------------------------------------------------------------------------------------
-% FE mesh size 						&  					& \num{e-3} 	& \si{\metre} 		\\ 
-Time step 							& $\dt$ 			& \num{0.01} 	& \si{\second} 		\\ 
-Convergence criterion (residual) 	& $\varepsilon_R$	& \num{e-4} 	& $-$ 				\\ 
+FE mesh size 						&  					& \cref{table:texus_remeshing_params} 	& \si{\metre}\\ 
+Time step 							& $\dt$ 			& \num{0.01} 	& \si{\second} 		                   \\ 
+Convergence criterion (residual) 	& $\varepsilon_R$	& \num{e-4} 	& $-$ 				         \\ 
 Convergence criterion (temperature) & $\varepsilon_T$ 	& \num{e-1} 	& \si{\udegK}}
 %--------------------------------------------------------------------------------------------------
 \end{tabulate}
@@ -3637,7 +3643,7 @@ but this plot show the composition profile along the revolution axis.
 %--------------
 \begin{figureth}
 % textwidth 
-{1.0}
+{0.85}
 %path 
 {Chapter5/Graphics/3d/tern_quatern/final_segreg.pdf}
 % caption

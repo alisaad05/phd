@@ -272,7 +272,7 @@ columns (one column for each alloying element).
 	\begin{tabular}{@{}p{\llargeur}p{\rightcol}@{}}
 		\textbf{Brent's initialisation} \\
 		Iteration &	$\brentzero$ \\
-		Temperature & $T^\brentzero = \Tjtminus$
+		Temperature & $T_j^\brentzero = \Tjtminus$
 	\end{tabular}
 };
 \draw[trait] (init) -- (brent_init);
@@ -283,8 +283,8 @@ columns (one column for each alloying element).
 		\textbf{Microsegregation law} \\		
 		Phase fractions					& $(\Tjbrent,\wi_j) \rightarrow \crochet{g^\phi_j}^\brent$ \\
 		Phase compositions 				& $(\Tjbrent,\wi_j) \rightarrow \crochet{\wiphi_j}^\brent$ \\
-		Phase mass enthalpies 			& $(\Tjbrent,\wiphi_j) \rightarrow \crochet{\hphi}^\brent$ \\
-		Phase densities 				& $(\Tjbrent,\wiphi_j) \rightarrow \crochet{\rphi}^\brent$ \\
+		Phase mass enthalpies 			& $(\Tjbrent,\wiphi_j) \rightarrow \crochet{\hphi_j}^\brent$ \\
+		Phase densities 				& $(\Tjbrent,\wiphi_j) \rightarrow \crochet{\rphi_j}^\brent$ \\
 	\end{tabular}
 };
 \draw[trait] (brent_init) -- (microseg);
@@ -656,8 +656,8 @@ A comparison of both solver formulations is done in the hereafter test cases sec
 {
 	\begin{tabu}{@{}p{\llargeur}p{\rlargeur}@{}}
 	\textbf{Microsegregation} \\
-	Tabulation (\emph{H2T})	&	$ \rhoh^\iterplus \rightarrow \Tkplus$ 	\quad (\cref{fig:algorithm_h2t}) \\
-	Update				& 	$\dTdHjkplus=f(\Tjkplus,\rhoh^\iterplus)$ 	\quad (\cref{eq:finite_difference_Hsolver})\\
+	Tabulation (\emph{H2T})	&	$ H^\iterplus_j \rightarrow \Tkplus_j$ 	\quad (\cref{fig:algorithm_h2t}) \\
+	Update				& 	$\dTdHjkplus=f(\Tjkplus,H_j^\iterplus)$ 	\quad (\cref{eq:finite_difference_Hsolver})\\
 	\end{tabu}
 };
 
@@ -673,7 +673,7 @@ A comparison of both solver formulations is done in the hereafter test cases sec
 \node[test,below=of reassembly,shift={(-3.7cm,0mm)}] (convergence_res)
 {
 	\begin{tabu}{c}
-	$\norm{R^\iterplus} < \varepsilon_R $ \\
+	$\norm{\vec{R^\iterplus}} < \varepsilon_R $ \\
 	%Max $\Delta T_j < \varepsilon_T$ \\
 	(\cref{eq:energy_convergence_criteria})
 	\end{tabu}
@@ -684,7 +684,7 @@ A comparison of both solver formulations is done in the hereafter test cases sec
 {
 	\begin{tabu}{c}
 	%$\norm{R^\iterplus} < \varepsilon_R $ \\
-	Max $\Delta T_j < \varepsilon_T$ \\
+	Max $\vec{\Delta T} < \varepsilon_T$ \\
 	(\cref{eq:energy_convergence_criteria})
 	\end{tabu}
 };
@@ -826,8 +826,8 @@ A comparison of both solver formulations is done in the hereafter test cases sec
 {
 	\begin{tabular}{@{}p{\llargeur}p{\rlargeur}@{}}
 	\textbf{Microsegregation} \\
-	Tabulation (\emph{T2H}) 	&	$ \Tkplus \rightarrow \rhoh^\iterplus$ 		\quad (\cref{fig:algorithm_t2h})  \\
-	Update				& 	$\dHdTjkplus=f(\Tjkplus,\rhoh^\iterplus)$ 			\quad (\cref{eq:finite_difference_Tsolver})\\
+	Tabulation (\emph{T2H}) 	&	$ \Tkplus_j \rightarrow H_j^\iterplus$ 		\quad (\cref{fig:algorithm_t2h})  \\
+	Update				& 	$\dHdTjkplus=f(\Tjkplus,H_j^\iterplus)$ 			\quad (\cref{eq:finite_difference_Tsolver})\\
 	\end{tabular}
 };
 
@@ -843,7 +843,7 @@ A comparison of both solver formulations is done in the hereafter test cases sec
 \node[test,below=of reassembly,shift={(-3.7cm,0mm)}] (convergence_res)
 {
 	\begin{tabu}{c}
-	$\norm{R^\iterplus} < \varepsilon_R $ \\
+	$\norm{\vec{R^\iterplus}} < \varepsilon_R $ \\
 	%Max $\Delta T_j < \varepsilon_T$ \\
 	(\cref{eq:energy_convergence_criteria})
 	\end{tabu}
@@ -854,7 +854,7 @@ A comparison of both solver formulations is done in the hereafter test cases sec
 {
 	\begin{tabu}{c}
 	%$\norm{R^\iterplus} < \varepsilon_R $ \\
-	Max $\Delta T_j < \varepsilon_T$ \\
+	Max $\vec{\Delta T} < \varepsilon_T$ \\
 	(\cref{eq:energy_convergence_criteria})
 	\end{tabu}
 };
@@ -983,7 +983,7 @@ Thermal conductivity 				& $\kappa$ 			& \num{70} 		& \si{\uconductivity}	\\
 \hline  %------------------------------------------------------------------------------------------
 Heat transfer coefficient 			& $\hext$ 			& \num{500} 	& \si{\uhconvec} \\ 
 External temperature 				& $\Text$ 			& \num{100} 	& \si{\udegC} \\ 
-Initial temperature 				& $T_0$ 			& \num{800} 	& \si{\udegC} \\ 
+Initial temperature 				&        			& \num{800} 	& \si{\udegC} \\ 
 Ingot length 						&  					& \num{0.1} 	& \si{\metre} \\ 
 \hline %------------------------------------------------------------------------------------------
 FE mesh size 						&  					& \num{e-3} 	& \si{\metre} \\ 
@@ -1151,7 +1151,8 @@ The effect of their variation on transformation paths, phase compositions and ph
 \begin{tabulate}
 %
 % caption 
-{Solidification parameters for the \tern{Fe}{2}{C}{30}{Cr} alloy.}
+{Solidification parameters for the \tern{Fe}{2}{C}{30}{Cr} alloy.
+Some parameters are taken from \citep{zhang_prediction_2010}. }
 % label
 {table:ternary_data_case}
 % line separation (e.g. 1.5mm)
@@ -1177,13 +1178,13 @@ Solutal expansion coefficient 	& $\betawlC$ 				& \num{1.54e-3} 	& \si{\ubetawl}
                               	& $\betawlCR$ 				& \num{1.72e-2} 	& \si{\ubetawl}  		\\ 
 Thermal conductivity in the solid & $\ks$ 					& \num{40} 			& \si{\uconductivity}  	\\ 
 Thermal conductivity in the liquid & $\kl$ 					& \num{28} 			& \si{\uconductivity}  	\\ 
-Dendrite arm spacing 			& $\lambda$ 				& \num{60e-6} 		& \si{\metre}  			\\ 
-Density 						& $\rholref$ 						& \num{6725} 	& \si{\udensity}  		\\ 
+Dendrite arm spacing 			& $\lambda$ 				& \num{100e-6} 		& \si{\metre}  			\\ 
+Density 						& $\rholref$ 						& \num{7600} 	& \si{\udensity}  		\\ 
 Reference composition (carbon)	&$\avg{w_\text{C}}_\text{ref}^l$	& \num{2} 		& \si{\ucomposition}  	\\
 Reference composition (chromium)&$\avg{w_\text{Cr}}_\text{ref}^l$	& \num{30} 		& \si{\ucomposition}  	\\
 Reference temperature 			&$\Tref$	& \num{1377} 	& \si{\udegC}  	\\
 \hline 
-Initial temperature 	& $T_0$ & \num{1395}	& \si{\udegC}  \\ 
+Initial temperature 	& 		& \num{1395}	& \si{\udegC}  \\ 
 Ingot diameter 			&   	& \num{25e-3} 	& \si{\metre}  \\ 
 Ingot length 			&   	& \num{75e-3} 	& \si{\metre}  \\ 
 \hline 
