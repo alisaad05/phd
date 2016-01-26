@@ -5,7 +5,7 @@
 \input{Preamble/pre_commands}
 \input{Preamble/preamble}
 \input{Preamble/post_commands}
-\input{Frontmatter/titlepage}
+% \input{Frontmatter/titlepage}
 \addbibresource{References/auto_references.bib}
 \includeonly{
 				 Chapter1/chapter1,
@@ -24,7 +24,7 @@
 \clearpage
 \phantomsection
 \pdfbookmark[0]{Front cover}{frontcover}
-\mytitlepage % personal command
+\includepdf{Frontmatter/Frontcover.pdf}
 
 % \pdfbookmark{\contentsname}{Acknowledgement}
 % \input{Frontmatter/acknowledgement}
@@ -72,7 +72,7 @@
 \cleardoublepage
 \phantomsection
 \pdfbookmark[0]{Back cover}{backcover}
-\includepdf{Backmatter/FourthPage.pdf}
+\includepdf{Backmatter/Backcover.pdf}
 % \includepdf[pages=1, openright]{Backmatter/FourthPage.pdf}
 \thispagestyle{empty}
 % *************************************** Index ********************************
