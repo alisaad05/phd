@@ -16,7 +16,7 @@
    id="svg2"
    version="1.1"
    inkscape:version="0.48.1 "
-   sodipodi:docname="bc.svg">
+   sodipodi:docname="bc.pdf">
   <sodipodi:namedview
      id="base"
      pagecolor="#ffffff"
@@ -26,7 +26,7 @@
      inkscape:pageshadow="2"
      inkscape:zoom="0.35"
      inkscape:cx="1283.7594"
-     inkscape:cy="401.27164"
+     inkscape:cy="858.4145"
      inkscape:document-units="px"
      inkscape:current-layer="layer1"
      showgrid="false"
@@ -92,7 +92,7 @@
         <dc:format>image/svg+xml</dc:format>
         <dc:type
            rdf:resource="http://purl.org/dc/dcmitype/StillImage" />
-        <dc:title />
+        <dc:title></dc:title>
       </cc:Work>
     </rdf:RDF>
   </metadata>
@@ -1589,7 +1589,7 @@
     <path
        inkscape:connector-curvature="0"
        id="path4454"
-       d="m 1265.9768,489.85919 -89.3379,417.95387"
+       d="m 1257.4054,695.57348 -89.3379,417.95382"
        style="fill:none;stroke:#000000;stroke-width:2.52001667;stroke-linecap:butt;stroke-linejoin:miter;stroke-miterlimit:4;stroke-opacity:1;stroke-dasharray:2.52001683, 10.0800673;stroke-dashoffset:0"
        sodipodi:nodetypes="cc" />
     <path
