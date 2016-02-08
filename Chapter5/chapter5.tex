@@ -392,7 +392,7 @@ any reference value for density and assuming a fixed solid phase:
    \left\{
    \begin{aligned}
       & \rhol_0 \brac{\tempup{ \vit } + \frac{1}{\gl} \nabvec \cdot \brac{\vit \times \vit}} = \\
-	  &- \gl\nabvec \pl + \mul \nabvec \cdot \brac{\nabmat \vit + \nabmattransp \vit}
+	  &- \gl\nabvec \pl + \nabvec \cdot \brac{\mul \brac{\nabmat \vit + \nabmattransp \vit}}
 	  - \gl \mul \K^{-1} \vit + \gl \rhol \gravity\\ \\
       & \nabvec \cdot \vit = -\frac{1}{\rhol} \brac{\tempup{\avg{\rho}^M} + \vit \cdot  \nabvec \rhol}
     \end{aligned}
@@ -573,7 +573,7 @@ The air flow is governed by time-dependent incompressible Navier-Stokes equation
    \left\{
    \begin{aligned}
       & \rhoa_0 \brac{\tempup{ \va } + \nabvec \cdot \brac{\va \times \va}} = \\
-	  &- \nabvec \pa + \mua \nabvec \cdot \brac{\nabmat \va + \nabmattransp \va}
+	  &- \nabvec \pa + \nabvec \cdot \brac{ \mua  \brac{\nabmat \va + \nabmattransp \va}}
 	   + \rhoa \gravity\\ \\
       & \nabvec \cdot \va = 0
     \end{aligned}
