@@ -30,12 +30,12 @@ x, y1, y2, y3, y4, y5 = data1['Temps'], data1['FractionLiq'], data1['FractionBCC
 # SETTINGS
 NbMarker = 2000
 alphaT = 0.85
-width1 = 2
+width1 = 3
 ms = 6
 ls ='-'
 c1, c2 , c3, c4, c5 = "y" , "b", "r", "g", "m"
-m1, m2 , m3, m4, m5 = "s" , "o", "v", "d" , "x"
-# m1, m2 , m3, m4, m5= "" , "", "", "", ""
+# m1, m2 , m3, m4, m5 = "s" , "o", "v", "d" , "x"
+m1, m2 , m3, m4, m5= "" , "", "", "", ""
 
 # PLOT 1
 fig, ax1 = plt.subplots(figsize=(8,8))
@@ -59,7 +59,7 @@ ax1.set_ylabel("Volume Fraction (-)")
 ax1.set_xlabel('Time (sec)')
 ax1.set_xlim(xmax=12000)
 ax1.set_ylim(ymin=-0.05, ymax=1.05)
-ax1.grid(True)
+# ax1.grid(True)
 
 
 handles, labels = ax1.get_legend_handles_labels()
@@ -74,8 +74,8 @@ CEM = plt.Line2D((0,1),(0,0), color=c5,  linestyle='-',  marker=m5, linewidth=2)
 
 pos1 = plt.Line2D((0,1),(0,0), color="k",  linestyle='-',  linewidth=2)
 pos4 = plt.Line2D((0,1),(0,0), color="k",  linestyle='--', linewidth=2)
-ax1.legend([Liquid, BCC, FCC, CARB, CEM, pos1,pos4],['LIQ', 'BCC', 'FCC', 'M$_7$C$_3$', 'CEM','Bottom', 'Top'],loc='right', fancybox=True, shadow=True)
+# ax1.legend([Liquid, BCC, FCC, CARB, CEM, pos1,pos4],['LIQ', 'BCC', 'FCC', 'M$_7$C$_3$', 'CEM','Bottom', 'Top'],loc='right', fancybox=True, shadow=True)
 
 # plt.show()
-plt.savefig('TP_nomacro.png', dpi=300, bbox_inches='tight')
-plt.savefig('TP_nomacro.pdf', bbox_inches='tight')
+plt.savefig('TP_nomacro_ppt.png', dpi=150, bbox_inches='tight')
+plt.savefig('TP_nomacro_ppt.pdf', bbox_inches='tight')

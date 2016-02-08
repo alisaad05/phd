@@ -296,7 +296,7 @@ Regarding the LHS terms, their sum is defined along other variables as follows:
 
 \begin{align}
 \label{eq:mainingredients8}
-& \avg{\rho^l \vec{v^l} \times \vec{v}} = \gl \rhol \vl \times \vl + \cancel{\gs \rhos \vl \times \vs}
+& \avg{\rho \vec{v} \times \vec{v}} = \gl \rhol \vl \times \vl + \cancel{\gs \rhos \vs \times \vs}
 \end{align}
 %-------
 The average diffusive fluxes are represented by $\avg{\vec{q}}$ for energy and $\avg{\vec{j_i}}$ for each solute species.
@@ -420,7 +420,7 @@ in \cref{eq:conservation_momentumliq_init}:
 \begin{multline}
 \label{eq:conservation_momentumliq}
  \temp{ \rhol \vit } + \frac{1}{\gl} \nabvec \cdot \brac{\rhol \vit \times \vit} = \\
-	  - \gl\nabvec \pl - \mul \nabvec \cdot \brac{\nabmat \vit + \nabmattransp \vit}
+	  - \gl\nabvec \pl + \mul \nabvec \cdot \brac{\nabmat \vit + \nabmattransp \vit}
 	  - \gl \mul \K^{-1} \vit + \gl \rhol \gravity
 \end{multline}
 % \end{align}
@@ -436,7 +436,7 @@ A fourth equation provided by the mass balance (\cref{eq:conservation_mass})is t
    \left\{
    \begin{aligned}
       & \temp{ \rhol \vit } + \frac{1}{\gl} \nabvec \cdot \brac{\rhol \vit \times \vit} = \\
-	  &- \gl\nabvec \pl - \mul \nabvec \cdot \brac{\nabmat \vit + \nabmattransp \vit}
+	  &- \gl\nabvec \pl + \mul \nabvec \cdot \brac{\nabmat \vit + \nabmattransp \vit}
 	  - \gl \mul \K^{-1} \vit + \gl \rhol \gravity\\ \\
       & \nabvec \cdot \vit =0
     \end{aligned}

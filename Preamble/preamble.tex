@@ -451,6 +451,7 @@ or
 \newcommand{\lwidth}{0.75pt}
 \newcommand{\lmarkerwidth}{0.2pt}
 \newcommand{\msize}{2.25pt}
+\newcommand{\msizebis}{1.75pt}
 \pgfplotscreateplotcyclelist{mycycle}{%
 line width=\lwidth, mark size=\msize,   solid, every mark/.append style={solid, fill=gray}, mark=*\\%
 line width=\lwidth, mark size=\msize,   densely dashed, every mark/.append style={solid, fill=gray}, mark=square*\\%
@@ -462,6 +463,18 @@ line width=\lwidth, mark size=\msize,   densely dashed, every mark/.append style
 line width=\lwidth, mark size=\msize,   dashdotted, every mark/.append style={solid, fill=gray},mark=otimes*\\%
 line width=\lwidth, mark size=\msize,   dasdotdotted, every mark/.append style={solid},mark=star\\%
 line width=\lwidth, mark size=\msize,   densely dashdotted,every mark/.append style={solid, fill=gray},mark=diamond*\\%
+}
+\pgfplotscreateplotcyclelist{mycyclebis}{%
+line width=\lwidth, mark size=\msizebis,   solid,  mark=*\\%
+line width=\lwidth, mark size=\msizebis,   densely dashed, mark=square*\\%
+line width=\lwidth, mark size=\msizebis,   densely dotted,  mark=triangle*\\%triangle
+line width=\lwidth, mark size=\msizebis,   dashed, mark=diamond*\\%
+line width=\lwidth, mark size=\msizebis,   loosely dotted, mark=otimes*\\%
+line width=\lwidth, mark size=\msizebis,   loosely dashed, mark=*\\%
+line width=\lwidth, mark size=\msizebis,   densely dashed, mark=square*\\%
+line width=\lwidth, mark size=\msizebis,   dashdotted, mark=otimes*\\%
+line width=\lwidth, mark size=\msizebis,   dasdotdotted, mark=star\\%
+line width=\lwidth, mark size=\msizebis,   densely dashdotted,mark=diamond*\\%
 }
 \pgfplotscreateplotcyclelist{masscycle}{%
 line width=\lwidth, mark size=\msize,   dotted, every mark/.append style={solid, line width=\lmarkerwidth, fill=gray}, mark=square*\\%

@@ -126,7 +126,7 @@ We can comment on the strong form with the following recap points:
 \itemsep0em
 \item	the liquid metal is Newtonian with a dynamic viscosity denoted $\mul$
 \item	the metal is incompressible, therefore the liquid and solid densities are constant and equal (hence
-		$\rholref$ in the inertial term) and the mass balance reduces to \\ $\nabvec \cdot \vit =0$
+		$\rhol_0$ in the inertial term) and the mass balance reduces to \\ $\nabvec \cdot \vit =0$
 \item	the Boussinesq approximation is used to compute the thermosolutal buoyancy force in the melt
 		via the term $\gl \rhol \gravity = \gl \rhol \brac{T,\avg{w_i}^l} \gravity$, where $\rhol \brac{T,\avg{w_i}^l}$
 		can be either tabulated as a function of temperature and liquid composition for each solute $i$, or directly 
@@ -134,7 +134,7 @@ We can comment on the strong form with the following recap points:
 		%----------------
 		\begin{align}
 		\label{eq:boussinesq}
- 		\rhol = \rholref \brac{1-\betaT \brac{T-\Tref}- \sum_{i=1}^{\text{nb species}} \betawil \brac{\avg{w_i}^l-\wilref}}
+ 		\rhol = \rhol_0 \brac{1-\betaT \brac{T-\Tref}- \sum_{i=1}^{\text{nb species}} \betawil \brac{\avg{w_i}^l-\wilref}}
 		\end{align}
 		%----------------		
 		where $\betaT$ and $\betawil$ are respectively the thermal and solutal expansion coefficients, while
@@ -180,18 +180,18 @@ Finally, the SUPG-PSPG-LSIC stabilised weak formulation writes:
    \left\{
    \begin{aligned}
       &\forall \vec{u} \in \upsilon^0 \\
-	&\crochet{ \brac{\frac{\rholref}{\gl} \tempup{\vit}},\vec{U}} + 
-	 \crochet{ \brac{\frac{\rholref}{\gl^2} \brac{\nabmat \vit} \vit},\vec{U}} + 
+	&\crochet{ \brac{\frac{\rhol_0}{\gl} \tempup{\vit}},\vec{U}} + 
+	 \crochet{ \brac{\frac{\rhol_0}{\gl^2} \brac{\nabmat \vit} \vit},\vec{U}} + 
 	 \crochet{\brac{\frac{2\mul}{\gl}}, \strainrate\brac{\vit}:\strainrate\brac{\vec{U}} } \\
 	& + \crochet{\brac{\mul \K^{-1} \vit },\vec{U}}
 	 - \crochet{\brac{\rhol \gravity},\vec{U}}
-	 - \crochet{p,\nabvec \cdot \vec{U}}
+	 - \crochet{p^l,\nabvec \cdot \vec{U}}
 	 - \crochet{\frac{\vec{N}}{\gl},\vec{U}}^{*} \\
-	 & + \crochet{\taulsic, \brac{\rholref \nabvec \cdot \vit \nabvec \cdot \vec{u} }} = \vec{0}\\ \\
+	 & + \crochet{\taulsic, \brac{\rhol_0 \nabvec \cdot \vit \nabvec \cdot \vec{u} }} = \vec{0}\\ \\
 	 &\forall q \in \varrho \\
-	&\crochet{ \nabvec \cdot \vit, q} + \\
-	&\crochet{\taupspg \frac{\nabvec q}{\rholref}, \brac{\frac{\rholref}{\gl} \tempup{\vit} 
-	+ \frac{\rholref}{\gl^2} \brac{\nabmat \vit} \vit 
+	&\crochet{- \nabvec \cdot \vit, q} + \\
+	&\crochet{\taupspg \frac{\nabvec q}{\rhol_0}, \brac{\frac{\rhol_0}{\gl} \tempup{\vit} 
+	+ \frac{\rhol_0}{\gl^2} \brac{\nabmat \vit} \vit 
 	+ \mul \K^{-1} \vit -\rhol \gravity}} = 0
     \end{aligned}
     \right.
@@ -205,23 +205,23 @@ Replacing \cref{eq:supg_test} in \cref{eq:weakform_before}, we get the final wea
    \left\{
    \begin{aligned}
     &\forall \vec{u} \in \upsilon^0 \\
-	&\crochet{ \brac{\frac{\rholref}{\gl} \tempup{\vit}},\vec{u}} + 
-	 \crochet{ \brac{\frac{\rholref}{\gl^2} \brac{\nabmat \vit} \vit},\vec{u}} + 
+	&\crochet{ \brac{\frac{\rhol_0}{\gl} \tempup{\vit}},\vec{u}} + 
+	 \crochet{ \brac{\frac{\rhol_0}{\gl^2} \brac{\nabmat \vit} \vit},\vec{u}} + 
 	 \crochet{\brac{\frac{2\mul}{\gl}}, \strainrate\brac{\vit}:\strainrate\brac{\vec{u}} } \\
 	& + \crochet{\brac{\mul \K^{-1} \vit },\vec{u}}
 	 - \crochet{\brac{\rhol \gravity},\vec{u}}
-	 - \crochet{p,\nabvec \cdot \vec{u}}
+	 - \crochet{p^l,\nabvec \cdot \vec{u}}
 	 - \crochet{\frac{\vec{N}}{\gl},\vec{u}}^{*} \\
 	 %-----------
 	 & + \crochet{\tausupg \nabmat \vec{u} \cdot \vit_{\Ohm_E} , 
-	 \brac{\frac{\rholref}{\gl} \tempup{\vit} + \frac{\rholref}{\gl^2} \brac{\nabmat \vit} \vit
+	 \brac{\frac{\rhol_0}{\gl} \tempup{\vit} + \frac{\rhol_0}{\gl^2} \brac{\nabmat \vit} \vit
 	   +  \mul \K^{-1} \vit + \nabvec \pl -\rhol \gravity} } \\
-	 & + \crochet{\taulsic, \brac{\rholref \nabvec \cdot \vit \nabvec \cdot \vec{u} }} = 0  \\ \\
+	 & + \crochet{\taulsic, \brac{\rhol_0 \nabvec \cdot \vit \nabvec \cdot \vec{u} }} = 0  \\ \\
 	 %-----------
 	 &\forall q \in \varrho \\
-	&\crochet{ \nabvec \cdot \vit, q} + \\
-	&\crochet{\taupspg \frac{\nabvec q}{\rholref}, \brac{\frac{\rholref}{\gl} \tempup{\vit} 
-	+ \frac{\rholref}{\gl^2} \brac{\nabmat \vit} \vit 
+	&\crochet{- \nabvec \cdot \vit, q} + \\
+	&\crochet{\taupspg \frac{\nabvec q}{\rhol_0}, \brac{\frac{\rhol_0}{\gl} \tempup{\vit} 
+	+ \frac{\rhol_0}{\gl^2} \brac{\nabmat \vit} \vit 
 	+ \mul \K^{-1} \vit + \nabvec \pl -\rhol \gravity}} = 0
     \end{aligned}
     \right.
@@ -252,7 +252,7 @@ regimes, given by:
 %----------------
 where $h_\text{stream}=2\norm{\vit_{\Ohm_E}}\brac{\vit_{\Ohm_E} \cdot \nabvec \interp}$ is the element length in the stream direction, computed using
 the local superficial velocity and the interpolation functions $\interp_j$ relative to each local node $j$,
-$\nu^l$ is the liquid's kinematic viscosity ($\si{\udiffusivity}$), equal to the ratio $\mu^l/\rholref$
+$\nu^l$ is the liquid's kinematic viscosity ($\si{\udiffusivity}$), equal to the ratio $\mu^l/\rhol_0$
  and $\Delta t$ is the time step.
 The transient term stabilisation was initially derived for Navier-Stokes equations without Darcy term.
 As the latter has a significant role in the weak form \cref{eq:weakform_after}, it needs to be stabilised.
@@ -263,7 +263,7 @@ to take account the Darcy term as follows:
  %----------------
 \begin{align}
 \label{eq:supg_transient_darcy}
-& \tau_\text{trans-darcy} = \frac{\Delta t}{2\brac{1+\Delta t \frac{\mul}{\rholref \K}}}
+& \tau_\text{trans-darcy} = \frac{\Delta t}{2\brac{1+\Delta t \frac{\mul}{\rhol_0 \K}}}
 \end{align}
 %----------------
 
@@ -288,7 +288,7 @@ The definitions of the remaining stabilisation parameters are given as follows:
 	\brac{ 
 	\brac{\frac{2 \norm{\vit_{\Ohm_E}}}{h_\text{stream}}}^2
    + \brac{\frac{4\nu^l}{h_\text{stream}^2}}^2
-   + \brac{\frac{2\brac{1+\Delta t \frac{\mul}{\rholref \K}}}{\Delta t}}^2 }^{-1/2} \\
+   + \brac{\frac{2\brac{1+\Delta t \frac{\mul}{\rhol_0 \K}}}{\Delta t}}^2 }^{-1/2} \\
 & \taulsic = \frac{h_\text{stream}}{2} \norm{\vit_{\Ohm_E}}^{-1} Z(Re_{\Ohm_E})  
 \end{align}
 %----------------
@@ -814,7 +814,7 @@ Solutal expansion coefficient 	& $\betawl$ 				& \num{1.44e-3} 	& \si{\ubetawl} 
 Thermal conductivity in the solid & $\ks$ 					& \num{40} 			& \si{\uconductivity}  	\\ 
 Thermal conductivity in the liquid & $\kl$ 					& \num{28} 			& \si{\uconductivity}  	\\ 
 Dendrite arm spacing 			& $\lambda$ 				& \num{60e-6} 		& \si{\metre}  			\\ 
-Density 						& $\rholref$ 				& \num{6725} 		& \si{\udensity}  		\\ 
+Density 						& $\rhol_0$ 				& \num{6725} 		& \si{\udensity}  		\\ 
 Reference composition			&$\wlref$					& \num{75} 			& \si{\ucomposition}  	\\
 Reference temperature 			&$\Tref$					& \num{25.25} 		& \si{\udegC}  			\\
 %\hline 

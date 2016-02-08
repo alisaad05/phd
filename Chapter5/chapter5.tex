@@ -391,8 +391,8 @@ any reference value for density and assuming a fixed solid phase:
 \label{eq:momentum_balance_metal}
    \left\{
    \begin{aligned}
-      & \rholref \brac{\tempup{ \vit } + \frac{1}{\gl} \nabvec \cdot \brac{\vit \times \vit}} = \\
-	  &- \gl\nabvec \pl - 2 \mul \nabvec \cdot \brac{\nabmat \vit + \nabmattransp \vit}
+      & \rhol_0 \brac{\tempup{ \vit } + \frac{1}{\gl} \nabvec \cdot \brac{\vit \times \vit}} = \\
+	  &- \gl\nabvec \pl + \mul \nabvec \cdot \brac{\nabmat \vit + \nabmattransp \vit}
 	  - \gl \mul \K^{-1} \vit + \gl \rhol \gravity\\ \\
       & \nabvec \cdot \vit = -\frac{1}{\rhol} \brac{\tempup{\avg{\rho}^M} + \vit \cdot  \nabvec \rhol}
     \end{aligned}
@@ -572,8 +572,8 @@ The air flow is governed by time-dependent incompressible Navier-Stokes equation
 \label{eq:momentum_balance_air}
    \left\{
    \begin{aligned}
-      & \rhoa \brac{\tempup{ \va } + \nabvec \cdot \brac{\va \times \va}} = \\
-	  &- \nabvec \pa - 2 \mua \nabvec \cdot \brac{\nabmat \va + \nabmattransp \va}
+      & \rhoa_0 \brac{\tempup{ \va } + \nabvec \cdot \brac{\va \times \va}} = \\
+	  &- \nabvec \pa + \mua \nabvec \cdot \brac{\nabmat \va + \nabmattransp \va}
 	   + \rhoa \gravity\\ \\
       & \nabvec \cdot \va = 0
     \end{aligned}
@@ -735,8 +735,12 @@ The mechanical properties are mixed as follows:
 %------------
 \begin{align}
 %
-\label{eq:monolithic_density}
-\text{Fluid density}&: \mix{\rho^F} = \heavisideM \rhol + \heavisideA \rhoa \\
+% \label{eq:monolithic_density}
+% \text{Fluid density}&: \mix{\rho^F} = \heavisideM \rhol + \heavisideA \rhoa \\
+							%= \heavisideM \brac{\gl \rhol + \gs \rhos} + \heavisideA \rhoa \\
+%
+\label{eq:monolithic_density_ref}
+\text{Reference fluid density}&: \mix{\rho^F_0} = \heavisideM \rhol_0 + \heavisideA \rhoa_0 \\
 							%= \heavisideM \brac{\gl \rhol + \gs \rhos} + \heavisideA \rhoa \\
 %
 \label{eq:monolithic_viscosity}
@@ -756,8 +760,8 @@ The momentum balance can now be obtained from $\heavisideM \times$\cref{eq:momen
 \label{eq:monolithic_momentum}
    \left\{
    \begin{aligned}
-      & \mix{\rho^F} \brac{\tempup{ \vitf } + \frac{1}{\gf} \nabvec \cdot \brac{\vitf \times \vitf}} = \\
-	  &- \gf\nabvec p - 2 \mix{\mu} \nabvec \cdot \brac{\nabmat \vitf+ \nabmattransp \vitf}
+      & \mix{\rho^F_0} \brac{\tempup{ \vitf } + \frac{1}{\gf} \nabvec \cdot \brac{\vitf \times \vitf}} = \\
+	  &- \gf\nabvec p + \nabvec \cdot \brac{\mix{\mu} \brac{\nabmat \vitf+ \nabmattransp \vitf} } 
 	  - \gf \mix{\mu} \Kmodif^{-1} \vitf + \mix{\rho g} \gravity\\ \\
       & \nabvec \cdot \vitf = \heavisideM \brac{-\frac{1}{\rhol} \brac{\tempup{\avg{\rho}^M }+ \vit \cdot  \nabvec \rhol}}
     \end{aligned}
@@ -1908,7 +1912,7 @@ on larger distances and destabilising the computation.
 	enlarge x limits=false,
 	%legend pos=north east,
 	scaled ticks=true,
-	xlabel=Sample length (m),
+	xlabel=Distance from chill (m),
 	ylabel=$\mix{\avg{w}}$ (wt.\% Si),
 	xticklabel style={/pgf/number format/fixed},
 	xtick={0,0.02,0.04,0.06,0.08,0.1,0.12,0.14},
@@ -3208,7 +3212,7 @@ of the binary alloy given previously in \cref{table:texus_b1}.
 	legend pos=north west,
 	scaled ticks=true,
 	xlabel=Time (s),
-	ylabel= Front position (m),
+	ylabel= Front position (mm),
 	xticklabel style={/pgf/number format/fixed},
 	%xtick={0,200,400,600,800,1000},
 	%ytick={-0.1,0,0.1,0.2},
@@ -3220,9 +3224,9 @@ of the binary alloy given previously in \cref{table:texus_b1}.
 	cycle list name=mycycle, %exotic,
 ]
 %\addplot table [x=time, y=position] {Chapter5/Data/3d_growthspeed/olddroplet_frontposition_vs_time.txt};
-\addplot table [x=time, y=position] {Chapter5/Data/3d_growthspeed/newdroplet_h6e4.txt};
-\addplot table [x=time, y expr=\thisrow{position}/1000] {Chapter5/Data/3d_growthspeed/EXP_texus2009_frontposition_vs_time.txt};
-\addplot table [x=time, y expr=\thisrow{position}/1000] {Chapter5/Data/3d_growthspeed/exp_tempus2014_frontposition_vs_time.txt};
+\addplot table [x=time, y expr=\thisrow{position}*1000] {Chapter5/Data/3d_growthspeed/newdroplet_h6e4.txt};
+\addplot table [x=time, y expr=\thisrow{position}] {Chapter5/Data/3d_growthspeed/EXP_texus2009_frontposition_vs_time.txt};
+\addplot table [x=time, y expr=\thisrow{position}] {Chapter5/Data/3d_growthspeed/exp_tempus2014_frontposition_vs_time.txt};
 
 \legend{Simulation, TEXUS, TEMPUS}
 \end{axis}
@@ -3570,7 +3574,7 @@ is obtained using coarser composition steps.}
 Nevertheless, it should be mentioned that the mapping resolution plays an important role in the accuracy of thermodynamic conversions.
 Therefore, tabulations size easily increases with the increasing number of solute elements, because of the greater number of temperature-composition 
 combinations to scan while computing equilibrium. To test the effect of changing the mapping resolution, we repeated the binary sample solidification
-but with a composition step of \SI{0.0495}{\ucomposition} instead of \SI{0.0052}{\ucomposition} used for the \emph{b1Bin} sample, i.e. about 10 times coarser. 
+but with a composition step of \SI{0.0495}{\ucomposition} instead of \SI{0.00525}{\ucomposition} used for the \emph{b1Bin} sample, i.e. about 10 times coarser. 
 The corresponding profile in \cref{fig:shape_comparison}, \emph{b1BinCoarse}, shows less vertical elongation then predicted by the finer \emph{b1Bin} tabulation. 
 This is clearly due to inaccurate calculation of the solidification path, revealing the importance of mappings accuracy in predicting transformation-related physics.
 
@@ -3597,6 +3601,7 @@ The computation time corresponds to the CPU time of a simulation running on 20 c
 & \textbf{lines}  & \textbf{(MB)} & \textbf{time (s)}  \\\tabucline[1pt]{-}
 %-----------------------------
       \emph{b1Bin}    & 1 & C: [0.0945-0.1155] &   0.00525  &  4 &  \num{185010} &    \num{4.37}   &  \num{59461.5}  \\   %78003.9
+      %\emph{b1BinCoarse}    & 1 & C: [0.0945-0.1155] &   0.0495  &  4 &  \num{-} &    \num{-}   &  \num{-}  \\  
       \emph{b1Tern}   & 2 & C: [0.0945-0.1155] &   0.00525  &  5 &  \num{220250} &    \num{10.18}  &  \num{62644.4}  \\    
                 &   &  Si: [0.2412-0.2948] &   0.0134   &    &               &                 &                 \\    
       \emph{b1Quat}   & 3 & C: [0.0945-0.1155] &   0.00525  &  5 &  \num{1101250}&    \num{66.89}  &  \num{85476.7}  \\     

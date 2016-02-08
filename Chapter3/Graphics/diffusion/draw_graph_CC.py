@@ -42,18 +42,21 @@ ax.plot(timeH, z6, color= col_H, lw= lw_H,    alpha=alphaH, zorder= orderH)
 
 alphaT = 1
 orderT = 2
-lw_T = 1
+lw_T = 2
+ls="--"
 col_T = 'k'
-ax.plot(timeT, y1, color= col_T, lw= lw_T,    alpha=alphaT, zorder= orderT, label='Tsolver')
-ax.plot(timeT, y2, color= col_T, lw= lw_T,    alpha=alphaT, zorder= orderT)
-ax.plot(timeT, y3, color= col_T, lw= lw_T,	  alpha=alphaT, zorder= orderT)
-ax.plot(timeT, y4, color= col_T, lw= lw_T,	  alpha=alphaT, zorder= orderT)
-ax.plot(timeT, y5, color= col_T, lw= lw_T,	  alpha=alphaT, zorder= orderT)
-ax.plot(timeT, y6, color= col_T, lw= lw_T,    alpha=alphaT, zorder= orderT)
+ax.plot(timeT, y1, color= col_T, lw= lw_T, ls=ls,   alpha=alphaT, zorder= orderT, label='Tsolver')
+ax.plot(timeT, y2, color= col_T, lw= lw_T, ls=ls,   alpha=alphaT, zorder= orderT)
+ax.plot(timeT, y3, color= col_T, lw= lw_T, ls=ls,	alpha=alphaT, zorder= orderT)
+ax.plot(timeT, y4, color= col_T, lw= lw_T, ls=ls,	alpha=alphaT, zorder= orderT)
+ax.plot(timeT, y5, color= col_T, lw= lw_T, ls=ls,	alpha=alphaT, zorder= orderT)
+ax.plot(timeT, y6, color= col_T, lw= lw_T, ls=ls,   alpha=alphaT, zorder= orderT)
 
 markerFT = "^"
-markersizeFT = 7
-NbMarkerFT = 300
+markersizeFT = 9
+NbMarkerFT = 250
+alphaT=0.75
+col_T= "k"
 ax.plot(timeT, y1, ls = "", color= col_T, lw= lw_T, marker = markerFT, markersize = markersizeFT,   markevery=NbMarkerFT, alpha=alphaT, zorder= orderT, label='Front Tracking')
 ax.plot(timeT, y2, ls = "", color= col_T, lw= lw_T, marker = markerFT, markersize = markersizeFT, markevery=NbMarkerFT, alpha=alphaT, zorder= orderT)
 ax.plot(timeT, y3, ls = "", color= col_T, lw= lw_T, marker = markerFT, markersize = markersizeFT,	markevery=NbMarkerFT, alpha=alphaT, zorder= orderT)
@@ -84,6 +87,6 @@ plt.title('Cooling Curves')
 
 
 # plt.show()
-plt.savefig('diffusion_CC.pdf', bbox_inches='tight')
-plt.savefig('diffusion_CC.png', dpi=300, bbox_inches='tight')
+plt.savefig('diffusion_CC_ppt.pdf', bbox_inches='tight')
+plt.savefig('diffusion_CC_ppt.png', dpi=150, bbox_inches='tight')
 
