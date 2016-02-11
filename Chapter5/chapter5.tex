@@ -1084,9 +1084,9 @@ For this purpose, we take an aluminium-silicon alloy with the properties shown i
 % Eutectic temperature 				& $T_E$ 			& \num{577}	 	& \si{\udegC} \\  
 % Segregation coefficient 			& $k$ 				& \num{0.13} 	& $-$  \\  
 % Liquidus slope 					$m_L$ 			& \num{-6.5} 	& \si{\uslope} \\ 
-Liquid density			 			  & $\rhol$ 			& \num{2600} 	& \si{\udensity} 		\\ 	 
 Solid density	 					    & $\rhos$ 			& \num{2800} 	& \si{\udensity} 		\\  
-Air density 						    & $\rhoa$ 			& \num{1.3} 	& \si{\udensity} 		\\  
+Liquid density (reference)              & $\rhol_0$       & \num{2600}  & \si{\udensity}    \\   
+Air density (reference) 						    & $\rhoa_0$ 			& \num{1.3} 	& \si{\udensity} 		\\  
 Liquid viscosity			 		  & $\mul$ 			& \num{d-3} 	& \si{\uviscosity} 		\\  
 % Solid viscosity	 					& $\mus$ 			& (Darcy) 			& \si{\uviscosity} 	\\  
 Air viscosity 						  & $\mua$ 			& \num{d-4} 	& \si{\uviscosity} 		\\  
@@ -2321,9 +2321,9 @@ Liquidus temperature 				& $T_L$ 			& tabulations 	& \si{\udegC} \\
 % Eutectic temperature 			& $T_E$ 			& \num{577}	 	& \si{\udegC} \\  
 Segregation coefficient 		& $k$ 				& tabulations	& $-$  \\  
 Liquidus slope 						  & $m_L$ 			& tabulations 	& \si{\uslope} \\ 
-Liquid density			 		  	& $\rhol$ 			& \num{7130} 	& \si{\udensity} 		\\ 	 
 Solid density	 					    & $\rhos$ 			& \num{7530} 	& \si{\udensity} 		\\  
-Air density 						    & $\rhoa$ 			& \num{1.3} 	& \si{\udensity} 		\\  
+Liquid density (reference)              & $\rhol_0$       & \num{7130}  & \si{\udensity}    \\   
+Air density (reference) 						    & $\rhoa_0$ 			& \num{1.3} 	& \si{\udensity} 		\\  
 Liquid viscosity			 		  & $\mul$ 			& \num{d-3} 	& \si{\uviscosity} 		\\  
 % Solid viscosity	 					& $\mus$ 			& (Darcy) 			& \si{\uviscosity} 	\\  
 Air viscosity 						  & $\mua$ 			& \num{d-4} 	& \si{\uviscosity} 		\\  
@@ -3259,9 +3259,9 @@ in 2009 and TEMPUS 2014 measurements \citep{gandin_project_2014}.}
 % Eutectic temperature 			& $T_E$ 			& \num{577}	 	& \si{\udegC} \\  
 Segregation coefficient 		& $k$ 				& \scriptsize{Tabulations ()} 	& $-$  \\  
 Liquidus slope 						  & $m_L$ 			&  \scriptsize{Tabulations (\citep{andersson_thermo-calc_2002})} 	& \si{\uslope} \\ 
-Liquid density			 			  & $\rhol$ 			& \scriptsize{Tabulations (\citep{andersson_thermo-calc_2002})}	& \si{\udensity} 		\\ 	 
-Solid density	 					    & $\rhos$ 			& \num{2800} 	& \si{\udensity} 		\\  
-Air density 						    & $\rhoa$ 			& \num{1.3} 	& \si{\udensity} 		\\  
+Solid density               & $\rhos$       & \num{2800}  & \si{\udensity}    \\  
+Liquid density (reference)	& $\rhol_0$ 			& \scriptsize{Tabulations (\citep{andersson_thermo-calc_2002})}	& \si{\udensity} 		\\ 	 
+Air density (reference)     & $\rhoa_0$ 			& \num{1.3} 	& \si{\udensity} 		\\  
 Liquid viscosity			 		  & $\mul$ 			& \num{d-3} 	& \si{\uviscosity} 		\\  
 % Solid viscosity	 					& $\mus$ 			& (Darcy) 			& \si{\uviscosity} 	\\  
 Air viscosity 						  & $\mua$ 			& \num{d-4} 	& \si{\uviscosity} 		\\  
@@ -3397,6 +3397,7 @@ reaches the eutectoid isotherm at \SI{727}{\udegC}.
     %\animategraphics[options]{fps}{filename_without_number}{1}{N}
     %-------
     \animategraphics{10}{Chapter5/Graphics/3d/bin/mesosegregation/img}{0000}{0080}
+    \includegraphics[width=0.2\textwidth]{Chapter5/Graphics/3d/bin/colorscale_composition_annot.png}
     \caption{Animation of the average composition with solidification time, showing evidence of segregation and shape deformation between 0 s and 20 s.}
     %-------
   }
@@ -3447,7 +3448,7 @@ Each column depicts a definite time with temperature and phase distribution.
 	%legend pos=north east,
 	scaled ticks=true,
 	ylabel style={align=center},
-	ylabel=  Relative \blue{carbon} content $\frac{\mix{\avg{w}}-w_0}{w_0}$ (\%), %Relative mesosegregation,
+	ylabel=  \blue{Relative carbon content}  $\frac{\mix{\avg{w}}-w_0}{w_0}$ (\%), %Relative mesosegregation,
 	xlabel=Distance from chill (mm),
 	%xticklabel style={/pgf/number format/fixed},
 	yticklabel style={/pgf/number format/fixed},

@@ -230,11 +230,11 @@ through the following equation:
 %----------------------
 \begin{align}
 \label{eq:darcy}
-& \gl \vl =-\frac{\K}{\mul} \nabvec \brac{\gl \pl}
+& \vec{v} =-\frac{\K}{\mul} \nabvec \pl
 \end{align}
 %----------------------
 where $\mul$ is the liquid dynamic viscosity and $\K$ is the permeability tensor.
-\Cref{eq:darcy} do not account for the solid velocity, $\vs$, assuming that the solid phase is fixed,
+\Cref{eq:darcy} do not account for the solid velocity, $\vec{v^s}$, assuming that the solid phase is fixed,
 which can occur in columnar solidification or when equiaxed grains are densely packed in later stages of solidification \citep{rappaz_numerical_2003}.
 Evaluating permeability has been the subject of numerous studies that aimed
 to predict it from microstructural or morphological parameters.
@@ -343,7 +343,7 @@ liquid phase density varies considerably upon cooling the superheated alloy to r
 \subsection{Solidification shrinkage}
 % ---------------------------------------
 
-Solids generally have a greater density than the liquid phase ($\rhos > \rhol$), 
+Solids generally have a greater density than the liquid phase ($\rho^s > \rho^l$), 
 thus occupy less volume, with some exceptions such as silicon, for which the opposite is true. 
 Upon solidification, the liquid therefore moves towards the solidification front to compensate for the volume 
 difference caused by the phase change, as well as the phases contraction mainly due to temperature gradient. When macrosegregation is 
