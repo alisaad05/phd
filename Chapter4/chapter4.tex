@@ -28,7 +28,7 @@ When speaking about Navier-Stokes equations, the choice can be narrowed to two f
 approaches with some similarities: stable mixed finite element method and \textbf{V}ariational \textbf{M}utli\textbf{S}cale (VMS) method.
 When two finite element spaces are introduced (e.g. one for velocity and another for pressure), 
 the essential \emph{inf-sup} condition (also known as stability condition) determined by \citet{babuska_error-bounds_1971} and \citet{brezzi_existence_1974} 
-should be fulfilled. It states that the formulation is ill-posed if the both spaces have the same interpolation 
+should be fulfilled. It states that the formulation is ill-posed if both spaces have the same interpolation 
 order. For instance, a P1/P1 element (i.e. P1 for velocity / P1 for pressure) cannot guarantee the stability of the Navier-Stokes solution since
 velocity and pressure are both linearly interpolated at the simplex vertices.
 However, the major difference between the previously mentioned formulations is the way in which the inf-sup condition is accounted for.
@@ -586,10 +586,10 @@ and (b) \cref{fig:planche_withmacroseg}.}
 
 We have seen in the previous multicomponent solidification test case, a formation of segregated channels in the cylinder. 
 This defect manifests itself as a composition inhomogeneity that is highly non-isotropic. A typical description of its 
-morphology would consider a channel with a diameter proportional to few primary dendrite arm spacing and a length that 
+morphology would consider a channel with a diameter proportional to few primary dendrite arm spacings and a length that 
 could vary from millimeters to centimeters. These “worm”-like shapes may form during directional solidification of cast 
-parts designed for engine applications, particularly in nickel-base superalloys \citep{giamei_nature_1970,beckermann_development_2000,
-genereux_characterization_2000,schneider_modeling_1997}. In the latter situation, the channels are often filled with a chain of small equiaxed 
+parts designed for engine applications, particularly in nickel-base superalloys \citep{giamei_nature_1970,schneider_modeling_1997,beckermann_development_2000,
+genereux_characterization_2000}. In the latter situation, the channels are often filled with a chain of small equiaxed 
 crystals, thus referring to the term “freckle”. In large steel ingots, these channel defects are also related to A- and V-segregates   
 \citep{pickering_macrosegregation_2013}. 
 
